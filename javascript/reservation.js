@@ -1,16 +1,30 @@
-
 // Function to handle booking a reservation
 function bookReservation(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
 
-    // Get form input values
     const clientName = document.getElementById('client-name').value;
     const service = document.getElementById('service').value;
     const bookingDate = document.getElementById('booking-date').value;
-    const timeIn = document.getElementById('time-in').value; // Get Time In value
-    const timeOut = document.getElementById('time-out').value || calculateTimeOut(timeIn); // Get Time Out value or calculate it
+    const timeIn = document.getElementById('time-in').value;
+    const timeOut = document.getElementById('time-out').value || calculateTimeOut(timeIn);
 
-    // Create a new reservation card
+    // Convert timeIn to a Date object for easier comparison
+    const timeInDate = new Date(`1970-01-01T${timeIn}`);
+
+    // Check if Time In is before 9:00 AM or at/after 12:00 AM (Gym Closed)
+    const openTime = new Date(`1970-01-01T09:00:00`);
+    const closeTime = new Date(`1970-01-01T23:59:59`);
+
+    if (timeInDate < openTime || timeInDate >= closeTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gym Closed',
+            text: 'The gym is closed before 9:00 AM and after 12:00 Midnight. Please select another time.',
+        });
+        return; // Stop further execution
+    }
+
+    // card pop up
     const newReservationCard = document.createElement('div');
     newReservationCard.className = 'reservation-card bg-gray-200 p-4 mb-4 rounded-lg';
 
@@ -32,6 +46,13 @@ function bookReservation(event) {
     const reservationsContainer = document.getElementById('reservations-container');
     reservationsContainer.appendChild(newReservationCard);
 
+    // Show a success message
+    Swal.fire({
+        icon: 'success',
+        title: 'Reservation Booked',
+        text: 'Your reservation has been successfully booked.',
+    });
+
     // Optionally, reset the form after booking
     document.getElementById('booking-form').reset();
 }
@@ -51,9 +72,25 @@ function calculateTimeOut(timeIn) {
 
 // Function to cancel/delete a reservation
 function cancelReservation(button) {
-    // Get the reservation card element
     const reservationCard = button.closest('.reservation-card');
     if (reservationCard) {
-        reservationCard.remove(); // Remove the reservation card from the DOM
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                reservationCard.remove(); // Remove the reservation card from the DOM
+                Swal.fire(
+                    'Cancelled!',
+                    'Your reservation has been cancelled.',
+                    'success'
+                );
+            }
+        });
     }
 }
