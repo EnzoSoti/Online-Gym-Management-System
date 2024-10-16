@@ -151,42 +151,49 @@
               <div class="bg-white p-6 rounded-lg shadow">
                 <h2 class="text-lg font-semibold mb-4 text-orange-500">Book Schedule for Client</h2>
                 <form id="booking-form" onsubmit="bookReservation(event)">
-                  <div class="form-group mb-4">
-                    <label for="client-name" class="text-black">Client Name:</label>
-                    <input type="text" id="client-name" class="border-2 border-gray-400 p-2 rounded-lg w-full" placeholder="Enter client name" required />
-                  </div>
-                  
-                  <div class="form-group mb-4">
-                    <label for="service" class="text-black">Service:</label>
-                    <select id="service" class="border-2 border-gray-400 p-2 rounded-lg w-full" required>
-                      <option value="Basketball Court">Basketball Court</option>
-                      <option value="Zumba">Zumba</option>
-                      <!-- Add more services as needed -->
-                    </select>
-                  </div>
+                    <div class="form-group mb-4">
+                        <label for="service" class="text-black">Service:</label>
+                        <select id="service" class="border-2 border-gray-400 p-2 rounded-lg w-full" required>
+                            <option value="Basketball Court">Basketball Court</option>
+                            <option value="Zumba">Zumba</option>
+                        </select>
+                    </div>
 
-                  <!-- Time In Selection -->
-                  <div class="form-group mb-4">
-                    <label for="time-in" class="block text-black">Time In:</label>
-                    <input type="time" id="time-in" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" required />
-                  </div>
+                    <!-- Main Client Name -->
+                    <div class="form-group mb-4">
+                        <label for="client-name" class="text-black">Client Name:</label>
+                        <input type="text" id="client-name" class="border-2 border-gray-400 p-2 rounded-lg w-full" placeholder="Enter client name" required />
+                    </div>
 
-                  <!-- Time Out Selection (optional) -->
-                  <div class="form-group mb-4">
-                    <label for="time-out" class="block text-black">Time Out:</label>
-                    <input type="time" id="time-out" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" />
-                  </div>
+                    <!-- Add more participants -->
+                    <div class="form-group mb-4">
+                        <label for="additional-clients" class="text-black">Additional Participants (up to 8):</label>
+                        <div id="additional-clients" class="space-y-2">
+                            <!-- Dynamic client fields will be added here by JavaScript -->
+                        </div>
+                        <button type="button" class="bg-green-500 text-white py-2 px-4 rounded mt-2" onclick="addParticipant()">Add Participant</button>
+                    </div>
 
-                  <div class="mb-4">
-                    <label for="booking-date" class="block text-black">Select Booking Date:</label>
-                    <input type="date" id="booking-date" class="text-black px-2 py-1 rounded-lg" required />
-                  </div>
-                  
-                  <div class="mt-6">
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                      Book Now
-                    </button>
-                  </div>
+                    <!-- Time In & Out -->
+                    <div class="form-group mb-4">
+                        <label for="time-in" class="block text-black">Time In:</label>
+                        <input type="time" id="time-in" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" required />
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="time-out" class="block text-black">Time Out:</label>
+                        <input type="time" id="time-out" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" />
+                    </div>
+
+                    <!-- Booking Date -->
+                    <div class="mb-4">
+                        <label for="booking-date" class="block text-black">Select Booking Date:</label>
+                        <input type="date" id="booking-date" class="text-black px-2 py-1 rounded-lg" required />
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Book Now</button>
+                    </div>
                 </form>
               </div>
             </div>
