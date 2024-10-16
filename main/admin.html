@@ -26,6 +26,7 @@
         <li><a href="#section4"><i class="fa-solid fa-hourglass-start"></i> Sales</a></li>
         <li><a href="#section5"><i class="fa-solid fa-user"></i> Add monthly member</a></li>
         <li><a href="#section6"><i class="fa-solid fa-file"></i> Sales & Report</a></li>
+        <li><a href="#section7"><i class="fa-solid fa-tag"></i> Items</a></li>
         <li><a class="logout" href="#section5"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
       </ul>
 
@@ -34,7 +35,7 @@
         <a href="#"><i class="fa-brands fa-discord"></i></a>
         <a href="#"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://github.com/EnzoSoti"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.instagram.com/_nzdnl/"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.instagram.com/fitworxgym/"><i class="fa-brands fa-instagram"></i></a>
       </div>
 
     </div>
@@ -128,6 +129,7 @@
       </section>
 
       <!-- Section 3 -->
+      <!-- Reservation -->
       <div class="main-content">
         <section id="section3">
           <div class="p-6 bg-gray-100 min-h-screen">
@@ -138,86 +140,58 @@
               <div class="bg-white p-6 rounded-lg shadow">
                 <h2 class="text-lg font-bold mb-4 text-orange-500">Reservation Dashboard</h2>
 
-                <!-- Calendar and Reservation Cards -->
-                <div class="calendar-reservation-section">
-                  <div class="flex justify-between items-center mb-4">
-                    <div class="text-lg text-black">Select Reservation Date:</div>
-                    <!-- Calendar Icon/Reservation Date -->
-                    <div class="calendar-container bg-gray-100 p-2 rounded-lg">
-                      <input type="date" id="reservation-date" class="text-black px-2 py-1 rounded-lg" />
-                    </div>
-                  </div>
-
-                  <!-- Reservation Cards Section -->
-                  <div id="reservations-container" class="reservation-list">
-                    <!-- Placeholder reservation data -->
-                    <div class="reservation-card bg-gray-200 p-4 mb-4 rounded-lg">
-                      <h3 class="text-sm font-bold text-orange-400">Reservation ID: #1</h3>
-                      <p><strong>Date:</strong> 2024-10-14</p>
-                      <p><strong>Time:</strong> 10:00 AM - 11:00 AM</p>
-                      <p><strong>Client:</strong> Enzo Daniela</p>
-                      <p><strong>Service:</strong> Basketball Court</p>
-                      <span class="status-badge bg-green-500 text-black px-2 py-1 rounded-lg">Confirmed</span>
-
-                      <!-- Action Buttons -->
-                      <div class="mt-4 flex justify-between">
-                        <button class="bg-black text-white py-2 px-4 rounded hover:bg-gray-800">View</button>
-                        <button class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">Edit</button>
-                        <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Cancel</button>
-                      </div>
-                    </div>
-
-                    <div class="reservation-card bg-gray-200 p-4 mb-4 rounded-lg">
-                      <h3 class="text-sm font-bold text-orange-400">Reservation ID: #2</h3>
-                      <p><strong>Date:</strong> 2024-10-15</p>
-                      <p><strong>Time:</strong> 12:00 PM - 1:00 PM</p>
-                      <p><strong>Client:</strong> Kyan Villarin</p>
-                      <p><strong>Service:</strong> Zumba</p>
-                      <span class="status-badge bg-yellow-500 text-black px-2 py-1 rounded-lg">Pending</span>
-
-                      <!-- Action Buttons -->
-                      <div class="mt-4 flex justify-between">
-                        <button class="bg-black text-white py-2 px-4 rounded hover:bg-gray-800">View</button>
-                        <button class="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600">Edit</button>
-                        <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Cancel</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Set Schedule Button -->
-                  <div class="mt-6">
-                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                      Set Schedule
-                    </button>
-                  </div>
+                <!-- Reservation Cards Section -->
+                <div id="reservations-container" class="reservation-list">
+                  <!-- No placeholder reservation data; this area will be populated by JavaScript -->
                 </div>
               </div>
 
-              <!-- Reservation Calendar -->
+              <!-- Booking Form for Admin -->
               <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-lg font-semibold mb-4 text-orange-500">Reservation Calendar</h2>
-                <div id="calendar_panel" class="text-black bg-gray-200 p-4 rounded-lg">
-                  <input type="date" class="text-black px-2 py-1 rounded-lg" />
-                </div>
+                <h2 class="text-lg font-semibold mb-4 text-orange-500">Book Schedule for Client</h2>
+                <form id="booking-form" onsubmit="bookReservation(event)">
+                  <div class="form-group mb-4">
+                    <label for="client-name" class="text-black">Client Name:</label>
+                    <input type="text" id="client-name" class="border-2 border-gray-400 p-2 rounded-lg w-full" placeholder="Enter client name" required />
+                  </div>
+                  
+                  <div class="form-group mb-4">
+                    <label for="service" class="text-black">Service:</label>
+                    <select id="service" class="border-2 border-gray-400 p-2 rounded-lg w-full" required>
+                      <option value="Basketball Court">Basketball Court</option>
+                      <option value="Zumba">Zumba</option>
+                      <!-- Add more services as needed -->
+                    </select>
+                  </div>
+
+                  <!-- Time In Selection -->
+                  <div class="form-group mb-4">
+                    <label for="time-in" class="block text-black">Time In:</label>
+                    <input type="time" id="time-in" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" required />
+                  </div>
+
+                  <!-- Time Out Selection (optional) -->
+                  <div class="form-group mb-4">
+                    <label for="time-out" class="block text-black">Time Out (optional):</label>
+                    <input type="time" id="time-out" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="booking-date" class="block text-black">Select Booking Date:</label>
+                    <input type="date" id="booking-date" class="text-black px-2 py-1 rounded-lg" required />
+                  </div>
+                  
+                  <div class="mt-6">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                      Book Now
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </section>
       </div>
-
-
-        <!-- Reservation Calendar -->
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h2 class="text-lg font-semibold mb-4 text-orange-500">Reservation Calendar</h2>
-          <div id="calendar_panel" class="text-black bg-gray-200 p-4 rounded-lg">
-            <input type="date" class="text-black px-2 py-1 rounded-lg" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
 
       <!-- Section 4 -->
       <section id="section4">
@@ -229,9 +203,14 @@
         <p>Add member page</p>
       </section>
 
-      <!-- Section 5 -->
+      <!-- Section 6 -->
       <section id="section6">
         <p>Sales and Report</p>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="section6">
+        <p>Items</p>
       </section>
 
     </div>
@@ -240,5 +219,6 @@
 
   <!-- JS -->
    <script src="../javascript/admin.js"></script>
+   <script src="../javascript/reservation.js"></script>
 </body>
 </html>

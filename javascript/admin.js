@@ -1,3 +1,4 @@
+
 // Member Growth Chart
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('memberGrowthChart');
@@ -25,3 +26,4 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Could not find memberGrowthChart canvas element');
     }
 });
+
