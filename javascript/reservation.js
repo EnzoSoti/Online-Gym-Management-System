@@ -54,7 +54,7 @@ function bookReservation(event) {
             title: 'Gym Closed',
             text: 'The gym is closed before 9:00 AM and after 12:00 Midnight. Please select another time.',
         });
-        return; // Stop further execution
+        return; // Stop
     }
 
     // card pop-up

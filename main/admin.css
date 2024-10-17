@@ -7,6 +7,17 @@
     overflow-y: hidden;
 }
 
+/* Add this to your admin.css file */
+
+[role="tabpanel"] {
+    display: none;
+}
+
+[role="tabpanel"].active,
+[role="tabpanel"]:not(.hidden) {
+    display: block;
+}
+
 body{
     font-family: poppins;
 }
@@ -137,6 +148,16 @@ section{
     color: black;
 }
 #section5{
+    background: #f2f2f2;
+    color: black;
+}
+
+#section6{
+    background: #f2f2f2;
+    color: black;
+}
+
+#sectio7{
     background: #f2f2f2;
     color: black;
 }
