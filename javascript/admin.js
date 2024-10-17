@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                 datasets: [{
-                    label: 'New Members',
+                    label: 'New Monthly Members',
                     data: [30, 45, 38, 50, 65, 78],
                     backgroundColor: '#4f46e5',
                 }]
@@ -26,4 +26,5 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Could not find memberGrowthChart canvas element');
     }
 });
+
 

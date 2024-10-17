@@ -7,7 +7,6 @@
     overflow-y: hidden;
 }
 
-/* Add this to your admin.css file */
 
 [role="tabpanel"] {
     display: none;
@@ -44,21 +43,21 @@ i{
 
 .wrapper .sidenav .logo-container {
     display: flex;
-    align-items: center; /* Center align items vertically */
+    align-items: center; 
     padding: 20px;
 }
 
 .wrapper .sidenav .logo-container img {
-    max-width: 50px; /* Adjust size as needed */
-    margin-right: 15px; /* Space between image and text */
+    max-width: 50px; 
+    margin-right: 15px; 
     border-radius: 10px;
 }
 
 .wrapper .sidenav .logo-container h1 {
     font-size: 20px;
     color: #fff;
-    line-height: 1.2; /* Adjust line height if needed */
-    margin: 0; /* Remove default margin */
+    line-height: 1.2; 
+    margin: 0; 
 }
 
 .wrapper .sidenav{
@@ -76,7 +75,6 @@ i{
     color: #fff;
     text-align: center;
     line-height: 90px;
-    border-bottom: 1px dotted white;
     margin-bottom: 50px;
 }
 
