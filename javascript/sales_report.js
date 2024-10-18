@@ -238,3 +238,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set initial active tab
     document.getElementById('monthly-tab').click();
 });
+
+

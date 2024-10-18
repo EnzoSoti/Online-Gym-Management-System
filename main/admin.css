@@ -1,161 +1,272 @@
+/* Existing imports and resets remain the same */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
-
-[role="tabpanel"] {
-    display: none;
-}
-
-[role="tabpanel"].active,
-[role="tabpanel"]:not(.hidden) {
-    display: block;
-}
-
-body{
+body {
     font-family: poppins;
 }
 
-.wrapper .sidenav h1 span{
+/* Enhanced Hamburger Button */
+.hamburger-btn {
+    position: absolute;
+    top: 20px;
+    right: -40px;
+    width: 30px;
+    height: 30px;
+    background: #231F20;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: background 0.3s;
+}
+
+.hamburger-btn:hover {
+    background: #383435;
+}
+
+/* Enhanced Sidebar Styles */
+.wrapper .sidenav {
+    text-decoration: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: #231F20;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.wrapper .sidenav.collapsed {
+    width: 60px;
+}
+
+/* Logo Container Styles */
+.wrapper .sidenav .logo-container {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+    overflow: hidden;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .sidenav .logo-container img {
+    max-width: 40px;
+    min-width: 40px;
+    margin-right: 15px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.wrapper .sidenav.collapsed .logo-container img {
+    max-width: 35px;
+    min-width: 35px;
+    margin-right: 0;
+}
+
+.wrapper .sidenav h1 {
+    font-size: 15px;
+    color: #fff;
+    white-space: nowrap;
+    transition: all 0.3s;
+}
+
+.wrapper .sidenav h1 span {
     color: orange;
     text-shadow: #f2f2f2;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.wrapper .sidenav a{
+/* Navigation Items */
+.wrapper .sidenav ul {
+    margin-top: 20px;
+    padding: 0 8px;
+}
+
+.wrapper .sidenav ul li {
+    list-style: none;
+    margin: 8px 0;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.wrapper .sidenav ul li a {
     color: #fff;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.3s;
 }
-    
-i{
+
+.wrapper .sidenav ul li a i {
+    min-width: 20px;
+    margin-right: 15px;
+    font-size: 18px;
+    transition: all 0.3s;
+}
+
+.wrapper .sidenav.collapsed ul li a i {
+    margin-right: 0;
+    font-size: 20px;
+}
+
+.wrapper .sidenav ul li a span {
+    font-size: 14px;
+    transition: all 0.3s;
+    opacity: 1;
+}
+
+.wrapper .sidenav.collapsed ul li a span {
+    opacity: 0;
+    width: 0;
+    display: none;
+}
+
+/* Hover States */
+.wrapper .sidenav ul li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.wrapper .sidenav.collapsed:hover {
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .sidenav.collapsed:hover ul li a span {
+    opacity: 1;
+    display: inline;
+    margin-left: 10px;
+}
+
+.wrapper .sidenav.collapsed:hover .logo-container img {
     margin-right: 15px;
 }
 
-.wrapper .sidenav ul li:hover{
-    background-color: rgba(0, 0, 0, 0.1);
+.wrapper .sidenav .logout {
+    color: #ff4d4d;
 }
 
-.wrapper .sidenav .logo-container {
-    display: flex;
-    align-items: center; 
-    padding: 20px;
-}
-
-.wrapper .sidenav .logo-container img {
-    max-width: 50px; 
-    margin-right: 15px; 
-    border-radius: 10px;
-}
-
-.wrapper .sidenav .logo-container h1 {
-    font-size: 20px;
-    color: #fff;
-    line-height: 1.2; 
-    margin: 0; 
-}
-
-.wrapper .sidenav{
-    text-decoration: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 20vw;
-    height: 100vh;
-    background: #231F20;
-}
-
-.wrapper .sidenav h1{
-    font-size: 20px;
-    color: #fff;
-    text-align: center;
-    line-height: 90px;
-    margin-bottom: 50px;
-}
-
-.wrapper .sidenav ul li{
-    list-style: none;
-    padding: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.wrapper .sidenav .logout{
-    color: red;
-}
-
-
-.wrapper .sidenav .social-media{
+/* Social Media Section */
+.wrapper .sidenav .social-media {
     position: absolute;
-    bottom: 8px;
+    bottom: 20px;
     left: 50%;
     transform: translate(-50%);
-    font-size: 25px;
     display: flex;
+    gap: 8px;
+    padding: 10px;
+    transition: all 0.3s;
 }
 
-.wrapper .sidenav .social-media a{
+.wrapper .sidenav .social-media a {
     text-decoration: none;
-    margin: 0 10px;
-    background: #575051;
-    border-radius: 50px;
-    height: 40px;
-    width: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
 }
 
-.wrapper .sidenav .social-media a:hover{
-    transition: 1.5s;
+.wrapper .sidenav .social-media a i {
+    font-size: 16px;
+    margin: 0;
+    color: #fff;
+}
+
+.wrapper .sidenav .social-media a:hover {
     transform: rotate(360deg);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.wrapper .sidenav .social-media a i{
-    margin: 0 auto;
+.wrapper .sidenav.collapsed .social-media {
+    transform: translate(-50%) scale(0.8);
 }
 
-.wrapper .main-content{
-    width: 80vw;
-    margin-left: 20vw;
+.wrapper .sidenav.collapsed:hover .social-media {
+    transform: translate(-50%) scale(1);
 }
 
-section{
+/* Main Content Area */
+.wrapper .main-content {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+    transition: all 0.3s;
+}
+
+.wrapper .main-content.collapsed {
+    width: calc(100% - 60px);
+    margin-left: 60px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wrapper .sidenav {
+        width: 60px;
+    }
+    
+    .wrapper .sidenav:hover {
+        width: 250px;
+    }
+    
+    .wrapper .sidenav ul li a span {
+        opacity: 0;
+        display: none;
+    }
+    
+    .wrapper .sidenav:hover ul li a span {
+        opacity: 1;
+        display: inline;
+    }
+    
+    .wrapper .main-content {
+        width: calc(100% - 60px);
+        margin-left: 60px;
+    }
+    
+    .wrapper .sidenav .logo-container h1 {
+        opacity: 0;
+        width: 0;
+    }
+    
+    .wrapper .sidenav:hover .logo-container h1 {
+        opacity: 1;
+        width: auto;
+    }
+}
+
+/* Sections styling remains the same */
+section {
     height: 100vh;
     padding: 30px;
 }
 
-#section1{
-    background: #f2f2f2;
-    color: black;
-}
-#section2{
-    background: #f2f2f2;
-    color: black;
-}
-#section3{
-    background: #f2f2f2;
-    color: black;
-}
-#section4{
-    background: #f2f2f2;
-    color: black;
-}
-#section5{
-    background: #f2f2f2;
-    color: black;
-}
-
-#section6{
-    background: #f2f2f2;
-    color: black;
-}
-
-#sectio7{
+#section1,
+#section2,
+#section3,
+#section4,
+#section5,
+#section6,
+#section7 {
     background: #f2f2f2;
     color: black;
 }

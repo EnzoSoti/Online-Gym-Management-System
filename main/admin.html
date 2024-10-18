@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="admin.css">
   <title>Admin panel</title>
 </head>
+
     <!-- modal print -->
     <style media="print">
         .no-print {
@@ -35,43 +36,54 @@
             border: 1px solid #000;
         }
     </style>
+
+    <!-- loading state -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl flex items-center space-x-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+            <p class="text-gray-700">Loading...</p>
+        </div>
+    </div>
+
 <body>
+
   
   <div class="wrapper">
 
-    <!-- side navigation -->
-    <div class="sidenav">
-      <div class="logo-container">
-        <img src="../img/Fitworx logo.jpg" alt="logo">
-        <h1>Fitworx <span>Gym</span> Admin</h1>
-      </div>
-      <ul>
-        <li><a href="#section1"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-        <li><a href="#section2"><i class="fa-solid fa-dollar-sign"></i> Billing</a></li>
-        <li><a href="#section3"><i class="fa-solid fa-calendar"></i> Reservation</a></li>
-        <li><a href="#section4"><i class="fa-solid fa-hourglass-start"></i> Sales</a></li>
-        <li><a href="#section5"><i class="fa-solid fa-user"></i> Add monthly member</a></li>
-        <li><a href="#section6"><i class="fa-solid fa-file"></i> Sales & Report</a></li>
-        <li><a href="#section7"><i class="fa-solid fa-tag"></i> Items</a></li>
-        <li><a class="logout" href="#section5"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-      </ul>
+    <div class="wrapper">
+        <div class="sidenav">
+            <button class="hamburger-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="logo-container">
+                <img src="../img/Fitworx logo.jpg" alt="logo">
+                <h1>Fitworx <span>Gym</span> Admin</h1>
+            </div>
+            <ul>
+                <li><a href="#section1"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
+                <li><a href="#section2"><i class="fa-solid fa-dollar-sign"></i><span>Billing</span></a></li>
+                <li><a href="#section3"><i class="fa-solid fa-calendar"></i><span>Reservation</span></a></li>
+                <li><a href="#section4"><i class="fa-solid fa-hourglass-start"></i><span>Sales</span></a></li>
+                <li><a href="#section5"><i class="fa-solid fa-user"></i><span>Add monthly member</span></a></li>
+                <li><a href="#section6"><i class="fa-solid fa-file"></i><span>Sales & Report</span></a></li>
+                <li><a href="#section7"><i class="fa-solid fa-tag"></i><span>Items</span></a></li>
+                <li><a class="logout" href="#section5"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a></li>
+            </ul>
 
-      <div class="social-media">
-        <a href="https://web.facebook.com/fitworxgymph"><i class="fa-brands fa-facebook"></i></a>
-        <a href="#"><i class="fa-brands fa-discord"></i></a>
-        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://github.com/EnzoSoti"><i class="fa-brands fa-github"></i></a>
-        <a href="https://www.instagram.com/fitworxgym/"><i class="fa-brands fa-instagram"></i></a>
-      </div>
-
-    </div>
+            <div class="social-media">
+                <a href="https://web.facebook.com/fitworxgymph"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-discord"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://github.com/EnzoSoti"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.instagram.com/fitworxgym/"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
 
         <!-- Section 1 -->
         <!-- Dashboard -->
         <div class="main-content">
             <section id="section1">
                 <div class="p-6 bg-gray-100 min-h-screen">
-                    <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
 
                     <!-- Metrics Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -169,19 +181,19 @@
         
                     <!-- Reservation Table Section -->
                     <div id="reservations-container" class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">ID</th>
-                            <th scope="col" class="px-6 py-3">Date</th>
-                            <th scope="col" class="px-6 py-3">Time In</th>
-                            <th scope="col" class="px-6 py-3">Time Out</th>
-                            <th scope="col" class="px-6 py-3">Client</th>
-                            <th scope="col" class="px-6 py-3">Service</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-6 py-3">Actions</th>
-                        </tr>
-                        </thead>
+                        <table class="w-full text-sm text-left text-gray-500 border-collapse shadow-sm rounded-lg overflow-hidden">
+                            <thead class="text-xs text-white uppercase bg-gradient-to-r from-gray-700 to-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4">ID</th>
+                                    <th scope="col" class="px-6 py-4">Date</th>
+                                    <th scope="col" class="px-6 py-4">Time In</th>
+                                    <th scope="col" class="px-6 py-4">Time Out</th>
+                                    <th scope="col" class="px-6 py-4">Client</th>
+                                    <th scope="col" class="px-6 py-4">Service</th>
+                                    <th scope="col" class="px-6 py-4">Status</th>
+                                    <th scope="col" class="px-6 py-4">Actions</th>
+                                </tr>
+                            </thead>
                         <tbody id="reservations-body">
                         <!-- Reservation rows will be added here by JavaScript -->
                         </tbody>
@@ -243,309 +255,308 @@
             </section>
         </div>
 
-      <!-- Section 4 -->
-      <section id="section4">
-        <p>Sales page</p>
-      </section>
+        <!-- Section 4 -->
+        <section id="section4">
+            <p>Sales page</p>
+        </section>
 
-      <!-- Section 5 -->
-      <section id="section5">
-        <p>Add member page</p>  
-      </section>
+        <!-- Section 5 -->
+        <section id="section5">
+            <p>Add member page</p>  
+        </section>
 
-      <!-- Section 6 -->
-      <section id="section6" class="p-6 bg-gray-100 min-h-screen">
-        <!-- Monthly Members Modal -->
-        <div id="monthlyModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                <div class="mt-3">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Monthly Member</h3>
-                    <form id="monthlyForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                            <input type="date" name="startDate" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">End Date</label>
-                            <input type="date" name="endDate" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Amount</label>
-                            <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Regular Members Modal -->
-        <div id="regularModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                <div class="mt-3">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Regular Member</h3>
-                    <form id="regularForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Time In</label>
-                            <input type="time" name="timeIn" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Amount</label>
-                            <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Student Members Modal -->
-        <div id="studentModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                <div class="mt-3">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Student Member</h3>
-                    <form id="studentForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Student Name</label>
-                            <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">School ID</label>
-                            <input type="text" name="schoolId" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Time In</label>
-                            <input type="time" name="timeIn" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Amount</label>
-                            <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Supplements Modal -->
-        <div id="supplementsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                <div class="mt-3">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Supplement Item</h3>
-                    <form id="supplementsForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Product Name</label>
-                            <input type="text" name="productName" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                            <input type="number" name="quantity" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Amount</label>
-                            <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-            <h1 class="text-2xl font-bold mb-6">Sales and Report</h1>
-
-            <!-- Container for both tabs and content -->
-            <div class="max-w-4xl mx-auto">
-                <!-- Tabs -->
-                <div class="mb-4 border-b border-gray-200">
-                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
-                        <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-blue-600 rounded-t-lg active" id="monthly-tab" data-tabs-target="#monthly" type="button" role="tab" aria-selected="true">Monthly Members</button>
-                        </li>
-                        <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="regular-tab" data-tabs-target="#regular" type="button" role="tab" aria-selected="false">Regular</button>
-                        </li>
-                        <li class="mr-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="student-tab" data-tabs-target="#student" type="button" role="tab" aria-selected="false">Student</button>
-                        </li>
-                        <li role="presentation">
-                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="supplements-tab" data-tabs-target="#supplements" type="button" role="tab" aria-selected="false">Supplements</button>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Tab Content -->
-                <div id="tab-content">
-                    <!-- Monthly Members Table -->
-                    <div class="bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="monthly" role="tabpanel">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-semibold">Monthly Members Report</h2>
-                            <div class="flex gap-2">
-                                <input type="month" class="border rounded px-3 py-1">
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Add member</button>
+        <!-- Section 6 -->
+        <!-- sales & report -->
+        <section id="section6" class="p-6 bg-gray-100 min-h-screen">
+            <!-- Monthly Members Modal -->
+            <div id="monthlyModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Monthly Member</h3>
+                        <form id="monthlyForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
                             </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white table-auto">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">M001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">John Doe</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">2024-01-01</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">2024-02-01</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">₱750</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Regular Members Table -->
-                    <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="regular" role="tabpanel">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-semibold">Regular Members Report</h2>
-                            <div class="flex gap-2">
-                                <input type="date" class="border rounded px-3 py-1">
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                                <input type="date" name="startDate" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
                             </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white table-auto">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">R001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Jane Smith</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">2024-01-15</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">09:00 AM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">₱100</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Student Members Table -->
-                    <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="student" role="tabpanel">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-semibold">Student Members Report</h2>
-                            <div class="flex gap-2">
-                                <input type="date" class="border rounded px-3 py-1">
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">End Date</label>
+                                <input type="date" name="endDate" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
                             </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white table-auto">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">S001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Mark Johnson</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">STU123456</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">2024-01-15</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">02:00 PM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">₱70</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Supplements Table -->
-                    <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="supplements" role="tabpanel">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-semibold">Supplements Sales Report</h2>
-                            <div class="flex gap-2">
-                                <input type="date" class="border rounded px-3 py-1">
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
-                                <button class="bg-blue-500 text-white px-4 py-1 rounded">Add items</button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
                             </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white table-auto">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity Sold</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">P001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Protein Powder</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">20</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">₱2,000</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-      </section>
 
-      <!-- Section 7 -->
-      <section id="section7">
-        <p>Items</p>
-      </section>
+            <!-- Regular Members Modal -->
+            <div id="regularModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Regular Member</h3>
+                        <form id="regularForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Date</label>
+                                <input type="date" name="date" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Time In</label>
+                                <input type="time" name="timeIn" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Members Modal -->
+            <div id="studentModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Student Member</h3>
+                        <form id="studentForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Student Name</label>
+                                <input type="text" name="name" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">School ID</label>
+                                <input type="text" name="schoolId" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Date</label>
+                                <input type="date" name="date" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Time In</label>
+                                <input type="time" name="timeIn" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supplements Modal -->
+            <div id="supplementsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div class="mt-3">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Add Supplement Item</h3>
+                        <form id="supplementsForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <input type="text" name="productName" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <input type="number" name="quantity" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" name="amount" required class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1">
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="closeModal bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Container for both tabs and content -->
+                <div class="max-w-7xl mx-auto">
+                    <!-- Tabs -->
+                    <div class="mb-4 border-b border-gray-200">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 border-blue-600 rounded-t-lg active" id="monthly-tab" data-tabs-target="#monthly" type="button" role="tab" aria-selected="true">Monthly Members</button>
+                            </li>
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="regular-tab" data-tabs-target="#regular" type="button" role="tab" aria-selected="false">Regular</button>
+                            </li>
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="student-tab" data-tabs-target="#student" type="button" role="tab" aria-selected="false">Student</button>
+                            </li>
+                            <li role="presentation">
+                                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" id="supplements-tab" data-tabs-target="#supplements" type="button" role="tab" aria-selected="false">Supplements</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div id="tab-content">
+                        <!-- Monthly Members Table -->
+                        <div class="bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="monthly" role="tabpanel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Monthly Members Report</h2>
+                                <div class="flex gap-2">
+                                    <input type="month" class="border rounded px-3 py-1">
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Add member</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white table-auto">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">M001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">John Doe</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">2024-01-01</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">2024-02-01</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">₱750</td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Regular Members Table -->
+                        <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="regular" role="tabpanel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Regular Members Report</h2>
+                                <div class="flex gap-2">
+                                    <input type="date" class="border rounded px-3 py-1">
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white table-auto">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">R001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Jane Smith</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">2024-01-15</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">09:00 AM</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">₱100</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Student Members Table -->
+                        <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="student" role="tabpanel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Student Members Report</h2>
+                                <div class="flex gap-2">
+                                    <input type="date" class="border rounded px-3 py-1">
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white table-auto">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">S001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Mark Johnson</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">STU123456</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">2024-01-15</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">02:00 PM</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">₱70</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Supplements Table -->
+                        <div class="hidden bg-white p-4 rounded-lg shadow-md mb-6 w-full" id="supplements" role="tabpanel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold">Supplements Sales Report</h2>
+                                <div class="flex gap-2">
+                                    <input type="date" class="border rounded px-3 py-1">
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Add items</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white table-auto">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity Sold</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">P001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">Protein Powder</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">20</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">₱2,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="section7">
+            <p>Items</p>
+        </section>
 
     </div>
     
@@ -556,5 +567,6 @@
    <script src="../javascript/reservation.js"></script>
    <script src="../javascript/database.js"></script>
    <script src="../javascript/sales_report.js"></script>
+   <script src="../javascript/sidebar.js"></script>
 </body>
 </html>
