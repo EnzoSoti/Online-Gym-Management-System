@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://kit.fontawesome.com/05eb096724.js" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="admin.css">
-  <title>Admin panel</title>
+  <title>Admin Panel - Fitworx Gym</title>
 </head>
 
     <!-- modal print -->
@@ -46,10 +46,6 @@
     </div>
 
 <body>
-
-  
-  <div class="wrapper">
-
     <div class="wrapper">
         <div class="sidenav">
             <button class="hamburger-btn">
@@ -61,12 +57,11 @@
             </div>
             <ul>
                 <li><a href="#section1"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
-                <li><a href="#section2"><i class="fa-solid fa-dollar-sign"></i><span>Billing</span></a></li>
+                <li><a href="#section2"><i class="fa-solid fa-dollar-sign"></i><span>Attedance</span></a></li>
                 <li><a href="#section3"><i class="fa-solid fa-calendar"></i><span>Reservation</span></a></li>
-                <li><a href="#section4"><i class="fa-solid fa-hourglass-start"></i><span>Sales</span></a></li>
+                <li><a href="#section4"><i class="fa-solid fa-hourglass-start"></i><span>Sales & inventory</span></a></li>
                 <li><a href="#section5"><i class="fa-solid fa-user"></i><span>Add monthly member</span></a></li>
-                <li><a href="#section6"><i class="fa-solid fa-file"></i><span>Sales & Report</span></a></li>
-                <li><a href="#section7"><i class="fa-solid fa-tag"></i><span>Items</span></a></li>
+                <li><a href="#section6"><i class="fa-solid fa-file"></i><span>Report</span></a></li>
                 <li><a class="logout" href="#section5"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a></li>
             </ul>
 
@@ -89,30 +84,30 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <!-- Monthly Revenue -->
                         <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-sm font-semibold text-gray-600">Monthly Revenue</h2>
-                            <p class="text-3xl font-bold">78,678</p>
+                            <h2 class="text-sm font-semibold text-gray-600">Total Earnings</h2>
+                            <p class="text-3xl font-bold">0</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Student</h2>
-                            <p class="text-3xl font-bold">87,765</p>
+                            <h2 class="text-sm font-semibold text-gray-600">Active today (Regular)</h2>
+                            <p class="text-3xl font-bold">0</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Regular</h2>
-                            <p class="text-3xl font-bold">78,554</p>
-                        </div>
-
-                        <!-- Daily reset every 12 midnight -->
-                        <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-sm font-semibold text-gray-600">Daily regular(Reset every 12hours)</h2>
-                            <p class="text-3xl font-bold">56</p>
+                            <h2 class="text-sm font-semibold text-gray-600">Active today (Student)</h2>
+                            <p class="text-3xl font-bold">0</p>
                         </div>
 
                         <!-- Daily reset every 12 midnight -->
                         <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-sm font-semibold text-gray-600">Daily student(Reset every 12hours)</h2>
-                            <p class="text-3xl font-bold">87</p>
+                            <h2 class="text-sm font-semibold text-gray-600">Active today (monthly)</h2>
+                            <p class="text-3xl font-bold">0</p>
+                        </div>
+
+                        <!-- Daily reset every 12 midnight -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Events</h2>
+                            <p class="text-3xl font-bold">Not yet Available</p>
                         </div>
 
                         <!-- Member Growth -->
@@ -126,7 +121,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Class Schedule -->
                         <div class="bg-white p-4 rounded-lg shadow">
-                            <h2 class="text-lg font-semibold mb-4">Upcoming Events</h2>
+                            <h2 class="text-lg font-semibold mb-4">...</h2>
                             <!-- Add class schedule content here -->
                         </div>
 
@@ -247,6 +242,7 @@
         
                     <div class="mt-6">
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Book Now</button>
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Available schedule</button>
                     </div>
                     </form>
                 </div>
@@ -256,14 +252,119 @@
         </div>
 
         <!-- Section 4 -->
-        <section id="section4">
-            <p>Sales page</p>
+        <section id="section4" class="p-6 bg-gray-100">
+            <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Sales and Inventory - Supplements</h2>
+                <button id="addSupplementBtn" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded">Add Supplement</button>
+                
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplement Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplementTableBody">
+                        <!-- Example Row -->
+                        <tr class="border-t border-gray-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Creatine</td>
+                            <td class="px-6 py-4 whitespace-nowrap">20</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateSupplement(this)">Update</button>
+                                <button class="text-red-600 hover:text-red-900" onclick="deleteSupplement(this)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Whey Protein</td>
+                            <td class="px-6 py-4 whitespace-nowrap">15</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateSupplement(this)">Update</button>
+                                <button class="text-red-600 hover:text-red-900" onclick="deleteSupplement(this)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
+        <!-- Modal for Adding/Updating Supplements -->
+        <div id="addSupplementModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center transition-opacity">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <h3 class="text-lg font-medium mb-4" id="modalTitle">Add Supplement</h3>
+                <form id="supplementForm">
+                    <div class="mb-4">
+                        <label for="supplementName" class="block text-sm font-medium text-gray-700">Supplement Name</label>
+                        <input type="text" id="supplementName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="supplementQuantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" id="supplementQuantity" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" class="mr-4 px-4 py-2 bg-gray-500 text-white rounded" onclick="closeSupplementModal()">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <!-- Section 5 -->
-        <section id="section5">
-            <p>Add member page</p>  
+        <!-- Add monthly member -->
+        <section id="section5" class="p-6 bg-gray-100">
+            <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Monthly Member List</h2>
+                <button id="addMemberBtn" class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add Member</button>
+        
+                <table class="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody">
+                        <!-- Example Row -->
+                        <tr class="border-t border-gray-200">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">John Doe</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateMember(this)">Update</button>
+                                <button class="text-red-600 hover:text-red-900" onclick="deleteMember(this)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
+        
+        <!-- Modal for Adding/Updating Member -->
+        <div id="addMemberModal" class="fixed inset-0 hidden items-center justify-center bg-gray-800 bg-opacity-75 z-50 flex transition-opacity duration-300 opacity-0">
+            <div class="bg-white p-6 rounded-lg max-w-md w-full transform transition-transform duration-300 scale-95">
+                <h3 class="text-lg font-semibold mb-4">Add/Update Member</h3>
+                <form id="memberForm">
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Member Name</label>
+                    <input type="text" id="memberName" class="w-full p-2 mb-4 border border-gray-300 rounded-lg" required>
+        
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Status</label>
+                    <select id="memberStatus" class="w-full p-2 mb-4 border border-gray-300 rounded-lg">
+                        <option value="Active">Active</option>
+                        <option value="Non-active">Non-active</option>
+                    </select>
+        
+                    <div class="flex justify-end">
+                        <button type="button" onclick="closeModal()" class="mr-2 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
 
         <!-- Section 6 -->
         <!-- sales & report -->
@@ -395,6 +496,7 @@
                 <!-- Container for both tabs and content -->
                 <div class="max-w-7xl mx-auto">
                     <!-- Tabs -->
+                    <h1 class="text-lg font-semibold mt-6 mb-4">Reports</h1>
                     <div class="mb-4 border-b border-gray-200">
                         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
                             <li class="mr-2" role="presentation">
@@ -421,7 +523,6 @@
                                 <div class="flex gap-2">
                                     <input type="month" class="border rounded px-3 py-1">
                                     <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
-                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Add member</button>
                                 </div>
                             </div>
                             <div class="overflow-x-auto">
@@ -525,7 +626,6 @@
                                 <div class="flex gap-2">
                                     <input type="date" class="border rounded px-3 py-1">
                                     <button class="bg-blue-500 text-white px-4 py-1 rounded">Export</button>
-                                    <button class="bg-blue-500 text-white px-4 py-1 rounded">Add items</button>
                                 </div>
                             </div>
                             <div class="overflow-x-auto">
@@ -559,8 +659,6 @@
         </section>
 
     </div>
-    
-  </div>
 
   <!-- JS scripts -->
    <script src="../javascript/admin.js"></script>
@@ -568,5 +666,7 @@
    <script src="../javascript/database.js"></script>
    <script src="../javascript/sales_report.js"></script>
    <script src="../javascript/sidebar.js"></script>
+   <script src="../javascript/add_monthly_member.js"></script>
+   <script src="../javascript/sales_inventory.js"></script>
 </body>
 </html>
