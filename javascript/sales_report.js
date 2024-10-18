@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle "Add" button clicks
     addButtons.forEach(button => {
-        if (button.textContent.toLowerCase().includes('add')) {
+        if (button.textContent.toLowerCase().includes('add') && !button.closest('[role="tabpanel"][id^="reservation"]')) { // Ignore reservation related buttons
             button.addEventListener('click', () => {
                 const tabPanel = button.closest('[role="tabpanel"]');
                 if (tabPanel) {
@@ -133,56 +133,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle form submissions with SweetAlert2
+    // Handle form submissions
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const formData = new FormData(form);
             const formId = form.id;
-            const tableId = formId.replace('Form', '');
-            
-            // Show SweetAlert confirmation
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to save the details?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, save it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Simulate API call with a promise
-                    new Promise((resolve, reject) => {
-                        // Simulate API delay
-                        setTimeout(() => {
-                            resolve({ success: true, data: formData });
-                        }, 500);
-                    })
-                    .then(response => {
-                        if (response.success) {
-                            // Add the new row to the table
-                            addRowToTable(formData, tableId);
-                            
-                            // Show success message
-                            Swal.fire(
-                                'Saved!',
-                                'Your data has been saved successfully.',
-                                'success'
-                            ).then(() => {
-                                // Reset form and close modal
-                                form.reset();
-                                const modal = form.closest('[id$="Modal"]');
-                                if (modal) {
-                                    modal.classList.add('hidden');
-                                }
-                            });
-                        } else {
-                            throw new Error('Failed to save data');
-                        }
-                    })
-                }
-            });
+
+            // Special handling for reservation booking
+            if (formId === 'booking-form') {
+                bookReservation(e);
+            } else {
+                // Existing logic for other forms
+                const formData = new FormData(form);
+                const tableId = formId.replace('Form', '');
+                
+                // Show SweetAlert confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to save the details?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Simulate API call with a promise
+                        new Promise((resolve, reject) => {
+                            // Simulate API delay
+                            setTimeout(() => {
+                                resolve({ success: true, data: formData });
+                            }, 500);
+                        })
+                        .then(response => {
+                            if (response.success) {
+                                // Add the new row to the table
+                                addRowToTable(formData, tableId);
+                                
+                                // Show success message
+                                Swal.fire(
+                                    'Saved!',
+                                    'Your data has been saved successfully.',
+                                    'success'
+                                ).then(() => {
+                                    // Reset form and close modal
+                                    form.reset();
+                                    const modal = form.closest('[id$="Modal"]');
+                                    if (modal) {
+                                        modal.classList.add('hidden');
+                                    }
+                                });
+                            } else {
+                                throw new Error('Failed to save data');
+                            }
+                        })
+                    }
+                });
+            }
         });
     });
 

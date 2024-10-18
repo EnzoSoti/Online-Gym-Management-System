@@ -66,166 +66,182 @@
 
     </div>
 
-      <!-- Section 1 -->
-      <!-- Dashboard -->
-      <div class="main-content">
-        <section id="section1">
-            <div class="p-6 bg-gray-100 min-h-screen">
-                <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+        <!-- Section 1 -->
+        <!-- Dashboard -->
+        <div class="main-content">
+            <section id="section1">
+                <div class="p-6 bg-gray-100 min-h-screen">
+                    <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
 
-                <!-- Metrics Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <!-- Monthly Revenue -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-sm font-semibold text-gray-600">Monthly Revenue</h2>
-                        <p class="text-3xl font-bold">78,678</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Student</h2>
-                        <p class="text-3xl font-bold">87,765</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Regular</h2>
-                        <p class="text-3xl font-bold">78,554</p>
-                    </div>
-
-                    <!-- Daily reset every 12 midnight -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-sm font-semibold text-gray-600">Daily regular(Reset every 12hours)</h2>
-                        <p class="text-3xl font-bold">56</p>
-                    </div>
-
-                    <!-- Daily reset every 12 midnight -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-sm font-semibold text-gray-600">Daily student(Reset every 12hours)</h2>
-                        <p class="text-3xl font-bold">87</p>
-                    </div>
-
-                    <!-- Member Growth -->
-                    <div class="bg-white p-4 rounded-lg shadow col-span-2">
-                        <h2 class="text-sm font-semibold text-gray-600">Member Growth</h2>
-                        <canvas id="memberGrowthChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Lower Section -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Class Schedule -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-lg font-semibold mb-4">Upcoming Events</h2>
-                        <!-- Add class schedule content here -->
-                    </div>
-
-                    <!-- Quick Actions and Notifications -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
-                        <div class="space-y-2">
-                            <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                                </svg>
-                                New member
-                            </button>
-                            <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                </svg>
-                                Book
-                            </button>
-                            <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                                </svg>
-                                Payment
-                            </button>
+                    <!-- Metrics Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <!-- Monthly Revenue -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Monthly Revenue</h2>
+                            <p class="text-3xl font-bold">78,678</p>
                         </div>
 
-                        <h2 class="text-lg font-semibold mt-6 mb-4">Notifications</h2>
-                        <!-- Add notifications content here -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Student</h2>
+                            <p class="text-3xl font-bold">87,765</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Daily Revenue Regular</h2>
+                            <p class="text-3xl font-bold">78,554</p>
+                        </div>
+
+                        <!-- Daily reset every 12 midnight -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Daily regular(Reset every 12hours)</h2>
+                            <p class="text-3xl font-bold">56</p>
+                        </div>
+
+                        <!-- Daily reset every 12 midnight -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-sm font-semibold text-gray-600">Daily student(Reset every 12hours)</h2>
+                            <p class="text-3xl font-bold">87</p>
+                        </div>
+
+                        <!-- Member Growth -->
+                        <div class="bg-white p-4 rounded-lg shadow col-span-2">
+                            <h2 class="text-sm font-semibold text-gray-600">Member Growth</h2>
+                            <canvas id="memberGrowthChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Lower Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Class Schedule -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-lg font-semibold mb-4">Upcoming Events</h2>
+                            <!-- Add class schedule content here -->
+                        </div>
+
+                        <!-- Quick Actions and Notifications -->
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
+                            <div class="space-y-2">
+                                <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                    </svg>
+                                    New member
+                                </button>
+                                <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                    </svg>
+                                    Book
+                                </button>
+                                <button class="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                                    </svg>
+                                    Payment
+                                </button>
+                            </div>
+
+                            <h2 class="text-lg font-semibold mt-6 mb-4">Notifications</h2>
+                            <!-- Add notifications content here -->
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+        </div>
+
+        <!-- Section 2 -->
+        <section id="section2">
+        <p>Billing section</p>
         </section>
-      </div>
 
-      <!-- Section 2 -->
-      <section id="section2">
-      <p>Billing section</p>
-      </section>
 
-      <!-- Section 3 -->
-      <!-- Reservation -->
-      <div class="main-content">
-        <section id="section3">
-          <div class="p-6 bg-gray-100 min-h-screen">
-
-            <!-- Reservation Dashboard Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-lg font-bold mb-4 text-orange-500">Reservation Dashboard</h2>
-
-                <!-- Reservation Cards Section -->
-                <div id="reservations-container" class="reservation-list">
-                  <!-- No placeholder reservation data; this area will be populated by JavaScript -->
+        <!-- Section 3 -->
+        <!-- Reservation -->
+        <div class="main-content">
+            <section id="section3">
+            <div class="p-6 bg-gray-100 min-h-screen">
+                <!-- Reservation Dashboard Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-lg font-bold mb-4 text-orange-500">Reservation Dashboard</h2>
+        
+                    <!-- Reservation Table Section -->
+                    <div id="reservations-container" class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">ID</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
+                            <th scope="col" class="px-6 py-3">Time In</th>
+                            <th scope="col" class="px-6 py-3">Time Out</th>
+                            <th scope="col" class="px-6 py-3">Client</th>
+                            <th scope="col" class="px-6 py-3">Service</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-6 py-3">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reservations-body">
+                        <!-- Reservation rows will be added here by JavaScript -->
+                        </tbody>
+                    </table>
+                    </div>
                 </div>
-              </div>
-
-              <!-- Booking Form for Admin -->
-              <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-lg font-semibold mb-4 text-orange-500">Book Schedule for Client</h2>
-                <form id="booking-form" onsubmit="bookReservation(event)">
+        
+                <!-- Booking Form for Admin -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-lg font-semibold mb-4 text-orange-500">Book Schedule for Client</h2>
+                    <form id="booking-form" onsubmit="bookReservation(event)">
                     <div class="form-group mb-4">
                         <label for="service" class="text-black">Service:</label>
                         <select id="service" class="border-2 border-gray-400 p-2 rounded-lg w-full" required>
-                            <option value="Basketball Court">Basketball Court</option>
-                            <option value="Zumba">Zumba</option>
+                        <option value="Basketball Court">Basketball Court</option>
+                        <option value="Zumba">Zumba</option>
                         </select>
                     </div>
-
+        
                     <!-- Main Client Name -->
                     <div class="form-group mb-4">
                         <label for="client-name" class="text-black">Client Name:</label>
                         <input type="text" id="client-name" class="border-2 border-gray-400 p-2 rounded-lg w-full" placeholder="Enter client name" required />
                     </div>
-
+        
                     <!-- Add more participants -->
                     <div class="form-group mb-4">
                         <label for="additional-clients" class="text-black">Additional Participants (up to 8):</label>
                         <div id="additional-clients" class="space-y-2">
-                            <!-- Dynamic client fields will be added here by JavaScript -->
+                        <!-- Dynamic client fields will be added here by JavaScript -->
                         </div>
                         <button type="button" class="bg-green-500 text-white py-2 px-4 rounded mt-2" onclick="addParticipant()">Add Participant</button>
                     </div>
-
+        
                     <!-- Time In & Out -->
                     <div class="form-group mb-4">
                         <label for="time-in" class="block text-black">Time In:</label>
                         <input type="time" id="time-in" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" required />
                     </div>
-
+        
                     <div class="form-group mb-4">
                         <label for="time-out" class="block text-black">Time Out:</label>
                         <input type="time" id="time-out" class="text-black px-2 py-1 rounded-lg" min="09:00" max="23:59" />
                     </div>
-
+        
                     <!-- Booking Date -->
                     <div class="mb-4">
                         <label for="booking-date" class="block text-black">Select Booking Date:</label>
                         <input type="date" id="booking-date" class="text-black px-2 py-1 rounded-lg" required />
                     </div>
-
+        
                     <div class="mt-6">
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Book Now</button>
                     </div>
-                </form>
-              </div>
+                    </form>
+                </div>
+                </div>
             </div>
-          </div>
-        </section>
-      </div>
+            </section>
+        </div>
 
       <!-- Section 4 -->
       <section id="section4">
