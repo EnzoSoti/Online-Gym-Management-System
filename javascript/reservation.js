@@ -35,8 +35,8 @@ function isTimeSlotAvailable(date, timeIn, timeOut, service) {
 
     for (let row of rows) {
         const rowDate = row.cells[1].textContent;
-        const rowTimeIn = row.cells[2].textContent;
-        const rowTimeOut = row.cells[3].textContent;
+        const rowTimeIn = convertTo24HourFormat(row.cells[2].textContent);
+        const rowTimeOut = convertTo24HourFormat(row.cells[3].textContent);
         const rowService = row.cells[5].textContent;
 
         // Only check conflicts for the same service and date
@@ -50,6 +50,23 @@ function isTimeSlotAvailable(date, timeIn, timeOut, service) {
         }
     }
     return true;
+}
+
+// New helper function to convert 24-hour time to 12-hour format
+function convertTo12HourFormat(time24) {
+    const [hours, minutes] = time24.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const hours12 = hours % 12 || 12;
+    return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+// New helper function to convert 12-hour time to 24-hour format
+function convertTo24HourFormat(time12) {
+    const [time, period] = time12.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    if (period === 'PM' && hours !== 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
 // Function to handle booking a reservation
@@ -98,6 +115,9 @@ function bookReservation(event) {
         return;
     }
 
+    const timeIn12 = convertTo12HourFormat(timeIn);
+    const timeOut12 = convertTo12HourFormat(timeOut);
+
     // Create a new table row
     const reservationId = Date.now();
     const newRow = document.createElement('tr');
@@ -105,8 +125,8 @@ function bookReservation(event) {
     newRow.innerHTML = `
         <td class="px-6 py-4">#${reservationId}</td>
         <td class="px-6 py-4">${bookingDate}</td>
-        <td class="px-6 py-4">${timeIn}</td>
-        <td class="px-6 py-4">${timeOut}</td>
+        <td class="px-6 py-4">${timeIn12}</td>
+        <td class="px-6 py-4">${timeOut12}</td>
         <td class="px-6 py-4">${clientName}</td>
         <td class="px-6 py-4">${service}</td>
         <td class="px-6 py-4"><span class="status-badge bg-green-500 text-black px-2 py-1 rounded-lg">Confirmed</span></td>
@@ -147,7 +167,7 @@ function calculateTimeOut(timeIn) {
     const formattedHours = String(timeOutDate.getHours()).padStart(2, '0');
     const formattedMinutes = String(timeOutDate.getMinutes()).padStart(2, '0');
 
-    return `${formattedHours}:${formattedMinutes}`;
+    return convertTo12HourFormat(`${formattedHours}:${formattedMinutes}`);
 }
 
 // Function to view reservation details
