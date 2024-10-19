@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
     }, { passive: false });
 
-    // Optional: Add keyboard navigation
+    // Add keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (!isScrolling) {
             if (e.key === 'ArrowDown' && currentSectionIndex < sections.length - 1) {

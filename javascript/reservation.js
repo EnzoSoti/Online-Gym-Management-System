@@ -22,6 +22,36 @@ function addParticipant() {
     }
 }
 
+// Helper function to check for time overlap
+function isTimeOverlap(existingStart, existingEnd, newStart, newEnd) {
+    return (newStart < existingEnd && newEnd > existingStart);
+}
+
+// Function to check if a time slot is available
+function isTimeSlotAvailable(date, timeIn, timeOut, service) {
+    const rows = document.querySelectorAll('#reservations-body tr');
+    const newBookingStart = new Date(`${date}T${timeIn}`);
+    const newBookingEnd = new Date(`${date}T${timeOut}`);
+
+    for (let row of rows) {
+        const rowDate = row.cells[1].textContent;
+        const rowTimeIn = row.cells[2].textContent;
+        const rowTimeOut = row.cells[3].textContent;
+        const rowService = row.cells[5].textContent;
+
+        // Only check conflicts for the same service and date
+        if (rowDate === date && rowService === service) {
+            const existingStart = new Date(`${date}T${rowTimeIn}`);
+            const existingEnd = new Date(`${date}T${rowTimeOut}`);
+
+            if (isTimeOverlap(existingStart, existingEnd, newBookingStart, newBookingEnd)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 // Function to handle booking a reservation
 function bookReservation(event) {
     event.preventDefault();
@@ -42,6 +72,17 @@ function bookReservation(event) {
     const timeIn = document.getElementById('time-in').value;
     const timeOut = document.getElementById('time-out').value || calculateTimeOut(timeIn);
 
+    // Check if the time slot is available
+    if (!isTimeSlotAvailable(bookingDate, timeIn, timeOut, service)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Time Slot Not Available',
+            text: 'This time slot is already booked for the selected service. Please choose a different time or date.',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
     // Convert timeIn to a Date object for easier comparison
     const timeInDate = new Date(`1970-01-01T${timeIn}`);
     const openTime = new Date(`1970-01-01T09:00:00`);
@@ -52,8 +93,9 @@ function bookReservation(event) {
             icon: 'error',
             title: 'Gym Closed',
             text: 'The gym is closed before 9:00 AM and after 12:00 Midnight. Please select another time.',
+            confirmButtonColor: '#3085d6'
         });
-        return; // Stop execution
+        return;
     }
 
     // Create a new table row
@@ -86,6 +128,7 @@ function bookReservation(event) {
         icon: 'success',
         title: 'Reservation Booked',
         text: 'Your reservation has been successfully booked.',
+        confirmButtonColor: '#3085d6'
     });
 
     // Reset the form after booking
@@ -166,14 +209,16 @@ function viewReservation(reservationId) {
             title: 'Reservation Details',
             html: modalContent,
             icon: 'info',
-            confirmButtonText: 'Close'
+            confirmButtonText: 'Close',
+            confirmButtonColor: '#3085d6'
         });
     } catch (error) {
         console.error("Error in viewReservation:", error);
         Swal.fire({
             title: 'Error',
             text: 'Could not retrieve reservation details. ' + error.message,
-            icon: 'error'
+            icon: 'error',
+            confirmButtonColor: '#3085d6'
         });
     }
 }
