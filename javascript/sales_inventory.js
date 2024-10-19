@@ -21,7 +21,7 @@ function closeSupplementModal() {
         addSupplementModal.classList.add('hidden'); // Fully hide modal after transition
         supplementForm.reset();
         selectedSupplementRow = null;
-    }, 300); // Match duration with transition timing (300ms)
+    }, 300); 
 }
 
 // Add or Update Supplement
@@ -61,7 +61,7 @@ function updateSupplement(btn) {
     setTimeout(() => {
         addSupplementModal.classList.remove('opacity-0', 'scale-95');
         addSupplementModal.classList.add('opacity-100', 'scale-100');
-    }, 10); // Trigger smooth opening
+    }, 10); 
 }
 
 // Delete Supplement with SweetAlert Confirmation
