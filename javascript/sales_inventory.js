@@ -35,6 +35,9 @@ supplementForm.onsubmit = function(event) {
         selectedSupplementRow.cells[0].innerText = supplementName;
         selectedSupplementRow.cells[1].innerText = supplementQuantity;
     } else {
+        fetch("/data/invetory.json")
+        .then(x => x.json())
+        .then(x => console.log(x))
         // Add new supplement
         const supplementTableBody = document.getElementById('supplementTableBody');
         const newRow = supplementTableBody.insertRow();
@@ -47,7 +50,6 @@ supplementForm.onsubmit = function(event) {
             </td>
         `;
     }
-
     closeSupplementModal();
 }
 
