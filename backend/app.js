@@ -1,109 +1,150 @@
 const express = require('express');
-const mysql = require('mysql2/promise'); // Using promise-based version
+const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3000;
 
-// Database configuration
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '', // Default XAMPP password is empty
-    database: 'sample'
+    password: 'WJ28@krhps', 
+    database: 'fitworx_gym_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 };
 
 // Create connection pool
 const pool = mysql.createPool(dbConfig);
 
+// Test database connection
+async function testConnection() {
+    try {
+        const connection = await pool.getConnection();
+        console.log('Database connected successfully');
+        connection.release();
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        process.exit(1);
+    }
+}
+testConnection();
+
+// Middleware
 app.use(express.json());
 
-// Enable CORS
+// Basic CORS middleware
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
     next();
 });
 
-// Test database connection
-app.get('/api/test-connection', async (req, res) => {
+// Enhanced error handling for database operations
+const handleDatabaseOperation = async (operation) => {
+    const connection = await pool.getConnection();
     try {
-        const connection = await pool.getConnection();
+        const result = await operation(connection);
+        return result;
+    } catch (error) {
+        throw error;
+    } finally {
         connection.release();
-        res.json({ message: 'Database connection successful!' });
+    }
+};
+
+// API Routes
+// Get all supplements
+app.get('/api/supplements', async (req, res) => {
+    try {
+        const supplements = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query('SELECT * FROM supplements ORDER BY supplement_name');
+            return rows;
+        });
+        res.json(supplements);
     } catch (error) {
-        res.status(500).json({ error: 'Database connection failed', details: error.message });
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch supplements' });
     }
 });
 
-// Get all users
-app.get('/api/user', async (req, res) => {
+// Add new supplement
+app.post('/api/supplements', async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM users');
-        res.json(rows);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch users', details: error.message });
-    }
-});
-
-// Get user by ID
-app.get('/api/users/:id', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [req.params.id]);
-        if (rows.length === 0) {
-            res.status(404).json({ message: 'User not found' });
-            return;
+        const { supplement_name, quantity } = req.body;
+        
+        if (!supplement_name || quantity === undefined) {
+            return res.status(400).json({ error: 'Supplement name and quantity are required' });
         }
-        res.json(rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch user', details: error.message });
-    }
-});
 
-// Create new user
-app.post('/api/users', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        const [result] = await pool.query(
-            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-            [name, email, password]
-        );
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [insertResult] = await connection.query(
+                'INSERT INTO supplements (supplement_name, quantity) VALUES (?, ?)',
+                [supplement_name, quantity]
+            );
+            return insertResult;
+        });
+
         res.status(201).json({
-            message: 'User created successfully',
-            userId: result.insertId
+            message: 'Supplement added successfully',
+            supplementId: result.insertId
         });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create user', details: error.message });
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to add supplement' });
     }
 });
 
-// Update user
-app.put('/api/users/:id', async (req, res) => {
+// Update supplement
+app.put('/api/supplements/:id', async (req, res) => {
     try {
-        const { name, email } = req.body;
-        const [result] = await pool.query(
-            'UPDATE users SET name = ?, email = ? WHERE id = ?',
-            [name, email, req.params.id]
-        );
+        const { supplement_name, quantity } = req.body;
+        const { id } = req.params;
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE supplements SET supplement_name = ?, quantity = ? WHERE id = ?',
+                [supplement_name, quantity, id]
+            );
+            return updateResult;
+        });
+
         if (result.affectedRows === 0) {
-            res.status(404).json({ message: 'User not found' });
-            return;
+            return res.status(404).json({ error: 'Supplement not found' });
         }
-        res.json({ message: 'User updated successfully' });
+
+        res.json({ message: 'Supplement updated successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to update user', details: error.message });
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to update supplement' });
     }
 });
 
-// Delete user
-app.delete('/api/users/:id', async (req, res) => {
+// Delete supplement
+app.delete('/api/supplements/:id', async (req, res) => {
     try {
-        const [result] = await pool.query('DELETE FROM users WHERE id = ?', [req.params.id]);
+        const { id } = req.params;
+        
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [deleteResult] = await connection.query(
+                'DELETE FROM supplements WHERE id = ?', 
+                [id]
+            );
+            return deleteResult;
+        });
+
         if (result.affectedRows === 0) {
-            res.status(404).json({ message: 'User not found' });
-            return;
+            return res.status(404).json({ error: 'Supplement not found' });
         }
-        res.json({ message: 'User deleted successfully' });
+
+        res.json({ message: 'Supplement deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to delete user', details: error.message });
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to delete supplement' });
     }
 });
 

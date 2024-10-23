@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const navMenu = document.querySelector('.nav-menu');
+    const mobileMenuBtn = document.querySelector('.hamburger-btn'); // Select the mobile menu button
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
