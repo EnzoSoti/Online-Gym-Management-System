@@ -57,8 +57,7 @@ const handleDatabaseOperation = async (operation) => {
     }
 };
 
-// API Routes
-// Get all supplements
+// Supplements API Routes
 app.get('/api/supplements', async (req, res) => {
     try {
         const supplements = await handleDatabaseOperation(async (connection) => {
@@ -72,7 +71,6 @@ app.get('/api/supplements', async (req, res) => {
     }
 });
 
-// Add new supplement
 app.post('/api/supplements', async (req, res) => {
     try {
         const { supplement_name, quantity } = req.body;
@@ -99,7 +97,6 @@ app.post('/api/supplements', async (req, res) => {
     }
 });
 
-// Update supplement
 app.put('/api/supplements/:id', async (req, res) => {
     try {
         const { supplement_name, quantity } = req.body;
@@ -124,9 +121,8 @@ app.put('/api/supplements/:id', async (req, res) => {
     }
 });
 
-// Delete supplement
 app.delete('/api/supplements/:id', async (req, res) => {
-    try {
+    try {   
         const { id } = req.params;
         
         const result = await handleDatabaseOperation(async (connection) => {
@@ -145,6 +141,115 @@ app.delete('/api/supplements/:id', async (req, res) => {
     } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({ error: 'Failed to delete supplement' });
+    }
+});
+
+// Monthly Members API Routes
+// fixed
+app.get('/api/monthly-members', async (req, res) => {
+    try {
+        const members = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM monthly_members ORDER BY member_name'
+            );
+            return rows;
+        });
+        res.json(members);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch members' });
+    }
+});
+
+app.post('/api/monthly-members', async (req, res) => {
+    try {
+        const { member_name, status, start_date, end_date } = req.body;
+        
+        if (!member_name || !status || !start_date || !end_date) {
+            return res.status(400).json({ 
+                error: 'Member name, status, start date, and end date are required' 
+            });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [insertResult] = await connection.query(
+                'INSERT INTO monthly_members (member_name, status, start_date, end_date) VALUES (?, ?, ?, ?)',
+                [member_name, status, start_date, end_date]
+            );
+            return insertResult;
+        });
+
+        res.status(201).json({
+            message: 'Member added successfully',
+            memberId: result.insertId
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to add member' });
+    }
+});
+
+app.put('/api/monthly-members/:id', async (req, res) => {
+    try {
+        const { member_name, status, start_date, end_date } = req.body;
+        const { id } = req.params;
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE monthly_members SET member_name = ?, status = ?, start_date = ?, end_date = ? WHERE id = ?',
+                [member_name, status, start_date, end_date, id]
+            );
+            return updateResult;
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Member not found' });
+        }
+
+        res.json({ message: 'Member updated successfully' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to update member' });
+    }
+});
+
+app.delete('/api/monthly-members/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [deleteResult] = await connection.query(
+                'DELETE FROM monthly_members WHERE id = ?', 
+                [id]
+            );
+            return deleteResult;
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Member not found' });
+        }
+
+        res.json({ message: 'Member deleted successfully' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to delete member' });
+    }
+});
+
+// Sales Reports API Routes
+// fixed
+app.get('/api/sales-reports/monthly-members', async (req, res) => {
+    try {
+        const members = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM monthly_members ORDER BY start_date DESC'
+            );
+            return rows;
+        });
+        res.json(members);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch monthly members' });
     }
 });
 

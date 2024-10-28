@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addRowToTable(formData, tableId) {
         const table = document.querySelector(`#${tableId} tbody`);
         const newRow = document.createElement('tr');
-        
+
         switch(tableId) {
             case 'monthly':
                 const memberId = generateUniqueId('M');
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 break;
         }
-        
+
         table.appendChild(newRow);
     }
 
@@ -97,101 +97,94 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show corresponding panel
             const targetPanel = document.getElementById(targetId);
             targetPanel.classList.remove('hidden');
+
+            // Fetch data for the active tab
+            fetchDataForTab(targetId);
         });
     });
 
-    // Modal functionality
-    const addButtons = document.querySelectorAll('button');
-
-    // Handle "Add" button clicks
-    addButtons.forEach(button => {
-        if (button.textContent.toLowerCase().includes('add') && !button.closest('[role="tabpanel"][id^="reservation"]')) { // Ignore reservation related buttons
-            button.addEventListener('click', () => {
-                const tabPanel = button.closest('[role="tabpanel"]');
-                if (tabPanel) {
-                    const modalId = tabPanel.id + 'Modal';
-                    const modal = document.getElementById(modalId);
-                    if (modal) modal.classList.remove('hidden');
-                }
-            });
+    // Function to fetch data for a specific tab
+    async function fetchDataForTab(tabId) {
+        let endpoint;
+        switch (tabId) {
+            case 'monthly':
+                endpoint = 'http://localhost:3000/api/sales-reports/monthly-members';
+                break;
+            // case 'regular':
+            //     endpoint = '/api/sales-reports/regular-members';
+            //     break;
+            // case 'student':
+            //     endpoint = '/api/sales-reports/student-members';
+            //     break;
+            // case 'supplements':
+            //     endpoint = '/api/sales-reports/supplements';
+            //     break;
+            default:
+                return;
         }
-    });
 
-    // Handle modal closing
-    document.querySelectorAll('.closeModal').forEach(button => {
-        button.addEventListener('click', () => {
-            button.closest('[id$="Modal"]').classList.add('hidden');
-        });
-    });
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            populateTable(tabId, data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
 
-    // Close modal when clicking outside
-    document.querySelectorAll('[id$="Modal"]').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.add('hidden');
+    // Function to populate table with fetched data
+    function populateTable(tabId, data) {
+        const tableBody = document.getElementById(`${tabId}-members-table`);
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        data.forEach(item => {
+            const newRow = document.createElement('tr');
+            switch (tabId) {
+                case 'monthly':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.member_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.start_date)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.end_date)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                    `;
+                    break;
+                case 'regular':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                    `;
+                    break;
+                case 'student':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.student_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.school_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                    `;
+                    break;
+                case 'supplements':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">${item.product_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.product_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.total_amount}</td>
+                    `;
+                    break;
             }
+            tableBody.appendChild(newRow);
         });
-    });
-
-    // Handle form submissions
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formId = form.id;
-
-            // Special handling for reservation booking
-            if (formId === 'booking-form') {
-                bookReservation(e);
-            } else {
-                // Existing logic for other forms
-                const formData = new FormData(form);
-                const tableId = formId.replace('Form', '');
-                
-                // Show SweetAlert confirmation
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Do you want to save the details?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, save it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Simulate API call with a promise
-                        new Promise((resolve, reject) => {
-                            // Simulate API delay
-                            setTimeout(() => {
-                                resolve({ success: true, data: formData });
-                            }, 500);
-                        })
-                        .then(response => {
-                            if (response.success) {
-                                // Add the new row to the table
-                                addRowToTable(formData, tableId);
-                                
-                                // Show success message
-                                Swal.fire(
-                                    'Saved!',
-                                    'Your data has been saved successfully.',
-                                    'success'
-                                ).then(() => {
-                                    // Reset form and close modal
-                                    form.reset();
-                                    const modal = form.closest('[id$="Modal"]');
-                                    if (modal) {
-                                        modal.classList.add('hidden');
-                                    }
-                                });
-                            } else {
-                                throw new Error('Failed to save data');
-                            }
-                        })
-                    }
-                });
-            }
-        });
-    });
+    }
 
     // Handle export/print functionality
     document.querySelectorAll('button').forEach(button => {
@@ -238,5 +231,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set initial active tab
     document.getElementById('monthly-tab').click();
 });
-
-
