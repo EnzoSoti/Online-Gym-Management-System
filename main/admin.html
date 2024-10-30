@@ -52,6 +52,7 @@
     </div>
 
 <body>
+
     <div class="wrapper">
         <div class="sidenav w-64 bg-gray-800 text-white min-h-screen">
             <button class="hamburger-btn p-4">
@@ -63,9 +64,9 @@
             </div>
             <ul class="nav-menu space-y-2 p-4">
                 <li><a href="#section1" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
-                <li><a href="#section2" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-school"></i><span>Attendance</span></a></li>
+                <li><a href="#section2" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-school"></i><span>Check-in</span></a></li>
                 <li><a href="#section3" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-calendar"></i><span>Reservation</span></a></li>
-                <li><a href="#section4" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-hourglass-start"></i><span>Sales & Inventory</span></a></li>
+                <li><a href="#section4" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-hourglass-start"></i><span>Supplements</span></a></li>
                 <li><a href="#section5" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-user"></i><span>Add Monthly Member</span></a></li>
                 <li><a href="#section6" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-file"></i><span>Report</span></a></li>
                 <li><a href="#section7" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dollar"></i><span>Buy</span></a></li>
@@ -120,10 +121,99 @@
         </div>
 
         <!-- Section 2 -->
-        <!-- attendance -->
-        <section id="section2">
-        <p>Attendance</p>
-        </section>
+        <!-- attendance check-in of client -->
+        <div class="main-content">
+            <section id="section2">
+                <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
+                    <!-- Check-in Dashboard Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Check-in List -->
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
+                                    Check-in Dashboard
+                                </h2>
+                                <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-medium">
+                                    Today's Check-ins
+                                </span>
+                            </div>
+
+                            <!-- Check-in Table Section -->
+                            <div id="checkins-container" class="overflow-x-auto">
+                                <table class="w-full text-sm text-left border-collapse rounded-xl overflow-hidden">
+                                    <thead class="text-xs uppercase bg-gradient-to-r from-indigo-600 to-indigo-700">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-4 text-white font-medium">ID</th>
+                                            <th scope="col" class="px-6 py-4 text-white font-medium">Type</th>
+                                            <th scope="col" class="px-6 py-4 text-white font-medium">Client Name</th>
+                                            <th scope="col" class="px-6 py-4 text-white font-medium">Time In</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="checkins-body" class="divide-y divide-slate-200">
+                                        <!-- Check-in rows will be added here by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Check-in Form -->
+                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
+                                    Client Check-in
+                                </h2>
+                            </div>
+                            
+                            <form id="checkin-form" onsubmit="handleCheckin(event)" class="space-y-6">
+                                <!-- Client Type Selection -->
+                                <div class="form-group">
+                                    <label for="client-type" class="block text-sm font-medium text-slate-700 mb-2">
+                                        Type of Client:
+                                    </label>
+                                    <select id="client-type" 
+                                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200" 
+                                            required>
+                                        <option value="regular">Regular</option>
+                                        <option value="student">Student</option>
+                                    </select>
+                                </div>
+
+                                <!-- Client Name -->
+                                <div class="form-group">
+                                    <label for="client-name" class="block text-sm font-medium text-slate-700 mb-2">
+                                        Client Name:
+                                    </label>
+                                    <input type="text" 
+                                        id="client-name" 
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
+                                        placeholder="Enter client name" 
+                                        required />
+                                </div>
+
+                                <!-- Time In -->
+                                <div class="form-group">
+                                    <label for="time-in" class="block text-sm font-medium text-slate-700 mb-2">
+                                        Time In:
+                                    </label>
+                                    <input type="time" 
+                                        id="time-in" 
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
+                                        required />
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                                    <button type="submit" 
+                                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                        Check-in
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
 
         <!-- Section 3 -->
@@ -279,19 +369,16 @@
         <!-- Section 4 -->
         <!-- Sales and Inventory - Supplements -->
         <section id="section4" class="ml-64 h-screen bg-slate-50">
-            <!-- Main Content -->
             <div class="h-full p-6">
-                <!-- Main Card -->
                 <div class="h-full bg-white rounded-2xl shadow-xl border border-slate-200">
-                    <!-- Header Section -->
-                    <div class="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <!-- Header -->
+                    <div class="p-6 border-b border-slate-200">
+                        <div class="flex justify-between items-center">
                             <div>
-                                <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Sales and Inventory - Supplements</h2>
+                                <h2 class="text-2xl font-bold text-slate-800">Sales and Inventory - Supplements</h2>
                                 <p class="text-slate-500 mt-1">Manage your supplement inventory</p>
                             </div>
-                            <button id="addSupplementBtn" 
-                                    class="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                            <button id="openModalBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-200 flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                                 </svg>
@@ -300,83 +387,64 @@
                         </div>
                     </div>
 
-                    <!-- Table Section -->
+                    <!-- Table -->
                     <div class="p-6">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="border-b border-slate-200">
-                                    <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Supplement Name</th>
-                                    <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Quantity</th>
-                                    <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-200" id="supplementTableBody">
-                                <!-- Example Row -->
-                                <tr class="hover:bg-slate-50 transition-colors duration-150">
-                                    <td class="py-4">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <div class="text-sm font-medium text-slate-900">Creatine</div>
-                                                <div class="text-sm text-slate-500">In Stock</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-4">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">
-                                            20 units
-                                        </span>
-                                    </td>
-                                    <td class="py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-indigo-600 hover:text-indigo-900 font-medium mr-4 transition-colors duration-150 update-btn">
-                                            Edit
-                                        </button>
-                                        <button class="text-rose-600 hover:text-rose-900 font-medium transition-colors duration-150 delete-btn">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-200">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Quantity</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="supplementsTable" class="divide-y divide-slate-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="supplementModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm">
+                <div class="flex items-center justify-center min-h-screen p-4">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                        <div class="p-6 border-b border-slate-200">
+                            <h3 id="modalTitle" class="text-xl font-semibold text-slate-800">Add Supplement</h3>
+                        </div>
+                        <form id="supplementForm" class="p-6">
+                            <input type="hidden" id="supplementId">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-slate-700">Supplement Name</label>
+                                    <input type="text" id="name" name="name" required
+                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label for="quantity" class="block text-sm font-medium text-slate-700">Quantity</label>
+                                    <input type="number" id="quantity" name="quantity" required min="0"
+                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                </div>
+                            </div>
+                            <div class="mt-6 flex justify-end gap-3">
+                                <button type="button" id="closeModalBtn"
+                                    class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md">
+                                    Save
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Modal -->
-        <div id="addSupplementModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-all duration-300">
-            <div class="fixed inset-0 flex items-center justify-center p-4">
-                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300" id="supplementModalContent">
-                    <div class="p-6 border-b border-slate-200">
-                        <h3 class="text-xl font-semibold text-slate-800" id="modalTitle">Add Supplement</h3>
-                    </div>
-                    <form id="supplementForm" class="p-6">
-                        <div class="space-y-6">
-                            <div>
-                                <label for="supplementName" class="block text-sm font-medium text-slate-700">Supplement Name</label>
-                                <input type="text" id="supplementName" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            </div>
-                            <div>
-                                <label for="supplementQuantity" class="block text-sm font-medium text-slate-700">Quantity</label>
-                                <input type="number" id="supplementQuantity" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                            </div>
-                        </div>
-                        <div class="mt-6 flex justify-end gap-3">
-                            <button type="button" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors duration-200" onclick="closeSupplementModal()">
-                                Cancel
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                                Save Changes
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Section 5 -->
         <!-- Monthly members -->
@@ -650,6 +718,10 @@
             </div>
         </section>
 
+        <!-- Section 7 -->
+        <!-- Buy section -->
+
+
     </div>
 
     <!-- JS scripts -->
@@ -661,7 +733,7 @@
     <script src="../javascript/add_monthly_member.js"></script>
     <script src="../javascript/scrolling.js"></script>
     <script src="../javascript/sales_inventory.js"></script>
-    
+    <script src="../javascript/attendance_client_cin.js"></script>
 
 </body>
 </html>

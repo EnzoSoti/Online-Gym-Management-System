@@ -1,220 +1,187 @@
-// API Base URL
-const API_BASE_URL = 'http://localhost:3000/api';
+class SupplementManager {
+    constructor() {
+        this.API_URL = 'http://localhost:3000/api/supplements';
+        this.modal = document.getElementById('supplementModal');
+        this.form = document.getElementById('supplementForm');
+        this.table = document.getElementById('supplementsTable');
+        this.modalTitle = document.getElementById('modalTitle');
+        this.currentId = null;
 
-// DOM Elements
-const addSupplementBtn = document.getElementById('addSupplementBtn');
-const addSupplementModal = document.getElementById('addSupplementModal');
-const supplementForm = document.getElementById('supplementForm');
-const closeModalBtn = document.getElementById('closeModalBtn');
-let selectedSupplementRow = null;
+        this.initializeEventListeners();
+        this.loadSupplements();
+    }
 
-// Load supplements on page load
-document.addEventListener('DOMContentLoaded', () => {
-    loadSupplements();
-    initializeEventListeners();
-});
+    initializeEventListeners() {
+        // Modal controls
+        document.getElementById('openModalBtn').addEventListener('click', () => this.openModal());
+        document.getElementById('closeModalBtn').addEventListener('click', () => this.closeModal());
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.closeModal();
+        });
 
-function initializeEventListeners() {
-    // Modal open button
-    addSupplementBtn.addEventListener('click', () => {
-        openSupplementModal();
-    });
+        // Form submission
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
 
-    // Modal close button
-    closeModalBtn.addEventListener('click', () => {
-        closeSupplementModal();
-    });
+        // Table actions
+        this.table.addEventListener('click', (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
 
-    // Form submission
-    supplementForm.addEventListener('submit', handleFormSubmit);
+            if (e.target.classList.contains('edit-btn')) {
+                this.editSupplement(row);
+            } else if (e.target.classList.contains('delete-btn')) {
+                this.deleteSupplement(row);
+            }
+        });
+    }
 
-    // Event delegation for update and delete buttons
-    document.addEventListener('click', (event) => {
-        if (event.target.classList.contains('update-btn')) {
-            updateSupplement(event.target);
-        } else if (event.target.classList.contains('delete-btn')) {
-            deleteSupplement(event.target);
-        }
-    });
-
-    // Close modal when clicking outside
-    addSupplementModal.addEventListener('click', (event) => {
-        if (event.target === addSupplementModal) {
-            closeSupplementModal();
-        }
-    });
-}
-
-// Modal functions
-function openSupplementModal() {
-    addSupplementModal.classList.remove('hidden');
-}
-
-function closeSupplementModal() {
-    addSupplementModal.classList.add('hidden');
-    selectedSupplementRow = null;
-    supplementForm.reset();
-}
-
-async function loadSupplements() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/supplements`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    openModal(supplement = null) {
+        this.currentId = supplement ? supplement.id : null;
+        this.modalTitle.textContent = supplement ? 'Edit Supplement' : 'Add Supplement';
         
-        const supplements = await response.json();
-        const supplementTableBody = document.getElementById('supplementTableBody');
+        document.getElementById('name').value = supplement ? supplement.supplement_name : '';
+        document.getElementById('quantity').value = supplement ? supplement.quantity : '';
         
-        if (!supplementTableBody) {
-            console.error('Table body element not found');
-            return;
-        }
+        this.modal.classList.remove('hidden');
+    }
 
-        supplementTableBody.innerHTML = '';
-        
-        supplements.forEach(supplement => {
-            const row = supplementTableBody.insertRow();
-            row.dataset.id = supplement.id;
-            row.classList.add('hover:bg-slate-50', 'transition-colors', 'duration-150');
+    closeModal() {
+        this.modal.classList.add('hidden');
+        this.form.reset();
+        this.currentId = null;
+    }
+
+    async loadSupplements() {
+        try {
+            const response = await fetch(this.API_URL);
+            const supplements = await response.json();
             
-            row.innerHTML = `
-                <td class="py-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            this.table.innerHTML = supplements.map(supplement => this.createTableRow(supplement)).join('');
+        } catch (error) {
+            this.showError('Failed to load supplements');
+        }
+    }
+
+    createTableRow(supplement) {
+        return `
+            <tr data-id="${supplement.id}" class="hover:bg-slate-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="h-10 w-10 flex-shrink-0 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <svg class="h-5 w-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                             </svg>
                         </div>
-                        <div>
+                        <div class="ml-4">
                             <div class="text-sm font-medium text-slate-900">${supplement.supplement_name}</div>
-                            <div class="text-sm text-slate-500">In Stock</div>
                         </div>
                     </div>
                 </td>
-                <td class="py-4">
-                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                         ${supplement.quantity} units
                     </span>
                 </td>
-                <td class="py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-indigo-600 hover:text-indigo-900 font-medium mr-4 transition-colors duration-150 update-btn">
-                        Edit
-                    </button>
-                    <button class="text-rose-600 hover:text-rose-900 font-medium transition-colors duration-150 delete-btn">
-                        Delete
-                    </button>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                    <button class="delete-btn text-red-600 hover:text-red-900">Delete</button>
                 </td>
-            `;
-        });
-    } catch (error) {
-        console.error('Error loading supplements:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to load supplements. Please check if the server is running.'
-        });
+            </tr>
+        `;
     }
-}
 
-async function handleFormSubmit(event) {
-    event.preventDefault();
-    
-    try {
-        const supplementData = {
-            supplement_name: document.getElementById('supplementName').value,
-            quantity: parseInt(document.getElementById('supplementQuantity').value)
+    async handleSubmit(e) {
+        e.preventDefault();
+        
+        const formData = {
+            supplement_name: document.getElementById('name').value,
+            quantity: parseInt(document.getElementById('quantity').value)
         };
 
-        const url = selectedSupplementRow 
-            ? `${API_BASE_URL}/supplements/${selectedSupplementRow.dataset.id}`
-            : `${API_BASE_URL}/supplements`;
+        try {
+            const url = this.currentId ? `${this.API_URL}/${this.currentId}` : this.API_URL;
+            const method = this.currentId ? 'PUT' : 'POST';
 
-        const method = selectedSupplementRow ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
 
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(supplementData)
-        });
+            if (!response.ok) throw new Error('Failed to save supplement');
 
-        if (!response.ok) {
-            throw new Error('Failed to process supplement');
+            await this.loadSupplements();
+            this.closeModal();
+            this.showSuccess(`Supplement ${this.currentId ? 'updated' : 'added'} successfully`);
+        } catch (error) {
+            this.showError(error.message);
         }
+    }
 
-        await loadSupplements();
-        closeSupplementModal();
+    async deleteSupplement(row) {
+        const id = row.dataset.id;
+        const name = row.querySelector('.text-slate-900').textContent;
+
+        if (await this.confirmDelete(name)) {
+            try {
+                const response = await fetch(`${this.API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete supplement');
+
+                await this.loadSupplements();
+                this.showSuccess('Supplement deleted successfully');
+            } catch (error) {
+                this.showError(error.message);
+            }
+        }
+    }
+
+    editSupplement(row) {
+        const id = row.dataset.id;
+        const name = row.querySelector('.text-slate-900').textContent;
+        const quantity = parseInt(row.querySelector('.bg-green-100').textContent);
         
+        this.openModal({
+            id: id,
+            supplement_name: name,
+            quantity: quantity
+        });
+    }
+
+    async confirmDelete(name) {
+        return await Swal.fire({
+            title: 'Are you sure?',
+            text: `Delete supplement "${name}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: 'Delete'
+        }).then(result => result.isConfirmed);
+    }
+
+    showSuccess(message) {
         Swal.fire({
             icon: 'success',
-            title: selectedSupplementRow ? 'Supplement updated successfully' : 'Supplement added successfully',
-            showConfirmButton: false,
-            timer: 1500
+            title: 'Success',
+            text: message,
+            timer: 2000,
+            showConfirmButton: false
         });
-    } catch (error) {
-        console.error('Error:', error);
+    }
+
+    showError(message) {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: error.message
+            title: 'Error',
+            text: message
         });
     }
 }
 
-function updateSupplement(btn) {
-    selectedSupplementRow = btn.closest('tr');
-    const supplementName = document.getElementById('supplementName');
-    const supplementQuantity = document.getElementById('supplementQuantity');
-    
-    if (supplementName && supplementQuantity) {
-        const nameElement = selectedSupplementRow.querySelector('.text-slate-900');
-        const quantityElement = selectedSupplementRow.querySelector('.bg-emerald-100');
-        
-        supplementName.value = nameElement.textContent;
-        supplementQuantity.value = parseInt(quantityElement.textContent);
-        openSupplementModal();
-    }
-}
-
-async function deleteSupplement(btn) {
-    const row = btn.closest('tr');
-    const supplementId = row.dataset.id;
-
-    const result = await Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    });
-
-    if (result.isConfirmed) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/supplements/${supplementId}`, {
-                method: 'DELETE'
-            });
-
-            if (!response.ok) throw new Error('Failed to delete supplement');
-
-            await loadSupplements();
-            Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: 'Supplement has been deleted.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } catch (error) {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.message
-            });
-        }
-    }
-}
+// Initialize the supplement manager when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new SupplementManager();
+});
