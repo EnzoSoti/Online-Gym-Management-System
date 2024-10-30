@@ -6,10 +6,17 @@ const addMemberBtn = document.getElementById('addMemberBtn');
 const addMemberModal = document.getElementById('addMemberModal');
 const memberForm = document.getElementById('memberForm');
 const closeModalBtn = document.getElementById('closeModalBtn');
+const searchInput = document.getElementById('memberSearch');
 let selectedRow = null;
+let allMembers = []; // Search function dito nag sstore yung filtered
 
 // Load members on page load
 document.addEventListener('DOMContentLoaded', loadMembers);
+
+// Add search event listener
+if (searchInput) {
+    searchInput.addEventListener('input', filterMembers);
+}
 
 // Modal functions
 function openMemberModal() {
@@ -37,6 +44,44 @@ if (closeModalBtn) {
     closeModalBtn.addEventListener('click', closeMemberModal);
 }
 
+// Filter members based on search input
+function filterMembers() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredMembers = allMembers.filter(member => 
+        member.member_name.toLowerCase().includes(searchTerm)
+    );
+    renderMembers(filteredMembers);
+}
+
+// Render members to table
+function renderMembers(members) {
+    const memberTableBody = document.getElementById('memberTableBody');
+    
+    if (!memberTableBody) {
+        console.error('Table body element not found');
+        return;
+    }
+
+    memberTableBody.innerHTML = ''; 
+    
+    members.forEach(member => {
+        const row = memberTableBody.insertRow();
+        row.dataset.id = member.id;
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${member.member_name}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${member.status}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateMember(this)">Update</button>
+                <button class="text-red-600 hover:text-red-900" onclick="deleteMember(this)">Delete</button>
+            </td>
+        `;
+    });
+}
+
 async function loadMembers() {
     try {
         const response = await fetch(`${API_BASE_URL}/monthly-members`);
@@ -44,32 +89,8 @@ async function loadMembers() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const members = await response.json();
-        const memberTableBody = document.getElementById('memberTableBody');
-        
-        if (!memberTableBody) {
-            console.error('Table body element not found');
-            return;
-        }
-
-        memberTableBody.innerHTML = ''; // Clear existing rows
-        
-        members.forEach(member => {
-            const row = memberTableBody.insertRow();
-            row.dataset.id = member.id;
-            row.innerHTML = `
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${member.member_name}</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${member.status}</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateMember(this)">Update</button>
-                    <button class="text-red-600 hover:text-red-900" onclick="deleteMember(this)">Delete</button>
-                </td>
-            `;
-        });
+        allMembers = await response.json(); // Store all members
+        renderMembers(allMembers); // Render all members initially
     } catch (error) {
         console.error('Error loading members:', error);
         Swal.fire('Error', 'Failed to load members', 'error');
