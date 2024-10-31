@@ -31,28 +31,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 break;
 
-            case 'regular':
-                const regularId = generateUniqueId('R');
-                newRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">${regularId}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-                `;
-                break;
+            // case 'regular':
+            //     const regularId = generateUniqueId('R');
+            //     newRow.innerHTML = `
+            //         <td class="px-6 py-4 whitespace-nowrap">${regularId}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
+            //     `;
+            //     break;
 
-            case 'student':
-                const studentId = generateUniqueId('S');
-                newRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">${studentId}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('schoolId')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-                `;
-                break;
+            // case 'student':
+            //     const studentId = generateUniqueId('S');
+            //     newRow.innerHTML = `
+            //         <td class="px-6 py-4 whitespace-nowrap">${studentId}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('schoolId')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
+            //         <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
+            //     `;
+            //     break;
 
             case 'supplements':
                 const productId = generateUniqueId('P');
@@ -116,9 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // case 'student':
             //     endpoint = '/api/sales-reports/student-members';
             //     break;
-            // case 'supplements':
-            //     endpoint = '/api/sales-reports/supplements';
-            //     break;
+            case 'supplements':
+                endpoint = '/api/sales-reports/supplements';
+                break;
             default:
                 return;
         }
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             switch (tabId) {
                 case 'monthly':
                     newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">MMR#${item.id}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${item.member_name}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
@@ -154,25 +154,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
                     `;
                     break;
-                case 'regular':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
-                    `;
-                    break;
-                case 'student':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.student_name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.school_id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
-                    `;
-                    break;
+                // case 'regular':
+                //     newRow.innerHTML = `
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                //     `;
+                //     break;
+                // case 'student':
+                //     newRow.innerHTML = `
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.student_name}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.school_id}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
+                //         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                //     `;
+                //     break;
                 case 'supplements':
                     newRow.innerHTML = `
                         <td class="px-6 py-4 whitespace-nowrap">${item.product_id}</td>

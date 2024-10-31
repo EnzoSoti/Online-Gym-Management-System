@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function displaySupplements(supplementsToDisplay) {
         supplementsTableBody.innerHTML = supplementsToDisplay.map(supplement => `
             <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">#${supplement.id}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">PRDC#${supplement.id}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">${supplement.supplement_name}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">${supplement.quantity}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">₱${supplement.price}</td>
