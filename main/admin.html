@@ -718,7 +718,7 @@
                             </div>
                         </div>
                     </div>
-
+        
                     <!-- Search Bar -->
                     <div class="p-6 border-b border-slate-200">
                         <div class="relative max-w-md">
@@ -729,12 +729,13 @@
                             </div>
                             <input
                                 type="search"
+                                id="searchInput"
                                 placeholder="Search products..."
                                 class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                             >
                         </div>
                     </div>
-
+        
                     <!-- Table -->
                     <div class="p-6">
                         <div class="overflow-x-auto">
@@ -743,31 +744,20 @@
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Product ID</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Product Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Quantity Sold</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Available Stock</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Price</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-200">
-                                    <!-- Sample Row 1 -->
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">#PRD001</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">Premium Whey Protein</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">150</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">30</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <button class="buy-button px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-200" data-product-id="#PRD001" data-product-name="Premium Whey Protein" data-product-price="30">
-                                                Buy
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tbody id="supplementsTableBody" class="divide-y divide-slate-200">
+                                    <!-- Table rows will be dynamically inserted here -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
+        
             <!-- Modal -->
             <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm">
                 <div class="flex items-center justify-center min-h-screen p-4">
@@ -784,14 +774,24 @@
                                         class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
                                 </div>
                                 <div>
-                                    <label for="productPrice" class="block text-sm font-medium text-slate-700">Price</label>
+                                    <label for="productPrice" class="block text-sm font-medium text-slate-700">Price per Unit</label>
                                     <input type="text" id="productPrice" name="productPrice" required
                                         class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
                                 </div>
                                 <div>
-                                    <label for="productQuantity" class="block text-sm font-medium text-slate-700">Quantity</label>
+                                    <label for="productStock" class="block text-sm font-medium text-slate-700">Available Stock</label>
+                                    <input type="text" id="productStock" name="productStock" required
+                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
+                                </div>
+                                <div>
+                                    <label for="productQuantity" class="block text-sm font-medium text-slate-700">Quantity to Purchase</label>
                                     <input type="number" id="productQuantity" name="productQuantity" required min="1" value="1"
                                         class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label for="totalPrice" class="block text-sm font-medium text-slate-700">Total Price</label>
+                                    <input type="text" id="totalPrice" name="totalPrice" required
+                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
                                 </div>
                             </div>
                             <div class="mt-6 flex justify-end gap-3">
@@ -801,7 +801,7 @@
                                 </button>
                                 <button type="submit"
                                     class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md">
-                                    Buy
+                                    Proceed with Purchase
                                 </button>
                             </div>
                         </form>

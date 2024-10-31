@@ -96,6 +96,7 @@ app.post('/api/supplements', async (req, res) => {
         res.status(500).json({ error: 'Failed to add supplement' });
     }
 });
+
 app.put('/api/supplements/:id', async (req, res) => {
     try {
         const { supplement_name, quantity, price } = req.body;
@@ -119,6 +120,7 @@ app.put('/api/supplements/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to update supplement' });
     }
 });
+
 app.delete('/api/supplements/:id', async (req, res) => {
     try {   
         const { id } = req.params;
@@ -143,9 +145,21 @@ app.delete('/api/supplements/:id', async (req, res) => {
 });
 
 
-
-
 // Buy supplements API Routes
+// fixed
+app.get('/api/supplements', async (req, res) => {
+    try {
+        const supplements = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query('SELECT * FROM supplements ORDER BY supplement_name');
+            return rows;
+        });
+        res.json(supplements);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch supplements' });
+    }
+});
+
 app.post('/api/buy-supplement', async (req, res) => {
     try {
         const { supplementId, quantity } = req.body;
@@ -155,21 +169,38 @@ app.post('/api/buy-supplement', async (req, res) => {
         }
 
         const result = await handleDatabaseOperation(async (connection) => {
+            // First check if there's enough stock
+            const [currentStock] = await connection.query(
+                'SELECT quantity FROM supplements WHERE id = ?',
+                [supplementId]
+            );
+
+            if (currentStock.length === 0) {
+                throw new Error('Supplement not found');
+            }
+
+            if (currentStock[0].quantity < quantity) {
+                throw new Error('Insufficient stock');
+            }
+
+            // Update the stock
             const [updateResult] = await connection.query(
-                'UPDATE supplements SET quantity = quantity - ? WHERE id = ?',
-                [quantity, supplementId]
+                'UPDATE supplements SET quantity = quantity - ? WHERE id = ? AND quantity >= ?',
+                [quantity, supplementId, quantity]
             );
             return updateResult;
         });
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Supplement not found' });
+            return res.status(400).json({ error: 'Failed to update stock' });
         }
 
         res.json({ message: 'Purchase successful' });
     } catch (error) {
         console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to process purchase' });
+        res.status(500).json({ 
+            error: error.message === 'Insufficient stock' ? 'Insufficient stock' : 'Failed to process purchase'
+        });
     }
 });
 
