@@ -79,7 +79,12 @@ class SupplementManager {
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        ${supplement.quantity} units
+                        ${supplement.quantity} Items
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        ${supplement.price} ₱
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -95,21 +100,22 @@ class SupplementManager {
         
         const formData = {
             supplement_name: document.getElementById('name').value,
-            quantity: parseInt(document.getElementById('quantity').value)
+            quantity: parseInt(document.getElementById('quantity').value),
+            price: parseFloat(document.getElementById('price').value)
         };
-
+    
         try {
             const url = this.currentId ? `${this.API_URL}/${this.currentId}` : this.API_URL;
             const method = this.currentId ? 'PUT' : 'POST';
-
+    
             const response = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-
+    
             if (!response.ok) throw new Error('Failed to save supplement');
-
+    
             await this.loadSupplements();
             this.closeModal();
             this.showSuccess(`Supplement ${this.currentId ? 'updated' : 'added'} successfully`);
@@ -142,11 +148,13 @@ class SupplementManager {
         const id = row.dataset.id;
         const name = row.querySelector('.text-slate-900').textContent;
         const quantity = parseInt(row.querySelector('.bg-green-100').textContent);
+        const price = parseInt(row.querySelector('.bg-green-100').textContent);
         
         this.openModal({
             id: id,
             supplement_name: name,
-            quantity: quantity
+            quantity: quantity,
+            price: price
         });
     }
 

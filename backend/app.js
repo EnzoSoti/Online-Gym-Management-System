@@ -73,16 +73,16 @@ app.get('/api/supplements', async (req, res) => {
 
 app.post('/api/supplements', async (req, res) => {
     try {
-        const { supplement_name, quantity } = req.body;
+        const { supplement_name, quantity, price } = req.body;
         
-        if (!supplement_name || quantity === undefined) {
-            return res.status(400).json({ error: 'Supplement name and quantity are required' });
+        if (!supplement_name || quantity === undefined || price === undefined) {
+            return res.status(400).json({ error: 'Supplement name, quantity, and price are required' });
         }
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO supplements (supplement_name, quantity) VALUES (?, ?)',
-                [supplement_name, quantity]
+                'INSERT INTO supplements (supplement_name, quantity, price) VALUES (?, ?, ?)',
+                [supplement_name, quantity, price]
             );
             return insertResult;
         });
@@ -96,16 +96,15 @@ app.post('/api/supplements', async (req, res) => {
         res.status(500).json({ error: 'Failed to add supplement' });
     }
 });
-
 app.put('/api/supplements/:id', async (req, res) => {
     try {
-        const { supplement_name, quantity } = req.body;
+        const { supplement_name, quantity, price } = req.body;
         const { id } = req.params;
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [updateResult] = await connection.query(
-                'UPDATE supplements SET supplement_name = ?, quantity = ? WHERE id = ?',
-                [supplement_name, quantity, id]
+                'UPDATE supplements SET supplement_name = ?, quantity = ?, price = ? WHERE id = ?',
+                [supplement_name, quantity, price, id]
             );
             return updateResult;
         });
@@ -120,7 +119,6 @@ app.put('/api/supplements/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to update supplement' });
     }
 });
-
 app.delete('/api/supplements/:id', async (req, res) => {
     try {   
         const { id } = req.params;
@@ -144,6 +142,40 @@ app.delete('/api/supplements/:id', async (req, res) => {
     }
 });
 
+
+
+
+// Buy supplements API Routes
+app.post('/api/buy-supplement', async (req, res) => {
+    try {
+        const { supplementId, quantity } = req.body;
+
+        if (!supplementId || !quantity) {
+            return res.status(400).json({ error: 'Supplement ID and quantity are required' });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE supplements SET quantity = quantity - ? WHERE id = ?',
+                [quantity, supplementId]
+            );
+            return updateResult;
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Supplement not found' });
+        }
+
+        res.json({ message: 'Purchase successful' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to process purchase' });
+    }
+});
+
+
+
+
 // Monthly Members API Routes
 // fixed
 app.get('/api/monthly-members', async (req, res) => {
@@ -160,7 +192,6 @@ app.get('/api/monthly-members', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch members' });
     }
 });
-
 app.post('/api/monthly-members', async (req, res) => {
     try {
         const { member_name, status, start_date, end_date } = req.body;
@@ -188,7 +219,6 @@ app.post('/api/monthly-members', async (req, res) => {
         res.status(500).json({ error: 'Failed to add member' });
     }
 });
-
 app.put('/api/monthly-members/:id', async (req, res) => {
     try {
         const { member_name, status, start_date, end_date } = req.body;
@@ -212,7 +242,6 @@ app.put('/api/monthly-members/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to update member' });
     }
 });
-
 app.delete('/api/monthly-members/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -236,13 +265,14 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
     }
 });
 
+
 // Sales Reports API Routes
 // fixed
 app.get('/api/sales-reports/monthly-members', async (req, res) => {
     try {
         const members = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(
-                'SELECT * FROM monthly_members ORDER BY start_date DESC'
+                'SELECT * FROM monthly_members ORDER BY start_date'
             );
             return rows;
         });
@@ -252,6 +282,7 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch monthly members' });
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -18,7 +18,12 @@ function addParticipant() {
         // Append the new input field to the "additional-clients" div
         additionalClientsDiv.appendChild(newParticipantField);
     } else {
-        alert("Maximum 9 participants allowed, including the main client.");
+        //alert("Maximum 9 participants allowed, including the main client.");
+        Swal.fire({
+            title: 'Error',
+            text: 'Maximum 9 participants allowed, including the main client.',
+            icon: 'error'
+        });
     }
 }
 
