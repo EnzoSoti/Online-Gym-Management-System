@@ -314,6 +314,23 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
     }
 });
 
+// Sales Reports API Routes
+// fixed
+app.get('/api/sales-reports/supplements', async (req, res) => {
+    try {
+        const members = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM supplements'
+            );
+            return rows;
+        });
+        res.json(members);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch monthly members' });
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

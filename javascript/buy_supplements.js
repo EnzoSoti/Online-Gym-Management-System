@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">#${supplement.id}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">${supplement.supplement_name}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">${supplement.quantity}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">$${supplement.price}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">₱${supplement.price}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                     <button class="buy-button px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-200 ${supplement.quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
                             data-supplement-id="${supplement.id}"
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         productIdInput.value = supplementId;
         productNameInput.value = supplementName;
-        productPriceInput.value = `$${supplementPrice}`;
+        productPriceInput.value = `₱${supplementPrice}`;
         productStockInput.value = supplementStock;
         productQuantityInput.value = "1";
         productQuantityInput.max = supplementStock;
@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update total price when quantity changes
     function updateTotalPrice() {
         const quantity = parseInt(productQuantityInput.value);
-        const price = parseFloat(productPriceInput.value.replace('$', ''));
-        totalPriceInput.value = `$${(quantity * price).toFixed(2)}`;
+        const price = parseFloat(productPriceInput.value.replace('₱', ''));
+        totalPriceInput.value = `₱${(quantity * price).toFixed(2)}`;
     }
 
     // Handle form submission
@@ -128,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listeners
-    
     closeModalBtn.addEventListener('click', function() {
         console.log('Close button clicked');
         buyModal.classList.add('hidden');
