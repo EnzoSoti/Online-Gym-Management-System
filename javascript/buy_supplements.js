@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
     const supplementsTableBody = document.getElementById('supplementsTableBody');
     const buyModal = document.getElementById('buyModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -14,17 +13,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalPriceInput = document.getElementById('totalPrice');
 
     let supplements = []; // Store all supplements data
+    let lastFetchTimestamp = 0; // Track last fetch time
+    const POLLING_INTERVAL = 5000; // Check for updates every 5 seconds
 
-    // Fetch and display supplements
-    async function fetchSupplements() {
+    // Fetch and display supplements with timestamp comparison
+    async function fetchSupplements(isInitialLoad = false) {
         try {
             const response = await fetch('http://localhost:3000/api/supplements');
-            supplements = await response.json();
-            displaySupplements(supplements);
+            const newSupplements = await response.json();
+            
+            // Compare data to check for changes
+            const hasChanges = JSON.stringify(supplements) !== JSON.stringify(newSupplements);
+            
+            if (hasChanges || isInitialLoad) {
+                supplements = newSupplements;
+                displaySupplements(supplements);
+                
+                // If there are changes and it's not the initial load, show a notification
+                if (!isInitialLoad && hasChanges) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'info',
+                        title: 'Inventory updated!',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            }
+            
+            lastFetchTimestamp = Date.now();
         } catch (error) {
             console.error('Error fetching supplements:', error);
             Swal.fire('Error', 'Failed to fetch supplements', 'error');
         }
+    }
+
+    // Start polling for updates
+    function startPolling() {
+        setInterval(async () => {
+            // Only fetch if the modal is not open
+            if (buyModal.classList.contains('hidden')) {
+                await fetchSupplements();
+            }
+        }, POLLING_INTERVAL);
     }
 
     // Display supplements in the table
@@ -111,14 +143,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             await Swal.fire('Success', 'Purchase completed successfully', 'success');
             buyModal.classList.add('hidden');
-            fetchSupplements(); // Refresh the table
+            await fetchSupplements(); // Immediate refresh after purchase
         } catch (error) {
             console.error('Error processing purchase:', error);
             Swal.fire('Error', 'Failed to process purchase', 'error');
         }
     }
 
-    // Handle search functionality
+    // Handle search functionality with real-time filtering
     function handleSearch(event) {
         const searchTerm = event.target.value.toLowerCase();
         const filteredSupplements = supplements.filter(supplement =>
@@ -129,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listeners
     closeModalBtn.addEventListener('click', function() {
-        console.log('Close button clicked');
         buyModal.classList.add('hidden');
     });
 
@@ -137,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
     productQuantityInput.addEventListener('input', updateTotalPrice);
     searchInput.addEventListener('input', handleSearch);
 
-    // Initial load
-    fetchSupplements();
+    // Initial load and start polling
+    fetchSupplements(true); // true indicates initial load
+    startPolling();
 });

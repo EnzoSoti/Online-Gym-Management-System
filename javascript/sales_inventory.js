@@ -6,9 +6,15 @@ class SupplementManager {
         this.table = document.getElementById('supplementsTable');
         this.modalTitle = document.getElementById('modalTitle');
         this.currentId = null;
+        this.LOW_STOCK_THRESHOLD = 10;
+        this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
+        this.currentSupplements = []; // Store current state
+        this.isPolling = true; // Flag to control polling
+        this.lowStockNotified = new Set(); // Track which items have been notified
 
         this.initializeEventListeners();
-        this.loadSupplements();
+        this.loadSupplements(true); // Initial load
+        this.startPolling();
     }
 
     initializeEventListeners() {
@@ -33,14 +39,42 @@ class SupplementManager {
                 this.deleteSupplement(row);
             }
         });
+
+        // Add visibility change handler
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.stopPolling();
+            } else {
+                this.startPolling();
+                this.loadSupplements(); // Refresh data when page becomes visible
+            }
+        });
+    }
+
+    startPolling() {
+        this.isPolling = true;
+        this.poll();
+    }
+
+    stopPolling() {
+        this.isPolling = false;
+    }
+
+    async poll() {
+        if (!this.isPolling) return;
+
+        await this.loadSupplements();
+        setTimeout(() => this.poll(), this.POLLING_INTERVAL);
     }
 
     openModal(supplement = null) {
+        this.stopPolling(); // Stop polling when modal is open
         this.currentId = supplement ? supplement.id : null;
         this.modalTitle.textContent = supplement ? 'Edit Supplement' : 'Add Supplement';
         
         document.getElementById('name').value = supplement ? supplement.supplement_name : '';
         document.getElementById('quantity').value = supplement ? supplement.quantity : '';
+        document.getElementById('price').value = supplement ? supplement.price : '';
         
         this.modal.classList.remove('hidden');
     }
@@ -49,20 +83,104 @@ class SupplementManager {
         this.modal.classList.add('hidden');
         this.form.reset();
         this.currentId = null;
+        this.startPolling(); // Resume polling when modal is closed
     }
 
-    async loadSupplements() {
+    async loadSupplements(isInitialLoad = false) {
         try {
             const response = await fetch(this.API_URL);
-            const supplements = await response.json();
+            const newSupplements = await response.json();
             
-            this.table.innerHTML = supplements.map(supplement => this.createTableRow(supplement)).join('');
+            // Check if data has changed
+            const hasChanges = JSON.stringify(this.currentSupplements) !== JSON.stringify(newSupplements);
+            
+            if (hasChanges || isInitialLoad) {
+                this.table.innerHTML = newSupplements.map(supplement => this.createTableRow(supplement)).join('');
+                
+                // Update current state before checking low stock
+                const previousSupplements = [...this.currentSupplements];
+                this.currentSupplements = newSupplements;
+
+                // Check for low stock items with immediate notification
+                this.checkLowStockWithUpdates(previousSupplements, newSupplements);
+                
+                // Show update notification if it's not the initial load
+                if (hasChanges && !isInitialLoad && !this.modal.classList.contains('hidden')) {
+                    this.showUpdateNotification();
+                }
+            }
         } catch (error) {
-            this.showError('Failed to load supplements');
+            console.error('Failed to load supplements:', error);
+            // Only show error if it's the initial load
+            if (isInitialLoad) {
+                this.showError('Failed to load supplements');
+            }
         }
     }
 
+    checkLowStockWithUpdates(previousSupplements, newSupplements) {
+        // Find items that are now below threshold
+        const newLowStockItems = newSupplements.filter(supp => {
+            const prevSupp = previousSupplements.find(ps => ps.id === supp.id);
+            
+            // Conditions for showing notification:
+            // 1. Quantity is below or equal to threshold
+            // 2. Either:
+            //    a. Item is new
+            //    b. Previous quantity was above threshold
+            //    c. Quantity decreased while already below threshold
+            return supp.quantity <= this.LOW_STOCK_THRESHOLD && (
+                !prevSupp || 
+                prevSupp.quantity > this.LOW_STOCK_THRESHOLD ||
+                (supp.quantity < prevSupp.quantity && prevSupp.quantity <= this.LOW_STOCK_THRESHOLD)
+            );
+        });
+
+        if (newLowStockItems.length > 0) {
+            this.showLowStockNotification(newLowStockItems);
+        }
+    }
+
+    showUpdateNotification() {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'info',
+            title: 'Inventory Updated',
+            text: 'The supplement list has been updated.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    }
+
+    showLowStockNotification(items) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Low Stock Alert!',
+            html: `
+                <div class="text-left">
+                    <p class="mb-2">The following items are running low:</p>
+                    <div class="bg-yellow-50 p-3 rounded-lg">
+                        ${items.map(item => `
+                            <div class="mb-2">
+                                <span class="font-semibold">${item.supplement_name}</span>
+                                <span class="text-red-600 ml-2">(${item.quantity} remaining)</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: 'Acknowledge',
+            confirmButtonColor: '#4F46E5'
+        });
+    }
+
     createTableRow(supplement) {
+        const stockClass = supplement.quantity <= this.LOW_STOCK_THRESHOLD 
+            ? 'bg-red-100 text-red-800' 
+            : 'bg-green-100 text-green-800';
+
         return `
             <tr data-id="${supplement.id}" class="hover:bg-slate-50">
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -78,7 +196,7 @@ class SupplementManager {
                     </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${stockClass}">
                         ${supplement.quantity} Available
                     </span>
                 </td>
@@ -116,6 +234,13 @@ class SupplementManager {
     
             if (!response.ok) throw new Error('Failed to save supplement');
     
+            // Store previous state before loading new data
+            const previousSupplements = [...this.currentSupplements];
+            
+            // Load new data and check for low stock
+            const newSupplements = await response.json();
+            this.checkLowStockWithUpdates(previousSupplements, [newSupplements]);
+            
             await this.loadSupplements();
             this.closeModal();
             this.showSuccess(`Supplement ${this.currentId ? 'updated' : 'added'} successfully`);
@@ -147,8 +272,11 @@ class SupplementManager {
     editSupplement(row) {
         const id = row.dataset.id;
         const name = row.querySelector('.text-slate-900').textContent;
-        const quantity = parseInt(row.querySelector('.bg-green-100').textContent);
-        const price = parseInt(row.querySelector('.bg-green-100').textContent);
+        const quantityText = row.querySelector('.rounded-full').textContent;
+        const priceText = row.querySelectorAll('.rounded-full')[1].textContent;
+        
+        const quantity = parseInt(quantityText);
+        const price = parseFloat(priceText);
         
         this.openModal({
             id: id,
