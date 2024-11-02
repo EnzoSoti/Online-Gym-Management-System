@@ -6,16 +6,126 @@ const addMemberBtn = document.getElementById('addMemberBtn');
 const addMemberModal = document.getElementById('addMemberModal');
 const memberForm = document.getElementById('memberForm');
 const closeModalBtn = document.getElementById('closeModalBtn');
-const searchInput = document.getElementById('memberSearch');
+const searchInput = document.getElementById('searchInput');
 let selectedRow = null;
-let allMembers = []; // Search function dito nag sstore yung filtered
+let allMembers = [];
+let lastPolledData = null;
+const POLLING_INTERVAL = 5000; // Poll every 5 seconds
 
-// Load members on page load
-document.addEventListener('DOMContentLoaded', loadMembers);
+// Notification System
+class NotificationSystem {
+    constructor() {
+        this.hasPermission = false;
+        this.init();
+    }
+
+    async init() {
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            this.hasPermission = permission === 'granted';
+        }
+    }
+
+    async notify(title, options = {}) {
+        // Always show SweetAlert2 notification
+        Swal.fire({
+            icon: options.icon || 'info',
+            title: title,
+            text: options.body || '',
+            showConfirmButton: false,
+            timer: 3000,
+            position: 'top-end',
+            toast: true
+        });
+
+        // Show system notification if permitted
+        if (this.hasPermission) {
+            new Notification(title, {
+                body: options.body,
+                icon: '../img/Fitworx logo.jpg' // Add your notification icon path
+            });
+        }
+    }
+}
+
+const notificationSystem = new NotificationSystem();
+
+// Load members on page load and start polling
+document.addEventListener('DOMContentLoaded', () => {
+    loadMembers();
+    startPolling();
+});
 
 // Add search event listener
 if (searchInput) {
     searchInput.addEventListener('input', filterMembers);
+}
+
+// Polling function with notification for changes
+function startPolling() {
+    setInterval(async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/monthly-members`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const newData = await response.json();
+            
+            // Check if data has changed before updating
+            if (JSON.stringify(newData) !== JSON.stringify(lastPolledData)) {
+                // Detect changes
+                if (lastPolledData) {
+                    const added = newData.filter(member => 
+                        !lastPolledData.find(old => old.id === member.id)
+                    );
+                    const deleted = lastPolledData.filter(member => 
+                        !newData.find(current => current.id === member.id)
+                    );
+                    const updated = newData.filter(member => {
+                        const oldMember = lastPolledData.find(old => old.id === member.id);
+                        return oldMember && JSON.stringify(member) !== JSON.stringify(oldMember);
+                    });
+
+                    // Notify of changes made by other users
+                    if (added.length > 0) {
+                        notificationSystem.notify('New Member Added', {
+                            body: `${added.length} new member(s) have been added`,
+                            icon: 'success'
+                        });
+                    }
+                    if (updated.length > 0) {
+                        notificationSystem.notify('Member Updated', {
+                            body: `${updated.length} member(s) have been updated`,
+                            icon: 'info'
+                        });
+                    }
+                    if (deleted.length > 0) {
+                        notificationSystem.notify('Member Deleted', {
+                            body: `${deleted.length} member(s) have been removed`,
+                            icon: 'warning'
+                        });
+                    }
+                }
+
+                allMembers = newData;
+                lastPolledData = newData;
+                
+                // If search input has value, filter the new data
+                if (searchInput && searchInput.value) {
+                    filterMembers();
+                } else {
+                    renderMembers(allMembers);
+                }
+            }
+        } catch (error) {
+            console.error('Polling error:', error);
+            notificationSystem.notify('Connection Error', {
+                body: 'Failed to fetch latest updates',
+                icon: 'error'
+            });
+        }
+    }, POLLING_INTERVAL);
 }
 
 // Modal functions
@@ -62,6 +172,9 @@ function renderMembers(members) {
         return;
     }
 
+    // Store current scroll position
+    const scrollPos = memberTableBody.parentElement.scrollTop;
+
     memberTableBody.innerHTML = ''; 
     
     members.forEach(member => {
@@ -75,11 +188,14 @@ function renderMembers(members) {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button class="text-blue-600 hover:text-blue-900 mr-4" onclick="updateMember(this)">Update</button>
-                <button class="text-red-600 hover:text-red-900" onclick="deleteMember(this)">Delete</button>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md transition-colors duration-200 text-sm mr-4" onclick="updateMember(this)">Update</button>
+                <button class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-md transition-colors duration-200 text-sm" onclick="deleteMember(this)">Delete</button>
             </td>
         `;
     });
+
+    // Restore scroll position
+    memberTableBody.parentElement.scrollTop = scrollPos;
 }
 
 async function loadMembers() {
@@ -89,11 +205,15 @@ async function loadMembers() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        allMembers = await response.json(); // Store all members
-        renderMembers(allMembers); // Render all members initially
+        allMembers = await response.json();
+        lastPolledData = [...allMembers]; // Store initial data for polling comparison
+        renderMembers(allMembers);
     } catch (error) {
         console.error('Error loading members:', error);
-        Swal.fire('Error', 'Failed to load members', 'error');
+        notificationSystem.notify('Error Loading Members', {
+            body: 'Failed to load member data',
+            icon: 'error'
+        });
     }
 }
 
@@ -131,18 +251,20 @@ if (memberForm) {
             await loadMembers();
             closeMemberModal();
             
-            Swal.fire({
-                icon: 'success',
-                title: selectedRow ? 'Member updated successfully' : 'Member added successfully',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            notificationSystem.notify(
+                selectedRow ? 'Member Updated' : 'Member Added',
+                {
+                    body: selectedRow 
+                        ? `Successfully updated ${memberData.member_name}`
+                        : `Successfully added ${memberData.member_name}`,
+                    icon: 'success'
+                }
+            );
         } catch (error) {
             console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.message
+            notificationSystem.notify('Error', {
+                body: error.message,
+                icon: 'error'
             });
         }
     });
@@ -169,6 +291,7 @@ function updateMember(btn) {
 async function deleteMember(btn) {
     const row = btn.closest('tr');
     const memberId = row.dataset.id;
+    const memberName = row.cells[0].innerText;
 
     const result = await Swal.fire({
         title: 'Are you sure?',
@@ -189,19 +312,15 @@ async function deleteMember(btn) {
             if (!response.ok) throw new Error('Failed to delete member');
 
             await loadMembers();
-            Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: 'Member has been deleted.',
-                showConfirmButton: false,
-                timer: 1500
+            notificationSystem.notify('Member Deleted', {
+                body: `Successfully deleted ${memberName}`,
+                icon: 'success'
             });
         } catch (error) {
             console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.message
+            notificationSystem.notify('Error', {
+                body: error.message,
+                icon: 'error'
             });
         }
     }

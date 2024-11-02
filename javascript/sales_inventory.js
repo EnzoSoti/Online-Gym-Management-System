@@ -122,13 +122,6 @@ class SupplementManager {
         // Find items that are now below threshold
         const newLowStockItems = newSupplements.filter(supp => {
             const prevSupp = previousSupplements.find(ps => ps.id === supp.id);
-            
-            // Conditions for showing notification:
-            // 1. Quantity is below or equal to threshold
-            // 2. Either:
-            //    a. Item is new
-            //    b. Previous quantity was above threshold
-            //    c. Quantity decreased while already below threshold
             return supp.quantity <= this.LOW_STOCK_THRESHOLD && (
                 !prevSupp || 
                 prevSupp.quantity > this.LOW_STOCK_THRESHOLD ||
@@ -180,7 +173,7 @@ class SupplementManager {
         const stockClass = supplement.quantity <= this.LOW_STOCK_THRESHOLD 
             ? 'bg-red-100 text-red-800' 
             : 'bg-green-100 text-green-800';
-
+    
         return `
             <tr data-id="${supplement.id}" class="hover:bg-slate-50">
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -206,8 +199,8 @@ class SupplementManager {
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
-                    <button class="delete-btn text-red-600 hover:text-red-900">Delete</button>
+                    <button class="edit-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded-md transition-colors duration-200 text-sm mr-3">Edit</button>
+                    <button class="delete-btn bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-md transition-colors duration-200 text-sm">Delete</button>
                 </td>
             </tr>
         `;

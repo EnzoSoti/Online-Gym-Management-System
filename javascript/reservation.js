@@ -1,3 +1,4 @@
+
 let participantCount = 1;
 const maxParticipants = 9;
 
@@ -288,6 +289,178 @@ function clearReservationsTable() {
     const tableBody = document.getElementById('reservations-body');
     tableBody.innerHTML = '';
 }
+
+function initializeCalendar() {
+    try {
+        // Get all reservations from the table
+        const reservations = [];
+        const rows = document.querySelectorAll('#reservations-body tr');
+        
+        rows.forEach(row => {
+            const date = row.cells[1].textContent;
+            const timeIn = row.cells[2].textContent;
+            const timeOut = row.cells[3].textContent;
+            const client = row.cells[4].textContent;
+            const service = row.cells[5].textContent;
+            
+            // Convert time to full ISO string
+            const startDateTime = new Date(`${date} ${convertTo24HourFormat(timeIn)}`);
+            const endDateTime = new Date(`${date} ${convertTo24HourFormat(timeOut)}`);
+            
+            reservations.push({
+                title: `${service} - ${client}`,
+                start: startDateTime,
+                end: endDateTime,
+                backgroundColor: service === 'Basketball Court' ? '#4338ca' : '#7c3aed'
+            });
+        });
+
+        const calendarEl = document.createElement('div');
+        calendarEl.style.padding = '20px';
+        calendarEl.style.backgroundColor = 'white';
+        calendarEl.style.borderRadius = '8px';
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            slotMinTime: '09:00:00',
+            slotMaxTime: '24:00:00',
+            events: reservations,
+            height: 'auto',
+            slotDuration: '01:00:00',
+            allDaySlot: false,
+            businessHours: {
+                daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+                startTime: '09:00',
+                endTime: '24:00',
+            }
+        });
+
+        return { calendarEl, calendar };
+    } catch (error) {
+        console.error('Error in initializeCalendar:', error);
+        throw error;
+    }
+}
+
+// Event listener for when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for View Available Schedule button
+    const viewScheduleBtn = document.getElementById('ViewAvailSched');
+    if (viewScheduleBtn) {
+        viewScheduleBtn.addEventListener('click', function() {
+            if (typeof FullCalendar === 'undefined') {
+                console.error('FullCalendar is not loaded');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Calendar component failed to load. Please refresh the page.',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            try {
+                const { calendarEl, calendar } = initializeCalendar();
+                
+                Swal.fire({
+                    title: 'Available Schedule',
+                    html: calendarEl,
+                    width: '80%',
+                    heightAuto: true,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                    didRender: () => {
+                        try {
+                            calendar.render();
+                        } catch (error) {
+                            console.error('Error rendering calendar:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to render the calendar. Please try again.',
+                                icon: 'error'
+                            });
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing calendar:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to load the calendar. Please try again.',
+                    icon: 'error'
+                });
+            }
+        });
+    } else {
+        console.error('ViewAvailSched button not found');
+    }
+});
+
+// Handle booking updates
+const originalBookReservation = bookReservation;
+bookReservation = function(event) {
+    originalBookReservation(event);
+    
+    // If the calendar modal is open, refresh it
+    const calendarModal = document.querySelector('.swal2-modal');
+    if (calendarModal) {
+        try {
+            const { calendarEl, calendar } = initializeCalendar();
+            calendarModal.querySelector('.swal2-content').innerHTML = '';
+            calendarModal.querySelector('.swal2-content').appendChild(calendarEl);
+            calendar.render();
+        } catch (error) {
+            console.error('Error refreshing calendar:', error);
+        }
+    }
+};
+
+// Modify your existing cancelReservation function
+const originalCancelReservation = cancelReservation;
+cancelReservation = function(reservationId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const rows = document.querySelectorAll('#reservations-body tr');
+            for (let row of rows) {
+                if (row.cells[0].textContent === `#${reservationId}`) {
+                    row.remove();
+                    Swal.fire(
+                        'Cancelled!',
+                        'Your reservation has been cancelled.',
+                        'success'
+                    ).then(() => {
+                        // Refresh calendar if it's open
+                        const calendarModal = document.querySelector('.swal2-modal');
+                        if (calendarModal) {
+                            const { calendarEl, calendar } = initializeCalendar();
+                            calendarModal.querySelector('.swal2-content').innerHTML = '';
+                            calendarModal.querySelector('.swal2-content').appendChild(calendarEl);
+                            calendar.render();
+                        }
+                    });
+                    return;
+                }
+            }
+            Swal.fire(
+                'Error',
+                'Could not find the reservation to cancel.',
+                'error'
+            );
+        }
+    });
+};
 
 // Event listener to clear the table when the page loads (if needed)
 document.addEventListener('DOMContentLoaded', function() {

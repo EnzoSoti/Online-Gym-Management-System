@@ -1,4 +1,92 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const POLLING_INTERVAL = 5000; // 5 seconds
+    let activeTabId = 'monthly';
+    let lastPolledData = {
+        monthly: null,
+        supplements: null
+    };
+    let notificationPermission = false;
+
+    // Request notification permission on load
+    async function requestNotificationPermission() {
+        try {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                notificationPermission = permission === 'granted';
+            }
+        } catch (error) {
+            console.error('Notification permission error:', error);
+        }
+    }
+
+    // Notification function
+    function sendNotification(tabId, changes) {
+        const tabNames = {
+            monthly: 'Monthly Members',
+            supplements: 'Supplements'
+        };
+
+        const title = `${tabNames[tabId]} Updated`;
+        const message = `${changes.added ? `Added: ${changes.added} items\n` : ''}${changes.removed ? `Removed: ${changes.removed} items\n` : ''}${changes.modified ? `Modified: ${changes.modified} items` : ''}`;
+
+        if (notificationPermission && 'Notification' in window) {
+            // Browser notification
+            new Notification(title, {
+                body: message,
+                icon: '/path/to/your/icon.png', // Add your notification icon path
+                tag: 'data-update'
+            });
+        } else {
+            // Fallback to SweetAlert2 toast
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                title: title,
+                text: message,
+                icon: 'info',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+    }
+
+    // Function to detect specific changes in data
+    function detectChanges(newData, oldData) {
+        if (!oldData) return { added: newData.length };
+
+        const changes = {
+            added: 0,
+            removed: 0,
+            modified: 0
+        };
+
+        // Create maps for easier comparison
+        const oldMap = new Map(oldData.map(item => [item.id, item]));
+        const newMap = new Map(newData.map(item => [item.id, item]));
+
+        // Check for added and modified items
+        newMap.forEach((newItem, id) => {
+            if (!oldMap.has(id)) {
+                changes.added++;
+            } else {
+                const oldItem = oldMap.get(id);
+                if (JSON.stringify(oldItem) !== JSON.stringify(newItem)) {
+                    changes.modified++;
+                }
+            }
+        });
+
+        // Check for removed items
+        oldMap.forEach((_, id) => {
+            if (!newMap.has(id)) {
+                changes.removed++;
+            }
+        });
+
+        return changes;
+    }
+
     // Function to generate unique IDs
     function generateUniqueId(prefix) {
         return `${prefix}${Date.now()}${Math.floor(Math.random() * 1000)}`;
@@ -7,6 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to format date to YYYY-MM-DD
     function formatDate(date) {
         return new Date(date).toISOString().split('T')[0];
+    }
+
+    // Function to compare data for changes
+    function hasDataChanged(newData, lastData) {
+        return JSON.stringify(newData) !== JSON.stringify(lastData);
     }
 
     // Function to add a new row to the table
@@ -31,29 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 break;
 
-            // case 'regular':
-            //     const regularId = generateUniqueId('R');
-            //     newRow.innerHTML = `
-            //         <td class="px-6 py-4 whitespace-nowrap">${regularId}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-            //     `;
-            //     break;
-
-            // case 'student':
-            //     const studentId = generateUniqueId('S');
-            //     newRow.innerHTML = `
-            //         <td class="px-6 py-4 whitespace-nowrap">${studentId}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('schoolId')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('date')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">${formData.get('timeIn')}</td>
-            //         <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-            //     `;
-            //     break;
-
             case 'supplements':
                 const productId = generateUniqueId('P');
                 newRow.innerHTML = `
@@ -68,6 +138,17 @@ document.addEventListener('DOMContentLoaded', function() {
         table.appendChild(newRow);
     }
 
+    // Polling function for active tab
+    function startPolling() {
+        setInterval(async () => {
+            // Poll both tabs regardless of which is active
+            await Promise.all([
+                fetchDataForTab('monthly', true),
+                fetchDataForTab('supplements', true)
+            ]);
+        }, POLLING_INTERVAL);
+    }
+
     // Tab functionality
     const tabButtons = document.querySelectorAll('[role="tab"]');
     const tabPanels = document.querySelectorAll('[role="tabpanel"]');
@@ -77,47 +158,38 @@ document.addEventListener('DOMContentLoaded', function() {
         button.setAttribute('aria-controls', targetId);
 
         button.addEventListener('click', () => {
-            // Deactivate all tabs
+            activeTabId = targetId;
+            
             tabButtons.forEach(btn => {
                 btn.classList.remove('border-blue-600');
                 btn.classList.add('border-transparent');
                 btn.setAttribute('aria-selected', 'false');
             });
 
-            // Hide all tab panels
             tabPanels.forEach(panel => {
                 panel.classList.add('hidden');
             });
 
-            // Activate clicked tab
             button.classList.remove('border-transparent');
             button.classList.add('border-blue-600');
             button.setAttribute('aria-selected', 'true');
 
-            // Show corresponding panel
             const targetPanel = document.getElementById(targetId);
             targetPanel.classList.remove('hidden');
 
-            // Fetch data for the active tab
-            fetchDataForTab(targetId);
+            fetchDataForTab(targetId, false);
         });
     });
 
     // Function to fetch data for a specific tab
-    async function fetchDataForTab(tabId) {
+    async function fetchDataForTab(tabId, isPolling = false) {
         let endpoint;
         switch (tabId) {
             case 'monthly':
                 endpoint = 'http://localhost:3000/api/sales-reports/monthly-members';
                 break;
-            // case 'regular':
-            //     endpoint = '/api/sales-reports/regular-members';
-            //     break;
-            // case 'student':
-            //     endpoint = '/api/sales-reports/student-members';
-            //     break;
             case 'supplements':
-                endpoint = '/api/sales-reports/supplements';
+                endpoint = 'http://localhost:3000/api/sales-reports/supplements';
                 break;
             default:
                 return;
@@ -125,8 +197,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
-            populateTable(tabId, data);
+
+            if (!isPolling || hasDataChanged(data, lastPolledData[tabId])) {
+                const changes = detectChanges(data, lastPolledData[tabId]);
+                
+                // Only send notification if there are actual changes
+                if (changes.added || changes.removed || changes.modified) {
+                    sendNotification(tabId, changes);
+                }
+
+                lastPolledData[tabId] = data;
+                if (tabId === activeTabId) {
+                    populateTable(tabId, data);
+                }
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -134,8 +223,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to populate table with fetched data
     function populateTable(tabId, data) {
-        const tableBody = document.getElementById(`${tabId}-members-table`);
-        tableBody.innerHTML = ''; // Clear existing rows
+        const tableBody = document.querySelector(`#${tabId}-members-table`);
+        if (!tableBody) return;
+
+        const scrollPos = tableBody.parentElement.scrollTop;
+        tableBody.innerHTML = '';
 
         data.forEach(item => {
             const newRow = document.createElement('tr');
@@ -154,25 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
                     `;
                     break;
-                // case 'regular':
-                //     newRow.innerHTML = `
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.name}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
-                //     `;
-                //     break;
-                // case 'student':
-                //     newRow.innerHTML = `
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.transaction_id}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.student_name}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.school_id}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.date)}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">${item.time_in}</td>
-                //         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
-                //     `;
-                //     break;
                 case 'supplements':
                     newRow.innerHTML = `
                         <td class="px-6 py-4 whitespace-nowrap">${item.product_id}</td>
@@ -184,6 +257,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             tableBody.appendChild(newRow);
         });
+
+        tableBody.parentElement.scrollTop = scrollPos;
     }
 
     // Handle export/print functionality
@@ -193,10 +268,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tabPanel = button.closest('[role="tabpanel"]');
                 const printContent = tabPanel.cloneNode(true);
 
-                // Remove buttons and inputs from print view
                 printContent.querySelectorAll('button, input').forEach(el => el.remove());
 
-                // Create print window
                 const printWindow = window.open('', '_blank');
                 printWindow.document.write(
                     `<html>
@@ -228,6 +301,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Set initial active tab
+    // Initialize
+    requestNotificationPermission();
     document.getElementById('monthly-tab').click();
+    startPolling();
 });
