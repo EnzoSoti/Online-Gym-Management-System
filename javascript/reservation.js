@@ -285,14 +285,8 @@ function cancelReservation(reservationId) {
 }
 
 // Function to clear the reservations table (if needed)
-function clearReservationsTable() {
-    const tableBody = document.getElementById('reservations-body');
-    tableBody.innerHTML = '';
-}
-
 function initializeCalendar() {
     try {
-        // Get all reservations from the table
         const reservations = [];
         const rows = document.querySelectorAll('#reservations-body tr');
         
@@ -303,29 +297,83 @@ function initializeCalendar() {
             const client = row.cells[4].textContent;
             const service = row.cells[5].textContent;
             
-            // Convert time to full ISO string
             const startDateTime = new Date(`${date} ${convertTo24HourFormat(timeIn)}`);
             const endDateTime = new Date(`${date} ${convertTo24HourFormat(timeOut)}`);
             
             reservations.push({
-                title: `${service} - ${client}`,
+                title: '',
                 start: startDateTime,
                 end: endDateTime,
-                backgroundColor: service === 'Basketball Court' ? '#4338ca' : '#7c3aed'
+                backgroundColor: '#EEF2FF', // Indigo-50
+                borderColor: '#6366F1', // Indigo-500
+                textColor: '#1E1B4B', // Indigo-950
+                extendedProps: {
+                    service: service,
+                    client: client,
+                    timeIn: timeIn,
+                    timeOut: timeOut
+                }
             });
         });
 
         const calendarEl = document.createElement('div');
-        calendarEl.style.padding = '20px';
+        calendarEl.style.padding = '24px';
         calendarEl.style.backgroundColor = 'white';
-        calendarEl.style.borderRadius = '8px';
+        calendarEl.style.borderRadius = '12px';
+        
+        // Add custom CSS for calendar
+        const styleEl = document.createElement('style');
+        styleEl.textContent = `
+            .fc {
+                --fc-border-color: #E5E7EB;
+                --fc-button-bg-color: #4F46E5;
+                --fc-button-border-color: #4F46E5;
+                --fc-button-hover-bg-color: #4338CA;
+                --fc-button-hover-border-color: #4338CA;
+                --fc-button-active-bg-color: #3730A3;
+                --fc-today-bg-color: #EEF2FF;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            }
+            .fc .fc-button {
+                padding: 8px 16px;
+                font-weight: 500;
+                border-radius: 6px;
+                text-transform: capitalize;
+                transition: all 0.2s;
+            }
+            .fc .fc-toolbar-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #1E1B4B;
+            }
+            .fc .fc-day-header {
+                padding: 8px 0;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.875rem;
+            }
+            .fc .fc-day {
+                transition: background-color 0.2s;
+            }
+            .fc .fc-day:hover {
+                background-color: #F9FAFB;
+            }
+            .fc .fc-event {
+                transition: transform 0.2s;
+                cursor: pointer;
+            }
+            .fc .fc-event:hover {
+                transform: translateY(-1px);
+            }
+        `;
+        document.head.appendChild(styleEl);
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'timeGridWeek',
+            initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: 'dayGridMonth'
             },
             slotMinTime: '09:00:00',
             slotMaxTime: '24:00:00',
@@ -337,9 +385,63 @@ function initializeCalendar() {
                 daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
                 startTime: '09:00',
                 endTime: '24:00',
+            },
+            eventDidMount: function(info) {
+                info.el.style.fontSize = '0.875rem';
+                info.el.style.padding = '6px 8px';
+                info.el.style.whiteSpace = 'pre-line';
+                info.el.style.borderRadius = '6px';
+                info.el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                
+                // Add tooltip
+                tippy(info.el, {
+                    content: `
+                        <div class="text-sm">
+                            <div class="font-semibold">${info.event.extendedProps.service}</div>
+                            <div class="text-gray-600">${info.event.extendedProps.client}</div>
+                            <div class="text-gray-500 text-xs mt-1">
+                                ${info.event.extendedProps.timeIn} - ${info.event.extendedProps.timeOut}
+                            </div>
+                        </div>
+                    `,
+                    allowHTML: true,
+                    theme: 'light-border',
+                    animation: 'shift-away',
+                });
+            },
+            eventContent: function(arg) {
+                const timeIn = arg.event.extendedProps.timeIn;
+                const timeOut = arg.event.extendedProps.timeOut;
+                const service = arg.event.extendedProps.service;
+                const client = arg.event.extendedProps.client;
+
+                return {
+                    html: `
+                        <div class="p-1">
+                            <div class="font-semibold text-indigo-900">
+                                ${timeIn} - ${timeOut}
+                            </div>
+                            <div class="text-indigo-700 font-medium">
+                                ${service}
+                            </div>
+                            <div class="text-indigo-600 text-sm mt-1">
+                                ${client}
+                            </div>
+                        </div>
+                    `
+                };
+            },
+            dayMaxEvents: true,
+            eventDisplay: 'block',
+            views: {
+                dayGrid: {
+                    dayMaxEvents: 4
+                }
             }
         });
 
+        calendarEl.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
+        
         return { calendarEl, calendar };
     } catch (error) {
         console.error('Error in initializeCalendar:', error);
