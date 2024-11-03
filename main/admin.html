@@ -142,91 +142,113 @@
         <!-- attendance check-in of client -->
         <div class="main-content">
             <section id="check-in">
-                <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-                    <!-- Check-in Dashboard Section -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Check-in List -->
-                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
-                                    Check-in Dashboard
-                                </h2>
-                                <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-medium">
-                                    Today's Check-ins
-                                </span>
+                <div class="min-h-screen bg-slate-100">
+                    <!-- Dynamic Header -->
+                    <div class="bg-indigo-600 px-8 pt-8 pb-20">
+                        <div class="max-w-7xl mx-auto flex items-center justify-between">
+                            <div>
+                                <h1 class="text-5xl font-black text-white mb-2 tracking-tight">FITWORX</h1>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    <p class="text-indigo-200">Fitness Center Check-in</p>
+                                </div>
                             </div>
-
-                            <!-- Check-in Table Section -->
-                            <div id="checkins-container" class="overflow-x-auto">
-                                <table class="w-full text-sm text-left border-collapse rounded-xl overflow-hidden">
-                                    <thead class="text-xs uppercase bg-gradient-to-r from-indigo-600 to-indigo-700">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">ID</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Type</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Client Name</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Time In</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="checkins-body" class="divide-y divide-slate-200">
-                                        <!-- Check-in rows will be added here by JavaScript -->
-                                    </tbody>
-                                </table>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-white" id="current-time">12:00 PM</div>
+                                <div class="text-indigo-200" id="current-date">Monday, Nov 3</div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Main Content -->
+                    <div class="max-w-7xl mx-auto px-8 -mt-12">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Check-in List -->
+                            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                                <div class="p-6 bg-gradient-to-r from-indigo-600 to-indigo-700">
+                                    <div class="flex items-center justify-between">
+                                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Today's Activity
+                                        </h2>
+                                        <span class="px-3 py-1 bg-white/20 text-white rounded-lg text-sm">
+                                            Live Feed
+                                        </span>
+                                    </div>
+                                </div>
 
-                        <!-- Check-in Form -->
-                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
-                                    Client Check-in
-                                </h2>
+                                <div id="checkins-container" class="p-6">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">ID</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Client Name</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time In</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="checkins-body" class="divide-y divide-slate-100">
+                                            <!-- Check-in rows will be added here by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            
-                            <form id="checkin-form" onsubmit="handleCheckin(event)" class="space-y-6">
-                                <!-- Client Type Selection -->
-                                <div class="form-group">
-                                    <label for="client-type" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Type of Client:
-                                    </label>
-                                    <select id="client-type" 
-                                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200" 
-                                            required>
-                                        <option value="regular">Regular</option>
-                                        <option value="student">Student</option>
-                                    </select>
-                                </div>
 
-                                <!-- Client Name -->
-                                <div class="form-group">
-                                    <label for="client-name" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Client Name:
-                                    </label>
-                                    <input type="text" 
-                                        id="client-name" 
-                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                        placeholder="Enter client name" 
-                                        required />
+                            <!-- Check-in Form -->
+                            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                                <div class="p-6 border-b border-slate-100">
+                                    <h2 class="text-xl font-bold text-slate-800">Quick Check-in</h2>
+                                    <p class="text-slate-500 text-sm mt-1">Welcome to Fitworx! Please check in below.</p>
                                 </div>
+                                
+                                <form id="checkin-form" onsubmit="handleCheckin(event)" class="p-6 space-y-6">
+                                    <!-- Client Type Selection -->
+                                    <div class="space-y-2">
+                                        <label for="client-type" class="text-sm font-semibold text-slate-700">
+                                            Membership Type
+                                        </label>
+                                        <select id="client-type" 
+                                                class="w-full h-12 pl-4 pr-10 bg-slate-50 rounded-xl border-0 text-slate-800 focus:ring-2 focus:ring-indigo-500" 
+                                                required>
+                                            <option value="regular">Regular Membership</option>
+                                            <option value="student">Student Membership</option>
+                                        </select>
+                                    </div>
 
-                                <!-- Time In -->
-                                <div class="form-group">
-                                    <label for="time-in" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Time In:
-                                    </label>
-                                    <input type="time" 
-                                        id="time-in" 
-                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                        required />
-                                </div>
+                                    <!-- Client Name -->
+                                    <div class="space-y-2">
+                                        <label for="client-name" class="text-sm font-semibold text-slate-700">
+                                            Your Name
+                                        </label>
+                                        <div class="relative">
+                                            <input type="text" 
+                                                id="client-name" 
+                                                class="w-full h-12 pl-4 bg-slate-50 rounded-xl border-0 text-slate-800 focus:ring-2 focus:ring-indigo-500" 
+                                                placeholder="Enter your name" 
+                                                required />
+                                        </div>
+                                    </div>
 
-                                <!-- Action Buttons -->
-                                <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                                    <!-- Time In -->
+                                    <div class="space-y-2">
+                                        <label for="time-in" class="text-sm font-semibold text-slate-700">
+                                            Check-in Time
+                                        </label>
+                                        <input type="time" 
+                                            id="time-in" 
+                                            class="w-full h-12 pl-4 bg-slate-50 rounded-xl border-0 text-slate-800 focus:ring-2 focus:ring-indigo-500" 
+                                            required />
+                                    </div>
+
                                     <button type="submit" 
-                                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                                        Check-in
+                                            class="w-full h-12 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transform hover:-translate-y-0.5 transition-all">
+                                        Check In Now
                                     </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -237,147 +259,197 @@
         <!-- Reservation -->
         <div class="main-content">
             <section id="reservation">
-                <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
-                    <!-- Reservation Dashboard Section -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Reservations List -->
-                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
-                                    Reservation Dashboard
-                                </h2>
-                                <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-medium">
-                                    Active Bookings
-                                </span>
+                <div class="min-h-screen bg-slate-50 p-8">
+                    <!-- Header Section -->
+                    <div class="mb-8 text-center lg:text-left">
+                        <h1 class="text-xl font-bold text-indigo-700 flex items-center gap-3 justify-center lg:justify-start">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                            Fitworx Gym Reservations
+                        </h1>
+                        <div class="flex items-center gap-4 mt-4 justify-center lg:justify-start">
+                            <div class="px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-medium flex items-center gap-2">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                Facility Status:
                             </div>
+                            <div class="text-slate-600">Operating Hours: 9:00 AM - 11:59 PM</div>
+                        </div>
+                    </div>
 
-                            <!-- Reservation Table Section -->
-                            <div id="reservations-container" class="overflow-x-auto">
-                                <table class="w-full text-sm text-left border-collapse rounded-xl overflow-hidden">
-                                    <thead class="text-xs uppercase bg-gradient-to-r from-indigo-600 to-indigo-700">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">ID</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Date</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Time In</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Time Out</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Client</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Service</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Status</th>
-                                            <th scope="col" class="px-6 py-4 text-white font-medium">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="reservations-body" class="divide-y divide-slate-200">
-                                        <!-- Reservation rows will be added here by JavaScript -->
-                                    </tbody>
-                                </table>
+                    <!-- Reservation Dashboard Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <!-- Booking Form - Takes 2 columns -->
+                        <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                            <div class="p-6 bg-gradient-to-r from-indigo-600 to-indigo-700">
+                                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    New Booking
+                                </h2>
+                                <p class="text-indigo-100 text-sm mt-1">Schedule your next workout session</p>
+                            </div>
+                            
+                            <div class="p-6">
+                                <form id="booking-form" onsubmit="bookReservation(event)" class="space-y-6">
+                                    <!-- Service Selection with Icons -->
+                                    <div class="form-group">
+                                        <label for="service" class="block text-sm font-medium text-slate-700 mb-2">
+                                            Choose Service
+                                        </label>
+                                        <select id="service" 
+                                                class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all bg-slate-50" 
+                                                required>
+                                            <option value="Basketball Court">🏀 Basketball Court</option>
+                                            <option value="Zumba">💃 Zumba</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Main Client Name -->
+                                    <div class="form-group">
+                                        <label for="client-name" class="block text-sm font-medium text-slate-700 mb-2">
+                                            Your Name
+                                        </label>
+                                        <input type="text" 
+                                            id="client-name" 
+                                            class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all bg-slate-50" 
+                                            placeholder="Enter your full name" 
+                                            required />
+                                    </div>
+
+                                    <!-- Time and Date Selection -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="space-y-4">
+                                            <!-- Time In -->
+                                            <div class="form-group">
+                                                <label for="time-in" class="block text-sm font-medium text-slate-700 mb-2">
+                                                    Start Time
+                                                </label>
+                                                <input type="time" 
+                                                    id="time-in" 
+                                                    class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all bg-slate-50" 
+                                                    min="09:00" 
+                                                    max="23:59" 
+                                                    required />
+                                            </div>
+
+                                            <!-- Time Out -->
+                                            <div class="form-group">
+                                                <label for="time-out" class="block text-sm font-medium text-slate-700 mb-2">
+                                                    End Time
+                                                </label>
+                                                <input type="time" 
+                                                    id="time-out" 
+                                                    class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all bg-slate-50" 
+                                                    min="09:00" 
+                                                    max="23:59" 
+                                                    required />
+                                            </div>
+                                        </div>
+
+                                        <!-- Booking Date with Calendar Style -->
+                                        <div class="form-group">
+                                            <label for="booking-date" class="block text-sm font-medium text-slate-700 mb-2">
+                                                Select Date
+                                            </label>
+                                            <div class="relative">
+                                                <input type="date" 
+                                                    id="booking-date" 
+                                                    class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all bg-slate-50" 
+                                                    required />
+                                                <div class="absolute right-3 top-3 text-slate-400">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Additional Participants Section -->
+                                    <div class="form-group">
+                                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <label for="additional-clients" class="block text-sm font-medium text-slate-700">
+                                                    Team Members
+                                                </label>
+                                                <span class="text-xs text-slate-500">Max 8 additional players</span>
+                                            </div>
+                                            <div id="additional-clients" class="space-y-3">
+                                                <!-- Dynamic client fields will be added here by JavaScript -->
+                                            </div>
+                                            <button type="button" 
+                                                    onclick="addParticipant()" 
+                                                    class="mt-4 inline-flex items-center px-4 py-2 text-sm bg-white text-indigo-600 rounded-xl border border-indigo-200 hover:bg-indigo-50 transition-colors">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                </svg>
+                                                Add Player
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="space-y-4">
+                                        <button type="submit" 
+                                                class="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-2xl hover:from-indigo-700 hover:to-indigo-800 transition-all focus:ring-2 focus:ring-indigo-100 flex items-center justify-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                            </svg>
+                                            Book Now
+                                        </button>
+                                        <button type="button" 
+                                                id="ViewAvailSched"
+                                                class="w-full px-6 py-3 bg-white text-indigo-600 rounded-2xl border-2 border-indigo-100 hover:bg-indigo-50 transition-colors focus:ring-2 focus:ring-indigo-100 flex items-center justify-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            View Available Schedule
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 
-                        <!-- Booking Form -->
-                        <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-700 bg-clip-text text-transparent">
-                                    Book Schedule for Client
-                                </h2>
+                        <!-- Reservations List - Takes 3 columns -->
+                        <div class="lg:col-span-3 bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                            <div class="p-6 bg-gradient-to-r from-indigo-600 to-indigo-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                            </svg>
+                                            Active Bookings
+                                        </h2>
+                                        <p class="text-indigo-100 text-sm mt-1">Monitor all current reservations</p>
+                                    </div>
+                                    <div class="px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium backdrop-blur-sm">
+                                        Today's Bookings
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <form id="booking-form" onsubmit="bookReservation(event)" class="space-y-6">
-                                <!-- Service Selection -->
-                                <div class="form-group">
-                                    <label for="service" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Service:
-                                    </label>
-                                    <select id="service" 
-                                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200" 
-                                            required>
-                                        <option value="Basketball Court">Basketball Court</option>
-                                        <option value="Zumba">Zumba</option>
-                                    </select>
-                                </div>
 
-                                <!-- Main Client Name -->
-                                <div class="form-group">
-                                    <label for="client-name" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Client Name:
-                                    </label>
-                                    <input type="text" 
-                                        id="client-name" 
-                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                        placeholder="Enter client name" 
-                                        required />
+                            <!-- Reservation Table Section -->
+                            <div id="reservations-container" class="p-6">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left">
+                                        <thead>
+                                            <tr class="bg-slate-50 border-b border-slate-200">
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold rounded-tl-xl">ID</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Date</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Time In</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Time Out</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Client</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Service</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold">Status</th>
+                                                <th scope="col" class="px-6 py-4 text-slate-600 font-semibold rounded-tr-xl">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reservations-body" class="divide-y divide-slate-200">
+                                            <!-- Reservation rows will be added here by JavaScript -->
+                                        </tbody>
+                                    </table>
                                 </div>
-
-                                <!-- Additional Participants -->
-                                <div class="form-group">
-                                    <label for="additional-clients" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Additional Participants (up to 8):
-                                    </label>
-                                    <div id="additional-clients" class="space-y-3">
-                                        <!-- Dynamic client fields will be added here by JavaScript -->
-                                    </div>
-                                    <button type="button" 
-                                            onclick="addParticipant()" 
-                                            class="mt-3 inline-flex items-center px-4 py-2 bg-purple-50 text-indigo-500 rounded-xl hover:bg-purple-100 transition-colors duration-200">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                        </svg>
-                                        Add Participant
-                                    </button>
-                                </div>
-
-                                <!-- Time Selection Grid -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- Time In -->
-                                    <div class="form-group">
-                                        <label for="time-in" class="block text-sm font-medium text-slate-700 mb-2">
-                                            Time In:
-                                        </label>
-                                        <input type="time" 
-                                            id="time-in" 
-                                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                            min="09:00" 
-                                            max="23:59" 
-                                            required />
-                                    </div>
-
-                                    <!-- Time Out -->
-                                    <div class="form-group">
-                                        <label for="time-out" class="block text-sm font-medium text-slate-700 mb-2">
-                                            Time Out:
-                                        </label>
-                                        <input type="time" 
-                                            id="time-out" 
-                                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                            min="09:00" 
-                                            max="23:59" 
-                                            required />
-                                    </div>
-                                </div>
-
-                                <!-- Booking Date -->
-                                <div class="form-group">
-                                    <label for="booking-date" class="block text-sm font-medium text-slate-700 mb-2">
-                                        Select Booking Date:
-                                    </label>
-                                    <input type="date" 
-                                        id="booking-date" 
-                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200" 
-                                        required />
-                                </div>
-
-                                <!-- Action Buttons -->
-                                <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                                    <button type="submit" 
-                                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                                        Book Now
-                                    </button>
-                                    <button type="button" 
-                                            id="ViewAvailSched"
-                                            class="flex-1 px-6 py-3 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all duration-200 shadow hover:shadow-md">
-                                        View Available Schedule
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -576,58 +648,68 @@
             <!-- Main Content -->
             <div class="h-full p-6">
                 <!-- Main Card -->
-                <div class="h-full bg-white rounded-2xl shadow-xl border border-slate-200">
+                <div class="h-full bg-white rounded-3xl shadow-lg border border-slate-200">
                     <!-- Header Section -->
-                    <div class="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white">
+                    <div class="p-8 border-b border-slate-200 bg-gradient-to-br from-indigo-50 via-white to-slate-50">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                             <div>
-                                <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Sales Reports</h2>
-                                <p class="text-slate-500 mt-1">View and manage sales reports</p>
+                                <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Sales Reports</h2>
+                                <p class="text-slate-500 mt-2 text-lg">View and manage sales reports</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tabs Section -->
-                    <div class="p-6">
-                        <div class="mb-4 border-b border-slate-200">
-                            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
-                                <li class="mr-2" role="presentation">
-                                    <button class="inline-block p-4 border-b-2 border-indigo-600 rounded-t-lg active" id="monthly-tab" data-tabs-target="#monthly" type="button" role="tab" aria-selected="true">Monthly Members</button>
-                                </li>
-                                <li class="mr-2" role="presentation">
-                                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-slate-300" id="regular-tab" data-tabs-target="#regular" type="button" role="tab" aria-selected="false">Regular</button>
-                                </li>
-                                <li class="mr-2" role="presentation">
-                                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-slate-300" id="student-tab" data-tabs-target="#student" type="button" role="tab" aria-selected="false">Student</button>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <ul class="inline-flex space-x-4 bg-slate-100 p-1.5 rounded-xl" role="tablist">
+                                <li role="presentation">
+                                    <button class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 bg-white shadow-sm text-indigo-600" id="monthly-tab" data-tabs-target="#monthly" type="button" role="tab" aria-selected="true">
+                                        Monthly Members
+                                    </button>
                                 </li>
                                 <li role="presentation">
-                                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-slate-300" id="supplements-tab" data-tabs-target="#supplements" type="button" role="tab" aria-selected="false">Supplements</button>
+                                    <button class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-white/50" id="regular-tab" data-tabs-target="#regular" type="button" role="tab" aria-selected="false">
+                                        Regular
+                                    </button>
+                                </li>
+                                <li role="presentation">
+                                    <button class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-white/50" id="student-tab" data-tabs-target="#student" type="button" role="tab" aria-selected="false">
+                                        Student
+                                    </button>
+                                </li>
+                                <li role="presentation">
+                                    <button class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-white/50" id="supplements-tab" data-tabs-target="#supplements" type="button" role="tab" aria-selected="false">
+                                        Supplements
+                                    </button>
                                 </li>
                             </ul>
                         </div>
 
                         <!-- Tab Content -->
-                        <div id="tab-content">
+                        <div id="tab-content" class="mt-6">
                             <!-- Monthly Members Table -->
                             <div class="bg-white rounded-xl" id="monthly" role="tabpanel">
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="flex justify-between items-center mb-6">
                                     <h3 class="text-xl font-semibold text-slate-800">Monthly Members Report</h3>
-                                    <div class="flex gap-2">
-                                        <input type="month" class="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200">Export</button>
+                                    <div class="flex gap-3">
+                                        <input type="month" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                                        <button class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Export
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
                                     <table class="w-full">
                                         <thead>
-                                            <tr class="border-b border-slate-200">
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Member ID</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Start Date</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">End Date</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                                
+                                            <tr class="bg-slate-50">
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Start Date</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">End Date</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-slate-200" id="monthly-members-table">
@@ -639,22 +721,25 @@
 
                             <!-- Regular Members Table -->
                             <div class="hidden bg-white rounded-xl" id="regular" role="tabpanel">
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="flex justify-between items-center mb-6">
                                     <h3 class="text-xl font-semibold text-slate-800">Regular Members Report</h3>
-                                    <div class="flex gap-2">
-                                        <input type="date" class="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200">Export</button>
+                                    <div class="flex gap-3">
+                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                                        <button class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Export
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
                                     <table class="w-full">
                                         <thead>
-                                            <tr class="border-b border-slate-200">
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Transaction ID</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Name</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Date</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Time In</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <tr class="bg-slate-50">
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Transaction ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time In</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-slate-200" id="regular-members-table">
@@ -666,23 +751,26 @@
 
                             <!-- Student Members Table -->
                             <div class="hidden bg-white rounded-xl" id="student" role="tabpanel">
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="flex justify-between items-center mb-6">
                                     <h3 class="text-xl font-semibold text-slate-800">Student Members Report</h3>
-                                    <div class="flex gap-2">
-                                        <input type="date" class="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200">Export</button>
+                                    <div class="flex gap-3">
+                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                                        <button class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Export
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
                                     <table class="w-full">
                                         <thead>
-                                            <tr class="border-b border-slate-200">
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Transaction ID</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Student Name</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">School ID</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Date</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Time In</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <tr class="bg-slate-50">
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Transaction ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Student Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">School ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time In</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-slate-200" id="student-members-table">
@@ -694,21 +782,24 @@
 
                             <!-- Supplements Table -->
                             <div class="hidden bg-white rounded-xl" id="supplements" role="tabpanel">
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="flex justify-between items-center mb-6">
                                     <h3 class="text-xl font-semibold text-slate-800">Supplements Sales Report</h3>
-                                    <div class="flex gap-2">
-                                        <input type="date" class="px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200">Export</button>
+                                    <div class="flex gap-3">
+                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                                        <button class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Export
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
                                     <table class="w-full">
                                         <thead>
-                                            <tr class="border-b border-slate-200">
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Quantity Sold</th>
-                                                <th class="pb-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Total Amount</th>
+                                            <tr class="bg-slate-50">
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Quantity Sold</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Total Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-slate-200" id="supplements-table">
@@ -724,51 +815,58 @@
         </section>
 
         <!-- Section 7 -->
-        <!-- Buy section -->
+        <!-- Sell section -->
         <section id="buy" class="ml-64 h-screen bg-slate-50">
             <div class="h-full p-6">
                 <div class="h-full bg-white rounded-2xl shadow-xl border border-slate-200">
-                    <!-- Header -->
-                    <div class="p-6 border-b border-slate-200">
+                    <!-- Header with new design -->
+                    <div class="p-8 border-b border-slate-200 bg-indigo-600 rounded-t-2xl">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h2 class="text-2xl font-bold text-slate-800">Products</h2>
-                                <p class="text-slate-500 mt-1">Browse available products</p>
+                                <h2 class="text-3xl font-bold text-white">Store Products</h2>
+                                <p class="text-indigo-100 mt-2">Manage your supplement and equipment inventory</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-indigo-500 px-4 py-2 rounded-lg text-white text-sm">
+                                    Active Products: <span id="productCount" class="font-bold">0</span>
+                                </span>
                             </div>
                         </div>
                     </div>
-        
-                    <!-- Search Bar -->
-                    <div class="p-6 border-b border-slate-200">
-                        <div class="relative max-w-md">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                                </svg>
+
+                    <!-- Search Bar with new design -->
+                    <div class="p-6 border-b border-slate-200 bg-white">
+                        <div class="max-w-2xl mx-auto">
+                            <div class="relative flex items-center">
+                                <input
+                                    type="search"
+                                    id="searchInput"
+                                    placeholder="Search by product name or ID..."
+                                    class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-slate-600 placeholder-slate-400"
+                                >
+                                <div class="absolute left-4">
+                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                             </div>
-                            <input
-                                type="search"
-                                id="searchInput"
-                                placeholder="Search products..."
-                                class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-                            >
                         </div>
                     </div>
-        
-                    <!-- Table -->
+
+                    <!-- Table with new design -->
                     <div class="p-6">
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto rounded-xl shadow-sm border border-slate-200">
                             <table class="min-w-full divide-y divide-slate-200">
-                                <thead>
+                                <thead class="bg-slate-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Product ID</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Product Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Available Stock</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Price</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Available Stock</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Price</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="supplementsTableBody" class="divide-y divide-slate-200">
+                                <tbody id="supplementsTableBody" class="bg-white divide-y divide-slate-200">
                                     <!-- Table rows will be dynamically inserted here -->
                                 </tbody>
                             </table>
@@ -776,51 +874,53 @@
                     </div>
                 </div>
             </div>
-        
-            <!-- Modal -->
-            <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm">
+
+            <!-- Modal with new design -->
+            <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm">
                 <div class="flex items-center justify-center min-h-screen p-4">
-                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                        <div class="p-6 border-b border-slate-200">
-                            <h3 id="modalTitle" class="text-xl font-semibold text-slate-800">Buy Product</h3>
+                    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full">
+                        <div class="p-6 border-b border-slate-200 bg-indigo-50 rounded-t-xl">
+                            <h3 id="modalTitle" class="text-2xl font-bold text-indigo-900">Purchase Details</h3>
                         </div>
-                        <form id="buyForm" class="p-6">
+                        <form id="buyForm" class="p-8">
                             <input type="hidden" id="productId">
-                            <div class="space-y-4">
+                            <div class="space-y-6">
                                 <div>
-                                    <label for="productName" class="block text-sm font-medium text-slate-700">Product Name</label>
+                                    <label for="productName" class="block text-sm font-semibold text-slate-700">Product Name</label>
                                     <input type="text" id="productName" name="productName" required
-                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
+                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50" readonly>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="productPrice" class="block text-sm font-semibold text-slate-700">Price per Unit</label>
+                                        <input type="text" id="productPrice" name="productPrice" required
+                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50" readonly>
+                                    </div>
+                                    <div>
+                                        <label for="productStock" class="block text-sm font-semibold text-slate-700">Available Stock</label>
+                                        <input type="text" id="productStock" name="productStock" required
+                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50" readonly>
+                                    </div>
                                 </div>
                                 <div>
-                                    <label for="productPrice" class="block text-sm font-medium text-slate-700">Price per Unit</label>
-                                    <input type="text" id="productPrice" name="productPrice" required
-                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
-                                </div>
-                                <div>
-                                    <label for="productStock" class="block text-sm font-medium text-slate-700">Available Stock</label>
-                                    <input type="text" id="productStock" name="productStock" required
-                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
-                                </div>
-                                <div>
-                                    <label for="productQuantity" class="block text-sm font-medium text-slate-700">Quantity to Purchase</label>
+                                    <label for="productQuantity" class="block text-sm font-semibold text-slate-700">Quantity to Purchase</label>
                                     <input type="number" id="productQuantity" name="productQuantity" required min="1" value="1"
-                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 </div>
-                                <div>
-                                    <label for="totalPrice" class="block text-sm font-medium text-slate-700">Total Price</label>
+                                <div class="bg-indigo-50 p-4 rounded-lg">
+                                    <label for="totalPrice" class="block text-sm font-semibold text-indigo-900">Total Amount</label>
                                     <input type="text" id="totalPrice" name="totalPrice" required
-                                        class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" readonly>
+                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white font-bold text-lg" readonly>
                                 </div>
                             </div>
-                            <div class="mt-6 flex justify-end gap-3">
+                            <div class="mt-8 flex justify-end gap-4">
                                 <button type="button" id="closeModalBtn"
-                                    class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
+                                    class="px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-lg border border-slate-200">
                                     Cancel
                                 </button>
                                 <button type="submit"
-                                    class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md">
-                                    Proceed with Purchase
+                                    class="px-6 py-3 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm">
+                                    Confirm Purchase
                                 </button>
                             </div>
                         </form>
@@ -829,7 +929,7 @@
             </div>
         </section>
 
-        </div>
+                </div>
 
     <!-- JS scripts -->
 

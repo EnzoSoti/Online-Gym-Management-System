@@ -332,7 +332,7 @@ function initializeCalendar() {
                 --fc-button-hover-border-color: #4338CA;
                 --fc-button-active-bg-color: #3730A3;
                 --fc-today-bg-color: #EEF2FF;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                font-family: poppins;
             }
             .fc .fc-button {
                 padding: 8px 16px;
