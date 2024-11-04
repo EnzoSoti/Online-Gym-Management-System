@@ -223,20 +223,21 @@ app.get('/api/monthly-members', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch members' });
     }
 });
+
 app.post('/api/monthly-members', async (req, res) => {
     try {
-        const { member_name, status, start_date, end_date } = req.body;
+        const { member_name, status, type, start_date, end_date } = req.body;
         
-        if (!member_name || !status || !start_date || !end_date) {
+        if (!member_name || !status || !type || !start_date || !end_date) {
             return res.status(400).json({ 
-                error: 'Member name, status, start date, and end date are required' 
+                error: 'Member name, status, type, start date, and end date are required' 
             });
         }
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, start_date, end_date) VALUES (?, ?, ?, ?)',
-                [member_name, status, start_date, end_date]
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
+                [member_name, status, type, start_date, end_date]
             );
             return insertResult;
         });
@@ -250,15 +251,16 @@ app.post('/api/monthly-members', async (req, res) => {
         res.status(500).json({ error: 'Failed to add member' });
     }
 });
+
 app.put('/api/monthly-members/:id', async (req, res) => {
     try {
-        const { member_name, status, start_date, end_date } = req.body;
+        const { member_name, status, type, start_date, end_date } = req.body;
         const { id } = req.params;
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [updateResult] = await connection.query(
-                'UPDATE monthly_members SET member_name = ?, status = ?, start_date = ?, end_date = ? WHERE id = ?',
-                [member_name, status, start_date, end_date, id]
+                'UPDATE monthly_members SET member_name = ?, status = ?, type = ?, start_date = ?, end_date = ? WHERE id = ?',
+                [member_name, status, type, start_date, end_date, id]
             );
             return updateResult;
         });
@@ -273,6 +275,7 @@ app.put('/api/monthly-members/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to update member' });
     }
 });
+
 app.delete('/api/monthly-members/:id', async (req, res) => {
     try {
         const { id } = req.params;

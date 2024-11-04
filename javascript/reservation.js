@@ -106,20 +106,20 @@ function bookReservation(event) {
         return;
     }
 
-    // Convert timeIn to a Date object for easier comparison
-    const timeInDate = new Date(`1970-01-01T${timeIn}`);
-    const openTime = new Date(`1970-01-01T09:00:00`);
-    const closeTime = new Date(`1970-01-01T23:59:59`);
+    // // Convert timeIn to a Date object for easier comparison
+    // const timeInDate = new Date(`1970-01-01T${timeIn}`);
+    // const openTime = new Date(`1970-01-01T09:00:00`);
+    // const closeTime = new Date(`1970-01-01T23:59:59`);
 
-    if (timeInDate < openTime || timeInDate >= closeTime) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gym Closed',
-            text: 'The gym is closed before 9:00 AM and after 12:00 Midnight. Please select another time.',
-            confirmButtonColor: '#3085d6'
-        });
-        return;
-    }
+    // if (timeInDate < openTime || timeInDate >= closeTime) {
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Gym Closed',
+    //         text: 'The gym is closed before 9:00 AM and after 12:00 Midnight. Please select another time.',
+    //         confirmButtonColor: '#3085d6'
+    //     });
+    //     return;
+    // }
 
     const timeIn12 = convertTo12HourFormat(timeIn);
     const timeOut12 = convertTo12HourFormat(timeOut);
@@ -552,7 +552,7 @@ cancelReservation = function(reservationId) {
                             calendar.render();
                         }
                     });
-                    return;
+                    return; 
                 }
             }
             Swal.fire(

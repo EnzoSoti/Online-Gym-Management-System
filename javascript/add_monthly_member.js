@@ -6,7 +6,7 @@ const addMemberBtn = document.getElementById('addMemberBtn');
 const addMemberModal = document.getElementById('addMemberModal');
 const memberForm = document.getElementById('memberForm');
 const closeModalBtn = document.getElementById('closeModalBtn');
-const searchInput = document.getElementById('searchInput');
+const searchInput = document.getElementById('memberSearch');
 let selectedRow = null;
 let allMembers = [];
 let lastPolledData = null;
@@ -42,7 +42,7 @@ class NotificationSystem {
         if (this.hasPermission) {
             new Notification(title, {
                 body: options.body,
-                icon: '../img/Fitworx logo.jpg' // Add your notification icon path
+                icon: '/img/Fitworx logo.jpg' // Add your notification icon path
             });
         }
     }
@@ -182,6 +182,7 @@ function renderMembers(members) {
         row.dataset.id = member.id;
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${member.member_name}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${member.type}</td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${member.status}</span>
             </td>
@@ -199,6 +200,12 @@ function renderMembers(members) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                     Delete
+                </button>
+                <button class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-medium hover:shadow-md mr-4" onclick="renewMembership(this)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Renew
                 </button>
             </td>
         `;
@@ -233,18 +240,54 @@ if (memberForm) {
         event.preventDefault();
         
         try {
+            // Get form elements with proper error checking
+            const memberName = document.getElementById('memberName');
+            const memberType = document.getElementById('memberType');
+            const memberStatus = document.getElementById('memberStatus');
+            const startDate = document.getElementById('startDate');
+            const endDate = document.getElementById('endDate');
+
+            // Validate all required fields are present
+            if (!memberName || !memberType || !memberStatus || !startDate || !endDate) {
+                throw new Error('Missing required form fields');
+            }
+
+            // Log the values being submitted
+            console.log('Submitting form with values:', {
+                name: memberName.value,
+                type: memberType.value,
+                status: memberStatus.value,
+                startDate: startDate.value,
+                endDate: endDate.value
+            });
+
             const memberData = {
-                member_name: document.getElementById('memberName').value,
-                status: document.getElementById('memberStatus').value,
-                start_date: document.getElementById('startDate').value,
-                end_date: document.getElementById('endDate').value
+                member_name: memberName.value.trim(),
+                type: memberType.value.trim(),             
+                status: memberStatus.value.trim(),
+                start_date: startDate.value,
+                end_date: endDate.value
             };
+
+            // Validate no empty values
+            Object.entries(memberData).forEach(([key, value]) => {
+                if (!value && value !== 0) {
+                    throw new Error(`${key.replace('_', ' ')} cannot be empty`);
+                }
+            });
 
             const url = selectedRow 
                 ? `${API_BASE_URL}/monthly-members/${selectedRow.dataset.id}`
                 : `${API_BASE_URL}/monthly-members`;
 
             const method = selectedRow ? 'PUT' : 'POST';
+
+            // Log the actual request being sent
+            console.log('Sending request:', {
+                url,
+                method,
+                data: memberData
+            });
 
             const response = await fetch(url, {
                 method: method,
@@ -255,7 +298,8 @@ if (memberForm) {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to process member');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to process member');
             }
 
             await loadMembers();
@@ -271,7 +315,7 @@ if (memberForm) {
                 }
             );
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Form submission error:', error);
             notificationSystem.notify('Error', {
                 body: error.message,
                 icon: 'error'
@@ -284,16 +328,149 @@ if (memberForm) {
 function updateMember(btn) {
     selectedRow = btn.closest('tr');
     const memberName = document.getElementById('memberName');
+    const memberType = document.getElementById('memberType'); // Add this line
     const memberStatus = document.getElementById('memberStatus');
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
     
-    if (memberName && memberStatus && startDate && endDate) {
+    if (memberName && memberType && memberStatus && startDate && endDate) {
         memberName.value = selectedRow.cells[0].innerText;
-        memberStatus.value = selectedRow.cells[1].querySelector('span').innerText;
-        startDate.value = new Date(selectedRow.cells[2].innerText).toISOString().split('T')[0];
-        endDate.value = new Date(selectedRow.cells[3].innerText).toISOString().split('T')[0];
+        memberType.value = selectedRow.cells[1].innerText.trim(); // Add this line
+        memberStatus.value = selectedRow.cells[2].querySelector('span').innerText;
+        startDate.value = new Date(selectedRow.cells[3].innerText).toISOString().split('T')[0];
+        endDate.value = new Date(selectedRow.cells[4].innerText).toISOString().split('T')[0];
         openMemberModal();
+    }
+}
+
+// renew function
+function getTodayFormatted() {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+}
+
+function getOneMonthFromDate(dateString) {
+    const date = new Date(dateString);
+    date.setMonth(date.getMonth() + 1);
+    return date.toISOString().split('T')[0];
+}
+
+async function renewMembership(btn) {
+    const row = btn.closest('tr');
+    const memberId = row.dataset.id;
+    const memberName = row.cells[0].innerText;
+    const memberType = row.cells[1].innerText;
+    const originalData = {
+        status: row.cells[2].querySelector('span').innerText,
+        start_date: row.cells[3].innerText,
+        end_date: row.cells[4].innerText
+    };
+
+    try {
+        const today = getTodayFormatted();
+        const nextMonth = getOneMonthFromDate(today);
+
+        const memberData = {
+            member_name: memberName,
+            type: memberType,
+            status: 'Active',
+            start_date: today,
+            end_date: nextMonth
+        };
+
+        // Show processing alert
+        let timerInterval;
+        const result = await Swal.fire({
+            title: 'Renewing Membership',
+            html: `Updating membership for ${memberName}`,
+            timer: 5000,
+            timerProgressBar: true,
+            showCancelButton: true,
+            confirmButtonText: 'Proceed',
+            cancelButtonText: 'Cancel',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+                timerInterval = setInterval(() => {
+                    const content = Swal.getHtmlContainer();
+                    if (content) {
+                        const seconds = Math.ceil(Swal.getTimerLeft() / 1000);
+                        content.textContent = `Updating membership for ${memberName} (${seconds}s to undo)`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // If cancelled, don't proceed with the update
+        if (result.dismiss === Swal.DismissReason.cancel) {
+            return;
+        }
+
+        // Proceed with the update
+        const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(memberData)
+        });
+
+        if (!response.ok) throw new Error('Failed to renew membership');
+
+        await loadMembers();
+
+        // Show success message with undo option
+        const undoResult = await Swal.fire({
+            icon: 'success',
+            title: 'Membership Renewed!',
+            html: `${memberName}'s membership has been renewed successfully`,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Undo',
+            timer: 5000,
+            timerProgressBar: true
+        });
+
+        // If undo is clicked, revert the changes
+        if (undoResult.dismiss === Swal.DismissReason.cancel) {
+            const undoResponse = await fetch(`${API_BASE_URL}/monthly-members/${memberId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    member_name: memberName,
+                    type: memberType,
+                    ...originalData
+                })
+            });
+
+            if (!undoResponse.ok) throw new Error('Failed to undo renewal');
+
+            await loadMembers();
+            
+            // Show undo success message
+            await Swal.fire({
+                icon: 'info',
+                title: 'Changes Undone',
+                text: 'Membership renewal has been reversed',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message,
+            timer: 3000,
+            showConfirmButton: false
+        });
     }
 }
 
