@@ -72,24 +72,24 @@
 <body>
         <!-- sidebar -->
         <div class="wrapper">
-        <div class="sidenav w-64 bg-gray-800 text-white min-h-screen">
-            <button class="hamburger-btn p-4">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="logo-container p-4">
-                <img src="../img/Fitworx logo.jpg" alt="logo" class="w-12 h-12">
-                <h1 class="text-xl font-bold">Fitworx <span class="text-gray-400">Gym</span> Admin</h1>
+            <div class="sidenav w-64 bg-gray-800 text-white min-h-screen">
+                <button class="hamburger-btn p-4">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo-container p-4">
+                    <img src="../img/Fitworx logo.jpg" alt="logo" class="w-12 h-12">
+                    <h1 class="text-xl font-bold">Fitworx <span class="text-gray-400">Gym</span> Admin</h1>
+                </div>
+                <ul class="nav-menu space-y-2 p-4">
+                    <li><a href="#dashboard" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-home"></i><span>Dashboard</span></a></li>
+                    <li><a href="#check-in" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dumbbell"></i><span>Check-in</span></a></li>
+                    <li><a href="#reservation" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark"></i><span>Reservation</span></a></li>
+                    <li><a href="#supplement" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-box"></i><span>Stocks & Inventory</span></a></li>
+                    <li><a href="#monthlyMembers" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-users"></i><span>Add Monthly Member</span></a></li>
+                    <li><a href="#reports" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-clipboard"></i><span>Report</span></a></li>
+                    <li><a href="#buy" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-shopping-cart"></i><span>Product Sale</span></a></li>
+                </ul>
             </div>
-            <ul class="nav-menu space-y-2 p-4">
-                <li><a href="#dashboard" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
-                <li><a href="#check-in" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-school"></i><span>Check-in</span></a></li>
-                <li><a href="#reservation" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-calendar"></i><span>Reservation</span></a></li>
-                <li><a href="#supplement" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-hourglass-start"></i><span>Stocks & Inventory</span></a></li>
-                <li><a href="#monthlyMembers" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-user"></i><span>Add Monthly Member</span></a></li>
-                <li><a href="#reports" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-file"></i><span>Report</span></a></li>
-                <li><a href="#buy" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dollar"></i><span>Product Sale</span></a></li>
-            </ul>
-        </div>
 
         <!-- Section 1 -->
         <!-- Dashboard -->
@@ -166,7 +166,7 @@
                         </div>
                     </div>
 
-                    <!-- Second Row -->
+                    <!-- Monthly due date -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Events -->
                         <div class="bg-white rounded-lg shadow-lg border-2 border-indigo-200 p-6 hover:border-indigo-400 transition-all duration-300">
@@ -183,7 +183,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-indigo-800">Not yet Available</p>
+                            <div class="monthly-due-section">
+                                <!-- Due members will be dynamically inserted here -->
+                            </div>
                         </div>
 
                         <!-- Member Growth -->
@@ -1090,7 +1092,7 @@
 
     <!-- JS scripts -->
 
-    <script src="../javascript/admin.js"></script>
+    <script src="../javascript/dashboard.js"></script>
     <script src="../javascript/reservation.js"></script>
     <script src="../javascript/sales_report.js"></script>
     <script src="../javascript/sidebar.js"></script>
