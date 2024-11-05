@@ -84,10 +84,10 @@
                 <li><a href="#dashboard" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-house"></i><span>Dashboard</span></a></li>
                 <li><a href="#check-in" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-school"></i><span>Check-in</span></a></li>
                 <li><a href="#reservation" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-calendar"></i><span>Reservation</span></a></li>
-                <li><a href="#supplement" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-hourglass-start"></i><span>Supplements</span></a></li>
+                <li><a href="#supplement" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-hourglass-start"></i><span>Stocks & Inventory</span></a></li>
                 <li><a href="#monthlyMembers" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-user"></i><span>Add Monthly Member</span></a></li>
                 <li><a href="#reports" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-file"></i><span>Report</span></a></li>
-                <li><a href="#buy" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dollar"></i><span>Buy Supplement</span></a></li>
+                <li><a href="#buy" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dollar"></i><span>Product Sale</span></a></li>
             </ul>
         </div>
 
@@ -128,7 +128,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-indigo-600">Active today (Regular)</p>
+                                    <p class="text-sm font-medium text-indigo-600">Attendance as of now (Regular)</p>
                                     <h3 class="text-2xl font-bold text-indigo-900 mt-1">0</h3>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-indigo-600">Active today (Student)</p>
+                                    <p class="text-sm font-medium text-indigo-600">Attendance as of now (Student)</p>
                                     <h3 class="text-2xl font-bold text-indigo-900 mt-1">0</h3>
                                 </div>
                             </div>
@@ -159,7 +159,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-indigo-600">Active today (monthly)</p>
+                                    <p class="text-sm font-medium text-indigo-600">Attendance as of now (monthly)</p>
                                     <h3 class="text-2xl font-bold text-indigo-900 mt-1">0</h3>
                                 </div>
                             </div>
@@ -178,8 +178,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h2 class="text-lg font-semibold text-indigo-900">Events</h2>
-                                        <p class="text-sm text-indigo-600">Upcoming gym events</p>
+                                        <h2 class="text-lg font-semibold text-indigo-900">Monthly due date</h2>
+                                        <p class="text-sm text-indigo-600">list of member to be expired</p>
                                     </div>
                                 </div>
                             </div>
@@ -543,9 +543,9 @@
                                             <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
-                                    <h2 class="text-3xl font-extrabold text-slate-800">Supplements</h2>
+                                    <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
                                 </div>
-                                <p class="text-slate-500 mt-2 text-lg">Manage your supplement inventory</p>
+                                <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
                             </div>
                             <button id="openModalBtn" 
                                     class="group flex items-center gap-2 px-6 py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all duration-300 shadow-lg hover:shadow-indigo-200 transform hover:-translate-y-0.5">
@@ -802,6 +802,11 @@
                                         Supplements
                                     </button>
                                 </li>
+                                <li role="presentation">
+                                    <button class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-white/50" id="reservations-tab" data-tabs-target="#reservations" type="button" role="tab" aria-selected="false">
+                                        Reservations
+                                    </button>
+                                </li>
                             </ul>
                         </div>
 
@@ -825,6 +830,7 @@
                                             <tr class="bg-slate-50">
                                                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member ID</th>
                                                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
                                                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
                                                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Start Date</th>
                                                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">End Date</th>
@@ -922,6 +928,38 @@
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-slate-200" id="supplements-table">
+                                            <!-- Rows will be dynamically added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Reservations Table -->
+                            <div class="hidden bg-white rounded-xl" id="reservations" role="tabpanel">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-semibold text-slate-800">Reservations Report</h3>
+                                    <div class="flex gap-3">
+                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                                        <button class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                            Export
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="bg-slate-50">
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Reservation ID</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Service Type</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time Slot</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-200" id="reservations-table">
                                             <!-- Rows will be dynamically added here -->
                                         </tbody>
                                     </table>

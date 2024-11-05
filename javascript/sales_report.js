@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 newRow.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">${memberId}</td>
                     <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('type')}</td>
                     <td class="px-6 py-4 whitespace-nowrap">${formData.get('startDate')}</td>
                     <td class="px-6 py-4 whitespace-nowrap">${formData.get('endDate')}</td>
                     <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
@@ -236,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     newRow.innerHTML = `
                         <td class="px-6 py-4 whitespace-nowrap">MMR#${item.id}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${item.member_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.type}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
                                 ${item.status}

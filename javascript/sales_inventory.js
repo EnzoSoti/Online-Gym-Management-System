@@ -6,7 +6,7 @@ class SupplementManager {
         this.table = document.getElementById('supplementsTable');
         this.modalTitle = document.getElementById('modalTitle');
         this.currentId = null;
-        this.LOW_STOCK_THRESHOLD = 10;
+        this.LOW_STOCK_THRESHOLD = 5;
         this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
         this.currentSupplements = []; // Store current state
         this.isPolling = true; // Flag to control polling
@@ -199,13 +199,14 @@ class SupplementManager {
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="edit-btn inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-medium hover:shadow-md mr-3">
+                    <button class="edit-btn inline-flex items-center gap-2 border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
-                        Edit
+                        Restock
                     </button>
-                    <button class="delete-btn inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-full shadow-sm transition-all duration-200 text-sm font-medium hover:shadow-md">
+
+                    <button class="delete-btn inline-flex items-center gap-2 border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
