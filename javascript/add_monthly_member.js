@@ -58,8 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add search event listener
 if (searchInput) {
-    searchInput.addEventListener('input', filterMembers);
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredMembers = allMembers.filter(member => 
+            member.member_name.toLowerCase().includes(searchTerm) ||
+            member.type.toLowerCase().includes(searchTerm) ||
+            member.status.toLowerCase().includes(searchTerm)
+        );
+        renderMembers(filteredMembers);
+    });
 }
+
 
 // Polling function with notification for changes
 function startPolling() {

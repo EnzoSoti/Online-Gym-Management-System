@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
@@ -8,8 +7,8 @@
 }
 
 body {
-    font-family: poppins;
-    overflow: hidden; /* Prevent scrolling on the body */
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
 }
 
 .wrapper.wrapper {
@@ -23,14 +22,14 @@ body {
     scroll-snap-type: y mandatory;
 }
 
-/* Enhanced Hamburger Button */
+/* Hamburger Button */
 .hamburger-btn {
     position: absolute;
     top: 20px;
     right: -40px;
     width: 30px;
     height: 30px;
-    background: #231F20;
+    background: #FF6B00;
     color: white;
     border: none;
     border-radius: 4px;
@@ -39,39 +38,42 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
 .hamburger-btn:hover {
-    background: #383435;
+    background: #FF8534;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
 }
 
-/* Enhanced Sidebar Styles */
+/* Sidebar Base Styles */
 .wrapper .sidenav {
-    text-decoration: none;
     position: fixed;
     left: 0;
     top: 0;
     width: 250px;
     height: 100vh;
-    background: #231F20;
+    background: #1A1A1A;
     transition: all 0.3s ease;
     overflow-x: hidden;
     overflow-y: auto;
+    border-right: 2px solid #FF6B00;
 }
 
 .wrapper .sidenav.collapsed {
     width: 60px;
 }
 
-/* Logo Container Styles */
+/* Logo Container */
 .wrapper .sidenav .logo-container {
     display: flex;
     align-items: center;
     padding: 20px 15px;
     overflow: hidden;
     height: 60px;
-    background: rgba(0, 0, 0, 0.1);
+    background: #000000;
+    border-bottom: 2px solid #FF6B00;
 }
 
 .wrapper .sidenav .logo-container img {
@@ -80,6 +82,7 @@ body {
     margin-right: 15px;
     border-radius: 8px;
     transition: all 0.3s;
+    border: 1px solid #FF6B00;
 }
 
 .wrapper .sidenav.collapsed .logo-container img {
@@ -96,10 +99,10 @@ body {
 }
 
 .wrapper .sidenav h1 span {
-    color: orange;
-    text-shadow: #f2f2f2;
-    text-transform: uppercase;
+    color: #FF6B00;
     font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 /* Navigation Items */
@@ -116,7 +119,7 @@ body {
 }
 
 .wrapper .sidenav ul li a {
-    color: #fff;
+    color: #FFFFFF;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -124,13 +127,27 @@ body {
     border-radius: 6px;
     white-space: nowrap;
     transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.wrapper .sidenav ul li a:hover {
+    background: rgba(255, 107, 0, 0.1);
+    border: 1px solid #FF6B00;
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
 }
 
 .wrapper .sidenav ul li a i {
     min-width: 20px;
     margin-right: 15px;
     font-size: 18px;
+    color: #FF6B00;
     transition: all 0.3s;
+}
+
+.wrapper .sidenav ul li a:hover i {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 .wrapper .sidenav.collapsed ul li a i {
@@ -150,14 +167,21 @@ body {
     display: none;
 }
 
-/* Hover States */
-.wrapper .sidenav ul li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+/* Active State */
+.wrapper .sidenav ul li a.active {
+    background: #FF6B00;
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
 }
 
+.wrapper .sidenav ul li a.active i {
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/* Hover States for Collapsed Sidebar */
 .wrapper .sidenav.collapsed:hover {
     width: 250px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 0 15px rgba(255, 107, 0, 0.1);
 }
 
 .wrapper .sidenav.collapsed:hover ul li a span {
@@ -170,53 +194,6 @@ body {
     margin-right: 15px;
 }
 
-.wrapper .sidenav .logout {
-    color: #ff4d4d;
-}
-
-/* Social Media Section */
-.wrapper .sidenav .social-media {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%);
-    display: flex;
-    gap: 8px;
-    padding: 10px;
-    transition: all 0.3s;
-}
-
-.wrapper .sidenav .social-media a {
-    text-decoration: none;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
-.wrapper .sidenav .social-media a i {
-    font-size: 16px;
-    margin: 0;
-    color: #fff;
-}
-
-.wrapper .sidenav .social-media a:hover {
-    transform: rotate(360deg);
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.wrapper .sidenav.collapsed .social-media {
-    transform: translate(-50%) scale(0.8);
-}
-
-.wrapper .sidenav.collapsed:hover .social-media {
-    transform: translate(-50%) scale(1);
-}
-
 /* Main Content Area */
 .wrapper .main-content {
     width: calc(100% - 250px);
@@ -227,6 +204,25 @@ body {
 .wrapper .main-content.collapsed {
     width: calc(100% - 60px);
     margin-left: 60px;
+}
+
+/* Custom Scrollbar */
+.wrapper .sidenav::-webkit-scrollbar {
+    width: 5px;
+}
+
+.wrapper .sidenav::-webkit-scrollbar-track {
+    background: #1A1A1A;
+}
+
+.wrapper .sidenav::-webkit-scrollbar-thumb {
+    background: #FF6B00;
+    border-radius: 3px;
+}
+
+.wrapper .sidenav::-webkit-scrollbar-thumb:hover {
+    background: #FF8534;
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
 }
 
 /* Responsive Design */
@@ -265,7 +261,7 @@ body {
     }
 }
 
-/* Sections styling remains the same */
+/* Section Styles */
 section {
     height: 100vh;
     scroll-snap-align: start;
