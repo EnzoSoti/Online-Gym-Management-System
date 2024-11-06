@@ -8,23 +8,62 @@ function addParticipant() {
         participantCount++;
         const additionalClientsDiv = document.getElementById('additional-clients');
         
+        // Create a container div for the participant field and remove button
+        const participantContainer = document.createElement('div');
+        participantContainer.className = 'flex items-center gap-2 mt-2';
+        participantContainer.id = `participant-container-${participantCount}`;
+        
         // Create a new input field for each participant
         const newParticipantField = document.createElement('input');
         newParticipantField.type = 'text';
         newParticipantField.placeholder = `Enter name of participant ${participantCount}`;
-        newParticipantField.className = 'border-2 border-gray-400 p-2 rounded-lg w-full mt-2';
+        newParticipantField.className = 'border-2 border-gray-400 p-2 rounded-lg w-full';
         newParticipantField.id = `participant-${participantCount}`;
         newParticipantField.required = true;
         
-        // Append the new input field to the "additional-clients" div
-        additionalClientsDiv.appendChild(newParticipantField);
+        // Create remove button
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'bg-red-500 text-white p-2 rounded-lg hover:bg-red-600';
+        removeButton.innerHTML = '×';
+        removeButton.onclick = () => removeParticipant(participantCount);
+        
+        // Append elements to container
+        participantContainer.appendChild(newParticipantField);
+        participantContainer.appendChild(removeButton);
+        
+        // Append the container to the "additional-clients" div
+        additionalClientsDiv.appendChild(participantContainer);
     } else {
-        //alert("Maximum 9 participants allowed, including the main client.");
         Swal.fire({
             title: 'Error',
             text: 'Maximum 9 participants allowed, including the main client.',
             icon: 'error'
         });
+    }
+}
+
+// Function to remove a participant
+function removeParticipant(participantNumber) {
+    const containerToRemove = document.getElementById(`participant-container-${participantNumber}`);
+    if (containerToRemove) {
+        containerToRemove.remove();
+        participantCount--;
+        
+        // Reorder remaining participants
+        const additionalClientsDiv = document.getElementById('additional-clients');
+        const remainingContainers = additionalClientsDiv.children;
+        let newCount = 2;
+        
+        for (let container of remainingContainers) {
+            container.id = `participant-container-${newCount}`;
+            const input = container.querySelector('input');
+            input.id = `participant-${newCount}`;
+            input.placeholder = `Enter name of participant ${newCount}`;
+            const removeBtn = container.querySelector('button');
+            removeBtn.onclick = () => removeParticipant(newCount);
+            newCount++;
+        }
     }
 }
 
@@ -82,6 +121,14 @@ function bookReservation(event) {
     // Collect main client and additional participant names
     const clientName = document.getElementById('client-name').value;
     const participantNames = [clientName];  // Add the main client to the list
+
+    const additionalClientsDiv = document.getElementById('additional-clients');
+    const participantInputs = additionalClientsDiv.querySelectorAll('input');
+    participantInputs.forEach(input => {
+        if (input.value.trim() !== '') {
+            participantNames.push(input.value.trim());
+        }
+    });
 
     for (let i = 2; i <= participantCount; i++) {
         const participantField = document.getElementById(`participant-${i}`);
