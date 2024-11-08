@@ -300,8 +300,12 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
 });
 
 
+
+
+
 // Sales Reports API Routes
 // monthly members
+// fixed
 app.get('/api/sales-reports/monthly-members', async (req, res) => {
     try {
         const members = await handleDatabaseOperation(async (connection) => {
@@ -317,28 +321,26 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
     }
 });
 
+
+
 // Sales Reports API Routes
-// supplements
+// Supplements
+// fixed
 app.get('/api/sales-reports/supplements', async (req, res) => {
     try {
         const supplements = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(`
-                SELECT 
-                    id as product_id,
-                    supplement_name as product_name,
-                    quantity as quantity_sold,
-                    price as total_amount
-                FROM supplements
-                ORDER BY supplement_name
+                SELECT * FROM supplements ORDER BY supplement_name
             `);
             return rows;
         });
         res.json(supplements);
     } catch (error) {
         console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to fetch supplements sales report' });
+        res.status(500).json({ error: 'Failed to fetch supplements' });
     }
 });
+
 
 
 app.listen(PORT, () => {

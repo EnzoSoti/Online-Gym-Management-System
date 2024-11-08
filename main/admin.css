@@ -77,8 +77,8 @@ body {
 }
 
 .wrapper .sidenav .logo-container img {
-    max-width: 40px;
-    min-width: 40px;
+    max-width: 100px;
+    min-width: 50px;
     margin-right: 15px;
     border-radius: 8px;
     transition: all 0.3s;

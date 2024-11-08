@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 endpoint = 'http://localhost:3000/api/sales-reports/supplements';
                 break;
             default:
+                console.error('Invalid tab ID:', tabId);
                 return;
         }
 
@@ -203,29 +204,31 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const data = await response.json();
+            console.log(`Fetched ${tabId} data:`, data); // Add this for debugging
 
             if (!isPolling || hasDataChanged(data, lastPolledData[tabId])) {
                 const changes = detectChanges(data, lastPolledData[tabId]);
                 
-                // Only send notification if there are actual changes
                 if (changes.added || changes.removed || changes.modified) {
                     sendNotification(tabId, changes);
                 }
 
                 lastPolledData[tabId] = data;
-                if (tabId === activeTabId) {
-                    populateTable(tabId, data);
-                }
+                populateTable(tabId, data);
             }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error(`Error fetching ${tabId} data:`, error);
         }
     }
 
     // Function to populate table with fetched data
     function populateTable(tabId, data) {
-        const tableBody = document.querySelector(`#${tabId}-members-table`);
-        if (!tableBody) return;
+        // Important: Updated selector to match the correct table body
+        const tableBody = document.querySelector(`#${tabId} tbody`);
+        if (!tableBody) {
+            console.error(`Table body not found for ${tabId}`);
+            return;
+        }
 
         const scrollPos = tableBody.parentElement.scrollTop;
         tableBody.innerHTML = '';
@@ -245,15 +248,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.start_date)}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.end_date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount || 0}</td>
                     `;
                     break;
                 case 'supplements':
                     newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">${item.product_id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.product_name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.total_amount}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.id || ''}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.supplement_name || ''}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.price || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold || 0}</td>
                     `;
                     break;
             }
@@ -264,143 +268,142 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle export/print functionality
-    // Find and replace the existing export button event listener code
-document.querySelectorAll('button').forEach(button => {
-    if (button.textContent.toLowerCase().includes('export')) {
-        button.addEventListener('click', () => {
-            const tabPanel = button.closest('[role="tabpanel"]');
-            const tableContent = tabPanel.querySelector('table').cloneNode(true);
-            
-            // Calculate total amount
-            let totalAmount = 0;
-            tableContent.querySelectorAll('tbody tr').forEach(row => {
-                const amountCell = row.querySelector('td:last-child');
-                if (amountCell) {
-                    const amount = parseFloat(amountCell.textContent.replace('₱', '').replace(',', ''));
-                    if (!isNaN(amount)) {
-                        totalAmount += amount;
+    document.querySelectorAll('button').forEach(button => {
+        if (button.textContent.toLowerCase().includes('export')) {
+            button.addEventListener('click', () => {
+                const tabPanel = button.closest('[role="tabpanel"]');
+                const tableContent = tabPanel.querySelector('table').cloneNode(true);
+                
+                // Calculate total amount
+                let totalAmount = 0;
+                tableContent.querySelectorAll('tbody tr').forEach(row => {
+                    const amountCell = row.querySelector('td:last-child');
+                    if (amountCell) {
+                        const amount = parseFloat(amountCell.textContent.replace('₱', '').replace(',', ''));
+                        if (!isNaN(amount)) {
+                            totalAmount += amount;
+                        }
                     }
-                }
-            });
+                });
 
-            // Format current date
-            const currentDate = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+                // Format current date
+                const currentDate = new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
 
-            // Add total row to table
-            const totalRow = document.createElement('tr');
-            totalRow.className = 'total-row';
-            const colSpan = tableContent.querySelectorAll('thead th').length - 1;
-            totalRow.innerHTML = `
-                <td colspan="${colSpan}" style="text-align: right; font-weight: bold;">Total Amount:</td>
-                <td style="text-align: left; font-weight: bold;">₱${totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            `;
-            tableContent.querySelector('tbody').appendChild(totalRow);
+                // Add total row to table
+                const totalRow = document.createElement('tr');
+                totalRow.className = 'total-row';
+                const colSpan = tableContent.querySelectorAll('thead th').length - 1;
+                totalRow.innerHTML = `
+                    <td colspan="${colSpan}" style="text-align: right; font-weight: bold;">Total Amount:</td>
+                    <td style="text-align: left; font-weight: bold;">₱${totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                `;
+                tableContent.querySelector('tbody').appendChild(totalRow);
 
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Fitworx GYM - Sales Report</title>
-                        <style>
-                            @media print {
-                                body { 
-                                    padding: 20px;
-                                    font-family: Arial, sans-serif;
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Fitworx GYM - Sales Report</title>
+                            <style>
+                                @media print {
+                                    body { 
+                                        padding: 20px;
+                                        font-family: Arial, sans-serif;
+                                    }
+                                    .header {
+                                        text-align: center;
+                                        margin-bottom: 30px;
+                                    }
+                                    .header h1 {
+                                        font-size: 24px;
+                                        margin: 0;
+                                    }
+                                    .header p {
+                                        margin: 5px 0;
+                                    }
+                                    table { 
+                                        border-collapse: collapse; 
+                                        width: 100%;
+                                        margin: 20px 0;
+                                    }
+                                    th, td { 
+                                        border: 1px solid #000; 
+                                        padding: 8px; 
+                                    }
+                                    .total-row {
+                                        font-weight: bold;
+                                        background-color: #f0f0f0;
+                                    }
+                                    .footer {
+                                        margin-top: 50px;
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: flex-end;
+                                    }
+                                    .prepared-by {
+                                        text-align: center;
+                                    }
+                                    .signature-line {
+                                        border-top: 1px solid #000;
+                                        width: 200px;
+                                        margin-bottom: 5px;
+                                    }
+                                    .page-number {
+                                        position: fixed;
+                                        bottom: 20px;
+                                        right: 20px;
+                                    }
                                 }
-                                .header {
-                                    text-align: center;
-                                    margin-bottom: 30px;
-                                }
-                                .header h1 {
-                                    font-size: 24px;
-                                    margin: 0;
-                                }
-                                .header p {
-                                    margin: 5px 0;
-                                }
-                                table { 
-                                    border-collapse: collapse; 
-                                    width: 100%;
-                                    margin: 20px 0;
-                                }
-                                th, td { 
-                                    border: 1px solid #000; 
-                                    padding: 8px; 
-                                }
-                                .total-row {
-                                    font-weight: bold;
-                                    background-color: #f0f0f0;
-                                }
-                                .footer {
-                                    margin-top: 50px;
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: flex-end;
-                                }
-                                .prepared-by {
-                                    text-align: center;
-                                }
-                                .signature-line {
-                                    border-top: 1px solid #000;
-                                    width: 200px;
-                                    margin-bottom: 5px;
-                                }
-                                .page-number {
-                                    position: fixed;
-                                    bottom: 20px;
-                                    right: 20px;
-                                }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="max-w-4xl mx-auto">
-                            <div class="header">
-                                <h1>Fitworx GYM</h1>
-                                <p>Q28V+QMG, Capt. F. S. Samano, Caloocan, Metro Manila</p>
-                                <p>0933 874 5377</p>
-                                <h2>Daily Sales Report</h2>
-                                <p>As of ${currentDate}</p>
-                            </div>
-                            
-                            <div class="content">
-                                ${tableContent.outerHTML}
-                            </div>
-
-                            <div class="footer">
-                                <div class="prepared-by">
-                                    <div class="signature-line"></div>
-                                    <p>Prepared By</p>
+                            </style>
+                        </head>
+                        <body>
+                            <div class="max-w-4xl mx-auto">
+                                <div class="header">
+                                    <h1>Fitworx GYM</h1>
+                                    <p>Q28V+QMG, Capt. F. S. Samano, Caloocan, Metro Manila</p>
+                                    <p>0933 874 5377</p>
+                                    <h2>Daily Sales Report</h2>
+                                    <p>As of ${currentDate}</p>
                                 </div>
-                                <p>Printed Date: ${currentDate}</p>
+                                
+                                <div class="content">
+                                    ${tableContent.outerHTML}
+                                </div>
+
+                                <div class="footer">
+                                    <div class="prepared-by">
+                                        <div class="signature-line"></div>
+                                        <p>Prepared By</p>
+                                    </div>
+                                    <p>Printed Date: ${currentDate}</p>
+                                </div>
+
+                                <div class="page-number"></div>
                             </div>
 
-                            <div class="page-number"></div>
-                        </div>
-
-                        <script>
-                            // Add page numbers
-                            const pages = document.querySelectorAll('.page-number');
-                            pages.forEach((page, index) => {
-                                page.textContent = 'Page ' + (index + 1);
-                            });
-                        </script>
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 250);
-        });
-    }
-});
+                            <script>
+                                // Add page numbers
+                                const pages = document.querySelectorAll('.page-number');
+                                pages.forEach((page, index) => {
+                                    page.textContent = 'Page ' + (index + 1);
+                                });
+                            </script>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 250);
+            });
+        }
+    });
 
     // Initialize
     requestNotificationPermission();

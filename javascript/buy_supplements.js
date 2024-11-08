@@ -68,16 +68,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">${supplement.quantity}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">₱${supplement.price}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                    <button class="buy-button px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium text-sm shadow-sm inline-flex items-center gap-2 ${supplement.quantity === 0 ? 'opacity-50 cursor-not-allowed from-gray-400 to-gray-500 hover:from-gray-400 hover:to-gray-500' : ''}"
-                        data-supplement-id="${supplement.id}"
-                        data-supplement-name="${supplement.supplement_name}"
-                        data-supplement-price="${supplement.price}"
-                        data-supplement-stock="${supplement.quantity}"
-                        ${supplement.quantity === 0 ? 'disabled' : ''}>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        ${supplement.quantity === 0 ? 'Out of Stock' : 'Buy Now'}
+                    <button class="buy-button px-5 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-medium text-sm shadow-sm inline-flex items-center gap-2 ${supplement.quantity === 0 ? 'opacity-50 cursor-not-allowed from-gray-400 to-gray-500 hover:from-gray-400 hover:to-gray-500' : ''}"
+                            data-supplement-id="${supplement.id}"
+                            data-supplement-name="${supplement.supplement_name}"
+                            data-supplement-price="${supplement.price}"
+                            data-supplement-stock="${supplement.quantity}"
+                            ${supplement.quantity === 0 ? 'disabled' : ''}>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            ${supplement.quantity === 0 ? 'Out of Stock' : 'Buy Now'}
                     </button>
                 </td>
             </tr>
