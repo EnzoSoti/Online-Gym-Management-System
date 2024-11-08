@@ -1,3 +1,12 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const goToCustomerPageBtn = document.getElementById('goToCustomerPageBtn');
+    if (goToCustomerPageBtn) {
+        goToCustomerPageBtn.addEventListener('click', function() {
+            window.location.href = '../customer file/customer.html';
+        });
+    }
+});
+
 // Member Growth Chart
 document.addEventListener('DOMContentLoaded', async function() {
     const ctx = document.getElementById('memberGrowthChart');
