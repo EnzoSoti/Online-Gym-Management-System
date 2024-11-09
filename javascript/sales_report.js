@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'supplements':
                     newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">${item.id || ''}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">PRDT#${item.id || ''}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${item.supplement_name || ''}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${item.quantity || 0}</td>
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.price || 0}</td>

@@ -1,8 +1,127 @@
+// loading style to go back and forth
 document.addEventListener('DOMContentLoaded', function() {
     const goToCustomerPageBtn = document.getElementById('goToCustomerPageBtn');
+    
     if (goToCustomerPageBtn) {
         goToCustomerPageBtn.addEventListener('click', function() {
-            window.location.href = '../customer file/customer.html';
+            // Show loading animation with SweetAlert2
+            Swal.fire({
+                title: 'Loading Customer Portal',
+                html: `
+                    <div class="flex flex-col items-center space-y-4">
+                        <div class="loader-ring">
+                            <div class="loading">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-4">Preparing your experience...</p>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'rounded-xl shadow-xl',
+                    title: 'text-xl font-semibold text-gray-800',
+                    htmlContainer: 'my-4'
+                },
+                didOpen: () => {
+                    // Add the required CSS for the loading animation
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .loader-ring {
+                            position: relative;
+                            width: 60px;
+                            height: 60px;
+                        }
+                        
+                        .loading {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 60px;
+                            height: 60px;
+                        }
+                        
+                        .loading span {
+                            position: absolute;
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            background: #3b82f6;
+                            animation: animate 1.6s ease-in-out infinite;
+                        }
+                        
+                        @keyframes animate {
+                            0%, 100% {
+                                transform: scale(0.8);
+                                opacity: 0.5;
+                            }
+                            50% {
+                                transform: scale(1.2);
+                                opacity: 1;
+                            }
+                        }
+                        
+                        .loading span:nth-child(1) {
+                            top: 0;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            animation-delay: 0s;
+                        }
+                        
+                        .loading span:nth-child(2) {
+                            top: 14px;
+                            right: 14px;
+                            animation-delay: 0.2s;
+                        }
+                        
+                        .loading span:nth-child(3) {
+                            right: 0;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            animation-delay: 0.4s;
+                        }
+                        
+                        .loading span:nth-child(4) {
+                            bottom: 14px;
+                            right: 14px;
+                            animation-delay: 0.6s;
+                        }
+                        
+                        .loading span:nth-child(5) {
+                            bottom: 0;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            animation-delay: 0.8s;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            });
+
+            // Simulate loading time (you can remove this setTimeout if you want it to be instant)
+            setTimeout(() => {
+                // Show success message before redirecting
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Ready!',
+                    text: 'Taking you to the customer portal...',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    customClass: {
+                        popup: 'rounded-xl shadow-xl',
+                        title: 'text-xl font-semibold text-gray-800'
+                    }
+                }).then(() => {
+                    // Redirect to customer page
+                    window.location.href = '../customer file/customer.html';
+                });
+            }, 2000); // Simulated 2-second loading time
         });
     }
 });
@@ -47,6 +166,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Poll for updates every 5 minutes (300000 ms)
     setInterval(loadDueMembers, 300000);
 });
+
 
 // Function to load members due within 7 days
 async function loadDueMembers() {
