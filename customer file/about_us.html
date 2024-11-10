@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitworx Gym - About Us</title>
+    <link rel="icon" href="../img/Fitworx logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
+    <!-- calendar  -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <!-- Tippy.js tooltips -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-orange-50 font-poppins">
+    <!-- Hero Section -->
+    <div class="relative bg-orange-900 h-[400px]">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="relative container mx-auto px-4 h-full flex items-center">
+            <div class="text-white">
+                <h1 class="text-5xl font-bold mb-4">Welcome to Fitworx Gym</h1>
+                <p class="text-xl font-light text-orange-100">Your Journey to Fitness Starts Here</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-16">
+        <!-- Our Story -->
+        <div class="max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold text-orange-900 mb-6">Our Story</h2>
+            <p class="text-orange-800 mb-4 font-light">
+                Fitworx Gym began as a personal fitness sanctuary, created by a passionate gym enthusiast. What started as a private training space soon evolved into a vibrant community fitness center, opening its doors to serve the public with the same dedication and commitment to excellence that inspired its creation.
+            </p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <!-- Membership Options -->
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-orange-200 transition">
+                <h3 class="text-xl font-semibold text-orange-800 mb-4">Flexible Memberships</h3>
+                <ul class="text-orange-700 space-y-2 font-light">
+                    <li>• Regular Rate: ₱950/month</li>
+                    <li>• Student Rate: ₱850/month</li>
+                    <li>• No membership fees</li>
+                </ul>
+            </div>
+
+            <!-- Facilities -->
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-orange-200 transition">
+                <h3 class="text-xl font-semibold text-orange-800 mb-4">Premium Facilities</h3>
+                <ul class="text-orange-700 space-y-2 font-light">
+                    <li>• Modern gym equipment</li>
+                    <li>• Basketball court</li>
+                    <li>• Billiards area</li>
+                    <li>• Zumba session space</li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-orange-200 transition">
+                <h3 class="text-xl font-semibold text-orange-800 mb-4">Professional Services</h3>
+                <ul class="text-orange-700 space-y-2 font-light">
+                    <li>• Personal training</li>
+                    <li>• Fitness supplements</li>
+                    <li>• Equipment maintenance</li>
+                    <li>• Professional staff support</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="bg-orange-800 text-white rounded-lg p-8 mb-16">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <p class="text-4xl font-bold mb-2">50-100</p>
+                    <p class="text-orange-200 font-light">Daily Visitors</p>
+                </div>
+                <div>
+                    <p class="text-4xl font-bold mb-2">5+</p>
+                    <p class="text-orange-200 font-light">Professional Staff</p>
+                </div>
+                <div>
+                    <p class="text-4xl font-bold mb-2">365</p>
+                    <p class="text-orange-200 font-light">Days of Operation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-orange-900 mb-8">Our Team</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-orange-200 transition">
+                    <h3 class="text-xl font-semibold text-orange-800 mb-4">Front Desk & Cashier</h3>
+                    <p class="text-orange-700 font-light">Our friendly front desk staff is always ready to assist you with memberships, scheduling, and inquiries.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-orange-200 transition">
+                    <h3 class="text-xl font-semibold text-orange-800 mb-4">Maintenance & Cleaning</h3>
+                    <p class="text-orange-700 font-light">Our dedicated maintenance team ensures that our facilities are always clean, safe, and ready for your workout.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold text-orange-900 mb-6">Visit Us Today</h2>
+            <p class="text-orange-800 mb-4 font-light">Experience the Fitworx difference for yourself. Join our growing fitness community!</p>
+            <div class="flex justify-center gap-4">
+                <a href="../customer file/terms_of_service.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">Contact Us</a>
+                <a href="../customer file/customer.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">Back to home page</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

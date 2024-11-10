@@ -1,3 +1,4 @@
+// loading
 document.addEventListener('DOMContentLoaded', function() {
     const goToCustomerPageBtn = document.getElementById('goToCustomerPageBtn');
     
@@ -162,6 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
 // Member Growth Chart
 document.addEventListener('DOMContentLoaded', async function() {
     const ctx = document.getElementById('memberGrowthChart');
