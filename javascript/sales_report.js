@@ -161,20 +161,24 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', () => {
             activeTabId = targetId;
             
+            // Remove active classes from all tabs
             tabButtons.forEach(btn => {
-                btn.classList.remove('border-blue-600');
-                btn.classList.add('border-transparent');
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-orange-600');
+                btn.classList.add('text-slate-600', 'hover:bg-white/50');
                 btn.setAttribute('aria-selected', 'false');
             });
 
+            // Hide all panels
             tabPanels.forEach(panel => {
                 panel.classList.add('hidden');
             });
 
-            button.classList.remove('border-transparent');
-            button.classList.add('border-blue-600');
+            // Add active classes to clicked tab
+            button.classList.remove('text-slate-600', 'hover:bg-white/50');
+            button.classList.add('bg-white', 'shadow-sm', 'text-orange-600');
             button.setAttribute('aria-selected', 'true');
 
+            // Show selected panel
             const targetPanel = document.getElementById(targetId);
             targetPanel.classList.remove('hidden');
 

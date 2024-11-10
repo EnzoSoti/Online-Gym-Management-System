@@ -167,7 +167,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     setInterval(loadDueMembers, 300000);
 });
 
-
 // Function to load members due within 7 days
 async function loadDueMembers() {
     try {
@@ -194,22 +193,21 @@ function filterDueMembers(members) {
     });
 }
 
-// Display due members in the monthly due date section
 function displayDueMembers(dueMembers) {
     const dueSection = document.querySelector('.monthly-due-section');
     if (!dueSection) return;
 
     if (dueMembers.length === 0) {
-        dueSection.innerHTML = '<p class="text-indigo-800">No members due within the next 7 days</p>';
+        dueSection.innerHTML = '<p class="text-orange-800">No members due within the next 7 days</p>';
         return;
     }
 
     const membersList = dueMembers
         .map(member => `
-            <div class="flex justify-between items-center p-3 bg-indigo-50 rounded-lg mb-2 hover:bg-indigo-100 transition-all">
+            <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg mb-2 hover:bg-orange-100 transition-all">
                 <div>
-                    <h3 class="font-semibold text-indigo-900">${member.member_name}</h3>
-                    <p class="text-sm text-indigo-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
+                    <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
+                    <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
                 </div>
                 <span class="px-3 py-1 text-xs font-semibold rounded-full ${
                     member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -220,7 +218,7 @@ function displayDueMembers(dueMembers) {
 
     dueSection.innerHTML = `
         <div class="space-y-2">
-            <h3 class="text-lg font-semibold text-indigo-900 mb-3">Members Due (Next 7 Days)</h3>
+            <h3 class="text-lg font-semibold text-orange-900 mb-3">Members Due (Next 7 Days)</h3>
             ${membersList}
         </div>
     `;

@@ -341,6 +341,65 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
     }
 });
 
+// check in API Routes
+// Fixed
+app.get('/api/check-ins', async (req, res) => {
+    try {
+        const checkIns = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM check_ins ORDER BY time_in'
+            );
+            return rows;
+        });
+        res.json(checkIns);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch check-ins' });
+    }
+});
+
+app.post('/api/check-ins', async (req, res) => {
+    try {
+        const { client_type, client_name, time_in } = req.body;
+        
+        if (!client_type || !client_name || !time_in) {
+            return res.status(400).json({ 
+                error: 'Client type, name, and time are required' 
+            });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [insertResult] = await connection.query(
+                'INSERT INTO check_ins (client_type, client_name, time_in) VALUES (?, ?, ?)',
+                [client_type, client_name, time_in]
+            );
+            return insertResult;
+        });
+
+        res.status(201).json({
+            message: 'Check-in recorded successfully',
+            checkInId: result.insertId
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to record check-in' });
+    }
+});
+
+app.delete('/api/check-ins', async (req, res) => {
+    try {
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [deleteResult] = await connection.query('DELETE FROM check_ins');
+            return deleteResult;
+        });
+
+        res.json({ message: 'All check-ins cleared successfully' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to clear check-ins' });
+    }
+});
+
 
 
 app.listen(PORT, () => {

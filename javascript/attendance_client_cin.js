@@ -1,16 +1,71 @@
-// Store check-ins in memory (you might want to use localStorage or a backend database in production)
+// Initialize check-ins from API
 let checkIns = [];
-let currentId = 1;
+
+// Function to check if it's midnight
+function isMidnight() {
+    const now = new Date();
+    return now.getHours() === 0 && now.getMinutes() === 0;
+}
+
+// Function to clear check-ins at midnight
+async function clearCheckInsAtMidnight() {
+    try {
+        const response = await fetch('http://localhost:3000/api/check-ins', {
+            method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to clear check-ins');
+        }
+        
+        checkIns = [];
+        updateCheckInDashboard();
+        console.log('Check-ins cleared successfully at midnight');
+    } catch (error) {
+        console.error('Error clearing check-ins:', error);
+    }
+}
+
+// Function to check time and clear if midnight
+function checkTimeAndClear() {
+    if (isMidnight()) {
+        clearCheckInsAtMidnight();
+    }
+}
+
+// Function to fetch check-ins from API
+async function fetchCheckIns() {
+    try {
+        const response = await fetch('http://localhost:3000/api/check-ins');
+        if (!response.ok) {
+            throw new Error('Failed to fetch check-ins');
+        }
+        const data = await response.json();
+        checkIns = data;
+        updateCheckInDashboard();
+    } catch (error) {
+        console.error('Error fetching check-ins:', error);
+        Swal.fire({
+            title: 'Error!',
+            text: 'Failed to load check-ins',
+            icon: 'error',
+            confirmButtonColor: '#4F46E5'
+        });
+    }
+}
 
 // Function to handle check-in form submission
-function handleCheckin(event) {
+async function handleCheckin(event) {
     event.preventDefault();
     
     // Get form elements directly from the form
     const form = event.target;
     const clientName = form.querySelector('#client-name').value.trim();
-    const timeIn = form.querySelector('#time-in').value;
     const clientType = form.querySelector('#client-type').value;
+    
+    // Get current time
+    const now = new Date();
+    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
     if (!clientName) {
         Swal.fire({
@@ -22,52 +77,66 @@ function handleCheckin(event) {
         return;
     }
 
-    if (!timeIn) {
+    try {
+        // Send check-in data to API
+        const response = await fetch('http://localhost:3000/api/check-ins', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                client_type: clientType.toLowerCase(),
+                client_name: clientName,
+                time_in: currentTime
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to record check-in');
+        }
+
+        // Show success message with auto-close and no buttons
+        Swal.fire({
+            title: 'Success!',
+            text: 'Client has been checked in successfully',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+            position: 'top-end',
+            toast: true
+        }).then(() => {
+            // Clear form fields immediately after success message
+            resetForm();
+        });
+
+        // Fetch updated check-ins to refresh the table
+        await fetchCheckIns();
+    } catch (error) {
+        console.error('Error recording check-in:', error);
         Swal.fire({
             title: 'Error!',
-            text: 'Please select a check-in time',
+            text: 'Failed to record check-in',
             icon: 'error',
             confirmButtonColor: '#4F46E5'
         });
-        return;
     }
-
-    // Create new check-in object
-    const newCheckIn = {
-        id: currentId++,
-        type: clientType.toLowerCase(),
-        name: clientName,
-        timeIn: timeIn
-    };
-
-    // Add to check-ins array
-    checkIns.unshift(newCheckIn); // Add to beginning of array to show newest first
-
-    // Update dashboard
-    updateCheckInDashboard();
-
-    // Show success message with auto-close and no buttons
-    Swal.fire({
-        title: 'Success!',
-        text: 'Client has been checked in successfully',
-        icon: 'success',
-        timer: 1500,
-        showConfirmButton: false,
-        position: 'top-end',
-        toast: true
-    }).then(() => {
-        // Clear form fields immediately after success message
-        resetForm();
-    });
 }
 
-// Function to reset the form with current time
+// Function to reset the form
 function resetForm() {
     const form = document.getElementById('checkin-form');
     form.reset();
+}
+
+// Function to update the current time display
+function updateCurrentTime() {
     const now = new Date();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    document.getElementById('time-in').value = currentTime;
+    const currentTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+    document.getElementById('current-time-display').textContent = currentTime;
 }
 
 // Function to update the check-in dashboard
@@ -81,22 +150,22 @@ function updateCheckInDashboard() {
         
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
-                <span class="font-medium text-slate-900">${checkIn.id}</span>
+                <span class="font-medium text-slate-900">CLNT#${checkIn.id}</span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-3 py-1 rounded-full text-xs font-medium ${
-                    checkIn.type === 'regular' 
+                    checkIn.client_type === 'regular' 
                         ? 'bg-blue-50 text-blue-700' 
                         : 'bg-green-50 text-green-700'
                 }">
-                    ${checkIn.type.charAt(0).toUpperCase() + checkIn.type.slice(1)}
+                    ${checkIn.client_type.charAt(0).toUpperCase() + checkIn.client_type.slice(1)}
                 </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <span class="text-slate-900">${checkIn.name}</span>
+                <span class="text-slate-900">${checkIn.client_name}</span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <span class="text-slate-900">${formatTime(checkIn.timeIn)}</span>
+                <span class="text-slate-900">${formatTime(checkIn.time_in)}</span>
             </td>
         `;
 
@@ -113,13 +182,34 @@ function formatTime(time) {
     });
 }
 
+// Calculate time until next midnight
+function getTimeUntilMidnight() {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow - now;
+}
+
 // Initialize the dashboard on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Set default time to current time
-    const now = new Date();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    document.getElementById('time-in').value = currentTime;
+    // Update time immediately and then every second
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
     
-    // Initialize empty dashboard
-    updateCheckInDashboard();
+    // Fetch initial check-ins
+    fetchCheckIns();
+
+    // Set up periodic refresh (every 30 seconds)
+    setInterval(fetchCheckIns, 30000);
+
+    // Set up midnight check (every minute)
+    setInterval(checkTimeAndClear, 60000);
+
+    // Schedule first midnight clear
+    setTimeout(() => {
+        clearCheckInsAtMidnight();
+        // Set up daily clearing after the first clear
+        setInterval(clearCheckInsAtMidnight, 24 * 60 * 60 * 1000);
+    }, getTimeUntilMidnight());
 });

@@ -5,25 +5,29 @@ document.addEventListener('DOMContentLoaded', function() {
         adminLoginBtn.addEventListener('click', showAdminLogin);
     }
 
-    // Fix: Remove event listeners from navigation links
-    const navLinks = document.querySelectorAll('nav a:not([href="#"].text-orange-600)');
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Prevent default only if the href is #
-            if (link.getAttribute('href') === '#') {
-                e.preventDefault();
+    // Hamburger menu functionality
+    const hamburgerBtn = document.querySelector('nav button');
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', function() {
+            // Add your hamburger menu toggle logic here
+            // For example:
+            const mobileMenu = document.querySelector('.md\\:hidden');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('active');
             }
         });
-    });
+    }
 
     // Team member functionality
     let memberCount = 0;
     const maxMembers = 8;
-    const addPlayerBtn = document.querySelector('button[type="button"]');
+    const addPlayerBtn = document.querySelector('#team-members + button');
     
-    // Fix: Properly attach add player functionality
+    // Fix: Properly attach add player functionality to the specific button
     if (addPlayerBtn) {
-        addPlayerBtn.addEventListener('click', function() {
+        addPlayerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             addTeamMember();
         });
     }
