@@ -94,61 +94,77 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCalendar();
 });
 
-// Admin login functionality
+// Admin login function
 function showAdminLogin(e) {
     e.preventDefault();
     
     Swal.fire({
-        title: '<h2 class="text-2xl font-semibold mb-2">Administrator Access</h2>',
+        title: '<div class="flex flex-col items-center gap-3">' +
+               '<div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl rotate-12 flex items-center justify-center shadow-lg">' +
+               '<div class="w-16 h-16 bg-gray-900 rounded-2xl -rotate-12 flex items-center justify-center border-2 border-orange-500/20">' +
+               '<svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+               '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>' +
+               '</svg></div></div>' +
+               '<h2 class="text-2xl font-bold text-white">Secure Access</h2>' +
+               '</div>',
         html: `
-            <div class="space-y-5">
-                <div class="relative">
-                    <label for="admin-username" class="block text-sm font-medium text-gray-700 mb-1 text-left">Username</label>
-                    <div class="relative">
-                        <input type="text" 
-                               id="admin-username" 
-                               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 
-                                      focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                                      transition-all bg-white text-gray-900"
-                               placeholder="Enter your username">
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
+            <div class="space-y-6 pt-4">
+                <div class="space-y-5">
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-2 ml-1">Username</label>
+                        <div class="relative">
+                            <input type="text" 
+                                   id="admin-username" 
+                                   class="w-full px-5 py-3 rounded-xl bg-gray-800/50 text-white
+                                          border-2 border-gray-700/50
+                                          group-focus-within:border-orange-500/50
+                                          focus:outline-none focus:ring-0
+                                          transition-all duration-300"
+                                   placeholder="Enter your username">
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="relative">
-                    <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-1 text-left">Password</label>
-                    <div class="relative">
-                        <input type="password" 
-                               id="admin-password" 
-                               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 
-                                      focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                                      transition-all bg-white text-gray-900"
-                               placeholder="Enter your password">
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0 0v2m0-2h2m-2 0H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-2 ml-1">Password</label>
+                        <div class="relative">
+                            <input type="password" 
+                                   id="admin-password" 
+                                   class="w-full px-5 py-3 rounded-xl bg-gray-800/50 text-white
+                                          border-2 border-gray-700/50
+                                          group-focus-within:border-orange-500/50
+                                          focus:outline-none focus:ring-0
+                                          transition-all duration-300"
+                                   placeholder="Enter your password">
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         `,
         showCancelButton: true,
-        confirmButtonText: 'Sign In',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Authenticate',
+        cancelButtonText: 'Back',
         customClass: {
             container: 'font-sans',
-            popup: 'rounded-xl shadow-xl',
-            header: 'border-b pb-4',
-            title: 'text-gray-800',
-            closeButton: 'focus:outline-none hover:text-gray-700',
-            confirmButton: 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 text-white font-medium rounded-lg text-sm px-6 py-2.5 transition duration-200',
-            cancelButton: 'bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg text-sm px-6 py-2.5 transition duration-200 border border-gray-300',
-            actions: 'border-t pt-4 space-x-3',
-            validationMessage: 'bg-red-50 text-red-600 rounded-lg py-2 px-3 mt-2'
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50 shadow-2xl',
+            title: 'text-center border-b border-gray-800/50 pb-6',
+            htmlContainer: 'px-6',
+            confirmButton: 'w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 ' +
+                         'text-white font-semibold rounded-xl px-6 py-3 transition duration-300 shadow-lg shadow-orange-500/20',
+            cancelButton: 'w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 ' +
+                        'transition duration-300 border border-gray-700/50',
+            actions: 'grid grid-cols-2 gap-4 px-6 pb-6 pt-8',
+            validationMessage: 'bg-red-500/10 text-red-400 rounded-lg py-2.5 px-4 mt-3 text-sm font-medium'
         },
         buttonsStyling: false,
         showLoaderOnConfirm: true,
@@ -158,34 +174,69 @@ function showAdminLogin(e) {
                 const password = document.getElementById('admin-password').value;
                 
                 if (!username || !password) {
-                    Swal.showValidationMessage('Please complete all required fields');
+                    Swal.showValidationMessage('All fields are required to proceed');
                     resolve(false);
                     return;
                 }
                 
-                // Simulate API call
+                // Loading state
+                Swal.update({
+                    html: `
+                        <div class="flex flex-col items-center gap-6 py-10">
+                            <div class="relative">
+                                <div class="w-20 h-20">
+                                    <div class="absolute inset-0 rounded-3xl bg-orange-500/20 animate-ping"></div>
+                                    <div class="absolute inset-0 rounded-3xl border-4 border-orange-500/40 animate-pulse"></div>
+                                    <div class="absolute inset-2 rounded-2xl border-4 border-orange-500 border-l-transparent animate-spin"></div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-orange-500 font-medium mb-1">Authenticating</p>
+                                <p class="text-gray-400 text-sm">Please wait while we verify your credentials</p>
+                            </div>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    showCancelButton: false
+                });
+                
                 setTimeout(() => {
                     if (username === 'admin' && password === 'admin') {
                         resolve(true);
                     } else {
-                        Swal.showValidationMessage('Invalid credentials. Please try again.');
+                        Swal.showValidationMessage('Invalid credentials provided');
                         resolve(false);
                     }
-                }, 1000);
+                }, 1500);
             });
         }
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
-                icon: 'success',
-                title: '<h3 class="text-xl font-medium text-gray-900">Welcome Back!</h3>',
-                text: 'Redirecting you to the admin dashboard...',
+                html: `
+                    <div class="flex flex-col items-center gap-4 py-8">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 rotate-12"></div>
+                            <div class="absolute inset-0 rounded-2xl bg-gray-900 -rotate-12 flex items-center justify-center border-2 border-orange-500/20">
+                                <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Access Granted</h3>
+                        <div class="flex items-center gap-2 text-gray-400">
+                            <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            <p class="text-sm">Preparing secure environment</p>
+                        </div>
+                    </div>
+                `,
                 showConfirmButton: false,
                 timer: 2000,
                 customClass: {
-                    popup: 'rounded-xl shadow-xl',
-                    title: 'font-sans',
-                    htmlContainer: 'text-gray-600'
+                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
                 }
             }).then(() => {
                 window.location.href = '../main/admin.html';
@@ -194,6 +245,7 @@ function showAdminLogin(e) {
     });
 }
 
+// Calendar function
 function initializeCalendar() {
     try {
         const reservations = [];
