@@ -1,3 +1,11 @@
+const API_BASE_URL = 'http://localhost:3000/api';
+
+// Add new time validation functions
+function parseTimeToMinutes(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Fix: Only attach admin login to the specific admin login button
     const adminLoginBtn = document.querySelector('a[href="#"].text-orange-600');
@@ -92,7 +100,265 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the calendar
     initializeCalendar();
+
+    // Initialize form submission
+    const reservationForm = document.getElementById('booking-form');
+    if (reservationForm) {
+        reservationForm.addEventListener('submit', handleReservationSubmit);
+    }
 });
+
+// Add this function to check for time slot conflicts
+function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
+    try {
+        const existingReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+        
+        // Convert times to minutes for easier comparison
+        const newStartMinutes = parseTimeToMinutes(newStartTime);
+        const newEndMinutes = parseTimeToMinutes(newEndTime);
+        
+        // Basic time validation
+        if (newStartMinutes >= newEndMinutes) {
+            throw new Error('End time must be after start time');
+        }
+
+        // Validate business hours (9 AM to 12 AM)
+        const openingTime = parseTimeToMinutes('09:00');
+        const closingTime = parseTimeToMinutes('24:00');
+        
+        if (newStartMinutes < openingTime || newEndMinutes > closingTime) {
+            throw new Error('Reservations are only available between 9:00 AM and 12:00 AM');
+        }
+
+        // Duration validation (minimum 1 hour, maximum 4 hours)
+        const duration = newEndMinutes - newStartMinutes;
+        if (duration < 60) {
+            throw new Error('Minimum reservation duration is 1 hour');
+        }
+        if (duration > 240) {
+            throw new Error('Maximum reservation duration is 4 hours');
+        }
+
+        // Check for overlapping reservations
+        const conflict = existingReservations.find(reservation => {
+            if (reservation.reservation_date !== newDate) {
+                return false;
+            }
+            
+            const existingStart = parseTimeToMinutes(reservation.start_time);
+            const existingEnd = parseTimeToMinutes(reservation.end_time);
+            
+            // Check if there's any overlap
+            const hasOverlap = (newStartMinutes < existingEnd && newEndMinutes > existingStart);
+            
+            if (hasOverlap) {
+                throw new Error(
+                    `This time slot conflicts with an existing reservation from ` +
+                    `${reservation.start_time} to ${reservation.end_time}`
+                );
+            }
+            
+            return hasOverlap;
+        });
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function handleReservationSubmit(e) {
+    e.preventDefault();
+
+    // Show loading state
+    Swal.fire({
+        title: 'Processing...',
+        text: 'Checking availability',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    try {
+        // Get form data with validation
+        const service_type = document.querySelector('select')?.value;
+        const customer_name = document.querySelector('input[type="text"]')?.value;
+        const start_time = document.querySelectorAll('input[type="time"]')[0]?.value;
+        const end_time = document.querySelectorAll('input[type="time"]')[1]?.value;
+        const reservation_date = document.querySelector('input[type="date"]')?.value;
+        
+        // Validate required fields first
+        const requiredFields = {
+            'Service Type': service_type,
+            'Customer Name': customer_name,
+            'Start Time': start_time,
+            'End Time': end_time,
+            'Reservation Date': reservation_date
+        };
+
+        const missingFields = Object.entries(requiredFields)
+            .filter(([_, value]) => !value)
+            .map(([field]) => field);
+
+        if (missingFields.length > 0) {
+            throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        }
+
+        // Validate time format and logic
+        const startDateTime = new Date(`${reservation_date}T${start_time}`);
+        const endDateTime = new Date(`${reservation_date}T${end_time}`);
+
+        if (endDateTime <= startDateTime) {
+            throw new Error('End time must be after start time');
+        }
+
+        // Check if the time slot is available
+        const timeSlotCheck = checkTimeSlotAvailability(start_time, end_time, reservation_date);
+        if (!timeSlotCheck.available) {
+            throw new Error(timeSlotCheck.message);
+        }
+
+        // Get and validate additional members
+        const additional_members = getAdditionalMembers();
+        
+        // Create the form data object
+        const formData = {
+            service_type,
+            customer_name,
+            start_time,
+            end_time,
+            reservation_date,
+            additional_members: additional_members.length > 0 ? additional_members : undefined
+        };
+
+        // Make the API call to your backend server
+        const response = await fetch(`${API_BASE_URL}/reservations`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        // Parse the response
+        const data = await response.json();
+
+        // Check if the request was successful
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to create reservation');
+        }
+
+        // Close loading alert and show success message
+        Swal.fire({
+            title: 'Success!',
+            text: 'Your reservation has been successfully saved to the database!',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
+            }
+        });
+
+        // Reset form
+        e.target.reset();
+        clearAdditionalMembers();
+
+        // Refresh the calendar if it exists
+        if (typeof initializeCalendar === 'function') {
+            initializeCalendar();
+        }
+
+    } catch (error) {
+        console.error('Reservation error:', error);
+        
+        // Show error message
+        Swal.fire({
+            title: 'Booking Error',
+            text: error.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
+            }
+        });
+    }
+}
+
+// Local time slot availability checker
+function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
+    // Convert times to minutes for easier comparison
+    const getMinutes = (timeStr) => {
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        return hours * 60 + minutes;
+    };
+
+    const newStartMinutes = getMinutes(newStartTime);
+    const newEndMinutes = getMinutes(newEndTime);
+
+    // Get all existing reservations from the page
+    // Assuming you have a way to access existing reservations, modify this part
+    // to match how you store existing reservations in your application
+    const existingReservations = window.existingReservations || []; // You need to define this array somewhere in your code
+
+    // Check for conflicts
+    for (const reservation of existingReservations) {
+        if (reservation.date === newDate) {
+            const existingStartMinutes = getMinutes(reservation.start_time);
+            const existingEndMinutes = getMinutes(reservation.end_time);
+
+            // Check if there's any overlap
+            if (
+                (newStartMinutes >= existingStartMinutes && newStartMinutes < existingEndMinutes) ||
+                (newEndMinutes > existingStartMinutes && newEndMinutes <= existingEndMinutes) ||
+                (newStartMinutes <= existingStartMinutes && newEndMinutes >= existingEndMinutes)
+            ) {
+                return {
+                    available: false,
+                    message: `This time slot overlaps with an existing booking from ${formatTime(reservation.start_time)} to ${formatTime(reservation.end_time)}. Please choose a different time.`
+                };
+            }
+        }
+    }
+
+    return {
+        available: true,
+        message: 'Time slot is available'
+    };
+}
+
+// Helper function to format time for display
+function formatTime(timeString) {
+    const [hours, minutes] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes));
+    return date.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
+// Existing helper functions
+function getAdditionalMembers() {
+    const memberInputs = document.querySelectorAll('#team-members input[type="text"]');
+    if (!memberInputs) return [];
+    
+    return Array.from(memberInputs)
+        .map(input => input.value.trim())
+        .filter(Boolean);
+}
+
+function clearAdditionalMembers() {
+    const teamMembersContainer = document.getElementById('team-members');
+    if (teamMembersContainer) {
+        teamMembersContainer.innerHTML = '';
+        window.memberCount = 0;
+    }
+}
 
 // Admin login function
 function showAdminLogin(e) {
@@ -245,46 +511,46 @@ function showAdminLogin(e) {
     });
 }
 
-// Calendar function
+// Improved function to clear additional members
+function clearAdditionalMembers() {
+    const teamMembersContainer = document.getElementById('team-members');
+    if (teamMembersContainer) {
+        teamMembersContainer.innerHTML = '';
+        window.memberCount = 0; // Reset the global member count
+    }
+}
+
+// Add this function to initialize the calendar with localStorage data
 function initializeCalendar() {
     try {
-        const reservations = [];
-        const rows = document.querySelectorAll('#reservations-body tr');
+        const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
         
-        rows.forEach(row => {
-            const date = row.cells[1].textContent;
-            const timeIn = row.cells[2].textContent;
-            const timeOut = row.cells[3].textContent;
-            const client = row.cells[4].textContent;
-            const service = row.cells[5].textContent;
-            
-            const startDateTime = new Date(`${date} ${convertTo24HourFormat(timeIn)}`);
-            const endDateTime = new Date(`${date} ${convertTo24HourFormat(timeOut)}`);
-            
-            reservations.push({
-                title: '',
-                start: startDateTime,
-                end: endDateTime,
-                backgroundColor: '#FFF7ED', // Orange-50
-                borderColor: '#EA580C',     // Orange-600
-                textColor: '#431407',       // Orange-950
-                extendedProps: {
-                    service: service,
-                    client: client,
-                    timeIn: timeIn,
-                    timeOut: timeOut
-                }
-            });
-        });
+        const calendarEvents = reservations.map(reservation => ({
+            title: `${reservation.service_type} - ${reservation.customer_name}`,
+            start: `${reservation.reservation_date}T${reservation.start_time}`,
+            end: `${reservation.reservation_date}T${reservation.end_time}`,
+            backgroundColor: '#FFF7ED',
+            borderColor: '#EA580C',
+            textColor: '#431407',
+            extendedProps: {
+                service: reservation.service_type,
+                client: reservation.customer_name,
+                timeIn: reservation.start_time,
+                timeOut: reservation.end_time
+            }
+        }));
 
         const calendarEl = document.getElementById('calendar');
-        const calendar = new FullCalendar.Calendar(calendarEl, {
+        if (!calendarEl) return;
+
+        window.calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth'
             },
+            events: calendarEvents,
             slotMinTime: '09:00:00',
             slotMaxTime: '24:00:00',
             events: reservations,

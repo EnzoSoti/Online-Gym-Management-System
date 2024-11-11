@@ -401,6 +401,80 @@ app.delete('/api/check-ins', async (req, res) => {
 });
 
 
+// customer reservation booking API Routes
+//
+// Create reservation
+app.post('/api/reservations', async (req, res) => {
+    try {
+        const { 
+            service_type, 
+            customer_name, 
+            start_time, 
+            end_time, 
+            reservation_date,
+            additional_members = null
+        } = req.body;
+        
+        // Validation
+        if (!service_type || !customer_name || !start_time || !end_time || !reservation_date) {
+            return res.status(400).json({ 
+                error: 'Required fields missing',
+                details: 'Service type, customer name, start time, end time, and date are required'
+            });
+        }
+
+        // Check for time slot conflicts
+        const result = await handleDatabaseOperation(async (connection) => {
+            // First check for existing reservations in the same time slot
+            const [conflicts] = await connection.query(
+                `SELECT * FROM reservation 
+                 WHERE reservation_date = ? 
+                 AND ((start_time BETWEEN ? AND ?) 
+                 OR (end_time BETWEEN ? AND ?)
+                 OR (? BETWEEN start_time AND end_time))`,
+                [reservation_date, start_time, end_time, start_time, end_time, start_time]
+            );
+
+            if (conflicts.length > 0) {
+                throw new Error('Time slot conflict');
+            }
+
+            // If no conflicts, proceed with insertion
+            const [insertResult] = await connection.query(
+                `INSERT INTO reservation 
+                 (service_type, customer_name, start_time, end_time, reservation_date, additional_members) 
+                 VALUES (?, ?, ?, ?, ?, ?)`,
+                [service_type, customer_name, start_time, end_time, reservation_date, additional_members]
+            );
+            
+            return insertResult;
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Reservation created successfully',
+            reservationId: result.insertId
+        });
+
+    } catch (error) {
+        console.error('Reservation error:', error);
+        
+        if (error.message === 'Time slot conflict') {
+            res.status(409).json({
+                success: false,
+                error: 'This time slot is already booked'
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                error: 'Failed to create reservation',
+                details: error.message
+            });
+        }
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
