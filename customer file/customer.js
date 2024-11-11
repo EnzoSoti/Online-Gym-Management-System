@@ -190,8 +190,8 @@ async function handleReservationSubmit(e) {
         const start_time = document.querySelectorAll('input[type="time"]')[0]?.value;
         const end_time = document.querySelectorAll('input[type="time"]')[1]?.value;
         const reservation_date = document.querySelector('input[type="date"]')?.value;
-        
-        // Validate required fields first
+
+        // Validate required fields
         const requiredFields = {
             'Service Type': service_type,
             'Customer Name': customer_name,
@@ -219,12 +219,21 @@ async function handleReservationSubmit(e) {
         // Check if the time slot is available
         const timeSlotCheck = checkTimeSlotAvailability(start_time, end_time, reservation_date);
         if (!timeSlotCheck.available) {
-            throw new Error(timeSlotCheck.message);
+            Swal.fire({
+                title: 'Time Slot Unavailable',
+                text: timeSlotCheck.message,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
+                }
+            });
+            return;
         }
 
         // Get and validate additional members
         const additional_members = getAdditionalMembers();
-        
+
         // Create the form data object
         const formData = {
             service_type,
@@ -274,7 +283,7 @@ async function handleReservationSubmit(e) {
 
     } catch (error) {
         console.error('Reservation error:', error);
-        
+
         // Show error message
         Swal.fire({
             title: 'Booking Error',
@@ -290,7 +299,6 @@ async function handleReservationSubmit(e) {
 
 // Local time slot availability checker
 function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
-    // Convert times to minutes for easier comparison
     const getMinutes = (timeStr) => {
         const [hours, minutes] = timeStr.split(':').map(Number);
         return hours * 60 + minutes;
@@ -299,12 +307,9 @@ function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
     const newStartMinutes = getMinutes(newStartTime);
     const newEndMinutes = getMinutes(newEndTime);
 
-    // Get all existing reservations from the page
-    // Assuming you have a way to access existing reservations, modify this part
-    // to match how you store existing reservations in your application
-    const existingReservations = window.existingReservations || []; // You need to define this array somewhere in your code
+    // Assuming existingReservations is defined elsewhere in the application
+    const existingReservations = window.existingReservations || [];
 
-    // Check for conflicts
     for (const reservation of existingReservations) {
         if (reservation.date === newDate) {
             const existingStartMinutes = getMinutes(reservation.start_time);
@@ -312,9 +317,7 @@ function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
 
             // Check if there's any overlap
             if (
-                (newStartMinutes >= existingStartMinutes && newStartMinutes < existingEndMinutes) ||
-                (newEndMinutes > existingStartMinutes && newEndMinutes <= existingEndMinutes) ||
-                (newStartMinutes <= existingStartMinutes && newEndMinutes >= existingEndMinutes)
+                (newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes)
             ) {
                 return {
                     available: false,
@@ -342,11 +345,9 @@ function formatTime(timeString) {
     });
 }
 
-// Existing helper functions
+// Helper functions for additional members
 function getAdditionalMembers() {
     const memberInputs = document.querySelectorAll('#team-members input[type="text"]');
-    if (!memberInputs) return [];
-    
     return Array.from(memberInputs)
         .map(input => input.value.trim())
         .filter(Boolean);
@@ -359,6 +360,8 @@ function clearAdditionalMembers() {
         window.memberCount = 0;
     }
 }
+
+
 
 // Admin login function
 function showAdminLogin(e) {
