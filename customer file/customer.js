@@ -167,21 +167,9 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
     }
 }
 
+// have a split payment
 async function handleReservationSubmit(e) {
     e.preventDefault();
-
-    // Show loading state
-    Swal.fire({
-        title: 'Processing...',
-        text: 'Checking availability',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
 
     try {
         // Get form data with validation
@@ -208,28 +196,127 @@ async function handleReservationSubmit(e) {
             throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
         }
 
-        // Validate time format and logic
-        const startDateTime = new Date(`${reservation_date}T${start_time}`);
-        const endDateTime = new Date(`${reservation_date}T${end_time}`);
+        // Show payment selection dialog
+        const { isConfirmed, value: paymentDetails } = await Swal.fire({
+            html: `
+                <div class="max-w-2xl mx-auto p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
+                <!-- Prominent Header -->
+                <div class="mb-8 text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        Select Payment Method
+                    </h2>
+                    <p class="mt-2 text-gray-400">Choose your preferred way to pay</p>
+                </div>
 
-        if (endDateTime <= startDateTime) {
-            throw new Error('End time must be after start time');
-        }
+                <!-- Payment Options -->
+                <div class="space-y-4">
+                    <button id="gym-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-orange-500/20 to-orange-600/20 hover:from-orange-500/30 hover:to-orange-600/30 transition-all duration-300">
+                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-white group-hover:text-orange-400 transition-colors">Pay in the Gym</h3>
+                                    <p class="text-sm text-gray-400">Pay when you arrive at the facility</p>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </button>
 
-        // Check if the time slot is available
-        const timeSlotCheck = checkTimeSlotAvailability(start_time, end_time, reservation_date);
-        if (!timeSlotCheck.available) {
-            Swal.fire({
-                title: 'Time Slot Unavailable',
-                text: timeSlotCheck.message,
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                    confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
-                }
-            });
+                    <button id="gcash-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                                    <img src="../img/gcash-seeklogo.png" alt="GCash Logo" class="w-8 h-8">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-white group-hover:text-blue-400 transition-colors">Pay with GCash</h3>
+                                    <p class="text-sm text-gray-400">Pay securely using GCash</p>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-600 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="split-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-green-500/20 to-green-600/20 hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300">
+                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-white group-hover:text-green-400 transition-colors">Split Payment</h3>
+                                    <p class="text-sm text-gray-400">Pay using multiple methods</p>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            },
+            buttonsStyling: false,
+            didOpen: () => {
+                const gymBtn = document.getElementById('gym-payment');
+                const gcashBtn = document.getElementById('gcash-payment');
+                const splitBtn = document.getElementById('split-payment');
+
+                gymBtn.addEventListener('click', () => {
+                    Swal.clickConfirm();
+                    return { method: 'gym' };
+                });
+
+                gcashBtn.addEventListener('click', async () => {
+                    const result = await handleGcashPayment();
+                    if (result) {
+                        Swal.clickConfirm();
+                        return { method: 'gcash', ...result };
+                    }
+                });
+
+                splitBtn.addEventListener('click', async () => {
+                    const result = await handleSplitPayment();
+                    if (result) {
+                        Swal.clickConfirm();
+                        return { method: 'split', ...result };
+                    }
+                });
+            }
+        });
+
+        if (!isConfirmed || !paymentDetails) {
             return;
         }
+
+        // Show loading state
+        Swal.fire({
+            title: 'Processing...',
+            text: 'Saving your reservation',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         // Get and validate additional members
         const additional_members = getAdditionalMembers();
@@ -241,6 +328,7 @@ async function handleReservationSubmit(e) {
             start_time,
             end_time,
             reservation_date,
+            payment_details: paymentDetails,
             additional_members: additional_members.length > 0 ? additional_members : undefined
         };
 
@@ -261,13 +349,14 @@ async function handleReservationSubmit(e) {
             throw new Error(data.message || 'Failed to create reservation');
         }
 
-        // Close loading alert and show success message
+        // Show success message
         Swal.fire({
             title: 'Success!',
-            text: 'Your reservation has been successfully saved to the database!',
+            text: 'Your reservation has been successfully booked!',
             icon: 'success',
             confirmButtonText: 'OK',
             customClass: {
+                popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
                 confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
             }
         });
@@ -291,13 +380,161 @@ async function handleReservationSubmit(e) {
             icon: 'error',
             confirmButtonText: 'OK',
             customClass: {
+                popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
                 confirmButton: 'bg-orange-600 text-white px-4 py-2 rounded-xl'
             }
         });
     }
 }
 
-// Local time slot availability checker
+async function handleGcashPayment() {
+    const { isConfirmed, value } = await Swal.fire({
+        html: `
+            <div class="max-w-2xl mx-auto p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                    GCash Payment Details
+                </h2>
+                <p class="mt-2 text-gray-400">Please enter your GCash transaction information</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="text-left space-y-6">
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Reference Number</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                            <input type="text" id="gcash-ref" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter reference number">
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">Amount Paid</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                            <input type="number" id="gcash-amount" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter amount">
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">Account Name</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                            <input type="text" id="gcash-name" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter GCash account name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `,
+        confirmButtonText: 'Confirm Payment',
+        showCancelButton: true,
+        customClass: {
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+            confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
+            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+        },
+        buttonsStyling: false,
+        preConfirm: () => {
+            const refNumber = document.getElementById('gcash-ref').value;
+            const amount = document.getElementById('gcash-amount').value;
+            const accountName = document.getElementById('gcash-name').value;
+
+            if (!refNumber || !amount || !accountName) {
+                Swal.showValidationMessage('Please fill in all GCash payment details');
+                return false;
+            }
+
+            return {
+                referenceNumber: refNumber,
+                amount: parseFloat(amount),
+                accountName: accountName
+            };
+        }
+    });
+
+    return isConfirmed ? value : null;
+}
+
+async function handleSplitPayment() {
+    const { isConfirmed, value } = await Swal.fire({
+        html: `
+            <div class="max-w-2xl mx-auto mt-8 p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
+                    Split Payment Details
+                </h2>
+                <p class="mt-2 text-gray-400">Enter both GCash and cash payment information</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="text-left space-y-6">
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Amount</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                            <input type="number" id="split-gcash-amount" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter GCash amount">
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Reference Number</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
+                            <input type="text" id="split-gcash-ref" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter reference number">
+                        </div>
+                    </div>
+                    <div class="group">
+                        <label class="block text-gray-400 text-sm mb-3 font-medium">Cash Amount</label>
+                        <div class="p-1 rounded-2xl bg-gradient-to-r from-green-500/20 to-green-600/20 hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300">
+                            <input type="number" id="split-cash-amount" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all" placeholder="Enter cash amount">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `,
+        confirmButtonText: 'Confirm Split Payment',
+        showCancelButton: true,
+        customClass: {
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
+            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+        },
+        buttonsStyling: false,
+        preConfirm: () => {
+            const gcashAmount = document.getElementById('split-gcash-amount').value;
+            const gcashRef = document.getElementById('split-gcash-ref').value;
+            const cashAmount = document.getElementById('split-cash-amount').value;
+
+            if (!gcashAmount || !gcashRef || !cashAmount) {
+                Swal.showValidationMessage('Please fill in all split payment details');
+                return false;
+            }
+
+            return {
+                gcash: {
+                    amount: parseFloat(gcashAmount),
+                    referenceNumber: gcashRef
+                },
+                cash: {
+                    amount: parseFloat(cashAmount)
+                }
+            };
+        }
+    });
+
+    return isConfirmed ? value : null;
+}
+
+// Helper functions remain the same
+function getAdditionalMembers() {
+    const memberInputs = document.querySelectorAll('#team-members input[type="text"]');
+    return Array.from(memberInputs)
+        .map(input => input.value.trim())
+        .filter(Boolean);
+}
+
+function clearAdditionalMembers() {
+    const teamMembersContainer = document.getElementById('team-members');
+    if (teamMembersContainer) {
+        teamMembersContainer.innerHTML = '';
+        window.memberCount = 0;
+    }
+}
+
 function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
     const getMinutes = (timeStr) => {
         const [hours, minutes] = timeStr.split(':').map(Number);
@@ -307,7 +544,6 @@ function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
     const newStartMinutes = getMinutes(newStartTime);
     const newEndMinutes = getMinutes(newEndTime);
 
-    // Assuming existingReservations is defined elsewhere in the application
     const existingReservations = window.existingReservations || [];
 
     for (const reservation of existingReservations) {
@@ -315,7 +551,6 @@ function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
             const existingStartMinutes = getMinutes(reservation.start_time);
             const existingEndMinutes = getMinutes(reservation.end_time);
 
-            // Check if there's any overlap
             if (
                 (newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes)
             ) {
@@ -333,7 +568,6 @@ function checkTimeSlotAvailability(newStartTime, newEndTime, newDate) {
     };
 }
 
-// Helper function to format time for display
 function formatTime(timeString) {
     const [hours, minutes] = timeString.split(':');
     const date = new Date();
@@ -344,22 +578,8 @@ function formatTime(timeString) {
         hour12: true
     });
 }
+// end of split payment
 
-// Helper functions for additional members
-function getAdditionalMembers() {
-    const memberInputs = document.querySelectorAll('#team-members input[type="text"]');
-    return Array.from(memberInputs)
-        .map(input => input.value.trim())
-        .filter(Boolean);
-}
-
-function clearAdditionalMembers() {
-    const teamMembersContainer = document.getElementById('team-members');
-    if (teamMembersContainer) {
-        teamMembersContainer.innerHTML = '';
-        window.memberCount = 0;
-    }
-}
 
 
 
