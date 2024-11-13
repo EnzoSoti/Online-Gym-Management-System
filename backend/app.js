@@ -402,8 +402,7 @@ app.delete('/api/check-ins', async (req, res) => {
 
 
 // customer reservation booking API Routes
-//
-// Create reservation
+// Fixed
 app.post('/api/reservations', async (req, res) => {
     try {
         const { 
@@ -473,7 +472,6 @@ app.post('/api/reservations', async (req, res) => {
         }
     }
 });
-
 
 
 app.listen(PORT, () => {
