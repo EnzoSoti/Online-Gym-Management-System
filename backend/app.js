@@ -310,7 +310,14 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
     try {
         const members = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(
-                'SELECT * FROM monthly_members ORDER BY start_date'
+                `SELECT *, 
+                    CASE type 
+                        WHEN 'regular' THEN 950 
+                        WHEN 'student' THEN 850 
+                        ELSE 0 
+                    END as amount
+                FROM monthly_members 
+                ORDER BY start_date`
             );
             return rows;
         });
@@ -323,6 +330,7 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
 
 
 
+
 // Sales Reports API Routes
 // Supplements
 // fixed
@@ -330,7 +338,14 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
     try {
         const supplements = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(`
-                SELECT * FROM supplements ORDER BY supplement_name
+                SELECT 
+                    id, 
+                    supplement_name, 
+                    quantity, 
+                    price, 
+                    (quantity * price) AS quantity_sold
+                FROM supplements 
+                ORDER BY supplement_name
             `);
             return rows;
         });
@@ -340,6 +355,7 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch supplements' });
     }
 });
+
 
 // Sales Reports API Routes
 // regular
@@ -451,27 +467,6 @@ app.post('/api/check-ins', async (req, res) => {
         res.status(500).json({ error: 'Failed to record check-in' });
     }
 });
-
-app.delete('/api/check-ins', async (req, res) => {
-    try {
-        const result = await handleDatabaseOperation(async (connection) => {
-            const [deleteResult] = await connection.query('DELETE FROM check_ins');
-            return deleteResult;
-        });
-
-        res.json({ message: 'All check-ins cleared successfully' });
-    } catch (error) {
-        console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to clear check-ins' });
-    }
-});
-
-
-
-
-
-
-
 
 
 // customer reservation booking API Routes

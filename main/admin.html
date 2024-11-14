@@ -73,24 +73,25 @@
 <body>
         <!-- sidebar -->
         <div class="wrapper">
-            <div class="sidenav w-64 bg-gray-800 text-white min-h-screen">
+            <div class="sidenav w-64 bg-gray-900 text-white min-h-screen">
                 <button class="hamburger-btn p-4">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="logo-container p-4">
-                    <img src="../img/Fitworx logo.jpg" alt="logo" class="w-12 h-12">
-                    <h1 class="text-xl font-bold">Fitworx <span class="text-gray-400">Gym</span> Admin</h1>
+                    <img src="../img/Fitworx logo.jpg" alt="logo" class="w-10 h-10 rounded-full">
+                    <h1 class="text-lg font-bold ml-4">Fitworx <span class="text-orange-400">Gym</span> Admin</h1>
                 </div>
-                <ul class="nav-menu space-y-2 p-4">
-                    <li><a href="#dashboard" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-home"></i><span>Dashboard</span></a></li>
-                    <li><a href="#check-in" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-dumbbell"></i><span>Check-in</span></a></li>
-                    <li><a href="#reservation" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark"></i><span>Reservation</span></a></li>
-                    <li><a href="#supplement" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-box"></i><span>Stocks & Inventory</span></a></li>
-                    <li><a href="#monthlyMembers" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-users"></i><span>Add Monthly Member</span></a></li>
-                    <li><a href="#reports" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-clipboard"></i><span>Reports</span></a></li>
-                    <li><a href="#buy" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="fa-solid fa-shopping-cart"></i><span>Product Sale</span></a></li>
+                <ul class="nav-menu space-y-3 p-4">
+                    <li><a href="#dashboard" class="nav-item"><i class="fa-solid fa-home"></i>Dashboard</a></li>
+                    <li><a href="#check-in" class="nav-item"><i class="fa-solid fa-dumbbell"></i>Check-in</a></li>
+                    <li><a href="#reservation" class="nav-item"><i class="fa-solid fa-bookmark"></i>Reservation</a></li>
+                    <li><a href="#supplement" class="nav-item"><i class="fa-solid fa-box"></i>Stocks & Inventory</a></li>
+                    <li><a href="#monthlyMembers" class="nav-item"><i class="fa-solid fa-users"></i>Add Monthly Member</a></li>
+                    <li><a href="#reports" class="nav-item"><i class="fa-solid fa-clipboard"></i>Reports</a></li>
+                    <li><a href="#buy" class="nav-item"><i class="fa-solid fa-shopping-cart"></i>Product Sale</a></li>
                 </ul>
-        </div>
+            </div>
+            
 
         <!-- Section 1 -->
         <!-- Dashboard -->
@@ -872,13 +873,13 @@
                                 <table class="min-w-full divide-y divide-slate-200">
                                     <thead class="bg-slate-50 sticky top-[72px]">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member ID</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Start Date</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">End Date</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Member ID</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Start Date</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">End Date</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 bg-white" id="monthly-members-table">
@@ -904,11 +905,11 @@
                                 <table class="min-w-full divide-y divide-slate-200">
                                     <thead class="bg-slate-50 sticky top-[72px]">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">ID</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time in</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Time in</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 bg-white" id="regular-members-table">
@@ -934,11 +935,11 @@
                                 <table class="min-w-full divide-y divide-slate-200">
                                     <thead class="bg-slate-50 sticky top-[72px]">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">ID</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time in</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Time in</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 bg-white" id="student-members-table">
@@ -964,11 +965,11 @@
                                 <table class="min-w-full divide-y divide-slate-200">
                                     <thead class="bg-slate-50 sticky top-[72px]">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product ID</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product Name</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity Sold</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Product ID</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Product Name</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Price</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Quantity Sold</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 bg-white" id="supplements-table">
@@ -994,13 +995,13 @@
                                 <table class="min-w-full divide-y divide-slate-200">
                                     <thead class="bg-slate-50 sticky top-[72px]">
                                         <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Reservation ID</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Service Type</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Date</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time Slot</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Reservation ID</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Service Type</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Time Slot</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-left text-1xl font-bold text-slate-600 uppercase tracking-wider">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 bg-white" id="reservations-table">

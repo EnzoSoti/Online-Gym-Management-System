@@ -9,20 +9,37 @@ function isMidnight() {
 
 function updateClock() {
     const now = new Date();
-    
-    document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', {
+    // Get the current time in the desired format
+    const currentTime = now.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: true
     });
-    
-    document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+    // Get the current date in the desired format
+    const currentDate = now.toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'short',
         day: 'numeric'
     });
+    // Update the clock and date elements
+    const timeElement = document.getElementById('current-time');
+    const dateElement = document.getElementById('current-date');
+    
+    timeElement.textContent = currentTime;
+    dateElement.textContent = currentDate;
+
+    // Change font color based on the time
+    if (currentTime === "12:00:00 AM") {
+        timeElement.classList.add('text-red-300'); // magiging red pag 12am na
+    } else if (currentTime === "09:00:00 AM") {
+        timeElement.classList.remove('text-red-300'); // back to normal kapag 9am na
+    }
 }
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
 
 // Update clock immediately and then every second
 updateClock();
