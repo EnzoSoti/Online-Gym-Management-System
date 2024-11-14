@@ -261,21 +261,30 @@
                                     </div>
                                 </div>
 
-                                <!-- Updated container with scrollable content -->
-                                <div id="checkins-container" class="p-6 max-h-80 overflow-y-auto">
-                                    <table class="w-full text-sm">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">ID</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Client Name</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time In</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="checkins-body" class="divide-y divide-slate-100">
-                                            <!-- Check-in rows will be added here by JavaScript -->
-                                        </tbody>
-                                    </table>
+                                <!-- Fixed height container with table header -->
+                                <div class="relative">
+                                    <!-- Fixed header -->
+                                    <div class="sticky top-0 bg-white border-b border-slate-200 z-10">
+                                        <table class="w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">ID</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Client Name</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time In</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+                                    <!-- Scrollable content -->
+                                    <div class="overflow-y-auto h-[400px]">
+                                        <table class="w-full">
+                                            <tbody id="checkins-body" class="divide-y divide-slate-100">
+                                                <!-- Check-in rows will be added here by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -540,53 +549,54 @@
 
         <!-- Section 4 -->
         <!-- Sales and Inventory - Supplements -->
-        <section id="supplement" class="ml-64 min-h-screen bg-gradient-to-br from-slate-50 to-orange-50">
-            <div class="h-full p-8">
-                <div class="h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
-                    <!-- Header -->
-                    <div class="p-8 border-b border-slate-100">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <div class="flex items-center gap-3">
-                                    <div class="p-2 bg-orange-100 rounded-xl">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
-                                </div>
-                                <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
-                            </div>
-                            <button id="openModalBtn" 
-                                    class="group flex items-center gap-2 px-6 py-3.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-orange-200 transform hover:-translate-y-0.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        <section id="supplement" class="ml-64 h-screen bg-gradient-to-br from-slate-50 to-orange-50">
+    <div class="h-full p-8">
+        <div class="flex flex-col h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
+            <!-- Header -->
+            <div class="p-8 border-b border-slate-100 flex-shrink-0">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-orange-100 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
                                 </svg>
-                                <span class="font-semibold">Add Supplement</span>
-                            </button>
+                            </div>
+                            <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
                         </div>
+                        <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
                     </div>
-
-                    <!-- Table -->
-                    <div class="p-8">
-                        <div class="overflow-x-auto rounded-xl border border-slate-100 shadow-sm">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="supplementsTable" class="divide-y divide-slate-100 bg-white">
-                                    <!-- Data will be inserted here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <button id="openModalBtn" 
+                            class="group flex items-center gap-2 px-6 py-3.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-orange-200 transform hover:-translate-y-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-semibold">Add Supplement</span>
+                    </button>
                 </div>
             </div>
+
+            <!-- Table Container with Scroll -->
+            <div class="flex-1 p-8 overflow-hidden">
+                <div class="h-full overflow-auto rounded-xl border border-slate-100 shadow-sm">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50 sticky top-0">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplementsTable" class="divide-y divide-slate-100 bg-white">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
             <!-- Modal -->
             <div id="supplementModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
@@ -639,13 +649,13 @@
 
         <!-- Section 5 -->
         <!-- monthly member -->
-        <section id="monthlyMembers" class="ml-64 min-h-screen bg-gradient-to-br from-slate-50 to-orange-50">
+        <section id="monthlyMembers" class="ml-64 h-screen bg-gradient-to-br from-slate-50 to-orange-50">
             <!-- Main Content -->
             <div class="h-full p-8">
                 <!-- Main Card -->
-                <div class="h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
+                <div class="flex flex-col h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
                     <!-- Header Section -->
-                    <div class="p-8 border-b border-slate-100">
+                    <div class="p-8 border-b border-slate-100 flex-shrink-0">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                             <div>
                                 <div class="flex items-center gap-3">
@@ -683,11 +693,11 @@
                         </div>
                     </div>
 
-                    <!-- Table Section -->
-                    <div class="p-8">
-                        <div class="overflow-x-auto rounded-xl border border-slate-100 shadow-sm">
+                    <!-- Table Section with Scroll -->
+                    <div class="flex-1 p-8 overflow-hidden">
+                        <div class="h-full overflow-auto rounded-xl border border-slate-100 shadow-sm">
                             <table class="w-full">
-                                <thead class="bg-slate-50">
+                                <thead class="bg-slate-50 sticky top-0">
                                     <tr>
                                         <th class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Member Name</th>
                                         <th class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Type</th>
@@ -834,7 +844,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
                                     <table class="w-full">
                                         <thead>
                                             <tr class="bg-slate-50">
@@ -866,7 +876,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
                                     <table class="w-full">
                                         <thead>
                                             <tr class="bg-slate-50">
@@ -896,7 +906,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
                                     <table class="w-full">
                                         <thead>
                                             <tr class="bg-slate-50">
@@ -926,7 +936,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
                                     <table class="w-full">
                                         <thead>
                                             <tr class="bg-slate-50">
@@ -956,7 +966,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
                                     <table class="w-full">
                                         <thead>
                                             <tr class="bg-slate-50">
@@ -984,63 +994,71 @@
         <!-- Section 7 -->
         <!-- Sell section -->
         <section id="buy" class="ml-64 h-screen bg-slate-50">
-            <div class="h-full p-6">
-                <div class="h-full bg-white rounded-2xl shadow-xl border border-slate-200">
-                    <!-- Header with new design -->
-                    <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h2 class="text-3xl font-bold text-white">Store Products</h2>
-                                <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="bg-orange-500 px-4 py-2 rounded-lg text-white text-sm">
-                                    Active Products: <span id="productCount" class="font-bold">0</span>
-                                </span>
-                            </div>
-                        </div>
+    <div class="h-full p-6">
+        <div class="h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200">
+            <!-- Header with new design -->
+            <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white">Store Products</h2>
+                        <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
                     </div>
-
-                    <!-- Search Bar with new design -->
-                    <div class="p-6 border-b border-slate-200 bg-white">
-                        <div class="max-w-2xl mx-auto">
-                            <div class="relative flex items-center">
-                                <input
-                                    type="search"
-                                    id="searchInput"
-                                    placeholder="Search by product name or ID..."
-                                    class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
-                                >
-                                <div class="absolute left-4">
-                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-orange-500 px-4 py-2 rounded-lg text-white text-sm">
+                            Active Products: <span id="productCount" class="font-bold">0</span>
+                        </span>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Table with new design -->
-                    <div class="p-6">
-                        <div class="overflow-x-auto rounded-xl shadow-sm border border-slate-200">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Available Stock</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Price</th>
-                                        <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="supplementsTableBody" class="bg-white divide-y divide-slate-200">
-                                    <!-- Table rows will be dynamically inserted here -->
-                                </tbody>
-                            </table>
+            <!-- Search Bar with new design -->
+            <div class="p-6 border-b border-slate-200 bg-white">
+                <div class="max-w-2xl mx-auto">
+                    <div class="relative flex items-center">
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search by product name or ID..."
+                            class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
+                        >
+                        <div class="absolute left-4">
+                            <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Table Container with Scroll -->
+            <div class="flex-1 p-6 min-h-0"> <!-- min-h-0 is crucial for flex child scrolling -->
+                <div class="h-full flex flex-col rounded-xl shadow-sm border border-slate-200">
+                    <!-- Table Header (Fixed) -->
+                    <div class="bg-slate-50">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
+                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
+                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Available Stock</th>
+                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Price</th>
+                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- Table Body (Scrollable) -->
+                    <div class="flex-1 overflow-auto">
+                        <table class="min-w-full">
+                            <tbody id="supplementsTableBody" class="bg-white divide-y divide-slate-200">
+                                <!-- Table rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
             <!-- Modal with new design -->
             <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm">
