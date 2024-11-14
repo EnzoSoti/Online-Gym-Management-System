@@ -7,6 +7,27 @@ function isMidnight() {
     return now.getHours() === 0 && now.getMinutes() === 0;
 }
 
+function updateClock() {
+    const now = new Date();
+    
+    document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
+    
+    document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// Update clock immediately and then every second
+updateClock();
+setInterval(updateClock, 1000);
+
 // Function to clear check-ins at midnight
 async function clearCheckInsAtMidnight() {
     try {
