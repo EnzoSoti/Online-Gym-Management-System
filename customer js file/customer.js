@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
         adminLoginBtn.addEventListener('click', showAdminLogin);
     }
 
+    const logoutBtn = document.querySelector('a[href="#"].text-orange-600:last-of-type');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
+
     // Hamburger menu functionality
     const hamburgerBtn = document.querySelector('nav button');
     if (hamburgerBtn) {
@@ -107,6 +115,25 @@ document.addEventListener('DOMContentLoaded', function() {
         reservationForm.addEventListener('submit', handleReservationSubmit);
     }
 });
+
+function logout() {
+    // Clear session storage
+    sessionStorage.clear();
+
+    // Redirect to the login page
+    window.location.href = '../customer file/login.html';
+
+    // Prevent going back to the previous page
+    window.addEventListener('popstate', function(event) {
+        window.location.href = '../customer file/login.html';
+    });
+
+    // Push a new state to the history to prevent going back
+    history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+        history.pushState(null, null, window.location.href);
+    };
+}
 
 // Add this function to check for time slot conflicts
 function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {

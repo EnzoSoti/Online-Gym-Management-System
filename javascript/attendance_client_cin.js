@@ -150,7 +150,7 @@ function updateCheckInDashboard() {
         
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
-                <span class="font-medium text-slate-900">CLNT#${checkIn.id}</span>
+                <span class="font-medium text-slate-900">${checkIn.id}</span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-3 py-1 rounded-full text-xs font-medium ${

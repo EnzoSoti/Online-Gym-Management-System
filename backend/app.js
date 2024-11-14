@@ -356,7 +356,7 @@ app.get('/api/check-ins/regular', async (req, res) => {
                     70 as amount 
                 FROM check_ins 
                 WHERE client_type = 'regular'
-                ORDER BY time_in DESC`
+                ORDER BY time_in`
             );
             return rows;
         });
@@ -382,7 +382,7 @@ app.get('/api/check-ins/student', async (req, res) => {
                     60 as amount 
                 FROM check_ins 
                 WHERE client_type = 'student'
-                ORDER BY time_in DESC`
+                ORDER BY time_in`
             );
             return rows;
         });

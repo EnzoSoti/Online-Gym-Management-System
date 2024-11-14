@@ -222,127 +222,143 @@
         <!-- Section 2 -->
         <!-- attendance check-in of client -->
         <div class="main-content">
-            <section id="check-in">
-                <div class="min-h-screen bg-slate-100">
-                    <!-- Dynamic Header -->
-                    <div class="bg-orange-600 px-8 pt-8 pb-20">
-                        <div class="max-w-7xl mx-auto flex items-center justify-between">
-                            <div>
-                                <h1 class="text-5xl font-black text-white mb-2 tracking-tight">Fitworx GYM</h1>
-                                <div class="flex items-center gap-2">
+            <section id="check-in" class="min-h-screen bg-slate-50">
+                <!-- Clean Header -->
+                <header class="bg-orange-600">
+                    <div class="max-w-[2000px] mx-auto py-4 px-6">
+                        <div class="grid grid-cols-3 items-center">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-orange-500 p-2 rounded-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-2xl font-bold text-white">Fitworx GYM</h1>
+                                    <p class="text-orange-100 text-sm">Member Check-in Portal</p>
+                                </div>
+                            </div>
+                            
+                            <div class="justify-self-center">
+                                <div class="flex items-center gap-2 bg-orange-500/20 px-4 py-2 rounded-full">
                                     <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                    <p class="text-orange-200">Fitness Center Check-in</p>
+                                    <span class="text-white font-medium">Live System</span>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-3xl font-bold text-white" id="current-time">12:00 PM</div>
-                                <div class="text-orange-200" id="current-date">Monday, Nov 3</div>
+        
+                            <div class="justify-self-end bg-orange-500/20 px-4 py-2 rounded-lg">
+                                <div class="text-xl font-bold text-white" id="current-time">12:00 PM</div>
+                                <div class="text-orange-100 text-sm" id="current-date">Monday, Nov 3</div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Main Content -->
-                    <div class="max-w-7xl mx-auto px-8 -mt-12">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <!-- Check-in List -->
-                            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
-                                <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700">
-                                    <div class="flex items-center justify-between">
-                                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            Today's Activity
-                                        </h2>
-                                        <span class="px-3 py-1 bg-white/20 text-white rounded-lg text-sm">
-                                            Live Feed
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Fixed height container with table header -->
-                                <div class="relative">
-                                    <!-- Fixed header -->
-                                    <div class="sticky top-0 bg-white border-b border-slate-200 z-10">
-                                        <table class="w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">ID</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Client Name</th>
-                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time In</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                    <!-- Scrollable content -->
-                                    <div class="overflow-y-auto h-[400px]">
-                                        <table class="w-full">
-                                            <tbody id="checkins-body" class="divide-y divide-slate-100">
-                                                <!-- Check-in rows will be added here by JavaScript -->
-                                            </tbody>
-                                        </table>
-                                    </div>
+                </header>
+        
+                <!-- Main Content -->
+                <main class="max-w-[2000px] mx-auto p-6">
+                    <div class="grid grid-cols-3 gap-6">
+                        <!-- Check-in Form -->
+                        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                            <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-500">
+                                <div class="flex items-center gap-3">
+                                    <h2 class="text-xl font-bold text-white">Quick Check-in</h2>
+                                    <span class="px-3 py-1 bg-white/20 rounded-full text-white text-sm">
+                                        Member Access
+                                    </span>
                                 </div>
                             </div>
-
-                            <!-- Check-in Form -->
-                            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
-                                <div class="p-6 border-b border-slate-100">
-                                    <h2 class="text-xl font-bold text-slate-800">Quick Check-in</h2>
-                                    <p class="text-slate-500 text-sm mt-1">Welcome to Fitworx! Please check in below.</p>
-                                </div>
-                                
-                                <form id="checkin-form" onsubmit="handleCheckin(event)" class="p-6 space-y-6">
-                                    <!-- Client Type Selection -->
-                                    <div class="space-y-2">
-                                        <label for="client-type" class="text-sm font-semibold text-slate-700">
-                                            Membership Type
-                                        </label>
+        
+                            <form id="checkin-form" onsubmit="handleCheckin(event)" class="p-6 space-y-6">
+                                <!-- Membership Selection -->
+                                <div class="space-y-2">
+                                    <label for="client-type" class="block text-sm font-medium text-slate-700">
+                                        Monthly Type
+                                    </label>
+                                    <div class="relative">
                                         <select id="client-type" 
-                                                class="w-full h-12 pl-4 pr-10 bg-slate-50 rounded-xl border-0 text-slate-800 focus:ring-2 focus:ring-orange-500" 
+                                                class="w-full h-12 pl-4 pr-10 bg-slate-50 rounded-lg border-slate-200 text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
                                                 required>
-                                            <option value="regular">Regular</option>
-                                            <option value="student">Student</option>
+                                            <option value="regular">Regular Member</option>
+                                            <option value="student">Student Member</option>
                                         </select>
-                                    </div>
-
-                                    <!-- Client Name -->
-                                    <div class="space-y-2">
-                                        <label for="client-name" class="text-sm font-semibold text-slate-700">
-                                            Your Name
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" 
-                                                id="client-name" 
-                                                class="w-full h-12 pl-4 bg-slate-50 rounded-xl border-0 text-slate-800 focus:ring-2 focus:ring-orange-500" 
-                                                placeholder="Enter your name" 
-                                                required />
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
                                         </div>
                                     </div>
-
-                                    <!-- Time In -->
-                                    <div class="space-y-2">
-                                        <label class="text-sm font-semibold text-slate-700">
-                                            Check-in Time
-                                        </label>
-                                        <div id="current-time-display" 
-                                            class="w-full h-12 pl-4 bg-slate-50 rounded-xl border-0 text-slate-800 flex items-center">
-                                            <!-- Time will be displayed here -->
-                                        </div>
+                                </div>
+        
+                                <!-- Name Input -->
+                                <div class="space-y-2">
+                                    <label for="client-name" class="block text-sm font-medium text-slate-700">
+                                        Your Name
+                                    </label>
+                                    <input type="text" 
+                                        id="client-name" 
+                                        class="w-full h-12 px-4 bg-slate-50 rounded-lg border-slate-200 text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                                        placeholder="Enter your full name" 
+                                        required />
+                                </div>
+        
+                                <!-- Time Display -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-slate-700">
+                                        Check-in Time
+                                    </label>
+                                    <div id="current-time-display" 
+                                        class="w-full h-12 px-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-800 flex items-center">
                                     </div>
-
-                                    <button type="submit" 
-                                            class="w-full h-12 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transform hover:-translate-y-0.5 transition-all">
-                                        Check In Now
-                                    </button>
-                                </form>
+                                </div>
+        
+                                <button type="submit" 
+                                        class="w-full h-12 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-500 transition-colors flex items-center justify-center gap-2">
+                                    <span>Check In</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+        
+                        <!-- Activity Feed -->
+                        <div class="col-span-2 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                            <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-500">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <h2 class="text-xl font-bold text-white">Today's Activity</h2>
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                        <span class="text-white text-sm">Live Updates</span>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="relative">
+                                <!-- Table Header -->
+                                <div class="sticky top-0 bg-slate-50 border-b border-slate-200">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">ID</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Client Name</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time In</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+        
+                                <!-- Table Body -->
+                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
+                                    <table class="w-full">
+                                        <tbody id="checkins-body" class="divide-y divide-slate-100">
+                                            <!-- Check-in rows will be added here by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </main>
             </section>
         </div>
 
@@ -550,52 +566,52 @@
         <!-- Section 4 -->
         <!-- Sales and Inventory - Supplements -->
         <section id="supplement" class="ml-64 h-screen bg-gradient-to-br from-slate-50 to-orange-50">
-    <div class="h-full p-8">
-        <div class="flex flex-col h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
-            <!-- Header -->
-            <div class="p-8 border-b border-slate-100 flex-shrink-0">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-orange-100 rounded-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
-                                </svg>
+        <div class="h-full p-8">
+            <div class="flex flex-col h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
+                <!-- Header -->
+                <div class="p-8 border-b border-slate-100 flex-shrink-0">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-orange-100 rounded-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
                             </div>
-                            <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
+                            <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
                         </div>
-                        <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
+                        <button id="openModalBtn" 
+                                class="group flex items-center gap-2 px-6 py-3.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-orange-200 transform hover:-translate-y-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="font-semibold">Add Supplement</span>
+                        </button>
                     </div>
-                    <button id="openModalBtn" 
-                            class="group flex items-center gap-2 px-6 py-3.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-orange-200 transform hover:-translate-y-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="font-semibold">Add Supplement</span>
-                    </button>
                 </div>
-            </div>
 
-            <!-- Table Container with Scroll -->
-            <div class="flex-1 p-8 overflow-hidden">
-                <div class="h-full overflow-auto rounded-xl border border-slate-100 shadow-sm">
-                    <table class="min-w-full divide-y divide-slate-200">
-                        <thead class="bg-slate-50 sticky top-0">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplementsTable" class="divide-y divide-slate-100 bg-white">
-                            <!-- Data will be inserted here -->
-                        </tbody>
-                    </table>
+                <!-- Table Container with Scroll -->
+                <div class="flex-1 p-8 overflow-hidden">
+                    <div class="h-full overflow-auto rounded-xl border border-slate-100 shadow-sm">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50 sticky top-0">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="supplementsTable" class="divide-y divide-slate-100 bg-white">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
             <!-- Modal -->
@@ -783,23 +799,29 @@
 
         <!-- Section 6 -->
         <!-- sales & report -->
-        <section id="reports" class="ml-64 h-screen bg-slate-50">
-            <!-- Main Content -->
-            <div class="h-full p-6">
-                <!-- Main Card -->
-                <div class="h-full bg-white rounded-3xl shadow-lg border border-slate-200">
-                    <!-- Header Section -->
-                    <div class="p-8 border-b border-slate-200 bg-gradient-to-br from-orange-50 via-white to-slate-50">
+        <section id="reports" class="ml-64 h-screen bg-gradient-to-br from-slate-50 to-orange-50">
+            <div class="h-full p-8">
+                <div class="flex flex-col h-full bg-white rounded-3xl shadow-2xl border border-slate-100">
+                    <!-- Fixed Header -->
+                    <div class="p-8 border-b border-slate-100 flex-shrink-0">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                            <div>
-                                <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Generate Sales Reports</h2>
-                                <p class="text-slate-500 mt-2 text-lg">View and manage sales reports</p>
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-orange-100 rounded-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-3xl font-extrabold text-slate-800">Sales Reports</h2>
+                                    <p class="text-slate-500 mt-2 text-lg">View and manage sales reports</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tabs Section -->
-                    <div class="p-8">
+                    <!-- Tabs and Table Container with Scroll -->
+                    <div class="flex-1 p-8 overflow-hidden">
+                        <!-- Tabs -->
                         <div class="mb-6">
                             <ul class="inline-flex space-x-4 bg-slate-100 p-1.5 rounded-xl" role="tablist">
                                 <li role="presentation">
@@ -830,160 +852,160 @@
                             </ul>
                         </div>
 
-                        <!-- Tab Content -->
-                        <div id="tab-content" class="mt-6">
+                        <!-- Table Scroll Container -->
+                        <div class="h-full overflow-auto rounded-xl border border-slate-100 shadow-sm">
                             <!-- Monthly Members Table -->
-                            <div class="bg-white rounded-xl" id="monthly" role="tabpanel">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-xl font-semibold text-slate-800">Monthly Members Report</h3>
-                                    <div class="flex gap-3">
-                                        <input type="month" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                        <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Export
-                                        </button>
+                            <div id="monthly" role="tabpanel">
+                                <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Monthly Members Report</h3>
+                                        <div class="flex gap-3">
+                                            <input type="month" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
+                                            <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Export
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-slate-50">
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member ID</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Start Date</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">End Date</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-200" id="monthly-members-table">
-                                            <!-- Rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50 sticky top-[72px]">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member ID</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Start Date</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">End Date</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white" id="monthly-members-table">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
 
                             <!-- Regular Members Table -->
-                            <div class="hidden bg-white rounded-xl" id="regular" role="tabpanel">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-xl font-semibold text-slate-800">Regular Members Report</h3>
-                                    <div class="flex gap-3">
-                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                        <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Export
-                                        </button>
+                            <div class="hidden" id="regular" role="tabpanel">
+                                <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Regular Members Report</h3>
+                                        <div class="flex gap-3">
+                                            <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
+                                            <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Export
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-slate-50">
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ID</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Client Name</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time in</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-200" id="regular-members-table">
-                                            <!-- Rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50 sticky top-[72px]">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time in</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white" id="regular-members-table">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
 
                             <!-- Student Members Table -->
-                            <div class="hidden bg-white rounded-xl" id="student" role="tabpanel">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-xl font-semibold text-slate-800">Student Members Report</h3>
-                                    <div class="flex gap-3">
-                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                        <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Export
-                                        </button>
+                            <div class="hidden" id="student" role="tabpanel">
+                                <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Student Members Report</h3>
+                                        <div class="flex gap-3">
+                                            <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
+                                            <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Export
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-slate-50">
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ID</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Client Name</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time in</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-200" id="student-members-table">
-                                            <!-- Rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50 sticky top-[72px]">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Type</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Client Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time in</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white" id="student-members-table">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
 
                             <!-- Supplements Table -->
-                            <div class="hidden bg-white rounded-xl" id="supplements" role="tabpanel">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-xl font-semibold text-slate-800">Supplements Sales Report</h3>
-                                    <div class="flex gap-3">
-                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                        <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Export
-                                        </button>
+                            <div class="hidden" id="supplements" role="tabpanel">
+                                <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Supplements Sales Report</h3>
+                                        <div class="flex gap-3">
+                                            <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
+                                            <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Export
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-slate-50">
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Quantity</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">price</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">quantity_sold</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-200" id="supplements-table">
-                                            <!-- Rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50 sticky top-[72px]">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product ID</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Product Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Price</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Quantity Sold</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white" id="supplements-table">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
 
                             <!-- Reservations Table -->
-                            <div class="hidden bg-white rounded-xl" id="reservations" role="tabpanel">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-xl font-semibold text-slate-800">Reservations Report</h3>
-                                    <div class="flex gap-3">
-                                        <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                        <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                            Export
-                                        </button>
+                            <div class="hidden" id="reservations" role="tabpanel">
+                                <div class="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Reservations Report</h3>
+                                        <div class="flex gap-3">
+                                            <input type="date" class="px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm">
+                                            <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Export
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="overflow-x-auto rounded-xl border border-slate-200 h-96 overflow-y-auto">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-slate-50">
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Reservation ID</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Member Name</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Service Type</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Time Slot</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                                                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-slate-200" id="reservations-table">
-                                            <!-- Rows will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50 sticky top-[72px]">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Reservation ID</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Member Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Service Type</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Time Slot</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 bg-white" id="reservations-table">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -994,71 +1016,65 @@
         <!-- Section 7 -->
         <!-- Sell section -->
         <section id="buy" class="ml-64 h-screen bg-slate-50">
-    <div class="h-full p-6">
-        <div class="h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200">
-            <!-- Header with new design -->
-            <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-3xl font-bold text-white">Store Products</h2>
-                        <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-orange-500 px-4 py-2 rounded-lg text-white text-sm">
-                            Active Products: <span id="productCount" class="font-bold">0</span>
-                        </span>
+        <div class="h-full p-6">
+            <div class="h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200">
+                <!-- Header with new design -->
+                <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-white">Store Products</h2>
+                            <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-orange-500 px-4 py-2 rounded-lg text-white text-sm">
+                                Active Products: <span id="productCount" class="font-bold">0</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Search Bar with new design -->
-            <div class="p-6 border-b border-slate-200 bg-white">
-                <div class="max-w-2xl mx-auto">
-                    <div class="relative flex items-center">
-                        <input
-                            type="search"
-                            id="searchInput"
-                            placeholder="Search by product name or ID..."
-                            class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
-                        >
-                        <div class="absolute left-4">
-                            <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                            </svg>
+                <!-- Search Bar with new design -->
+                <div class="p-6 border-b border-slate-200 bg-white">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="relative flex items-center">
+                            <input
+                                type="search"
+                                id="searchInput"
+                                placeholder="Search by product name or ID..."
+                                class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
+                            >
+                            <div class="absolute left-4">
+                                <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Container with Scroll -->
+                <div class="flex-1 p-6 min-h-0">
+                    <div class="h-full flex flex-col rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex-1 overflow-auto">
+                            <table class="min-w-full">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider bg-slate-50">Product ID</th>
+                                        <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider bg-slate-50">Product Name</th>
+                                        <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider bg-slate-50">Available Stock</th>
+                                        <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider bg-slate-50">Price</th>
+                                        <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider bg-slate-50">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="supplementsTableBody" class="bg-white divide-y divide-slate-200">
+                                    <!-- Table rows will be dynamically inserted here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Table Container with Scroll -->
-            <div class="flex-1 p-6 min-h-0"> <!-- min-h-0 is crucial for flex child scrolling -->
-                <div class="h-full flex flex-col rounded-xl shadow-sm border border-slate-200">
-                    <!-- Table Header (Fixed) -->
-                    <div class="bg-slate-50">
-                        <table class="min-w-full">
-                            <thead>
-                                <tr>
-                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product ID</th>
-                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</th>
-                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Available Stock</th>
-                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Price</th>
-                                    <th class="sticky top-0 px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <!-- Table Body (Scrollable) -->
-                    <div class="flex-1 overflow-auto">
-                        <table class="min-w-full">
-                            <tbody id="supplementsTableBody" class="bg-white divide-y divide-slate-200">
-                                <!-- Table rows will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
 
             <!-- Modal with new design -->
             <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm">
