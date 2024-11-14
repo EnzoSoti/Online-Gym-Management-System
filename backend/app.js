@@ -341,13 +341,74 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
     }
 });
 
+// Sales Reports API Routes
+// regular
+// fixed
+app.get('/api/check-ins/regular', async (req, res) => {
+    try {
+        const regularCheckIns = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                `SELECT 
+                    id,
+                    client_type,
+                    client_name,
+                    DATE_FORMAT(time_in, '%Y-%m-%d %H:%i:%s') as time_in,
+                    70 as amount 
+                FROM check_ins 
+                WHERE client_type = 'regular'
+                ORDER BY time_in DESC`
+            );
+            return rows;
+        });
+        res.json(regularCheckIns);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch regular check-ins' });
+    }
+});
+
+// Sales Reports API Routes
+// student
+// fixed
+app.get('/api/check-ins/student', async (req, res) => {
+    try {
+        const studentCheckIns = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                `SELECT 
+                    id,
+                    client_type,
+                    client_name,
+                    DATE_FORMAT(time_in, '%Y-%m-%d %H:%i:%s') as time_in,
+                    60 as amount 
+                FROM check_ins 
+                WHERE client_type = 'student'
+                ORDER BY time_in DESC`
+            );
+            return rows;
+        });
+        res.json(studentCheckIns);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch student check-ins' });
+    }
+});
+
+
 // check in API Routes
 // Fixed
+// GET route
 app.get('/api/check-ins', async (req, res) => {
     try {
         const checkIns = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(
-                'SELECT * FROM check_ins ORDER BY time_in'
+                `SELECT *, 
+                    CASE client_type
+                        WHEN 'regular' THEN 70
+                        WHEN 'student' THEN 60
+                        ELSE 0
+                    END as amount 
+                FROM check_ins 
+                ORDER BY time_in`
             );
             return rows;
         });
@@ -368,17 +429,22 @@ app.post('/api/check-ins', async (req, res) => {
             });
         }
 
+        // Calculate amount based on client_type
+        const amount = client_type === 'regular' ? 70 : 
+                      client_type === 'student' ? 60 : 0;
+
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO check_ins (client_type, client_name, time_in) VALUES (?, ?, ?)',
-                [client_type, client_name, time_in]
+                'INSERT INTO check_ins (client_type, client_name, time_in, amount) VALUES (?, ?, ?, ?)',
+                [client_type, client_name, time_in, amount]
             );
             return insertResult;
         });
 
         res.status(201).json({
             message: 'Check-in recorded successfully',
-            checkInId: result.insertId
+            checkInId: result.insertId,
+            amount: amount
         });
     } catch (error) {
         console.error('Database error:', error);
@@ -399,6 +465,13 @@ app.delete('/api/check-ins', async (req, res) => {
         res.status(500).json({ error: 'Failed to clear check-ins' });
     }
 });
+
+
+
+
+
+
+
 
 
 // customer reservation booking API Routes

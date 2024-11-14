@@ -6,73 +6,35 @@ document.addEventListener('DOMContentLoaded', function() {
         goToCustomerPageBtn.addEventListener('click', function() {
             // Show loading animation with SweetAlert2
             Swal.fire({
-                title: '<h2 class="text-3xl font-black bg-gradient-to-r from-orange-500 to-orange-300 text-transparent bg-clip-text">Customer Portal</h2>',
+                title: '<h2>Customer Portal</h2>',
                 html: `
-                    <div class="flex flex-col items-center space-y-6 py-8">
-                        <div class="loading-bars-container">
-                            <div class="loading-bar"></div>
-                            <div class="loading-bar"></div>
-                            <div class="loading-bar"></div>
-                        </div>
-                        <div class="flex items-center gap-2 mt-4">
-                            <svg class="w-5 h-5 text-orange-500 animate-spin" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <p class="text-orange-400/90 font-medium tracking-wide">Initializing your experience</p>
-                        </div>
+                    <div class="flex flex-col items-center space-y-4 py-6">
+                        <div class="simple-loading-spinner"></div>
+                        <p>Loading, please wait...</p>
                     </div>
                 `,
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 customClass: {
-                    popup: 'rounded-3xl bg-gray-900 border border-orange-500/10 shadow-2xl shadow-orange-500/5',
-                    htmlContainer: 'my-4'
+                    popup: 'rounded-md bg-white border border-gray-300 shadow-lg',
+                    htmlContainer: 'my-4 text-gray-700'
                 },
                 didOpen: () => {
-                    // Add the required CSS for the new animation
+                    // Add CSS for the simple loading spinner
                     const style = document.createElement('style');
                     style.textContent = `
-                        .loading-bars-container {
-                            display: flex;
-                            gap: 6px;
-                            height: 60px;
-                            align-items: flex-end;
+                        .simple-loading-spinner {
+                            width: 40px;
+                            height: 40px;
+                            border: 4px solid #ddd;
+                            border-top: 4px solid #333;
+                            border-radius: 50%;
+                            animation: spin 1s linear infinite;
                         }
                         
-                        .loading-bar {
-                            width: 8px;
-                            background: linear-gradient(to top, #f97316, #fdba74);
-                            border-radius: 4px;
-                            animation: equalizer 1.2s ease-in-out infinite;
-                        }
-                        
-                        .loading-bar:nth-child(1) {
-                            animation-delay: -0.4s;
-                            height: 20%;
-                        }
-                        
-                        .loading-bar:nth-child(2) {
-                            animation-delay: -0.2s;
-                            height: 60%;
-                        }
-                        
-                        .loading-bar:nth-child(3) {
-                            animation-delay: 0s;
-                            height: 40%;
-                        }
-                        
-                        @keyframes equalizer {
-                            0%, 100% {
-                                transform: scaleY(1);
-                            }
-                            50% {
-                                transform: scaleY(2);
-                            }
-                        }
-
-                        .shadow-glow {
-                            box-shadow: 0 0 40px -10px rgba(249, 115, 22, 0.3);
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
                         }
                     `;
                     document.head.appendChild(style);
@@ -84,85 +46,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show success message before redirecting
                 Swal.fire({
                     html: `
-                        <div class="flex flex-col items-center gap-6 py-8">
-                            <div class="success-checkmark">
-                                <svg class="w-16 h-16" viewBox="0 0 24 24">
-                                    <path class="checkmark-circle" 
-                                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
-                                          fill="none" 
-                                          stroke="#f97316" 
-                                          stroke-width="2"
-                                    />
-                                    <path class="checkmark-check" 
-                                          d="M8 12l3 3 5-5"
-                                          fill="none" 
-                                          stroke="#f97316" 
-                                          stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                    />
-                                </svg>
-                            </div>
-                            <div class="text-center">
-                                <h3 class="text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-300 text-transparent bg-clip-text mb-2">
-                                    Access Granted
-                                </h3>
-                                <p class="text-orange-400/80 text-sm">Redirecting to your personal dashboard...</p>
-                            </div>
+                        <div class="flex flex-col items-center py-6">
+                            <svg class="w-12 h-12 text-green-500 mb-4" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <h3 class="text-lg font-semibold">Access Granted</h3>
+                            <p class="text-gray-500">Redirecting to your dashboard...</p>
                         </div>
                     `,
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 500,
                     customClass: {
-                        popup: 'rounded-3xl bg-gray-900 border border-orange-500/10 shadow-2xl shadow-orange-500/5'
-                    },
-                    didOpen: () => {
-                        // Add animation for success checkmark
-                        const style = document.createElement('style');
-                        style.textContent = `
-                            .success-checkmark {
-                                animation: scale-in 0.3s ease-out;
-                            }
-                            
-                            .checkmark-circle {
-                                stroke-dasharray: 100;
-                                stroke-dashoffset: 100;
-                                animation: dash 1s ease-out forwards;
-                            }
-                            
-                            .checkmark-check {
-                                stroke-dasharray: 20;
-                                stroke-dashoffset: 20;
-                                animation: dash 0.5s ease-out 0.5s forwards;
-                            }
-                            
-                            @keyframes scale-in {
-                                0% {
-                                    transform: scale(0.8);
-                                    opacity: 0;
-                                }
-                                100% {
-                                    transform: scale(1);
-                                    opacity: 1;
-                                }
-                            }
-                            
-                            @keyframes dash {
-                                to {
-                                    stroke-dashoffset: 0;
-                                }
-                            }
-                        `;
-                        document.head.appendChild(style);
+                        popup: 'rounded-md bg-white border border-gray-300 shadow-lg'
                     }
                 }).then(() => {
                     // Redirect to customer page
                     window.location.href = '../customer file/customer.html';
                 });
-            }, 2000);
+            }, 500);
         });
     }
 });
+
 
 
 // Member Growth Chart

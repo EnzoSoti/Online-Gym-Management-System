@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const POLLING_INTERVAL = 5000; // 5 seconds
+    const POLLING_INTERVAL = 1000; // 5 seconds
     let activeTabId = 'monthly';
     let lastPolledData = {
         monthly: null,
-        supplements: null
+        supplements: null,
+        regular: null,
+        student: null
     };
     let notificationPermission = false;
 
@@ -23,21 +25,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function sendNotification(tabId, changes) {
         const tabNames = {
             monthly: 'Monthly Members',
-            supplements: 'Supplements'
+            supplements: 'Supplements',
+            regular: 'Regular Check-ins',
+            student: 'Student Check-ins'
         };
 
         const title = `${tabNames[tabId]} Updated`;
         const message = `${changes.added ? `Added: ${changes.added} items\n` : ''}${changes.removed ? `Removed: ${changes.removed} items\n` : ''}${changes.modified ? `Modified: ${changes.modified} items` : ''}`;
 
         if (notificationPermission && 'Notification' in window) {
-            // Browser notification
             new Notification(title, {
                 body: message,
-                icon: '/path/to/your/icon.png', // Add your notification icon path
+                icon: '/path/to/your/icon.png',
                 tag: 'data-update'
             });
         } else {
-            // Fallback to SweetAlert2 toast
             Swal.fire({
                 toast: true,
                 position: 'top-end',
@@ -61,11 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
             modified: 0
         };
 
-        // Create maps for easier comparison
         const oldMap = new Map(oldData.map(item => [item.id, item]));
         const newMap = new Map(newData.map(item => [item.id, item]));
 
-        // Check for added and modified items
         newMap.forEach((newItem, id) => {
             if (!oldMap.has(id)) {
                 changes.added++;
@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Check for removed items
         oldMap.forEach((_, id) => {
             if (!newMap.has(id)) {
                 changes.removed++;
@@ -97,55 +96,30 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Date(date).toISOString().split('T')[0];
     }
 
+    // Function to format datetime
+    function formatDateTime(datetime) {
+        return new Date(datetime).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
     // Function to compare data for changes
     function hasDataChanged(newData, lastData) {
         return JSON.stringify(newData) !== JSON.stringify(lastData);
     }
 
-    // Function to add a new row to the table
-    function addRowToTable(formData, tableId) {
-        const table = document.querySelector(`#${tableId} tbody`);
-        const newRow = document.createElement('tr');
-
-        switch(tableId) {
-            case 'monthly':
-                const memberId = generateUniqueId('M');
-                newRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">${memberId}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('name')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('type')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('startDate')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('endDate')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
-                        </span>
-                    </td>
-                `;
-                break;
-
-            case 'supplements':
-                const productId = generateUniqueId('P');
-                newRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">${productId}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('productName')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formData.get('quantity')}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">₱${formData.get('amount')}</td>
-                `;
-                break;
-        }
-
-        table.appendChild(newRow);
-    }
-
     // Polling function for active tab
     function startPolling() {
         setInterval(async () => {
-            // Poll both tabs regardless of which is active
             await Promise.all([
                 fetchDataForTab('monthly', true),
-                fetchDataForTab('supplements', true)
+                fetchDataForTab('supplements', true),
+                fetchDataForTab('regular', true),
+                fetchDataForTab('student', true)
             ]);
         }, POLLING_INTERVAL);
     }
@@ -161,24 +135,20 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', () => {
             activeTabId = targetId;
             
-            // Remove active classes from all tabs
             tabButtons.forEach(btn => {
                 btn.classList.remove('bg-white', 'shadow-sm', 'text-orange-600');
                 btn.classList.add('text-slate-600', 'hover:bg-white/50');
                 btn.setAttribute('aria-selected', 'false');
             });
 
-            // Hide all panels
             tabPanels.forEach(panel => {
                 panel.classList.add('hidden');
             });
 
-            // Add active classes to clicked tab
             button.classList.remove('text-slate-600', 'hover:bg-white/50');
             button.classList.add('bg-white', 'shadow-sm', 'text-orange-600');
             button.setAttribute('aria-selected', 'true');
 
-            // Show selected panel
             const targetPanel = document.getElementById(targetId);
             targetPanel.classList.remove('hidden');
 
@@ -196,6 +166,12 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'supplements':
                 endpoint = 'http://localhost:3000/api/sales-reports/supplements';
                 break;
+            case 'regular':
+                endpoint = 'http://localhost:3000/api/check-ins/regular';
+                break;
+            case 'student':
+                endpoint = 'http://localhost:3000/api/check-ins/student';
+                break;
             default:
                 console.error('Invalid tab ID:', tabId);
                 return;
@@ -208,8 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const data = await response.json();
-            console.log(`Fetched ${tabId} data:`, data); // Add this for debugging
-
+            
             if (!isPolling || hasDataChanged(data, lastPolledData[tabId])) {
                 const changes = detectChanges(data, lastPolledData[tabId]);
                 
@@ -227,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to populate table with fetched data
     function populateTable(tabId, data) {
-        // Important: Updated selector to match the correct table body
         const tableBody = document.querySelector(`#${tabId} tbody`);
         if (!tableBody) {
             console.error(`Table body not found for ${tabId}`);
@@ -264,15 +238,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold || 0}</td>
                     `;
                     break;
-                    // case 'checkin':
-                    //     newRow.innerHTML = `
-                    //         <td class="px-6 py-4 whitespace-nowrap">PRDT#${item.id || ''}</td>
-                    //         <td class="px-6 py-4 whitespace-nowrap">${item.supplement_name || ''}</td>
-                    //         <td class="px-6 py-4 whitespace-nowrap">${item.quantity || 0}</td>
-                    //         <td class="px-6 py-4 whitespace-nowrap">₱${item.price || 0}</td>
-                    //         <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold || 0}</td>
-                    //     `;
-                    // break;
+                case 'regular':
+                case 'student':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">CHK#${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.client_type}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.client_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDateTime(item.time_in)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                    `;
+                    break;
             }
             tableBody.appendChild(newRow);
         });
@@ -287,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tabPanel = button.closest('[role="tabpanel"]');
                 const tableContent = tabPanel.querySelector('table').cloneNode(true);
                 
-                // Calculate total amount
                 let totalAmount = 0;
                 tableContent.querySelectorAll('tbody tr').forEach(row => {
                     const amountCell = row.querySelector('td:last-child');
@@ -299,14 +273,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
 
-                // Format current date
                 const currentDate = new Date().toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 });
 
-                // Add total row to table
                 const totalRow = document.createElement('tr');
                 totalRow.className = 'total-row';
                 const colSpan = tableContent.querySelectorAll('thead th').length - 1;
@@ -399,7 +371,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
 
                             <script>
-                                // Add page numbers
                                 const pages = document.querySelectorAll('.page-number');
                                 pages.forEach((page, index) => {
                                     page.textContent = 'Page ' + (index + 1);
