@@ -826,11 +826,66 @@ function clearAdditionalMembers() {
     }
 }
 
-// Add this function to initialize the calendar with localStorage data
-function initializeCalendar() {
+function displayReservations(reservations) {
+    if (reservations.length === 0) {
+        Swal.fire({
+            title: 'Reservations for Selected Date',
+            text: 'No reservations found for this date.',
+            confirmButtonText: 'Close',
+            customClass: {
+                popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+            },
+            buttonsStyling: false
+        });
+        return;
+    }
+
+    let htmlContent = '<ul class="space-y-2">';
+    reservations.forEach(reservation => {
+        htmlContent += `
+            <li class="bg-white p-4 rounded-lg shadow-md">
+                <div class="font-semibold text-orange-900">${reservation.start_time} - ${reservation.end_time}</div>
+                <div class="text-orange-700 font-medium">${reservation.service_type}</div>
+                <div class="text-orange-600 text-sm mt-1">${reservation.customer_name}</div>
+            </li>
+        `;
+    });
+    htmlContent += '</ul>';
+
+    Swal.fire({
+        title: 'Reservations for Selected Date',
+        html: htmlContent,
+        confirmButtonText: 'Close',
+        customClass: {
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+        },
+        buttonsStyling: false
+    });
+}
+
+async function fetchReservationsByDate(date) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reservations/${date}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('Fetched reservations:', data); // Add logging
+            return data;
+        } else {
+            throw new Error(data.message || 'Failed to fetch reservations by date');
+        }
+    } catch (error) {
+        console.error('Fetch reservations by date error:', error);
+        throw error;
+    }
+}
+
+async function initializeCalendar() {
     try {
         const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-        
+
         const calendarEvents = reservations.map(reservation => ({
             title: `${reservation.service_type} - ${reservation.customer_name}`,
             start: `${reservation.reservation_date}T${reservation.start_time}`,
@@ -859,7 +914,6 @@ function initializeCalendar() {
             events: calendarEvents,
             slotMinTime: '09:00:00',
             slotMaxTime: '24:00:00',
-            events: reservations,
             height: 'auto',
             slotDuration: '01:00:00',
             allDaySlot: false,
@@ -868,7 +922,6 @@ function initializeCalendar() {
                 startTime: '09:00',
                 endTime: '24:00',
             },
-            // New theme customization
             buttonText: {
                 today: 'Today'
             },
@@ -922,6 +975,15 @@ function initializeCalendar() {
                 dayGrid: {
                     dayMaxEvents: 4
                 }
+            },
+            dateClick: async function(info) {
+                try {
+                    const reservations = await fetchReservationsByDate(info.dateStr);
+                    displayReservations(reservations);
+                } catch (error) {
+                    console.error('Error fetching reservations by date:', error);
+                    showErrorMessage('Failed to fetch reservations for the selected date.');
+                }
             }
         });
 
@@ -931,3 +993,8 @@ function initializeCalendar() {
         throw error;
     }
 }
+
+// Call initializeCalendar after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCalendar();
+});

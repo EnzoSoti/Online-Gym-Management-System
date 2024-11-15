@@ -541,6 +541,29 @@ app.post('/api/reservations', async (req, res) => {
     }
 });
 
+app.get('/api/reservations/:date', async (req, res) => {
+    try {
+        const { date } = req.params;
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [reservations] = await connection.query(
+                `SELECT * FROM reservation WHERE reservation_date = ?`,
+                [date]
+            );
+            return reservations;
+        });
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Fetch reservations by date error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch reservations by date',
+            details: error.message
+        });
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
