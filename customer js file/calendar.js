@@ -250,6 +250,25 @@ async function initializeCalendar() {
                 }
             },
             dateClick: async function(info) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+                const clickedDate = new Date(info.dateStr);
+
+                if (clickedDate < today) {
+                    Swal.fire({
+                        title: 'Invalid Date',
+                        text: 'You cannot select a date in the past.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                            confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                        },
+                        buttonsStyling: false
+                    });
+                    return;
+                }
+
                 try {
                     const reservations = await fetchReservationsByDate(info.dateStr);
                     displayReservations(reservations);

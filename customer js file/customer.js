@@ -194,13 +194,35 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
     }
 }
 
-// start of split payment
-// have a split payment
+function checkReservationTimes() {
+    const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+    const now = new Date();
+
+    reservations.forEach((reservation, index) => {
+        const endTime = new Date(`${reservation.reservation_date}T${reservation.end_time}`);
+        if (now >= endTime) {
+            // Remove the reservation from the list
+            reservations.splice(index, 1);
+        }
+    });
+
+    // Update the reservations in localStorage
+    localStorage.setItem('reservations', JSON.stringify(reservations));
+}
+
+// Check every minute (adjust the interval as needed)
+setInterval(checkReservationTimes, 60000);
+
+
 // Price calculation module
 function calculatePrice(serviceType, startTime, additionalMembers = []) {
     if (serviceType === 'court') {
-        const hour = parseInt(startTime.split(':')[0]);
-        return hour >= 18 ? 200 : 180;
+        const [hours, minutes] = startTime.split(':').map(Number);
+        const totalMinutes = hours * 60 + minutes;
+        const after6PM = 18 * 60; // 6 PM in minutes
+
+        // Check if the start time is after 6 PM
+        return totalMinutes >= after6PM ? 200 : 180;
     } else if (serviceType === 'zumba') {
         return 60 * (additionalMembers.length + 1);
     }
@@ -214,6 +236,64 @@ async function handleReservationSubmit(e) {
     try {
         const formData = getFormData();
         if (!formData) return;
+
+        // Check if the selected date is in the past
+        const selectedDate = new Date(formData.reservation_date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+
+        if (selectedDate < today) {
+            Swal.fire({
+                title: 'Invalid Date',
+                text: 'You cannot select a date in the past.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
+
+        // Check if the time slot is at least one hour and does not exceed four hours
+        const startTime = formData.start_time;
+        const endTime = formData.end_time;
+        const startTimeMinutes = parseTimeToMinutes(startTime);
+        const endTimeMinutes = parseTimeToMinutes(endTime);
+        const timeDifference = endTimeMinutes - startTimeMinutes;
+
+        if (timeDifference < 60) {
+            Swal.fire({
+                title: 'Invalid Time Slot',
+                text: 'The time slot must be at least one hour.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
+
+        const maxReservationTime = 240; // 4 hours in minutes
+        if (timeDifference > maxReservationTime) {
+            Swal.fire({
+                title: 'Invalid Time Slot',
+                text: 'The maximum reservation time is 4 hours.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
 
         const additional_members = getAdditionalMembers();
         const price = calculatePrice(formData.service_type, formData.start_time, additional_members);
