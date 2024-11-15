@@ -117,22 +117,40 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function logout() {
-    // Clear session storage
-    sessionStorage.clear();
+    // Show a confirmation dialog before logging out
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will be logged out and redirected to the login page.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, log out',
+        cancelButtonText: 'Cancel',
+        customClass: {
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+            confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
+            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Clear session storage
+            sessionStorage.clear();
 
-    // Redirect to the login page
-    window.location.href = '../customer file/login.html';
+            // Redirect to the login page
+            window.location.href = '../customer file/login.html';
 
-    // Prevent going back to the previous page
-    window.addEventListener('popstate', function(event) {
-        window.location.href = '../customer file/login.html';
+            // Prevent going back to the previous page
+            window.addEventListener('popstate', function(event) {
+                window.location.href = '../customer file/login.html';
+            });
+
+            // Push a new state to the history to prevent going back
+            history.pushState(null, null, window.location.href);
+            window.onpopstate = function () {
+                history.pushState(null, null, window.location.href);
+            };
+        }
     });
-
-    // Push a new state to the history to prevent going back
-    history.pushState(null, null, window.location.href);
-    window.onpopstate = function () {
-        history.pushState(null, null, window.location.href);
-    };
 }
 
 // Add this function to check for time slot conflicts
@@ -826,7 +844,7 @@ function showAdminLogin(e) {
         confirmButtonText: 'Login',
         cancelButtonText: 'Cancel',
         customClass: {
-            container: 'font-sans',
+            container: 'Poppins',
             popup: 'rounded-lg bg-white border border-gray-300 shadow',
             title: 'text-center border-b border-gray-200 pb-4',
             htmlContainer: 'px-6',

@@ -13,34 +13,39 @@ const VALID_USERNAME = "user";
 const VALID_PASSWORD = "user";
 
 // Handle login form submission
-loginForm.addEventListener('submit', function(e) {
+loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     if (username.value === VALID_USERNAME && password.value === VALID_PASSWORD) {
         // Successful login
         Swal.fire({
-            title: 'Success!',
-            text: 'Login successful! Welcome back.',
+            title: '🎉 Success!',
+            text: 'Welcome back!',
             icon: 'success',
-            confirmButtonText: 'Continue',
-            confirmButtonColor: '#f97316' // Orange-500 color
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Redirect to customer.html after successful login
+            showConfirmButton: false,
+            timer: 1000,
+            background: '#f0fdf4', // Light green background
+            iconColor: '#22c55e', // Green-500 color
+            color: '#064e3b', // Dark green text color
+            willClose: () => {
                 window.location.href = '../customer file/customer.html';
             }
         });
     } else {
         // Failed login
         Swal.fire({
-            title: 'Error!',
-            text: 'Invalid username or password',
+            title: '⚠️ Error!',
+            text: 'Invalid username or password.',
             icon: 'error',
             confirmButtonText: 'Try Again',
-            confirmButtonColor: '#f97316' // Orange-500 color
+            confirmButtonColor: '#ef4444', // Red-500 color
+            background: '#fef2f2', // Light red background
+            iconColor: '#b91c1c', // Dark red color
+            color: '#7f1d1d' // Darker red text color
         });
     }
 });
+
 
 // Toggle between login and signup forms
 function toggleForms() {
