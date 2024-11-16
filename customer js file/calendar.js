@@ -14,21 +14,13 @@ function formatTo12Hour(time24) {
 function displayReservations(reservations) {
     if (reservations.length === 0) {
         Swal.fire({
-            title: 'Fitworx Reservations',
-            text: 'No court or class reservations found for this date.',
+            title: 'Reservations',
+            text: 'No reservations found for this date.',
             confirmButtonText: 'Close',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown animate__faster',
-                backdrop: 'animate__animated animate__fadeIn animate__faster'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp animate__faster',
-                backdrop: 'animate__animated animate__fadeOut animate__faster'
-            },
             customClass: {
-                popup: 'rounded-3xl bg-gray-900 border-2 border-gray-800/50 max-w-4xl w-full transform transition-all duration-300',
-                title: 'text-4xl font-bold text-orange-500 mb-6',
-                confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl px-10 py-5 text-xl transition duration-300'
+                popup: 'rounded-lg bg-white max-w-3xl w-full',
+                title: 'text-2xl text-gray-900 mb-4',
+                confirmButton: 'bg-indigo-600 text-white font-medium rounded-md px-6 py-2'
             },
             buttonsStyling: false
         });
@@ -36,103 +28,93 @@ function displayReservations(reservations) {
     }
 
     let htmlContent = `
-        <div class="relative">
-            <div class="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-gray-900 to-transparent z-10"></div>
-            <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-gray-900 to-transparent z-10"></div>
-            <ul class="space-y-6 max-h-[75vh] overflow-y-auto px-4 relative animate__animated animate__fadeIn animate__faster">
+        <div class="bg-white">
+            <div class="max-h-[70vh] overflow-y-auto">
+                <div class="grid gap-3">
     `;
     
-    reservations.forEach((reservation, index) => {
-        const getServiceStyle = (serviceType) => {
+    reservations.forEach((reservation) => {
+        const getServiceInfo = (serviceType) => {
             const type = serviceType.toLowerCase();
             if (type.includes('zumba')) return {
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>`,
-                bgColor: 'bg-pink-500/10',
-                textColor: 'text-pink-400'
+                color: 'bg-pink-600 text-white',
+                label: 'Zumba',
+                icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M13 17h8m0 0l-3-3m3 3l-3 3M3 7h8m0 0L8 4m3 3L8 10" />
+                </svg>`
             };
             if (type.includes('court')) return {
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
-                </svg>`,
-                bgColor: 'bg-orange-500/10',
-                textColor: 'text-orange-400'
+                color: 'bg-blue-600 text-white',
+                label: 'Court',
+                icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M4 8h16M4 16h16M8 4v16M16 4v16" />
+                </svg>`
             };
             return {
-                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>`,
-                bgColor: 'bg-orange-500/10',
-                textColor: 'text-orange-400'
+                color: 'bg-indigo-600 text-white',
+                label: serviceType,
+                icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>`
             };
         };
 
-        const serviceStyle = getServiceStyle(reservation.service_type);
-        const animationDelay = `${index * 0.15}s`;
-        
-        // Format the start and end times to 12-hour format
+        const serviceInfo = getServiceInfo(reservation.service_type);
         const startTime12 = formatTo12Hour(reservation.start_time);
-        const endTime12 = formatTo12Hour(reservation.end_time)
-
+        const endTime12 = formatTo12Hour(reservation.end_time);
+        
         htmlContent += `
-            <li class="animate__animated animate__fadeInUp opacity-0" style="animation-delay: ${animationDelay}; animation-fill-mode: forwards;">
-                <div class="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:translate-y-[-4px] border border-gray-700">
-                    <div class="flex justify-between items-center mb-6">
-                        <div class="flex items-center space-x-4">
-                            <div class="bg-orange-500 rounded-full p-3 transition-transform duration-300 hover:scale-110">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="font-bold text-2xl text-white transition-all duration-300 hover:text-orange-400">${startTime12} - ${endTime12}</div>
+            <div class="bg-gray-50 rounded-lg border-2 border-gray-200 p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center text-gray-900">
+                            <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M12 8v4l2 2m8-4a10 10 0 11-20 0 10 10 0 0120 0z" />
+                            </svg>
+                            <span class="font-semibold text-base">${startTime12} - ${endTime12}</span>
                         </div>
-                        <div class="${serviceStyle.bgColor} ${serviceStyle.textColor} px-6 py-3 rounded-full text-lg font-semibold flex items-center gap-3 transition-all duration-300 hover:scale-105">
-                            ${serviceStyle.icon}
-                            ${reservation.service_type}
+                        <div class="${serviceInfo.color} px-3 py-1.5 rounded-md text-sm font-medium flex items-center space-x-2">
+                            ${serviceInfo.icon}
+                            <span>${serviceInfo.label}</span>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
-                            <div class="bg-gray-700 rounded-full p-3 transition-all duration-300 hover:bg-gray-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </div>
-                            <div class="text-gray-300 text-xl font-medium transition-all duration-300 hover:text-white">${reservation.customer_name}</div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="bg-green-500/10 text-green-400 px-5 py-2 rounded-full text-lg font-medium flex items-center gap-2 transition-all duration-300 hover:bg-green-500/20 hover:scale-105">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                Reserved
-                            </div>
-                        </div>
+                    <div class="bg-green-600 text-white px-3 py-1.5 rounded-md text-sm font-medium flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Confirmed</span>
                     </div>
                 </div>
-            </li>
+                
+                <div class="flex items-center space-x-2 text-gray-900">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="font-medium text-base">
+                        ${reservation.customer_name}
+                    </span>
+                </div>
+            </div>
         `;
     });
-    htmlContent += '</ul></div>';
+
+    htmlContent += '</div></div></div>';
 
     Swal.fire({
-        title: 'Fitworx Reservations',
+        title: 'Today\'s Reservations',
         html: htmlContent,
         confirmButtonText: 'Close',
-        showClass: {
-            popup: 'animate__animated animate__fadeIn animate__faster',
-            backdrop: 'animate__animated animate__fadeIn animate__faster'
-        },
-        hideClass: {
-            popup: 'animate__animated animate__fadeOut animate__faster',
-            backdrop: 'animate__animated animate__fadeOut animate__faster'
-        },
         customClass: {
-            popup: 'rounded-3xl bg-gray-900 border-2 border-gray-800/50 max-w-5xl w-full transform transition-all duration-300',
-            title: 'text-4xl font-bold text-orange-500 mb-6 animate__animated animate__fadeInDown',
-            htmlContainer: 'py-6',
-            confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl px-10 py-5 text-xl transition-all duration-300 hover:scale-105'
+            popup: 'rounded-lg bg-white max-w-3xl w-full shadow-lg',
+            title: 'text-2xl text-gray-900 font-semibold mb-6',
+            htmlContainer: 'py-4',
+            confirmButton: 'bg-indigo-600 text-white font-medium rounded-md px-6 py-2'
         },
         buttonsStyling: false
     });
@@ -157,27 +139,10 @@ async function fetchReservationsByDate(date) {
 
 async function initializeCalendar() {
     try {
-        const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-
-        const calendarEvents = reservations.map(reservation => ({
-            title: `${reservation.service_type} - ${reservation.customer_name}`,
-            start: `${reservation.reservation_date}T${reservation.start_time}`,
-            end: `${reservation.reservation_date}T${reservation.end_time}`,
-            backgroundColor: '#FFF7ED',
-            borderColor: '#EA580C',
-            textColor: '#431407',
-            extendedProps: {
-                service: reservation.service_type,
-                client: reservation.customer_name,
-                timeIn: reservation.start_time,
-                timeOut: reservation.end_time
-            }
-        }));
-
         const calendarEl = document.getElementById('calendar');
         if (!calendarEl) return;
 
-        // Add CSS for hover and click effects with new design
+        // Add CSS for hover and click effects
         const style = document.createElement('style');
         style.textContent = `
             .fc-day {
@@ -227,7 +192,6 @@ async function initializeCalendar() {
                 opacity: 1;
             }
 
-            /* Modified past date hover behavior */
             .fc-day-past::after {
                 content: 'Date not Available';
                 display: block;
@@ -374,7 +338,6 @@ async function initializeCalendar() {
                 center: 'title',
                 right: 'dayGridMonth'
             },
-            events: calendarEvents,
             slotMinTime: '09:00:00',
             slotMaxTime: '24:00:00',
             height: 'auto',
@@ -415,12 +378,10 @@ async function initializeCalendar() {
                 today.setHours(0, 0, 0, 0);
                 const clickedDate = new Date(info.dateStr);
 
-                // Remove clicked class from all cells
                 document.querySelectorAll('.fc-day').forEach(cell => {
                     cell.classList.remove('clicked');
                 });
 
-                // Add clicked class to the clicked cell
                 info.dayEl.classList.add('clicked');
 
                 if (clickedDate < today) {
@@ -447,6 +408,30 @@ async function initializeCalendar() {
                 }
             }
         });
+
+        // Initial load of events from API
+        try {
+            const today = new Date().toISOString().split('T')[0];
+            const initialReservations = await fetchReservationsByDate(today);
+            const calendarEvents = initialReservations.map(reservation => ({
+                title: `${reservation.service_type} - ${reservation.customer_name}`,
+                start: `${reservation.reservation_date}T${reservation.start_time}`,
+                end: `${reservation.reservation_date}T${reservation.end_time}`,
+                backgroundColor: '#FFF7ED',
+                borderColor: '#EA580C',
+                textColor: '#431407',
+                extendedProps: {
+                    service: reservation.service_type,
+                    client: reservation.customer_name,
+                    timeIn: reservation.start_time,
+                    timeOut: reservation.end_time
+                }
+            }));
+            
+            calendar.addEventSource(calendarEvents);
+        } catch (error) {
+            console.error('Error loading initial reservations:', error);
+        }
 
         calendar.render();
     } catch (error) {

@@ -154,14 +154,14 @@ function logout() {
 }
 
 // Add this function to check for time slot conflicts
-function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
+function isTimeSlotAvailable(newStartTime, newEndTime, newDate, newServiceType) {
     try {
         const existingReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-        
+
         // Convert times to minutes for easier comparison
         const newStartMinutes = parseTimeToMinutes(newStartTime);
         const newEndMinutes = parseTimeToMinutes(newEndTime);
-        
+
         // Basic time validation
         if (newStartMinutes >= newEndMinutes) {
             throw new Error('End time must be after start time');
@@ -170,7 +170,7 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
         // Validate business hours (9 AM to 12 AM)
         const openingTime = parseTimeToMinutes('09:00');
         const closingTime = parseTimeToMinutes('24:00');
-        
+
         if (newStartMinutes < openingTime || newEndMinutes > closingTime) {
             throw new Error('Reservations are only available between 9:00 AM and 12:00 AM');
         }
@@ -189,20 +189,21 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate) {
             if (reservation.reservation_date !== newDate) {
                 return false;
             }
-            
+
             const existingStart = parseTimeToMinutes(reservation.start_time);
             const existingEnd = parseTimeToMinutes(reservation.end_time);
-            
+
             // Check if there's any overlap
             const hasOverlap = (newStartMinutes < existingEnd && newEndMinutes > existingStart);
-            
+
             if (hasOverlap) {
                 throw new Error(
-                    `This time slot conflicts with an existing reservation from ` +
-                    `${reservation.start_time} to ${reservation.end_time}`
+                    `This time slot is already booked by another client for ${reservation.service_type} ` +
+                    `from ${reservation.start_time} to ${reservation.end_time}. ` +
+                    `First come, first served policy applies.`
                 );
             }
-            
+
             return hasOverlap;
         });
 
@@ -321,6 +322,11 @@ async function handleReservationSubmit(e) {
 
         const paymentResult = await showPaymentDialog(price);
         if (!paymentResult) return;
+
+        // Check if the time slot is available
+        if (!isTimeSlotAvailable(formData.start_time, formData.end_time, formData.reservation_date, formData.service_type)) {
+            return;
+        }
 
         await processReservation({
             ...formData,
@@ -920,6 +926,6 @@ function clearAdditionalMembers() {
     const teamMembersContainer = document.getElementById('team-members');
     if (teamMembersContainer) {
         teamMembersContainer.innerHTML = '';
-        window.memberCount = 0; // Reset the global member count
+        window.memberCount = 0; 
     }
 }
