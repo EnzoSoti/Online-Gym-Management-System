@@ -177,6 +177,196 @@ async function initializeCalendar() {
         const calendarEl = document.getElementById('calendar');
         if (!calendarEl) return;
 
+        // Add CSS for hover and click effects with new design
+        const style = document.createElement('style');
+        style.textContent = `
+            .fc-day {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .fc-day::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at center, rgba(251, 146, 60, 0.05) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.4s ease-out;
+                z-index: 1;
+            }
+
+            .fc-day::after {
+                content: 'Click to view';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.9);
+                background-color: rgba(26, 26, 26, 0.95);
+                color: #fff;
+                padding: 8px 16px;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                line-height: 1.4;
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                white-space: pre;
+                text-align: center;
+                font-weight: 500;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                border: 1px solid rgba(251, 146, 60, 0.2);
+                backdrop-filter: blur(8px);
+                z-index: 2;
+            }
+
+            .fc-day:hover::after {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .fc-day:hover::before {
+                opacity: 1;
+            }
+
+            /* Modified past date hover behavior */
+            .fc-day-past::after {
+                content: 'Date not Available';
+                display: block;
+                background-color: rgba(239, 68, 68, 0.9);
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+
+            .fc-day-past:hover::after {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .fc-day-past::before {
+                display: block;
+                background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+            }
+
+            .fc-day:hover {
+                cursor: pointer;
+            }
+
+            .fc-day-today {
+                position: relative;
+            }
+
+            .fc-day-today::before {
+                content: '';
+                position: absolute;
+                inset: 2px;
+                border: 2px solid rgba(251, 146, 60, 0.3);
+                border-radius: 8px;
+                pointer-events: none;
+            }
+
+            .fc-day.clicked {
+                transform: scale(0.98);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .fc-daygrid-day {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+
+            .fc-day-past {
+                opacity: 0.5;
+            }
+
+            .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg {
+                position: relative;
+            }
+
+            .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at center, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.4s ease-out;
+            }
+
+            .fc-daygrid-day:hover .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
+                opacity: 1;
+            }
+
+            .fc-daygrid-day-number {
+                position: relative;
+                transition: all 0.3s ease;
+                z-index: 1;
+            }
+
+            .fc-day:hover .fc-daygrid-day-number {
+                color: #EA580C;
+                transform: scale(1.1) translateY(-1px);
+            }
+
+            .fc-header-toolbar {
+                margin-bottom: 2em !important;
+                position: relative;
+            }
+
+            .fc-toolbar-title {
+                font-size: 1.75rem !important;
+                font-weight: 700 !important;
+                color: #EA580C !important;
+                letter-spacing: -0.025em;
+            }
+
+            .fc-button-primary {
+                background-color: rgba(26, 26, 26, 0.95) !important;
+                border: 1px solid rgba(251, 146, 60, 0.3) !important;
+                color: #EA580C !important;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                padding: 8px 16px !important;
+                border-radius: 10px !important;
+                font-weight: 500 !important;
+                letter-spacing: 0.025em !important;
+            }
+
+            .fc-button-primary:hover {
+                background-color: #EA580C !important;
+                border-color: #EA580C !important;
+                color: white !important;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(251, 146, 60, 0.2);
+            }
+
+            .fc-button-primary:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
+            }
+
+            .fc-event {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                cursor: pointer;
+                border: 1px solid rgba(251, 146, 60, 0.3) !important;
+            }
+
+            .fc-event:hover {
+                transform: translateY(-2px) scale(1.02) !important;
+                box-shadow: 0 8px 24px rgba(251, 146, 60, 0.15) !important;
+            }
+
+            .fc-event {
+                animation: eventMount 0.4s ease-out forwards;
+            }
+
+            @keyframes eventMount {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
         window.calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
@@ -220,39 +410,18 @@ async function initializeCalendar() {
                     animation: 'shift-away',
                 });
             },
-            eventContent: function(arg) {
-                const timeIn = arg.event.extendedProps.timeIn;
-                const timeOut = arg.event.extendedProps.timeOut;
-                const service = arg.event.extendedProps.service;
-                const client = arg.event.extendedProps.client;
-
-                return {
-                    html: `
-                        <div class="p-1">
-                            <div class="font-semibold text-orange-900">
-                                ${timeIn} - ${timeOut}
-                            </div>
-                            <div class="text-orange-700 font-medium">
-                                ${service}
-                            </div>
-                            <div class="text-orange-600 text-sm mt-1">
-                                ${client}
-                            </div>
-                        </div>
-                    `
-                };
-            },
-            dayMaxEvents: true,
-            eventDisplay: 'block',
-            views: {
-                dayGrid: {
-                    dayMaxEvents: 4
-                }
-            },
             dateClick: async function(info) {
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+                today.setHours(0, 0, 0, 0);
                 const clickedDate = new Date(info.dateStr);
+
+                // Remove clicked class from all cells
+                document.querySelectorAll('.fc-day').forEach(cell => {
+                    cell.classList.remove('clicked');
+                });
+
+                // Add clicked class to the clicked cell
+                info.dayEl.classList.add('clicked');
 
                 if (clickedDate < today) {
                     Swal.fire({
