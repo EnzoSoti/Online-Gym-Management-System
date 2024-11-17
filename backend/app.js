@@ -595,6 +595,50 @@ app.get('/api/reservations/:date', async (req, res) => {
     }
 });
 
+// Admin Reservation API Routes
+// Reservation
+// fixed
+app.get('/api/admin/reservations', async (req, res) => {
+    try {
+        const reservations = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                `SELECT 
+                    id,
+                    service_type,
+                    customer_name,
+                    DATE_FORMAT(start_time, '%h:%i %p') as start_time,
+                    DATE_FORMAT(end_time, '%h:%i %p') as end_time,
+                    DATE_FORMAT(reservation_date, '%Y-%m-%d') as reservation_date,
+                    additional_members,
+                    price,
+                    status
+                FROM fitworx_gym_db.reservation
+                ORDER BY reservation_date`
+            );
+            return rows;
+        });
+        res.json(reservations);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch reservations' });
+    }
+});
+
+app.delete('/api/admin/reservations/:id', async (req, res) => {
+    try {
+        await handleDatabaseOperation(async (connection) => {
+            await connection.query(
+                'DELETE FROM fitworx_gym_db.reservation WHERE id = ?',
+                [req.params.id]
+            );
+        });
+        res.json({ message: 'Reservation deleted successfully' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to delete reservation' });
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
