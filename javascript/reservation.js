@@ -673,123 +673,123 @@ class ReservationManager {
     }
 
     viewReservation(id) {
-        const reservation = this.reservationsData.find(r => r.id.toString() === id.toString());
-        
-        if (reservation) {
-            // Add print-specific styles
-            const printStyles = `
-                @media print {
-                    body * {
-                        visibility: hidden;
-                    }
-                    .swal2-popup * {
-                        visibility: visible;
-                    }
-                    .swal2-popup {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 210mm !important; /* A4 width */
-                        min-height: 148mm !important; /* A5 height */
-                        margin: 0 !important;
-                        padding: 15mm !important;
-                    }
-                    .no-print {
-                        display: none !important;
-                    }
-                    .receipt-content {
-                        font-size: 12pt;
-                    }
-                    @page {
-                        size: A5;
-                        margin: 0;
-                    }
+    const reservation = this.reservationsData.find(r => r.id.toString() === id.toString());
+    
+    if (reservation) {
+        // Add print-specific styles
+        const printStyles = `
+            @media print {
+                body * {
+                    visibility: hidden;
                 }
-            `;
-    
-            // Create style element
-            const styleSheet = document.createElement('style');
-            styleSheet.innerText = printStyles;
-            document.head.appendChild(styleSheet);
-    
-            Swal.fire({
-                title: '<span class="text-dark fw-bold">RESERVATION RECEIPT</span>',
-                html: `
-                    <div class="text-left p-4 receipt-content" style="font-family: 'Courier New', monospace;">
-                        <div class="mb-4 border-bottom pb-2 text-center">
-                            <h6 class="mb-1">YOUR BOOKING DETAILS</h6>
-                            <small class="text-muted">Booking #${reservation.id}</small>
-                            <div class="mt-2">============================</div>
+                .swal2-popup * {
+                    visibility: visible;
+                }
+                .swal2-popup {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 210mm !important; /* A4 width */
+                    min-height: 148mm !important; /* A5 height */
+                    margin: 0 !important;
+                    padding: 15mm !important;
+                }
+                .no-print {
+                    display: none !important;
+                }
+                .receipt-content {
+                    font-size: 12pt;
+                }
+                @page {
+                    size: A5;
+                    margin: 0;
+                }
+            }
+        `;
+
+        // Create style element
+        const styleSheet = document.createElement('style');
+        styleSheet.innerText = printStyles;
+        document.head.appendChild(styleSheet);
+
+        Swal.fire({
+            title: '<span class="text-dark fw-bold">RESERVATION RECEIPT</span>',
+            html: `
+                <div class="text-left p-4 receipt-content" style="font-family: 'Courier New', monospace;">
+                    <div class="mb-4 border-bottom pb-2 text-center">
+                        <h6 class="mb-1">YOUR BOOKING DETAILS</h6>
+                        <small class="text-muted">Booking #${reservation.id}</small>
+                        <div class="mt-2">============================</div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span>Date:</span>
+                                <span class="ms-4">${reservation.reservation_date}</span>
+                            </div>
                         </div>
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Date:</span>
-                                    <span class="ms-4">${reservation.reservation_date}</span>
-                                </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span>Time:</span>
+                                <span class="ms-4">${reservation.start_time} - ${reservation.end_time}</span>
                             </div>
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Time:</span>
-                                    <span class="ms-4">${reservation.start_time} - ${reservation.end_time}</span>
-                                </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span>Customer:</span>
+                                <span class="ms-4">${reservation.customer_name}</span>
                             </div>
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Customer:</span>
-                                    <span class="ms-4">${reservation.customer_name}</span>
-                                </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span>Service:</span>
+                                <span class="ms-4">${reservation.service_type}</span>
                             </div>
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Service:</span>
-                                    <span class="ms-4">${reservation.service_type}</span>
-                                </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span>Add. Members:</span>
+                                <span class="ms-4">${reservation.additional_members || 'None'}</span>
                             </div>
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <span>Add. Members:</span>
-                                    <span class="ms-4">${reservation.additional_members || 'None'}</span>
-                                </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div>============================</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>TOTAL AMOUNT:</span>
+                                <span>₱${reservation.price}</span>
                             </div>
-                            <div class="col-12 mt-3">
-                                <div>============================</div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between fw-bold">
-                                    <span>TOTAL AMOUNT:</span>
-                                    <span>₱${reservation.price}</span>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-4 text-center">
-                                <small class="text-muted">Thank you for your reservation!</small>
-                                <br>
-                                <small class="text-muted">Please keep this receipt.</small>
-                            </div>
+                        </div>
+                        <div class="col-12 mt-4 text-center">
+                            <small class="text-muted">Thank you for your reservation!</small>
+                            <br>
+                            <small class="text-muted">Please keep this receipt.</small>
                         </div>
                     </div>
-                    <button onclick="window.print()" class="btn btn-secondary mt-3 no-print">
-                        <i class="fas fa-print"></i> Print Receipt
-                    </button>
-                `,
-                showConfirmButton: true,
-                confirmButtonText: 'Close',
-                confirmButtonColor: '#212529',
-                width: '28rem',
-                padding: '1.5em',
-                background: '#fff',
-                customClass: {
-                    container: 'custom-swal-popup',
-                    popup: 'custom-swal-popup'
-                }
-            }).then(() => {
-                // Clean up the style element after the modal is closed
-                styleSheet.remove();
-            });
-        } else {
-            this.showError('Reservation not found');
-        }
+                </div>
+                <button onclick="window.print()" class="btn btn-secondary mt-3 no-print">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: 'Close',
+            confirmButtonColor: '#212529',
+            width: '28rem',
+            padding: '1.5em',
+            background: '#fff',
+            customClass: {
+                container: 'custom-swal-popup',
+                popup: 'custom-swal-popup'
+            }
+        }).then(() => {
+            // Clean up the style element after the modal is closed
+            styleSheet.remove();
+        });
+    } else {
+        this.showError('Reservation not found');
     }
+}
 
     async cancelReservation(id) {
         try {

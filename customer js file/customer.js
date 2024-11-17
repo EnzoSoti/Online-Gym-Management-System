@@ -140,6 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (reservationForm) {
         reservationForm.addEventListener('submit', handleReservationSubmit);
     }
+
+    // Start polling for real-time updates
+    startPolling();
 });
 
 function logout() {
@@ -257,17 +260,6 @@ function checkReservationTimes() {
 
 // Check every minute (adjust the interval as needed)
 setInterval(checkReservationTimes, 60000);
-
-
-
-
-
-
-
-
-
-
-
 
 // Price calculation module
 function calculatePrice(serviceType, startTime, additionalMembers = []) {
@@ -409,14 +401,6 @@ async function handleReservationSubmit(e) {
         showErrorMessage(error.message);
     }
 }
-
-
-
-
-
-
-
-
 
 // Form data collection
 function getFormData() {
@@ -869,10 +853,6 @@ document.addEventListener('DOMContentLoaded', () => {
         serviceTypeSelect.addEventListener('change', handleServiceTypeChange);
     }
 });
-// end of split payment
-
-
-
 
 // Admin login function
 function showAdminLogin(e) {
@@ -988,7 +968,6 @@ function showAdminLogin(e) {
     });
 }
 
-
 // Improved function to clear additional members
 function clearAdditionalMembers() {
     const teamMembersContainer = document.getElementById('team-members');
@@ -996,4 +975,39 @@ function clearAdditionalMembers() {
         teamMembersContainer.innerHTML = '';
         window.memberCount = 0; 
     }
+}
+
+// Polling function for real-time updates
+function startPolling() {
+    setInterval(async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/reservations`);
+            const reservations = await response.json();
+
+            // Update the UI with the latest reservations
+            updateReservationsUI(reservations);
+        } catch (error) {
+            console.error('Polling error:', error);
+        }
+    }, 5000); // Poll every 5 seconds
+}
+
+function updateReservationsUI(reservations) {
+    const reservationsContainer = document.getElementById('reservations-container');
+    if (!reservationsContainer) return;
+
+    reservationsContainer.innerHTML = '';
+
+    reservations.forEach(reservation => {
+        const reservationElement = document.createElement('div');
+        reservationElement.className = 'reservation-item';
+        reservationElement.innerHTML = `
+            <p>Customer: ${reservation.customer_name}</p>
+            <p>Service: ${reservation.service_type}</p>
+            <p>Date: ${reservation.reservation_date}</p>
+            <p>Time: ${reservation.start_time} - ${reservation.end_time}</p>
+            <p>Price: ₱${reservation.price}</p>
+        `;
+        reservationsContainer.appendChild(reservationElement);
+    });
 }
