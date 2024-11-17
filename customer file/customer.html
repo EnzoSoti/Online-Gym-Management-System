@@ -196,13 +196,14 @@
                                     <label class="block text-sm font-medium text-slate-700">Choose Service</label>
                                     <select 
                                         name="service_type" 
+                                        id="service-type"
                                         class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50"
                                     >
                                         <option value="court">Basketball Court</option>
                                         <option value="zumba">Zumba</option>
                                     </select>
                                 </div>
-
+                        
                                 <!-- Name Input -->
                                 <div class="space-y-2">
                                     <label class="block text-sm font-medium text-slate-700">Your Name</label>
@@ -210,7 +211,7 @@
                                            placeholder="Enter your full name" 
                                            class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50">
                                 </div>
-
+                        
                                 <!-- Time and Date Selection -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <!-- Time Selection -->
@@ -230,7 +231,7 @@
                                                    max="23:59">
                                         </div>
                                     </div>
-
+                        
                                     <!-- Date Selection -->
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-slate-700">Select Date</label>
@@ -238,9 +239,9 @@
                                                class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50">
                                     </div>
                                 </div>
-
+                        
                                 <!-- Team Members Section -->
-                                <div class="bg-orange-50 p-6 rounded-xl border border-orange-200">
+                                <div id="team-members-section" class="bg-orange-50 p-6 rounded-xl border border-orange-200">
                                     <div class="flex items-center justify-between mb-4">
                                         <label class="block text-sm font-medium text-slate-700">Team Members</label>
                                         <span class="text-xs text-slate-500">Max 8 additional players</span>
@@ -249,6 +250,7 @@
                                         <!-- Dynamic member fields will be added here -->
                                     </div>
                                     <button type="button" 
+                                            id="add-player-btn"
                                             class="mt-4 inline-flex items-center px-4 py-2 text-sm bg-white text-orange-600 rounded-xl border border-orange-200 hover:bg-orange-50 transition-colors">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -256,7 +258,7 @@
                                         Add Player
                                     </button>
                                 </div>
-
+                        
                                 <!-- Form Buttons -->
                                 <button type="submit" 
                                         class="w-full px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all focus:ring-2 focus:ring-orange-100 flex items-center justify-center gap-2 text-lg font-semibold">

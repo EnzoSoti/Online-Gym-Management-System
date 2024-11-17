@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburgerBtn = document.querySelector('nav button');
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', function() {
-            // Add your hamburger menu toggle logic here
-            // For example:
             const mobileMenu = document.querySelector('.md\\:hidden');
             if (mobileMenu) {
                 mobileMenu.classList.toggle('active');
@@ -37,8 +35,36 @@ document.addEventListener('DOMContentLoaded', function() {
     // Team member functionality
     let memberCount = 0;
     const maxMembers = 8;
-    const addPlayerBtn = document.querySelector('#team-members + button');
+    const addPlayerBtn = document.getElementById('add-player-btn');
+    const teamMembersSection = document.getElementById('team-members-section');
+    const serviceTypeSelect = document.getElementById('service-type');
     
+    // Initialize team members section based on initial service selection
+    if (serviceTypeSelect && teamMembersSection) {
+        const initialValue = serviceTypeSelect.value;
+        toggleTeamMembersSection(initialValue);
+
+        // Add change event listener to service type dropdown
+        serviceTypeSelect.addEventListener('change', function() {
+            toggleTeamMembersSection(this.value);
+        });
+    }
+
+    // Function to toggle team members section
+    function toggleTeamMembersSection(serviceType) {
+        if (serviceType === 'zumba') {
+            teamMembersSection.style.display = 'none';
+            // Clear existing team members when switching to zumba
+            const teamMembersContainer = document.getElementById('team-members');
+            if (teamMembersContainer) {
+                teamMembersContainer.innerHTML = '';
+                memberCount = 0;
+            }
+        } else {
+            teamMembersSection.style.display = 'block';
+        }
+    }
+
     // Fix: Properly attach add player functionality to the specific button
     if (addPlayerBtn) {
         addPlayerBtn.addEventListener('click', function(e) {
