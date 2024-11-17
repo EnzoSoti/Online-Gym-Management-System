@@ -233,17 +233,48 @@ function checkReservationTimes() {
 setInterval(checkReservationTimes, 60000);
 
 
+
+
+
+
+
+
+
+
+
+
 // Price calculation module
 function calculatePrice(serviceType, startTime, additionalMembers = []) {
+    // Log incoming parameters for debugging
+    console.log('Price Calculation Parameters:', {
+        serviceType,
+        startTime,
+        additionalMembers
+    });
+
     if (serviceType === 'court') {
         const [hours, minutes] = startTime.split(':').map(Number);
         const totalMinutes = hours * 60 + minutes;
         const after6PM = 18 * 60; // 6 PM in minutes
-
-        // Check if the start time is after 6 PM
         return totalMinutes >= after6PM ? 200 : 180;
-    } else if (serviceType === 'zumba') {
-        return 60 * (additionalMembers.length + 1);
+    } 
+    else if (serviceType === 'zumba') {
+        const basePrice = 60; // Base price per participant
+        // Ensure additionalMembers is an array
+        const additionalMembersArray = Array.isArray(additionalMembers) ? additionalMembers : [];
+        const totalParticipants = additionalMembersArray.length + 1; // Including the main client
+        const totalPrice = basePrice * totalParticipants;
+
+        // Detailed logging for debugging
+        console.log('Zumba Price Calculation:', {
+            basePrice,
+            additionalMembersCount: additionalMembersArray.length,
+            totalParticipants,
+            totalPrice,
+            breakdown: `${basePrice} × ${totalParticipants} = ${totalPrice}`
+        });
+
+        return totalPrice;
     }
     return 0;
 }
@@ -315,7 +346,9 @@ async function handleReservationSubmit(e) {
         }
 
         const additional_members = getAdditionalMembers();
+        console.log('Additional Members:', additional_members); // Debugging statement
         const price = calculatePrice(formData.service_type, formData.start_time, additional_members);
+        console.log('Calculated Price:', price); // Debugging statement
 
         const priceConfirmed = await showPricingDialog(formData.service_type, price, additional_members, formData.start_time);
         if (!priceConfirmed) return;
@@ -331,6 +364,7 @@ async function handleReservationSubmit(e) {
         await processReservation({
             ...formData,
             additional_members: additional_members.length > 0 ? additional_members : undefined,
+            price: price, // Include the calculated price
             payment_details: paymentResult
         });
 
@@ -349,6 +383,14 @@ async function handleReservationSubmit(e) {
         showErrorMessage(error.message);
     }
 }
+
+
+
+
+
+
+
+
 
 // Form data collection
 function getFormData() {

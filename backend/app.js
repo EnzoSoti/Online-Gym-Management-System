@@ -479,14 +479,15 @@ app.post('/api/reservations', async (req, res) => {
             start_time, 
             end_time, 
             reservation_date,
-            additional_members = null
+            additional_members = null,
+            price // Add price to the request body
         } = req.body;
         
         // Validation
-        if (!service_type || !customer_name || !start_time || !end_time || !reservation_date) {
+        if (!service_type || !customer_name || !start_time || !end_time || !reservation_date || !price) {
             return res.status(400).json({ 
                 error: 'Required fields missing',
-                details: 'Service type, customer name, start time, end time, and date are required'
+                details: 'Service type, customer name, start time, end time, date, and price are required'
             });
         }
 
@@ -509,9 +510,9 @@ app.post('/api/reservations', async (req, res) => {
             // If no conflicts, proceed with insertion
             const [insertResult] = await connection.query(
                 `INSERT INTO reservation 
-                 (service_type, customer_name, start_time, end_time, reservation_date, additional_members) 
-                 VALUES (?, ?, ?, ?, ?, ?)`,
-                [service_type, customer_name, start_time, end_time, reservation_date, additional_members]
+                 (service_type, customer_name, start_time, end_time, reservation_date, additional_members, price) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [service_type, customer_name, start_time, end_time, reservation_date, additional_members, price]
             );
             
             return insertResult;
