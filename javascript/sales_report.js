@@ -1,3 +1,4 @@
+// Add reservation tab to the polling and tab functionality
 document.addEventListener('DOMContentLoaded', function() {
     const POLLING_INTERVAL = 1000; // 5 seconds
     let activeTabId = 'monthly';
@@ -5,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         monthly: null,
         supplements: null,
         regular: null,
-        student: null
+        student: null,
+        reservations: null 
     };
     let notificationPermission = false;
 
@@ -27,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
             monthly: 'Monthly Members',
             supplements: 'Supplements',
             regular: 'Regular Check-ins',
-            student: 'Student Check-ins'
+            student: 'Student Check-ins',
+            reservations: 'Reservations'
         };
 
         const title = `${tabNames[tabId]} Updated`;
@@ -119,7 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 fetchDataForTab('monthly', true),
                 fetchDataForTab('supplements', true),
                 fetchDataForTab('regular', true),
-                fetchDataForTab('student', true)
+                fetchDataForTab('student', true),
+                fetchDataForTab('reservations', true) 
             ]);
         }, POLLING_INTERVAL);
     }
@@ -171,6 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'student':
                 endpoint = 'http://localhost:3000/api/check-ins/student';
+                break;
+            case 'reservations':
+                endpoint = 'http://localhost:3000/api/reservations'; 
                 break;
             default:
                 console.error('Invalid tab ID:', tabId);
@@ -246,6 +253,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">${item.client_name}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${formatDateTime(item.time_in)}</td>
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
+                    `;
+                    break;
+                case 'reservations':
+                    newRow.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">RES#${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.service_type}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.customer_name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.start_time}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.end_time}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.reservation_date)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.additional_members}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.price}</td>
                     `;
                     break;
             }

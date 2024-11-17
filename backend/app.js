@@ -409,6 +409,34 @@ app.get('/api/check-ins/student', async (req, res) => {
     }
 });
 
+// Sales Reports API Routes
+// reservation
+// 
+app.get('/api/reservations', async (req, res) => {
+    try {
+        const reservations = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                `SELECT 
+                    id,
+                    service_type,
+                    customer_name,
+                    DATE_FORMAT(start_time, '%h:%i %p') as start_time,
+                    DATE_FORMAT(end_time, '%h:%i %p') as end_time,
+                    DATE_FORMAT(reservation_date, '%Y-%m-%d') as reservation_date,
+                    additional_members,
+                    price
+                FROM fitworx_gym_db.reservation
+                ORDER BY reservation_date`
+            );
+            return rows;
+        });
+        res.json(reservations);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch reservations' });
+    }
+});
+
 
 // check in API Routes
 // Fixed
