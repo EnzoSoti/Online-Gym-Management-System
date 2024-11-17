@@ -411,7 +411,7 @@ app.get('/api/check-ins/student', async (req, res) => {
 
 // Sales Reports API Routes
 // reservation
-// 
+// fixed
 app.get('/api/reservations', async (req, res) => {
     try {
         const reservations = await handleDatabaseOperation(async (connection) => {
@@ -498,7 +498,6 @@ app.post('/api/check-ins', async (req, res) => {
 
 
 // customer reservation booking API Routes
-// Fixed
 app.post('/api/reservations', async (req, res) => {
     try {
         const { 
@@ -507,7 +506,7 @@ app.post('/api/reservations', async (req, res) => {
             start_time, 
             end_time, 
             reservation_date,
-            additional_members = null,
+            additional_members = [], // Default to an empty array
             price // Add price to the request body
         } = req.body;
         
@@ -518,6 +517,9 @@ app.post('/api/reservations', async (req, res) => {
                 details: 'Service type, customer name, start time, end time, date, and price are required'
             });
         }
+
+        // Process additional_members to remove square brackets and separate names with a comma
+        const processedAdditionalMembers = additional_members.join(', ');
 
         // Check for time slot conflicts
         const result = await handleDatabaseOperation(async (connection) => {
@@ -538,9 +540,9 @@ app.post('/api/reservations', async (req, res) => {
             // If no conflicts, proceed with insertion
             const [insertResult] = await connection.query(
                 `INSERT INTO reservation 
-                 (service_type, customer_name, start_time, end_time, reservation_date, additional_members, price) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [service_type, customer_name, start_time, end_time, reservation_date, additional_members, price]
+                 (service_type, customer_name, start_time, end_time, reservation_date, additional_members, created_at, price) 
+                 VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)`,
+                [service_type, customer_name, start_time, end_time, reservation_date, processedAdditionalMembers, price]
             );
             
             return insertResult;
