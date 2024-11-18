@@ -213,28 +213,28 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate, newServiceType) 
             throw new Error('Maximum reservation duration is 4 hours');
         }
 
-        // Check for overlapping reservations
-        const conflict = existingReservations.find(reservation => {
-            if (reservation.reservation_date !== newDate) {
-                return false;
-            }
+        // // Check for overlapping reservations
+        // const conflict = existingReservations.find(reservation => {
+        //     if (reservation.reservation_date !== newDate) {
+        //         return false;
+        //     }
 
-            const existingStart = parseTimeToMinutes(reservation.start_time);
-            const existingEnd = parseTimeToMinutes(reservation.end_time);
+        //     const existingStart = parseTimeToMinutes(reservation.start_time);
+        //     const existingEnd = parseTimeToMinutes(reservation.end_time);
 
-            // Check if there's any overlap
-            const hasOverlap = (newStartMinutes < existingEnd && newEndMinutes > existingStart);
+        //     // Check if there's any overlap
+        //     const hasOverlap = (newStartMinutes < existingEnd && newEndMinutes > existingStart);
 
-            if (hasOverlap) {
-                throw new Error(
-                    `This time slot is already booked by another client for ${reservation.service_type} ` +
-                    `from ${reservation.start_time} to ${reservation.end_time}. ` +
-                    `First come, first served policy applies.`
-                );
-            }
+        //     if (hasOverlap) {
+        //         throw new Error(
+        //             `This time slot is already booked by another client for ${reservation.service_type} ` +
+        //             `from ${reservation.start_time} to ${reservation.end_time}. ` +
+        //             `First come, first served policy applies.`
+        //         );
+        //     }
 
-            return hasOverlap;
-        });
+        //     return hasOverlap;
+        // });
 
         return true;
     } catch (error) {
