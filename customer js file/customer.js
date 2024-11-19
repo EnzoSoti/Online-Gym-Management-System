@@ -281,7 +281,7 @@ function isTimeSlotAvailable(newStartTime, newEndTime, newDate, newServiceType) 
             throw new Error('Maximum reservation duration is 4 hours');
         }
 
-        // // Check for overlapping reservations
+        // Check for overlapping reservations
         // const conflict = existingReservations.find(reservation => {
         //     if (reservation.reservation_date !== newDate) {
         //         return false;
@@ -823,12 +823,13 @@ function showSuccessMessage() {
 
 function showErrorMessage(message) {
     Swal.fire({
-        title: '❌ Booking Error',
+        title: '⚠️ Time Slot Unavailable',
         html: '<div class="space-y-2">' +
-            `<p class="text-red-400 font-semibold">${message}</p>` +
+            '<p class="text-red-400 font-semibold">Selected time slot is already booked</p>' +
+            '<p class="text-sm text-gray-300">Please select a different time slot</p>' +
             '</div>',
-        icon: 'error',
-        confirmButtonText: 'OK',
+        icon: 'warning',
+        confirmButtonText: 'Select Another Time',
         showClass: {
             popup: 'animate__animated animate__fadeIn'
         },
@@ -839,6 +840,7 @@ function showErrorMessage(message) {
         },
         buttonsStyling: false
     });
+    return;
 }
 
 // Initialize event listeners
