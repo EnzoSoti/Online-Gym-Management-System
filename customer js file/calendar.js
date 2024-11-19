@@ -336,8 +336,46 @@ async function initializeCalendar() {
                     transform: translateY(0);
                 }
             }
+
+            #calendar {
+            min-height: 800px; /* Set minimum height */
+            height: 100%; /* Take full height of container */
+            }
+            
+            .fc {
+                height: 100% !important; /* Force calendar to take full height */
+            }
+            
+            .fc-view-harness {
+                height: 100% !important; /* Ensure the view takes full height */
+            }
+            
+            .fc-daygrid.fc-dayGridMonth-view {
+                height: 100% !important; /* Make month view fill space */
+            }
+            
+            /* Adjust day cell heights */
+            .fc .fc-daygrid-day-frame {
+                min-height: 100px; /* Minimum height for day cells */
+                height: 100%; /* Take available height */
+            }
+            
+            /* Handle overflow for events */
+            .fc-daygrid-day-events {
+                max-height: none !important; /* Allow events to fill space */
+            }
         `;
         document.head.appendChild(style);
+
+        // Calculate calendar height based on container
+        const calculateHeight = () => {
+            const container = calendarEl.closest('.container') || calendarEl.parentElement;
+            if (container) {
+                const containerHeight = container.offsetHeight;
+                return Math.max(800, containerHeight); // Minimum 800px or container height
+            }
+            return 'auto';
+        };
 
         window.calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -348,13 +386,18 @@ async function initializeCalendar() {
             },
             slotMinTime: '09:00:00',
             slotMaxTime: '24:00:00',
-            height: 'auto',
+            height: calculateHeight(),
+            aspectRatio: 1.35,
             slotDuration: '01:00:00',
             allDaySlot: false,
             businessHours: {
                 daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
                 startTime: '09:00',
                 endTime: '24:00',
+                // Add window resize handler
+                windowResize: function(view) {
+                this.setOption('height', calculateHeight());
+            },
             },
             buttonText: {
                 today: 'Today'
