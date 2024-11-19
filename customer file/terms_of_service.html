@@ -10,183 +10,191 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
-
-    <!-- calendar  -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-
-    <!-- Tippy.js tooltips -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             font-family: 'Poppins', sans-serif;
         }
+        .section-transition {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section-transition:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <!-- Header remains the same -->
-    <header class="bg-orange-900 shadow-lg">
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-orange-900 shadow-lg fixed w-full z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <img src="../img/Fitworx logo.jpg" alt="Fitworx Logo" class="h-10 w-10 rounded-full">
-                    <span class="ml-2 text-white text-xl font-semibold">Fitworx Gym</span>
+                    <img src="../img/Fitworx logo.jpg" alt="Fitworx Logo" class="h-10 w-10 rounded-full shadow-md">
+                    <span class="ml-3 text-white text-xl font-semibold">Fitworx Gym</span>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <a href="../customer file/customer.html" class="text-white hover:text-orange-200 font-medium">Home</a>
-                    <a href="../customer file/about_us.html" class="text-white hover:text-orange-200 font-medium">About us</a>
+                <div class="flex items-center space-x-8">
+                    <a href="../customer file/customer.html" class="text-white hover:text-orange-200 font-medium transition-colors duration-200">Home</a>
+                    <a href="../customer file/about_us.html" class="text-white hover:text-orange-200 font-medium transition-colors duration-200">About us</a>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+    <!-- Main Content with padding-top to account for fixed header -->
+    <main class="flex-grow pt-20">
+        <div class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 <!-- Title Section -->
-                <div class="bg-orange-900 py-6 px-6">
-                    <h1 class="text-3xl font-bold text-white text-center">Terms of Service</h1>
-                    <p class="mt-2 text-orange-100 text-center font-light">Fitworx Gym Membership Agreement</p>
+                <div class="bg-orange-900 py-8 px-6 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h1 class="text-4xl font-bold text-white text-center mb-2">Terms of Service</h1>
+                        <p class="text-orange-100 text-center text-lg font-light">Fitworx Gym Membership Agreement</p>
+                    </div>
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-orange-800 rounded-full transform translate-x-32 -translate-y-32 opacity-50"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-orange-800 rounded-full transform -translate-x-24 translate-y-24 opacity-50"></div>
                 </div>
 
                 <!-- Terms Content -->
-                <div class="p-6 space-y-8">
-                    <!-- Membership Terms -->
-                    <section class="bg-orange-50 rounded-lg p-6">
-                        <h2 class="text-xl font-semibold text-orange-600 mb-4 flex items-center">
-                            <i class="fas fa-user-circle mr-2"></i>
-                            1. Membership Terms
-                        </h2>
-                        <div class="space-y-3 text-gray-700 font-regular">
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Regular membership rate is ₱950 per month.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Student rate is ₱850 per month.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>No membership fee required for enrollment.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Members must complete basic personal information form at registration.</span>
-                            </p>
-                        </div>
-                    </section>
+                <div class="p-8 space-y-6">
+                    <!-- Sections -->
+                    <div class="grid gap-6">
+                        <!-- Membership Terms -->
+                        <section class="bg-orange-50 rounded-xl p-6 section-transition">
+                            <h2 class="text-2xl font-semibold text-orange-600 mb-6 flex items-center">
+                                <i class="fas fa-user-circle mr-3 text-orange-500"></i>
+                                1. Membership Terms
+                            </h2>
+                            <div class="space-y-4 text-gray-700">
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Regular membership rate is ₱950 per month.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Student rate is ₱850 per month.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">No membership fee required for enrollment.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Members must complete basic personal information form at registration.</span>
+                                </p>
+                            </div>
+                        </section>
 
-                    <!-- Facility Usage -->
-                    <section class="bg-orange-50 rounded-lg p-6">
-                        <h2 class="text-xl font-semibold text-orange-600 mb-4 flex items-center">
-                            <i class="fas fa-dumbbell mr-2"></i>
-                            2. Facility Usage
-                        </h2>
-                        <div class="space-y-3 text-gray-700 font-regular">
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>The gym accommodates 50-100 members daily.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Advance reservations required for basketball court, Zumba sessions.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Personal training services available through freelance trainers.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Equipment must be used properly and returned to designated areas.</span>
-                            </p>
-                        </div>
-                    </section>
+                        <!-- Facility Usage -->
+                        <section class="bg-orange-50 rounded-xl p-6 section-transition">
+                            <h2 class="text-2xl font-semibold text-orange-600 mb-6 flex items-center">
+                                <i class="fas fa-dumbbell mr-3 text-orange-500"></i>
+                                2. Facility Usage
+                            </h2>
+                            <div class="space-y-4 text-gray-700">
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">The gym accommodates 50-100 members daily.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Advance reservations required for basketball court, Zumba sessions.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Personal training services available through freelance trainers.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Equipment must be used properly and returned to designated areas.</span>
+                                </p>
+                            </div>
+                        </section>
 
-                    <!-- Payment Policies -->
-                    <section class="bg-orange-50 rounded-lg p-6">
-                        <h2 class="text-xl font-semibold text-orange-600 mb-4 flex items-center">
-                            <i class="fas fa-credit-card mr-2"></i>
-                            3. Payment Policies
-                        </h2>
-                        <div class="space-y-3 text-gray-700 font-regular">
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>All payments must be made in advance.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Strictly no credit arrangements for supplements and merchandise.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Student discounts require current, valid student ID.</span>
-                            </p>
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Personal training fees are paid directly to trainers.</span>
-                            </p>
-                        </div>
-                    </section>
+                        <!-- Payment Policies -->
+                        <section class="bg-orange-50 rounded-xl p-6 section-transition">
+                            <h2 class="text-2xl font-semibold text-orange-600 mb-6 flex items-center">
+                                <i class="fas fa-credit-card mr-3 text-orange-500"></i>
+                                3. Payment Policies
+                            </h2>
+                            <div class="space-y-4 text-gray-700">
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">All payments must be made in advance.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Strictly no credit arrangements for supplements and merchandise.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Student discounts require current, valid student ID.</span>
+                                </p>
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Personal training fees are paid directly to trainers.</span>
+                                </p>
+                            </div>
+                        </section>
 
-                    <!-- Operating Hours -->
-                    <section class="bg-orange-50 rounded-lg p-6">
-                        <h2 class="text-xl font-semibold text-orange-600 mb-4 flex items-center">
-                            <i class="fas fa-clock mr-2"></i>
-                            4. Operating Hours
-                        </h2>
-                        <div class="space-y-3 text-gray-700 font-regular">
-                            <p class="flex items-start">
-                                <i class="fas fa-check-circle text-orange-500 mt-1 mr-2"></i>
-                                <span>Monday - Sunday: 9AM - 12AM</span>
-                            </p>
-                        </div>
-                    </section>
+                        <!-- Operating Hours -->
+                        <section class="bg-orange-50 rounded-xl p-6 section-transition">
+                            <h2 class="text-2xl font-semibold text-orange-600 mb-6 flex items-center">
+                                <i class="fas fa-clock mr-3 text-orange-500"></i>
+                                4. Operating Hours
+                            </h2>
+                            <div class="space-y-4 text-gray-700">
+                                <p class="flex items-start group">
+                                    <i class="fas fa-check-circle text-orange-500 mt-1 mr-3 group-hover:scale-110 transition-transform"></i>
+                                    <span class="flex-1">Monday - Sunday: 9AM - 11:59PM</span>
+                                </p>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white">
+    <footer class="bg-gray-800 text-white mt-12">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Contact Info -->
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-                    <div class="space-y-2 font-light">
-                        <p class="flex items-center">
-                            <i class="fas fa-phone mr-2 text-orange-500"></i>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">Contact Us</h3>
+                    <div class="space-y-3 font-light">
+                        <p class="flex items-center group">
+                            <i class="fas fa-phone mr-3 text-orange-500 group-hover:scale-110 transition-transform"></i>
                             0933 874 5377
                         </p>
-                        <p class="flex items-center">
-                            <i class="fas fa-envelope mr-2 text-orange-500"></i>
+                        <p class="flex items-center group">
+                            <i class="fas fa-envelope mr-3 text-orange-500 group-hover:scale-110 transition-transform"></i>
                             fitworxgym@gmail.com
                         </p>
-                        <p class="flex items-center">
-                            <i class="fas fa-map-marker-alt mr-2 text-orange-500"></i>
+                        <p class="flex items-center group">
+                            <i class="fas fa-map-marker-alt mr-3 text-orange-500 group-hover:scale-110 transition-transform"></i>
                             Q28V+QMG, Capt. F. S. Samano, Caloocan, Metro Manila
                         </p>
                     </div>
                 </div>
 
                 <!-- Social Media -->
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-                    <div class="flex space-x-4">
-                        <a href="https://www.facebook.com/fitworxgymph" class="hover:text-orange-500 transition-colors">
-                            <i class="fab fa-facebook fa-2x"></i>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">Follow Us</h3>
+                    <div class="flex space-x-6">
+                        <a href="https://www.facebook.com/fitworxgymph" class="hover:text-orange-500 transition-colors duration-300">
+                            <i class="fab fa-facebook fa-2x hover:scale-110 transition-transform"></i>
                         </a>
-                        <a href="https://www.instagram.com/fitworxgym/" class="hover:text-orange-500 transition-colors">
-                            <i class="fab fa-instagram fa-2x"></i>
+                        <a href="https://www.instagram.com/fitworxgym/" class="hover:text-orange-500 transition-colors duration-300">
+                            <i class="fab fa-instagram fa-2x hover:scale-110 transition-transform"></i>
                         </a>
-                        <a href="https://www.tiktok.com/@fitworxgym?lang=en" class="hover:text-orange-500 transition-colors">
-                            <i class="fab fa-tiktok fa-2x"></i>
+                        <a href="https://www.tiktok.com/@fitworxgym?lang=en" class="hover:text-orange-500 transition-colors duration-300">
+                            <i class="fab fa-tiktok fa-2x hover:scale-110 transition-transform"></i>
                         </a>
                     </div>
                 </div>

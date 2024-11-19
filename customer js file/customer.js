@@ -21,6 +21,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // cannot put number in client name
+    const mainClientNameInput = document.querySelector('input[type="text"]');
+    if (mainClientNameInput) {
+        mainClientNameInput.addEventListener('input', function(e) {
+            const value = e.target.value;
+            if (/\d/.test(value)) {
+                Swal.fire({
+                    title: '⚠️ Invalid Input',
+                    text: 'Numbers are not allowed in the Main Client Name field.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    },
+                    customClass: {
+                        popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
+                        title: 'text-yellow-500 font-bold',
+                        htmlContainer: 'text-gray-200',
+                        confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    },
+                    buttonsStyling: false
+                });
+                e.target.value = value.replace(/\d/g, ''); // Remove numbers from the input
+            }
+        });
+    }
+
+    // +1 hour start time to end time
+    const startTimeInput = document.querySelectorAll('input[type="time"]')[0];
+    const endTimeInput = document.querySelectorAll('input[type="time"]')[1];
+
+    if (startTimeInput && endTimeInput) {
+        startTimeInput.addEventListener('change', function() {
+            const startTime = this.value;
+            const endTime = addOneHour(startTime);
+            endTimeInput.value = endTime;
+        });
+    }
+
     // Hamburger menu functionality
     const hamburgerBtn = document.querySelector('nav button');
     if (hamburgerBtn) {
@@ -144,6 +183,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start polling for real-time updates
     startPolling();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// + one hour every time the client set a start time
+function addOneHour(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    let newHours = hours + 1;
+    let newMinutes = minutes;
+
+    if (newHours >= 24) {
+        newHours = 0;
+    }
+    return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+}
 
 function logout() {
     // Show a confirmation dialog before logging out
