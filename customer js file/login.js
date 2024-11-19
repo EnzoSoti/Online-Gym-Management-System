@@ -7,10 +7,52 @@ const formSubtitle = document.getElementById('formSubtitle');
 const toggleText = document.getElementById('toggleText');
 const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
+const formSection = document.getElementById('formSection');
 
 // Static credentials
 const VALID_USERNAME = "user";
 const VALID_PASSWORD = "user";
+
+// Show terms and conditions popup on page load
+window.addEventListener('load', function() {
+    Swal.fire({
+        title: 'Terms and Conditions',
+        html: `
+            <p class="font-bold">HOUSE RULES:</p>
+            <p class="font-bold">FRIENDLY REMINDERS TO ALL OUR MEMBERS and PATRONS</p>
+            <ol class="list-decimal list-inside">
+                <li>No dropping of Dumbbells. If you lift them, you lower them.</li>
+                <li>It's your sweat, wipe it off.</li>
+                <li>Use equipment directions carefully.</li>
+                <li>Management assumes no responsibility for any injury that may occur.</li>
+                <li>Please follow equipment directions.</li>
+                <li>SHIRTS AND SHOES MUST BE WORN AT ALL TIMES. NO SANDALS OR FLIP FLOPS PLEASE.</li>
+                <li>No bringing in of Food, Alcohol, Glass.</li>
+                <li>No Smoking.</li>
+                <li>Please be watchful of your belongings.</li>
+            </ol>
+            <p class="mt-4">Fitworx.com</p>
+            <div class="flex items-center mt-4">
+                <input type="checkbox" id="agreeCheckbox" class="mr-2">
+                <label for="agreeCheckbox" class="text-gray-600">I understand and agree to the terms and conditions</label>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Proceed',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        preConfirm: () => {
+            const agreeCheckbox = Swal.getPopup().querySelector('#agreeCheckbox');
+            if (!agreeCheckbox.checked) {
+                Swal.showValidationMessage('You must agree to the terms and conditions');
+            }
+            return agreeCheckbox.checked;
+        },
+        willClose: () => {
+            formSection.classList.remove('hidden');
+        }
+    });
+});
 
 // Handle login form submission
 loginForm.addEventListener('submit', function (e) {
@@ -45,7 +87,6 @@ loginForm.addEventListener('submit', function (e) {
         });
     }
 });
-
 
 // Toggle between login and signup forms
 function toggleForms() {
