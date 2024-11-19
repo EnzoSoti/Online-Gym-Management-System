@@ -14,13 +14,18 @@ function formatTo12Hour(time24) {
 function displayReservations(reservations) {
     if (reservations.length === 0) {
         Swal.fire({
-            title: 'Reservations',
+            title: '📅 Reservations',
             text: 'No reservations found for this date.',
+            icon: 'info',
             confirmButtonText: 'Close',
+            showClass: {
+                popup: 'animate__animated animate__fadeIn'
+            },
             customClass: {
-                popup: 'rounded-lg bg-white max-w-3xl w-full',
-                title: 'text-2xl text-gray-900 mb-4',
-                confirmButton: 'bg-indigo-600 text-white font-medium rounded-md px-6 py-2'
+                popup: 'rounded-lg border-l-4 border-l-blue-500 bg-gray-900',
+                title: 'text-blue-500 font-bold',
+                htmlContainer: 'text-gray-200',
+                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
             },
             buttonsStyling: false
         });
@@ -110,6 +115,9 @@ function displayReservations(reservations) {
         title: 'Today\'s Reservations',
         html: htmlContent,
         confirmButtonText: 'Close',
+        showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
         customClass: {
             popup: 'rounded-lg bg-white max-w-3xl w-full shadow-lg',
             title: 'text-2xl text-gray-900 font-semibold mb-6',
@@ -386,13 +394,18 @@ async function initializeCalendar() {
 
                 if (clickedDate < today) {
                     Swal.fire({
-                        title: 'Invalid Date',
+                        title: '⚠️ Reservation Date Restricted',
                         text: 'You cannot select a date in the past.',
-                        icon: 'error',
-                        confirmButtonText: 'OK',
+                        icon: 'warning',
+                        confirmButtonText: 'Update Date',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeIn'
+                        },
                         customClass: {
-                            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                            confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                            popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
+                            title: 'text-yellow-500 font-bold',
+                            htmlContainer: 'text-gray-200',
+                            confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
                         },
                         buttonsStyling: false
                     });

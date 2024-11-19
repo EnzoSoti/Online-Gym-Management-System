@@ -11,154 +11,154 @@ body {
     overflow: hidden;
 }
 
-.wrapper.wrapper {
+.wrapper {
     height: 100vh;
     overflow-y: hidden;
 }
 
-.main-content {
-    height: 100vh;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-}
-
-/* Hamburger Button */
+/* Refined Hamburger Button */
 .hamburger-btn {
     position: absolute;
-    top: 20px;
-    right: -40px;
-    width: 30px;
-    height: 30px;
+    top: 15px;
+    right: -45px;
+    width: 32px;
+    height: 32px;
     background: #FF6B00;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.2);
 }
 
 .hamburger-btn:hover {
     background: #FF8534;
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+    transform: translateX(-5px);
 }
 
-/* Sidebar Base Styles */
+/* Enhanced Sidebar Base */
 .wrapper .sidenav {
     position: fixed;
     left: 0;
     top: 0;
     width: 250px;
     height: 100vh;
-    background: #1A1A1A;
-    transition: all 0.3s ease;
+    background: linear-gradient(180deg, #1A1A1A 0%, #242424 100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
     overflow-y: auto;
-    border-right: 2px solid #FF6B00;
+    border-right: 1px solid rgba(255, 107, 0, 0.2);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper .sidenav.collapsed {
-    width: 60px;
-}
-
-/* Logo Container */
+/* Refined Logo Container */
 .wrapper .sidenav .logo-container {
     display: flex;
     align-items: center;
-    padding: 20px 15px;
-    overflow: hidden;
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 107, 0, 0.1);
     height: 60px;
-    background: #000000;
-    border-bottom: 2px solid #FF6B00;
 }
 
 .wrapper .sidenav .logo-container img {
-    max-width: 100px;
-    min-width: 50px;
-    margin-right: 15px;
-    border-radius: 8px;
-    transition: all 0.3s;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(255, 107, 0, 0.15);
     border: 1px solid #FF6B00;
+    transition: all 0.3s ease;
 }
 
-.wrapper .sidenav.collapsed .logo-container img {
-    max-width: 35px;
-    min-width: 35px;
-    margin-right: 0;
-}
-
-.wrapper .sidenav h1 {
-    font-size: 15px;
+.wrapper .sidenav .logo-container h1 {
+    margin-left: 12px;
+    font-size: 13px;
+    font-weight: 500;
     color: #fff;
-    white-space: nowrap;
-    transition: all 0.3s;
+    letter-spacing: 0.3px;
 }
 
-.wrapper .sidenav h1 span {
+.wrapper .sidenav .logo-container h1 span {
     color: #FF6B00;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+    font-weight: 600;
 }
 
-/* Navigation Items */
+/* Enhanced Navigation Items */
 .wrapper .sidenav ul {
-    margin-top: 20px;
-    padding: 0 8px;
+    padding: 0.75rem;
+    margin-top: 0.25rem;
 }
 
 .wrapper .sidenav ul li {
+    margin: 4px 0;
     list-style: none;
-    margin: 8px 0;
-    border-radius: 6px;
-    transition: all 0.3s;
 }
 
 .wrapper .sidenav ul li a {
-    color: #FFFFFF;
-    text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    padding: 8px 12px;
+    color: #fff;
+    text-decoration: none;
     border-radius: 6px;
-    white-space: nowrap;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid transparent;
-}
-
-.wrapper .sidenav ul li a:hover {
-    background: rgba(255, 107, 0, 0.1);
-    border: 1px solid #FF6B00;
-    transform: translateX(5px);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
 }
 
 .wrapper .sidenav ul li a i {
     min-width: 20px;
-    margin-right: 15px;
-    font-size: 18px;
+    font-size: 15px;
     color: #FF6B00;
-    transition: all 0.3s;
-}
-
-.wrapper .sidenav ul li a:hover i {
-    transform: scale(1.1);
-    text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
-}
-
-.wrapper .sidenav.collapsed ul li a i {
-    margin-right: 0;
-    font-size: 20px;
+    margin-right: 12px;
+    transition: all 0.3s ease;
 }
 
 .wrapper .sidenav ul li a span {
-    font-size: 14px;
-    transition: all 0.3s;
+    font-size: 12.5px;
+    font-weight: 400;
+    white-space: nowrap;
     opacity: 1;
+    transition: all 0.3s ease;
+    letter-spacing: 0.2px;
+}
+
+/* Hover & Active States */
+.wrapper .sidenav ul li a:hover {
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.15);
+    transform: translateX(3px);
+}
+
+.wrapper .sidenav ul li a.active {
+    background: #FF6B00;
+    box-shadow: 0 3px 12px rgba(255, 107, 0, 0.2);
+}
+
+.wrapper .sidenav ul li a.active i,
+.wrapper .sidenav ul li a.active span {
+    color: white;
+}
+
+/* Collapsed State */
+.wrapper .sidenav.collapsed {
+    width: 60px;
+}
+
+.wrapper .sidenav.collapsed .logo-container img {
+    width: 28px;
+    height: 28px;
+}
+
+.wrapper .sidenav.collapsed .logo-container h1 {
+    opacity: 0;
+    width: 0;
 }
 
 .wrapper .sidenav.collapsed ul li a span {
@@ -167,48 +167,38 @@ body {
     display: none;
 }
 
-/* Active State */
-.wrapper .sidenav ul li a.active {
-    background: #FF6B00;
-    box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
+.wrapper .sidenav.collapsed ul li a i {
+    margin-right: 0;
+    font-size: 16px;
 }
 
-.wrapper .sidenav ul li a.active i {
-    color: #FFFFFF;
-    text-shadow: none;
-}
-
-/* Hover States for Collapsed Sidebar */
+/* Hover effect for collapsed state */
 .wrapper .sidenav.collapsed:hover {
     width: 250px;
-    box-shadow: 5px 0 15px rgba(255, 107, 0, 0.1);
 }
 
+.wrapper .sidenav.collapsed:hover .logo-container h1,
 .wrapper .sidenav.collapsed:hover ul li a span {
     opacity: 1;
+    width: auto;
     display: inline;
-    margin-left: 10px;
 }
 
-.wrapper .sidenav.collapsed:hover .logo-container img {
-    margin-right: 15px;
-}
-
-/* Main Content Area */
+/* Main Content Adjustments */
 .wrapper .main-content {
-    width: calc(100% - 250px);
     margin-left: 250px;
-    transition: all 0.3s;
+    width: calc(100% - 250px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .wrapper .main-content.collapsed {
-    width: calc(100% - 60px);
     margin-left: 60px;
+    width: calc(100% - 60px);
 }
 
 /* Custom Scrollbar */
 .wrapper .sidenav::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 
 .wrapper .sidenav::-webkit-scrollbar-track {
@@ -217,12 +207,7 @@ body {
 
 .wrapper .sidenav::-webkit-scrollbar-thumb {
     background: #FF6B00;
-    border-radius: 3px;
-}
-
-.wrapper .sidenav::-webkit-scrollbar-thumb:hover {
-    background: #FF8534;
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+    border-radius: 8px;
 }
 
 /* Responsive Design */
@@ -231,50 +216,26 @@ body {
         width: 60px;
     }
     
+    .wrapper .sidenav .logo-container h1,
+    .wrapper .sidenav ul li a span {
+        opacity: 0;
+        width: 0;
+        display: none;
+    }
+    
+    .wrapper .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+    }
+    
     .wrapper .sidenav:hover {
         width: 250px;
     }
     
-    .wrapper .sidenav ul li a span {
-        opacity: 0;
-        display: none;
-    }
-    
+    .wrapper .sidenav:hover .logo-container h1,
     .wrapper .sidenav:hover ul li a span {
         opacity: 1;
+        width: auto;
         display: inline;
     }
-    
-    .wrapper .main-content {
-        width: calc(100% - 60px);
-        margin-left: 60px;
-    }
-    
-    .wrapper .sidenav .logo-container h1 {
-        opacity: 0;
-        width: 0;
-    }
-    
-    .wrapper .sidenav:hover .logo-container h1 {
-        opacity: 1;
-        width: auto;
-    }
-}
-
-/* Section Styles */
-section {
-    height: 100vh;
-    scroll-snap-align: start;
-    overflow-y: auto;
-}
-
-#section1,
-#section2,
-#section3,
-#section4,
-#section5,
-#section6,
-#section7 {
-    background: #ff4d4d;
-    color: black;
 }

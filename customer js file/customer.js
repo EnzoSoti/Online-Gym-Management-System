@@ -308,24 +308,29 @@ async function handleReservationSubmit(e) {
         // Check if the selected date is in the past
         const selectedDate = new Date(formData.reservation_date);
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+        today.setHours(0, 0, 0, 0);
 
         if (selectedDate < today) {
             Swal.fire({
-                title: 'Invalid Date',
-                text: 'You cannot select a date in the past.',
-                icon: 'error',
-                confirmButtonText: 'OK',
+                title: '⚠️ Reservation Date Restricted',
+                text: 'Reservations cannot be made for past dates. Please select a future date.',
+                icon: 'warning',
+                confirmButtonText: 'Update Date',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
                 customClass: {
-                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                    popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
+                    title: 'text-yellow-500 font-bold',
+                    htmlContainer: 'text-gray-200',
+                    confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
                 },
                 buttonsStyling: false
             });
             return;
         }
 
-        // Check if the time slot is at least one hour and does not exceed four hours
+        // Check if the time slot is at least one hour
         const startTime = formData.start_time;
         const endTime = formData.end_time;
         const startTimeMinutes = parseTimeToMinutes(startTime);
@@ -334,13 +339,20 @@ async function handleReservationSubmit(e) {
 
         if (timeDifference < 60) {
             Swal.fire({
-                title: 'Invalid Time Slot',
-                text: 'The time slot must be at least one hour.',
+                title: '⏱️ Duration Restriction',
+                html: '<div class="space-y-2">' +
+                    '<p class="text-red-400 font-semibold">Minimum booking duration not met</p>' +
+                    '<p class="text-sm text-gray-300">Reservations must be at least 1 hour long</p>' +
+                    '</div>',
                 icon: 'error',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Adjust Time',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
                 customClass: {
-                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
+                    title: 'text-red-500 font-bold',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
                 },
                 buttonsStyling: false
             });
@@ -350,13 +362,21 @@ async function handleReservationSubmit(e) {
         const maxReservationTime = 240; // 4 hours in minutes
         if (timeDifference > maxReservationTime) {
             Swal.fire({
-                title: 'Invalid Time Slot',
-                text: 'The maximum reservation time is 4 hours.',
+                title: '⏰ Maximum Duration Exceeded',
+                html: '<div class="space-y-2">' +
+                    '<p class="text-red-400 font-semibold">Booking duration exceeds limit</p>' +
+                    '<p class="text-sm text-gray-300">Reservations cannot exceed 4 hours</p>' +
+                    '<p class="text-xs text-gray-400 mt-2">Please adjust your end time or make multiple bookings</p>' +
+                    '</div>',
                 icon: 'error',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Adjust Duration',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
                 customClass: {
-                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                    confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
+                    title: 'text-red-500 font-bold',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
                 },
                 buttonsStyling: false
             });
@@ -364,9 +384,9 @@ async function handleReservationSubmit(e) {
         }
 
         const additional_members = getAdditionalMembers();
-        console.log('Additional Members:', additional_members); // Debugging statement
+        console.log('Additional Members:', additional_members);
         const price = calculatePrice(formData.service_type, formData.start_time, additional_members);
-        console.log('Calculated Price:', price); // Debugging statement
+        console.log('Calculated Price:', price);
 
         const priceConfirmed = await showPricingDialog(formData.service_type, price, additional_members, formData.start_time);
         if (!priceConfirmed) return;
@@ -374,7 +394,6 @@ async function handleReservationSubmit(e) {
         const paymentResult = await showPaymentDialog(price);
         if (!paymentResult) return;
 
-        // Check if the time slot is available
         if (!isTimeSlotAvailable(formData.start_time, formData.end_time, formData.reservation_date, formData.service_type)) {
             return;
         }
@@ -382,16 +401,14 @@ async function handleReservationSubmit(e) {
         await processReservation({
             ...formData,
             additional_members: additional_members.length > 0 ? additional_members : undefined,
-            price: price, // Include the calculated price
+            price: price,
             payment_details: paymentResult
         });
 
-        // Reset form and show success message
         e.target.reset();
         clearAdditionalMembers();
         showSuccessMessage();
 
-        // Refresh calendar if it exists
         if (typeof initializeCalendar === 'function') {
             initializeCalendar();
         }
@@ -422,9 +439,27 @@ function getFormData() {
         .filter(([_, value]) => !value)
         .map(([field]) => field);
 
-    if (missingFields.length > 0) {
-        throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
-    }
+        if (missingFields.length > 0) {
+            Swal.fire({
+                title: '⚠️ Required Fields Missing',
+                html: '<div class="space-y-2">' +
+                    `<p class="text-red-400 font-semibold">Please fill in all required fields:</p>` +
+                    `<p class="text-sm text-gray-300">${missingFields.join(', ')}</p>` +
+                    '</div>',
+                icon: 'warning',
+                confirmButtonText: 'Complete Fields',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
+                customClass: {
+                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
+                    title: 'text-red-500 font-bold',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
 
     return { service_type, customer_name, start_time, end_time, reservation_date };
 }
@@ -815,13 +850,19 @@ async function processReservation(reservationData) {
 
 function showSuccessMessage() {
     Swal.fire({
-        title: 'Success!',
-        text: 'Your reservation has been successfully booked!',
+        title: '✅ Success!',
+        html: '<div class="space-y-2">' +
+            '<p class="text-green-400 font-semibold">Your reservation has been successfully booked!</p>' +
+            '</div>',
         icon: 'success',
         confirmButtonText: 'OK',
+        showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+            popup: 'rounded-lg border-l-4 border-l-green-500 bg-gray-900',
+            title: 'text-green-500 font-bold',
+            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
         },
         buttonsStyling: false
     });
@@ -829,13 +870,19 @@ function showSuccessMessage() {
 
 function showErrorMessage(message) {
     Swal.fire({
-        title: 'Booking Error',
-        text: message,
+        title: '❌ Booking Error',
+        html: '<div class="space-y-2">' +
+            `<p class="text-red-400 font-semibold">${message}</p>` +
+            '</div>',
         icon: 'error',
         confirmButtonText: 'OK',
+        showClass: {
+            popup: 'animate__animated animate__fadeIn'
+        },
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl px-6 py-3 transition duration-300'
+            popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
+            title: 'text-red-500 font-bold',
+            confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
         },
         buttonsStyling: false
     });
