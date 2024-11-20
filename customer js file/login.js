@@ -14,45 +14,124 @@ const VALID_USERNAME = "user";
 const VALID_PASSWORD = "user";
 
 // Show terms and conditions popup on page load
-window.addEventListener('load', function() {
-    Swal.fire({
-        title: 'Terms and Conditions',
-        html: `
-            <p class="font-bold">HOUSE RULES:</p>
-            <p class="font-bold">FRIENDLY REMINDERS TO ALL OUR MEMBERS and PATRONS</p>
-            <ol class="list-decimal list-inside">
-                <li>No dropping of Dumbbells. If you lift them, you lower them.</li>
-                <li>It's your sweat, wipe it off.</li>
-                <li>Use equipment directions carefully.</li>
-                <li>Management assumes no responsibility for any injury that may occur.</li>
-                <li>Please follow equipment directions.</li>
-                <li>SHIRTS AND SHOES MUST BE WORN AT ALL TIMES. NO SANDALS OR FLIP FLOPS PLEASE.</li>
-                <li>No bringing in of Food, Alcohol, Glass.</li>
-                <li>No Smoking.</li>
-                <li>Please be watchful of your belongings.</li>
-            </ol>
-            <p class="mt-4">Fitworx.com</p>
-            <div class="flex items-center mt-4">
-                <input type="checkbox" id="agreeCheckbox" class="mr-2">
-                <label for="agreeCheckbox" class="text-gray-600">I understand and agree to the terms and conditions</label>
-            </div>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Proceed',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        preConfirm: () => {
-            const agreeCheckbox = Swal.getPopup().querySelector('#agreeCheckbox');
-            if (!agreeCheckbox.checked) {
-                Swal.showValidationMessage('You must agree to the terms and conditions');
-            }
-            return agreeCheckbox.checked;
-        },
-        willClose: () => {
-            formSection.classList.remove('hidden');
-        }
-    });
-});
+// window.addEventListener('load', function() {
+//     Swal.fire({
+//         width: '900px',
+//         html: `
+//             <style>
+//                 @keyframes scaleIn {
+//                     from { 
+//                         opacity: 0; 
+//                         transform: scale(0.95) translateX(-10px); 
+//                     }
+//                     to { 
+//                         opacity: 1; 
+//                         transform: scale(1) translateX(0); 
+//                     }
+//                 }
+
+//                 .animate-scale-in {
+//                     animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+//                 }
+
+//                 .term-item {
+//                     transition: all 0.3s ease;
+//                 }
+
+//                 .term-item:hover {
+//                     background-color: rgba(255, 255, 255, 0.95);
+//                     transform: translateX(5px);
+//                 }
+
+//                 .terms-grid {
+//                     display: grid;
+//                     grid-template-columns: repeat(2, 1fr);
+//                     gap: 1rem;
+//                 }
+//             </style>
+//             <div class="p-6 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100 rounded-xl shadow-xl">
+//                 <h2 class="text-2xl font-bold mb-5 text-center text-orange-800 border-b border-orange-200 pb-3">Terms and Agreement</h2>
+
+//                 <div class="terms-grid">
+//                     <div class="space-y-3">
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.1s;">
+//                             <i class="fas fa-dumbbell mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">No dropping dumbbells. Lower them carefully.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.2s;">
+//                             <i class="fas fa-broom mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">Wipe down your equipment after use.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.3s;">
+//                             <i class="fas fa-directions mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">Follow equipment instructions.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.4s;">
+//                             <i class="fas fa-exclamation-triangle mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">Management not liable for injuries.</span>
+//                         </div>
+//                     </div>
+
+//                     <div class="space-y-3">
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.5s;">
+//                             <i class="fas fa-tshirt mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">Shirts and closed shoes required.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.6s;">
+//                             <i class="fas fa-utensils mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">No food, drinks, or glass containers.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.7s;">
+//                             <i class="fas fa-smoking-ban mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">No smoking.</span>
+//                         </div>
+//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.8s;">
+//                             <i class="fas fa-eye mr-3 text-lg text-orange-500"></i>
+//                             <span class="font-medium">Watch your personal belongings.</span>
+//                         </div>
+//                     </div>
+//                 </div>
+
+//                 <div class="mt-5 flex items-center justify-center bg-white/50 p-3 rounded-lg backdrop-blur-sm">
+//                     <input 
+//                         type="checkbox" 
+//                         id="agreeCheckbox" 
+//                         class="form-checkbox h-5 w-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 mr-3"
+//                     >
+//                     <label 
+//                         for="agreeCheckbox" 
+//                         class="text-sm text-orange-900 font-medium"
+//                     >
+//                         I agree to the terms and conditions
+//                     </label>
+//                 </div>
+//             </div>
+//         `,
+//         icon: 'info',
+//         confirmButtonText: 'Accept & Continue',
+//         confirmButtonColor: '#f97316', // Orange-500
+//         allowOutsideClick: false,
+//         allowEscapeKey: false,
+//         showClass: {
+//             popup: 'animate__animated animate__fadeInRight animate__faster'
+//         },
+//         hideClass: {
+//             popup: 'animate__animated animate__fadeOutRight animate__faster'
+//         },
+//         preConfirm: () => {
+//             const agreeCheckbox = Swal.getPopup().querySelector('#agreeCheckbox');
+//             if (!agreeCheckbox.checked) {
+//                 Swal.showValidationMessage('You must agree to the terms to proceed');
+//             }
+//             return agreeCheckbox.checked;
+//         },
+//         willClose: () => {
+//             if (typeof formSection !== 'undefined') {
+//                 formSection.classList.remove('hidden');
+//             }
+//         }
+//     });
+// });
 
 // Handle login form submission
 loginForm.addEventListener('submit', function (e) {

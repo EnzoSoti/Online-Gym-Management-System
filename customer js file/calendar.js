@@ -158,16 +158,41 @@ async function initializeCalendar() {
                 overflow: hidden;
             }
 
-            .fc-day::before {
-                content: '';
+            /* Base styles for available text */
+            .fc-day-future::before {
+                content: 'Available';
                 position: absolute;
-                inset: 0;
-                background: radial-gradient(circle at center, rgba(251, 146, 60, 0.05) 0%, transparent 70%);
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #22c55e;
+                font-size: 0.875rem;
+                font-weight: 500;
                 opacity: 0;
-                transition: opacity 0.4s ease-out;
                 z-index: 1;
+                pointer-events: none;
+                transition: all 0.4s ease-out;
+                letter-spacing: 0.05em;
+                background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
+                padding: 6px 12px;
+                border-radius: 8px;
+                border: 1px solid rgba(34, 197, 94, 0.2);
+                backdrop-filter: blur(4px);
+                white-space: nowrap;
             }
 
+            /* Show "Available" text by default */
+            .fc-day-future:not(:hover)::before {
+                opacity: 1;
+            }
+
+            /* Hide "Available" text when hovering */
+            .fc-day-future:hover::before {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            /* Hover effect overlay */
             .fc-day::after {
                 content: 'Click to view';
                 position: absolute;
@@ -186,7 +211,7 @@ async function initializeCalendar() {
                 text-align: center;
                 font-weight: 500;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-                border: 1px solid rgba(251, 146, 60, 0.2);
+                border: 1px solid rgba(34, 197, 94, 0.2);
                 backdrop-filter: blur(8px);
                 z-index: 2;
             }
@@ -194,10 +219,6 @@ async function initializeCalendar() {
             .fc-day:hover::after {
                 opacity: 1;
                 transform: translate(-50%, -50%) scale(1);
-            }
-
-            .fc-day:hover::before {
-                opacity: 1;
             }
 
             .fc-day-past::after {
@@ -213,25 +234,52 @@ async function initializeCalendar() {
             }
 
             .fc-day-past::before {
-                display: block;
-                background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+                display: none !important;
             }
 
             .fc-day:hover {
                 cursor: pointer;
             }
 
+            /* Updated styles for today */
             .fc-day-today {
                 position: relative;
             }
 
             .fc-day-today::before {
-                content: '';
+                content: 'Available';
                 position: absolute;
-                inset: 2px;
-                border: 2px solid rgba(251, 146, 60, 0.3);
-                border-radius: 8px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #22c55e;
+                font-size: 0.875rem;
+                font-weight: 500;
+                opacity: 1;
+                z-index: 1;
                 pointer-events: none;
+                letter-spacing: 0.05em;
+                background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
+                padding: 6px 12px;
+                border-radius: 8px;
+                border: 2px solid rgba(34, 197, 94, 0.3);
+                backdrop-filter: blur(4px);
+                white-space: nowrap;
+            }
+
+            /* Fix for cell content positioning */
+            .fc-daygrid-day-frame {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                padding: 4px !important;
+            }
+
+            .fc-daygrid-day-top {
+                flex-grow: 0;
+                display: flex;
+                justify-content: center !important;
+                margin-bottom: 4px;
             }
 
             .fc-day.clicked {
@@ -255,7 +303,7 @@ async function initializeCalendar() {
                 content: '';
                 position: absolute;
                 inset: 0;
-                background: radial-gradient(circle at center, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
+                background: radial-gradient(circle at center, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
                 opacity: 0;
                 transition: opacity 0.4s ease-out;
             }
@@ -271,10 +319,11 @@ async function initializeCalendar() {
             }
 
             .fc-day:hover .fc-daygrid-day-number {
-                color: #EA580C;
+                color: #22c55e;
                 transform: scale(1.1) translateY(-1px);
             }
 
+            /* Updated header toolbar styles with orange */
             .fc-header-toolbar {
                 margin-bottom: 2em !important;
                 position: relative;
@@ -283,14 +332,15 @@ async function initializeCalendar() {
             .fc-toolbar-title {
                 font-size: 1.75rem !important;
                 font-weight: 700 !important;
-                color: #EA580C !important;
+                color: #f97316 !important; /* Changed to orange */
                 letter-spacing: -0.025em;
             }
 
+            /* Updated button styles with orange */
             .fc-button-primary {
                 background-color: rgba(26, 26, 26, 0.95) !important;
-                border: 1px solid rgba(251, 146, 60, 0.3) !important;
-                color: #EA580C !important;
+                border: 1px solid rgba(249, 115, 22, 0.3) !important; /* Changed to orange */
+                color: #f97316 !important; /* Changed to orange */
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 padding: 8px 16px !important;
                 border-radius: 10px !important;
@@ -299,27 +349,27 @@ async function initializeCalendar() {
             }
 
             .fc-button-primary:hover {
-                background-color: #EA580C !important;
-                border-color: #EA580C !important;
+                background-color: #f97316 !important; /* Changed to orange */
+                border-color: #f97316 !important; /* Changed to orange */
                 color: white !important;
                 transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(251, 146, 60, 0.2);
+                box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2); /* Changed to orange */
             }
 
             .fc-button-primary:active {
                 transform: translateY(0);
-                box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
+                box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1); /* Changed to orange */
             }
 
             .fc-event {
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 cursor: pointer;
-                border: 1px solid rgba(251, 146, 60, 0.3) !important;
+                border: 1px solid rgba(34, 197, 94, 0.3) !important;
             }
 
             .fc-event:hover {
                 transform: translateY(-2px) scale(1.02) !important;
-                box-shadow: 0 8px 24px rgba(251, 146, 60, 0.15) !important;
+                box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15) !important;
             }
 
             .fc-event {
@@ -338,31 +388,29 @@ async function initializeCalendar() {
             }
 
             #calendar {
-            min-height: 800px; /* Set minimum height */
-            height: 100%; /* Take full height of container */
+                min-height: 800px;
+                height: 100%;
             }
-            
+
             .fc {
-                height: 100% !important; /* Force calendar to take full height */
+                height: 100% !important;
             }
-            
+
             .fc-view-harness {
-                height: 100% !important; /* Ensure the view takes full height */
+                height: 100% !important;
             }
-            
+
             .fc-daygrid.fc-dayGridMonth-view {
-                height: 100% !important; /* Make month view fill space */
+                height: 100% !important;
             }
-            
-            /* Adjust day cell heights */
+
             .fc .fc-daygrid-day-frame {
-                min-height: 100px; /* Minimum height for day cells */
-                height: 100%; /* Take available height */
+                min-height: 100px;
+                height: 100%;
             }
-            
-            /* Handle overflow for events */
+
             .fc-daygrid-day-events {
-                max-height: none !important; /* Allow events to fill space */
+                max-height: none !important;
             }
         `;
         document.head.appendChild(style);
@@ -394,10 +442,9 @@ async function initializeCalendar() {
                 daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
                 startTime: '09:00',
                 endTime: '24:00',
-                // Add window resize handler
-                windowResize: function(view) {
-                this.setOption('height', calculateHeight());
             },
+            windowResize: function(view) {
+                this.setOption('height', calculateHeight());
             },
             buttonText: {
                 today: 'Today'
