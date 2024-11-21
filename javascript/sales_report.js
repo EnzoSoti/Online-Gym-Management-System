@@ -190,7 +190,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            const data = await response.json();
+            let data = await response.json();
+            
+            // Apply filters
+            const filterElement = document.getElementById(`${tabId}-month-filter`) || 
+                                document.getElementById(`${tabId}-date-filter`);
+            const filterValue = filterElement?.value;
+            
+            if (filterValue) {
+                data = filterData(data, filterValue, tabId);
+            }
             
             if (!isPolling || hasDataChanged(data, lastPolledData[tabId])) {
                 const changes = detectChanges(data, lastPolledData[tabId]);
@@ -279,6 +288,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (button.textContent.toLowerCase().includes('export')) {
             button.addEventListener('click', () => {
                 const tabPanel = button.closest('[role="tabpanel"]');
+                const tabId = tabPanel.id;
+                const filterElement = document.getElementById(`${tabId}-month-filter`) || 
+                                    document.getElementById(`${tabId}-date-filter`);
+                const filterValue = filterElement?.value;
+
                 const tableContent = tabPanel.querySelector('table').cloneNode(true);
                 
                 let totalAmount = 0;
@@ -372,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <p>0933 874 5377</p>
                                     <h2>Daily Sales Report</h2>
                                     <p>As of ${currentDate}</p>
+                                    ${filterValue ? `<p>Filtered by: ${filterValue}</p>` : '<p>All Records</p>'}
                                 </div>
                                 
                                 <div class="content">
@@ -408,7 +423,101 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Add filter-related functions
+    function filterData(data, filterValue, tabId) {
+        if (!filterValue) return data;
+
+        return data.filter(item => {
+            let itemDate;
+            
+            switch(tabId) {
+                case 'monthly':
+                    itemDate = new Date(item.start_date);
+                    const filterDate = new Date(filterValue);
+                    return itemDate.getFullYear() === filterDate.getFullYear() && 
+                           itemDate.getMonth() === filterDate.getMonth();
+                
+                case 'supplements':
+                    // For supplements, we might need to add a date field in the database
+                    // For now, we'll return all data
+                    return true;
+                
+                case 'regular':
+                case 'student':
+                    itemDate = new Date(item.time_in);
+                    return formatDate(itemDate) === filterValue;
+                
+                case 'reservations':
+                    itemDate = new Date(item.reservation_date);
+                    return formatDate(itemDate) === filterValue;
+                
+                default:
+                    return true;
+            }
+        });
+    }
+
+    function clearFilter(tabId) {
+        const filterElement = document.getElementById(`${tabId}-month-filter`) || 
+                            document.getElementById(`${tabId}-date-filter`);
+        if (filterElement) {
+            filterElement.value = '';
+            fetchDataForTab(tabId, false);
+        }
+    }
+
+    function addFilterControls() {
+        const tabs = ['monthly', 'supplements', 'regular', 'student', 'reservations'];
+        
+        tabs.forEach(tabId => {
+            const tabPanel = document.getElementById(tabId);
+            const filterContainer = document.createElement('div');
+            filterContainer.className = 'mb-4 flex gap-4 items-center';
+            
+            if (tabId === 'monthly' || tabId === 'supplements') {
+                filterContainer.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Filter by Month:</label>
+                        <input type="month" id="${tabId}-month-filter" 
+                               class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                    </div>
+                `;
+            } else {
+                filterContainer.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Filter by Date:</label>
+                        <input type="date" id="${tabId}-date-filter" 
+                               class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                    </div>
+                `;
+            }
+            
+            const clearButton = document.createElement('button');
+            clearButton.textContent = 'Clear Filter';
+            clearButton.className = 'px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md text-gray-600';
+            clearButton.onclick = () => clearFilter(tabId);
+            filterContainer.appendChild(clearButton);
+            
+            const table = tabPanel.querySelector('table');
+            table.parentNode.insertBefore(filterContainer, table);
+        });
+
+        // Add event listeners for filter changes
+        tabs.forEach(tabId => {
+            const monthFilter = document.getElementById(`${tabId}-month-filter`);
+            const dateFilter = document.getElementById(`${tabId}-date-filter`);
+
+            if (monthFilter) {
+                monthFilter.addEventListener('change', () => fetchDataForTab(tabId, false));
+            }
+            if (dateFilter) {
+                dateFilter.addEventListener('change', () => fetchDataForTab(tabId, false));
+            }
+        });
+    }
+
     // Initialize
+    addFilterControls();
     requestNotificationPermission();
     document.getElementById('monthly-tab').click();
     startPolling();

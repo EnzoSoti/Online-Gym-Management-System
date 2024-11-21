@@ -295,7 +295,40 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
         res.json({ message: 'Member deleted successfully' });
     } catch (error) {
         console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to delete member' });
+        res.status(500).json({ error: 'Failed tof delete member' });
+    }
+});
+
+
+
+
+// Monthly Members Customer Routes
+// 
+app.post('/api/monthly-members/customer', async (req, res) => {
+    try {
+        const { member_name, status, type, start_date, end_date } = req.body;
+        
+        if (!member_name || !status || !type || !start_date || !end_date) {
+            return res.status(400).json({ 
+                error: 'Member name, status, type, start date, and end date are required' 
+            });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [insertResult] = await connection.query(
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
+                [member_name, status, type, start_date, end_date]
+            );
+            return insertResult;
+        });
+
+        res.status(201).json({
+            message: 'Member added successfully',
+            memberId: result.insertId
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to add member' });
     }
 });
 

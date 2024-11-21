@@ -7,264 +7,278 @@ async function initializeCalendar() {
         const style = document.createElement('style');
         style.textContent = `
             .fc-day {
-                position: relative;
-                overflow: hidden;
-            }
+            position: relative;
+            overflow: hidden;
+        }
 
-            /* Base styles for available text */
-            .fc-day-future::before {
-                content: 'Available';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                color: #22c55e;
-                font-size: 0.875rem;
-                font-weight: 500;
-                opacity: 0;
-                z-index: 1;
-                pointer-events: none;
-                transition: all 0.4s ease-out;
-                letter-spacing: 0.05em;
-                background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
-                padding: 6px 12px;
-                border-radius: 8px;
-                border: 1px solid rgba(34, 197, 94, 0.2);
-                backdrop-filter: blur(4px);
-                white-space: nowrap;
-            }
+        .fc-day-future::before {
+            content: 'Available';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #22c55e;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            transition: all 0.4s ease-out;
+            letter-spacing: 0.025em;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.25));
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+            white-space: nowrap;
+        }
 
-            /* Show "Available" text by default */
-            .fc-day-future:not(:hover)::before {
-                opacity: 1;
-            }
+        /* Show "Available" text by default with fade-in animation */
+        .fc-day-future:not(:hover)::before {
+            opacity: 1;
+        }
 
-            /* Hide "Available" text when hovering */
-            .fc-day-future:hover::before {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
+        /* Updated hover effect for available text */
+        .fc-day-future:hover::before {
+            opacity: 0;
+        }
 
-            /* Hover effect overlay */
-            .fc-day::after {
-                content: 'Click to view';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%) scale(0.9);
-                background-color: rgba(26, 26, 26, 0.95);
-                color: #fff;
-                padding: 8px 16px;
-                border-radius: 12px;
-                font-size: 0.75rem;
-                line-height: 1.4;
-                opacity: 0;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                white-space: pre;
-                text-align: center;
-                font-weight: 500;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-                border: 1px solid rgba(34, 197, 94, 0.2);
-                backdrop-filter: blur(8px);
-                z-index: 2;
-            }
+        /* Hover effect overlay */
+        .fc-day::after {
+            content: 'Click to view';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
 
-            .fc-day:hover::after {
-                opacity: 1;
+        .fc-day:hover::after {
+            opacity: 1;
+        }
+
+        /* Past days styling */
+        .fc-day-past {
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .fc-day-past:hover {
+            opacity: 1;
+            background-color: rgba(239, 68, 68, 0.05) !important;
+        }
+
+        .fc-day-past::after {
+            content: 'Not Available';
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .fc-day-past:hover * {
+            color: #ef4444 !important;
+        }
+
+        .fc-day-past:hover .fc-daygrid-day-number {
+            color: #ef4444 !important;
+            transform: scale(1.1) translateY(-1px);
+        }
+
+        .fc-day-past:hover .fc-daygrid-day-frame {
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 4px;
+        }
+
+        .fc-day-past::before {
+            display: none !important;
+        }
+
+        .fc-day:hover {
+            cursor: pointer;
+        }
+
+        /* Updated styles for today with centered positioning */
+        .fc-day-today::before {
+            content: 'Available Today';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #22c55e;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 1;
+            z-index: 1;
+            pointer-events: none;
+            letter-spacing: 0.025em;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.3));
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 2px solid rgba(34, 197, 94, 0.4);
+            box-shadow: 0 2px 12px rgba(34, 197, 94, 0.15);
+            white-space: nowrap;
+            animation: pulseToday 2s infinite;
+        }
+
+        @keyframes pulseToday {
+            0% {
                 transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 2px 12px rgba(34, 197, 94, 0.15);
             }
-
-            .fc-day-past::after {
-                content: 'Date not Available';
-                display: block;
-                background-color: rgba(239, 68, 68, 0.9);
-                border-color: rgba(239, 68, 68, 0.3);
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                box-shadow: 0 4px 16px rgba(34, 197, 94, 0.25);
             }
-
-            .fc-day-past:hover::after {
-                opacity: 1;
+            100% {
                 transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 2px 12px rgba(34, 197, 94, 0.15);
             }
+        }
 
-            .fc-day-past::before {
-                display: none !important;
-            }
+        .fc-daygrid-day-frame {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 4px !important;
+        }
 
-            .fc-day:hover {
-                cursor: pointer;
-            }
+        .fc-daygrid-day-top {
+            flex-grow: 0;
+            display: flex;
+            justify-content: center !important;
+            margin-bottom: 4px;
+        }
 
-            /* Updated styles for today */
-            .fc-day-today {
-                position: relative;
-            }
+        .fc-day.clicked {
+            transform: scale(0.98);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-            .fc-day-today::before {
-                content: 'Available';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                color: #22c55e;
-                font-size: 0.875rem;
-                font-weight: 500;
-                opacity: 1;
-                z-index: 1;
-                pointer-events: none;
-                letter-spacing: 0.05em;
-                background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
-                padding: 6px 12px;
-                border-radius: 8px;
-                border: 2px solid rgba(34, 197, 94, 0.3);
-                backdrop-filter: blur(4px);
-                white-space: nowrap;
-            }
+        .fc-daygrid-day {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
 
-            /* Fix for cell content positioning */
-            .fc-daygrid-day-frame {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                padding: 4px !important;
-            }
+        .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
 
-            .fc-daygrid-day-top {
-                flex-grow: 0;
-                display: flex;
-                justify-content: center !important;
-                margin-bottom: 4px;
-            }
+        .fc-daygrid-day:hover .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
+            opacity: 1;
+        }
 
-            .fc-day.clicked {
-                transform: scale(0.98);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
+        .fc-daygrid-day-number {
+            position: relative;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
 
-            .fc-daygrid-day {
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            }
+        .fc-day:hover .fc-daygrid-day-number {
+            color: #22c55e;
+            transform: scale(1.1) translateY(-1px);
+        }
 
-            .fc-day-past {
-                opacity: 0.5;
-            }
+        /* Header toolbar and button styles */
+        .fc-header-toolbar {
+            margin-bottom: 2em !important;
+            position: relative;
+        }
 
-            .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg {
-                position: relative;
-            }
+        .fc-toolbar-title {
+            font-size: 1.75rem !important;
+            font-weight: 700 !important;
+            color: #f97316 !important;
+            letter-spacing: -0.025em;
+        }
 
-            .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: radial-gradient(circle at center, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+        .fc-button-primary {
+            background-color: rgba(26, 26, 26, 0.95) !important;
+            border: 1px solid rgba(249, 115, 22, 0.3) !important;
+            color: #f97316 !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            padding: 8px 16px !important;
+            border-radius: 10px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.025em !important;
+        }
+
+        .fc-button-primary:hover {
+            background-color: #f97316 !important;
+            border-color: #f97316 !important;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+        }
+
+        .fc-button-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+        }
+
+        .fc-event {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer;
+            border: 1px solid rgba(34, 197, 94, 0.3) !important;
+        }
+
+        .fc-event:hover {
+            transform: translateY(-2px) scale(1.02) !important;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15) !important;
+        }
+
+        .fc-event {
+            animation: eventMount 0.4s ease-out forwards;
+        }
+
+        @keyframes eventMount {
+            from {
                 opacity: 0;
-                transition: opacity 0.4s ease-out;
+                transform: translateY(10px);
             }
-
-            .fc-daygrid-day:hover .fc-daygrid-day-events:not(:empty) ~ .fc-daygrid-day-bg::before {
+            to {
                 opacity: 1;
-            }
-
-            .fc-daygrid-day-number {
-                position: relative;
-                transition: all 0.3s ease;
-                z-index: 1;
-            }
-
-            .fc-day:hover .fc-daygrid-day-number {
-                color: #22c55e;
-                transform: scale(1.1) translateY(-1px);
-            }
-
-            /* Updated header toolbar styles with orange */
-            .fc-header-toolbar {
-                margin-bottom: 2em !important;
-                position: relative;
-            }
-
-            .fc-toolbar-title {
-                font-size: 1.75rem !important;
-                font-weight: 700 !important;
-                color: #f97316 !important; /* Changed to orange */
-                letter-spacing: -0.025em;
-            }
-
-            /* Updated button styles with orange */
-            .fc-button-primary {
-                background-color: rgba(26, 26, 26, 0.95) !important;
-                border: 1px solid rgba(249, 115, 22, 0.3) !important; /* Changed to orange */
-                color: #f97316 !important; /* Changed to orange */
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                padding: 8px 16px !important;
-                border-radius: 10px !important;
-                font-weight: 500 !important;
-                letter-spacing: 0.025em !important;
-            }
-
-            .fc-button-primary:hover {
-                background-color: #f97316 !important; /* Changed to orange */
-                border-color: #f97316 !important; /* Changed to orange */
-                color: white !important;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2); /* Changed to orange */
-            }
-
-            .fc-button-primary:active {
                 transform: translateY(0);
-                box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1); /* Changed to orange */
             }
+        }
 
-            .fc-event {
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                cursor: pointer;
-                border: 1px solid rgba(34, 197, 94, 0.3) !important;
-            }
+        #calendar {
+            min-height: 800px;
+            height: 100%;
+        }
 
-            .fc-event:hover {
-                transform: translateY(-2px) scale(1.02) !important;
-                box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15) !important;
-            }
+        .fc {
+            height: 100% !important;
+        }
 
-            .fc-event {
-                animation: eventMount 0.4s ease-out forwards;
-            }
+        .fc-view-harness {
+            height: 100% !important;
+        }
 
-            @keyframes eventMount {
-                from {
-                    opacity: 0;
-                    transform: translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+        .fc-daygrid.fc-dayGridMonth-view {
+            height: 100% !important;
+        }
 
-            #calendar {
-                min-height: 800px;
-                height: 100%;
-            }
+        .fc .fc-daygrid-day-frame {
+            min-height: 100px;
+            height: 100%;
+        }
 
-            .fc {
-                height: 100% !important;
-            }
-
-            .fc-view-harness {
-                height: 100% !important;
-            }
-
-            .fc-daygrid.fc-dayGridMonth-view {
-                height: 100% !important;
-            }
-
-            .fc .fc-daygrid-day-frame {
-                min-height: 100px;
-                height: 100%;
-            }
-
-            .fc-daygrid-day-events {
-                max-height: none !important;
-            }
+        .fc-daygrid-day-events {
+            max-height: none !important;
+        }
         `;
         document.head.appendChild(style);
 
