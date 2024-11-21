@@ -75,14 +75,14 @@ async function showSubscriptionForm() {
         const { member_name, membership_type, start_date, end_date } = formValues;
         const amount = membership_type === 'Regular' ? 950 : 850;
 
-        const paymentResult = await showPaymentDialog(amount);
+        const paymentResult = await showPaymentDialogCustomer(amount);
         if (paymentResult) {
             await addMemberToDatabase(member_name, 'Active', membership_type, start_date, end_date, amount);
         }
     }
 }
 
-async function showPaymentDialog(amount) {
+async function showPaymentDialogCustomer(amount) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
         title: 'Payment Details',
         html: `
