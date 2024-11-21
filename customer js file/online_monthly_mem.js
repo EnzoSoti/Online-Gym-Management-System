@@ -20,8 +20,8 @@ async function showSubscriptionForm() {
                 <div class="mb-6">
                     <label for="membership_type" class="block text-gray-400 text-sm mb-2">Membership Type</label>
                     <select id="membership_type" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <option value="Regular">Regular</option>
-                        <option value="Student">Student</option>
+                        <option value="Regular">Regular (950₱)</option>
+                        <option value="Student">Student (850₱)</option>
                     </select>
                 </div>
                 <div class="mb-6">
@@ -73,22 +73,22 @@ async function showSubscriptionForm() {
 
     if (formValues) {
         const { member_name, membership_type, start_date, end_date } = formValues;
-        const amount = membership_type === 'Regular' ? 950 : 850;
-
-        const paymentResult = await showPaymentDialogCustomer(amount);
+        const expectedAmount = membership_type === 'Regular' ? 950 : 850;
+        const paymentResult = await showPaymentDialogCustomer(expectedAmount, membership_type);
+        
         if (paymentResult) {
-            await addMemberToDatabase(member_name, 'Active', membership_type, start_date, end_date, amount);
+            await addMemberToDatabase(member_name, 'Active', membership_type, start_date, end_date, expectedAmount);
         }
     }
 }
 
-async function showPaymentDialogCustomer(amount) {
+async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
         title: 'Payment Details',
         html: `
             <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
                 <div class="mb-6 text-center">
-                    <h3 class="text-xl font-bold text-white mb-2">Total Amount: ₱${amount}</h3>
+                    <h3 class="text-xl font-bold text-white mb-2">Total Amount for ${membershipType} Membership: ₱${expectedAmount}</h3>
                     <p class="text-gray-400">Please enter your GCash transaction information</p>
                 </div>
                 <div class="mb-6">
@@ -98,6 +98,10 @@ async function showPaymentDialogCustomer(amount) {
                 <div class="mb-6">
                     <label for="gcash_name" class="block text-gray-400 text-sm mb-2">Account Name</label>
                     <input type="text" id="gcash_name" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
+                </div>
+                <div class="mb-6">
+                    <label for="amount_paid" class="block text-gray-400 text-sm mb-2">Amount Paid</label>
+                    <input type="number" id="amount_paid" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
                 </div>
             </div>
         `,
@@ -112,16 +116,22 @@ async function showPaymentDialogCustomer(amount) {
         preConfirm: () => {
             const gcash_ref = document.getElementById('gcash_ref').value;
             const gcash_name = document.getElementById('gcash_name').value;
+            const amount_paid = Number(document.getElementById('amount_paid').value);
 
-            if (!gcash_ref || !gcash_name) {
+            if (!gcash_ref || !gcash_name || !amount_paid) {
                 Swal.showValidationMessage('Please fill in all GCash payment details');
+                return false;
+            }
+
+            if (amount_paid !== expectedAmount) {
+                Swal.showValidationMessage(`Please pay the exact amount of ₱${expectedAmount} for ${membershipType} membership`);
                 return false;
             }
 
             return {
                 gcash_ref,
                 gcash_name,
-                amount
+                amount: amount_paid
             };
         }
     });
