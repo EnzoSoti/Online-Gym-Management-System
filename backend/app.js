@@ -303,7 +303,7 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
 
 
 // Monthly Members Customer Routes
-// 
+// fixed
 app.post('/api/monthly-members/customer', async (req, res) => {
     try {
         const { member_name, status, type, start_date, end_date } = req.body;
