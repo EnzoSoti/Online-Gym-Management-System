@@ -362,6 +362,29 @@ app.put('/api/monthly-members/:id/verify', async (req, res) => {
     }
 });
 
+app.get('/api/monthly-members/:id/picture', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT school_id_picture FROM monthly_members WHERE id = ?',
+                [id]
+            );
+            return rows[0];
+        });
+
+        if (!result || !result.school_id_picture) {
+            return res.status(404).json({ error: 'Picture not found' });
+        }
+
+        res.contentType('image/jpeg'); // Adjust the content type based on your image format
+        res.send(result.school_id_picture);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to retrieve picture' });
+    }
+});
+
 
 
 

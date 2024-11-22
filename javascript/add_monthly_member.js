@@ -192,7 +192,7 @@ function renderMembers(members) {
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${member.member_name}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${member.type}</td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${member.status}</span>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${member.status === 'Active' ? 'bg-green-100 text-green-800' : member.status === 'Inactive' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">${member.status}</span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
@@ -223,6 +223,13 @@ function renderMembers(members) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                     Verify
+                </button>
+                <button class="inline-flex items-center gap-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="viewPicture(this)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    View ID Picture
                 </button>
             </td>
         `;
@@ -536,5 +543,49 @@ async function verifyMember(btn) {
                 icon: 'error'
             });
         }
+    }
+}
+
+// View Picture
+async function viewPicture(btn) {
+    const row = btn.closest('tr');
+    const memberId = row.dataset.id;
+    const memberType = row.cells[1].innerText.trim();
+
+    if (memberType === 'regular') {
+        Swal.fire({
+            icon: 'info',
+            title: 'No ID Required',
+            text: 'Regular members do not need to add an ID.',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}/picture`);
+        if (!response.ok) {
+            throw new Error('Failed to retrieve picture');
+        }
+
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+
+        Swal.fire({
+            title: 'Student ID Picture',
+            imageUrl: imageUrl,
+            imageAlt: 'Student ID Picture',
+            showConfirmButton: true,
+            confirmButtonText: 'Close'
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message,
+            timer: 3000,
+            showConfirmButton: false
+        });
     }
 }

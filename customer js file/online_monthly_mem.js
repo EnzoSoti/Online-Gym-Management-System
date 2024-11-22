@@ -3,10 +3,60 @@ document.addEventListener('DOMContentLoaded', function() {
     if (subscriptionFormBtn) {
         subscriptionFormBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            showSubscriptionForm();
+            showPolicyAgreement();
         });
     }
 });
+
+async function showPolicyAgreement() {
+    const { isConfirmed } = await Swal.fire({
+        title: 'Online Monthly Pass',
+        html: `
+            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
+                <h3 class="text-xl font-semibold text-white mb-4 text-center">Payment Policy</h3>
+                
+                <div class="text-left text-gray-300 space-y-3 mb-6">
+                    <p>Before proceeding with your registration, please note our payment policy:</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Payment must be made through GCash before registration can be completed</li>
+                        <li>Regular Membership: ₱950</li>
+                        <li>Student Membership: ₱850</li>
+                        <li>Your membership will only be activated after payment verification</li>
+                        <li>Please prepare your GCash reference number for verification</li>
+                        <li>No refunds will be issued for incomplete or invalid payments</li>
+                    </ul>
+                </div>
+                
+                <div class="flex items-center space-x-2 mb-6">
+                    <input type="checkbox" id="policy-agreement" class="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-500">
+                    <label for="policy-agreement" class="text-gray-300">
+                        I have read and agree to the payment policy
+                    </label>
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Proceed to Registration',
+        showCancelButton: true,
+        customClass: {
+            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
+            confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
+            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+        },
+        buttonsStyling: false,
+        preConfirm: () => {
+            const checkbox = document.getElementById('policy-agreement');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please agree to the payment policy to proceed');
+                return false;
+            }
+            return true;
+        }
+    });
+
+    if (isConfirmed) {
+        showSubscriptionForm();
+    }
+}
 
 async function showSubscriptionForm() {
     const { value: formValues } = await Swal.fire({
