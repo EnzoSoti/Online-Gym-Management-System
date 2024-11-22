@@ -197,39 +197,35 @@ function renderMembers(members) {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button class="inline-flex items-center gap-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="updateMember(this)">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="updateMember(this)" title="Update">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    Update
                 </button>
-
-                <button class="inline-flex items-center gap-2 border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="deleteMember(this)">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    
+                <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="deleteMember(this)" title="Delete">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Delete
                 </button>
-
-                <button class="inline-flex items-center gap-2 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    
+                <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="renewMembership(this)" title="Renew">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Renew
                 </button>
-
-                <button class="inline-flex items-center gap-2 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="verifyMember(this)">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    
+                <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="verifyMember(this)" title="Verify" style="${member.type === 'regular' ? 'display: none;' : ''}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    Verify
                 </button>
-                <button class="inline-flex items-center gap-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="viewPicture(this)">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    
+                <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="viewPicture(this)" title="View ID Picture" style="${member.type === 'regular' ? 'display: none;' : ''}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-                    View ID Picture
                 </button>
             </td>
         `;
