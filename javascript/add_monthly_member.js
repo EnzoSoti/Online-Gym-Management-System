@@ -188,6 +188,16 @@ function renderMembers(members) {
     members.forEach(member => {
         const row = memberTableBody.insertRow();
         row.dataset.id = member.id;
+
+        // Calculate days left if status is Active
+        let daysLeft = 'N/A'; 
+        if (member.status === 'Active') {
+            const endDate = new Date(member.end_date);
+            const today = new Date();
+            const timeDiff = endDate.getTime() - today.getTime();
+            daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        }
+
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${member.member_name}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${member.type}</td>
@@ -196,6 +206,7 @@ function renderMembers(members) {
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${daysLeft}</td> 
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button class="inline-flex items-center justify-center w-10 h-10 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200 rounded-lg mr-2" onclick="updateMember(this)" title="Update">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
