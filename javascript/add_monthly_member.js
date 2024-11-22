@@ -69,7 +69,6 @@ if (searchInput) {
     });
 }
 
-
 // Polling function with notification for changes
 function startPolling() {
     setInterval(async () => {
@@ -218,6 +217,13 @@ function renderMembers(members) {
                     </svg>
                     Renew
                 </button>
+
+                <button class="inline-flex items-center gap-2 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="verifyMember(this)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Verify
+                </button>
             </td>
         `;
     });
@@ -251,41 +257,24 @@ if (memberForm) {
         event.preventDefault();
         
         try {
-            // Get form elements with proper error checking
             const memberName = document.getElementById('memberName');
             const memberType = document.getElementById('memberType');
-            const memberStatus = document.getElementById('memberStatus');
             const startDate = document.getElementById('startDate');
             const endDate = document.getElementById('endDate');
+            const schoolIdPicture = document.getElementById('school_id_picture').files[0];
 
-            // Validate all required fields are present
-            if (!memberName || !memberType || !memberStatus || !startDate || !endDate) {
+            if (!memberName || !memberType || !startDate || !endDate) {
                 throw new Error('Missing required form fields');
             }
 
-            // Log the values being submitted
-            console.log('Submitting form with values:', {
-                name: memberName.value,
-                type: memberType.value,
-                status: memberStatus.value,
-                startDate: startDate.value,
-                endDate: endDate.value
-            });
-
-            const memberData = {
-                member_name: memberName.value.trim(),
-                type: memberType.value.trim(),             
-                status: memberStatus.value.trim(),
-                start_date: startDate.value,
-                end_date: endDate.value
-            };
-
-            // Validate no empty values
-            Object.entries(memberData).forEach(([key, value]) => {
-                if (!value && value !== 0) {
-                    throw new Error(`${key.replace('_', ' ')} cannot be empty`);
-                }
-            });
+            const formData = new FormData();
+            formData.append('member_name', memberName.value.trim());
+            formData.append('type', memberType.value.trim());
+            formData.append('start_date', startDate.value);
+            formData.append('end_date', endDate.value);
+            if (schoolIdPicture) {
+                formData.append('school_id_picture', schoolIdPicture);
+            }
 
             const url = selectedRow 
                 ? `${API_BASE_URL}/monthly-members/${selectedRow.dataset.id}`
@@ -293,19 +282,9 @@ if (memberForm) {
 
             const method = selectedRow ? 'PUT' : 'POST';
 
-            // Log the actual request being sent
-            console.log('Sending request:', {
-                url,
-                method,
-                data: memberData
-            });
-
             const response = await fetch(url, {
                 method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(memberData)
+                body: formData
             });
 
             if (!response.ok) {
@@ -320,8 +299,8 @@ if (memberForm) {
                 selectedRow ? 'Member Updated' : 'Member Added',
                 {
                     body: selectedRow 
-                        ? `Successfully updated ${memberData.member_name}`
-                        : `Successfully added ${memberData.member_name}`,
+                        ? `Successfully updated ${memberName.value.trim()}`
+                        : `Successfully added ${memberName.value.trim()}`,
                     icon: 'success'
                 }
             );
@@ -339,15 +318,13 @@ if (memberForm) {
 function updateMember(btn) {
     selectedRow = btn.closest('tr');
     const memberName = document.getElementById('memberName');
-    const memberType = document.getElementById('memberType'); // Add this line
-    const memberStatus = document.getElementById('memberStatus');
+    const memberType = document.getElementById('memberType');
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
     
-    if (memberName && memberType && memberStatus && startDate && endDate) {
+    if (memberName && memberType && startDate && endDate) {
         memberName.value = selectedRow.cells[0].innerText;
-        memberType.value = selectedRow.cells[1].innerText.trim(); // Add this line
-        memberStatus.value = selectedRow.cells[2].querySelector('span').innerText;
+        memberType.value = selectedRow.cells[1].innerText.trim();
         startDate.value = new Date(selectedRow.cells[3].innerText).toISOString().split('T')[0];
         endDate.value = new Date(selectedRow.cells[4].innerText).toISOString().split('T')[0];
         openMemberModal();
@@ -512,6 +489,44 @@ async function deleteMember(btn) {
             await loadMembers();
             notificationSystem.notify('Member Deleted', {
                 body: `Successfully deleted ${memberName}`,
+                icon: 'success'
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            notificationSystem.notify('Error', {
+                body: error.message,
+                icon: 'error'
+            });
+        }
+    }
+}
+
+// Verify Member
+async function verifyMember(btn) {
+    const row = btn.closest('tr');
+    const memberId = row.dataset.id;
+    const memberName = row.cells[0].innerText;
+
+    const result = await Swal.fire({
+        title: 'Verify Member',
+        text: `Are you sure you want to verify ${memberName}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, verify',
+        cancelButtonText: 'No, cancel'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}/verify`, {
+                method: 'PUT'
+            });
+
+            if (!response.ok) throw new Error('Failed to verify member');
+
+            await loadMembers();
+            notificationSystem.notify('Member Verified', {
+                body: `Successfully verified ${memberName}`,
                 icon: 'success'
             });
         } catch (error) {

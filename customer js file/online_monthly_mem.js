@@ -24,6 +24,10 @@ async function showSubscriptionForm() {
                         <option value="Student">Student (850₱)</option>
                     </select>
                 </div>
+                <div id="student-id-picture-field" style="display: none;" class="mb-6">
+                    <label for="school_id_picture" class="block text-gray-400 text-sm mb-2">Student ID Picture</label>
+                    <input type="file" id="school_id_picture" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
+                </div>
                 <div class="mb-6">
                     <label for="start_date" class="block text-gray-400 text-sm mb-2">Start Date</label>
                     <input type="date" id="start_date" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" readonly>
@@ -47,9 +51,15 @@ async function showSubscriptionForm() {
             const membership_type = document.getElementById('membership_type').value;
             const start_date = document.getElementById('start_date').value;
             const end_date = document.getElementById('end_date').value;
+            const school_id_picture = document.getElementById('school_id_picture').files[0];
 
             if (!member_name || !membership_type || !start_date || !end_date) {
                 Swal.showValidationMessage('Please fill in all required fields');
+                return false;
+            }
+
+            if (membership_type === 'Student' && !school_id_picture) {
+                Swal.showValidationMessage('Please upload your Student ID picture');
                 return false;
             }
 
@@ -57,27 +67,49 @@ async function showSubscriptionForm() {
                 member_name,
                 membership_type,
                 start_date,
-                end_date
+                end_date,
+                school_id_picture
             };
         },
         didOpen: () => {
             const today = new Date();
             const startDateInput = document.getElementById('start_date');
             const endDateInput = document.getElementById('end_date');
+            const membershipTypeSelect = document.getElementById('membership_type');
+            const studentIdPictureField = document.getElementById('student-id-picture-field');
 
             startDateInput.value = today.toISOString().split('T')[0];
             today.setMonth(today.getMonth() + 1);
             endDateInput.value = today.toISOString().split('T')[0];
+
+            membershipTypeSelect.addEventListener('change', function() {
+                if (this.value === 'Student') {
+                    studentIdPictureField.style.display = 'block';
+                } else {
+                    studentIdPictureField.style.display = 'none';
+                }
+            });
         }
     });
 
     if (formValues) {
-        const { member_name, membership_type, start_date, end_date } = formValues;
+        const { member_name, membership_type, start_date, end_date, school_id_picture } = formValues;
         const expectedAmount = membership_type === 'Regular' ? 950 : 850;
         const paymentResult = await showPaymentDialogCustomer(expectedAmount, membership_type);
         
         if (paymentResult) {
-            await addMemberToDatabase(member_name, 'Active', membership_type, start_date, end_date, expectedAmount);
+            const formData = new FormData();
+            formData.append('member_name', member_name);
+            formData.append('status', 'Pending'); // Set status to Pending
+            formData.append('type', membership_type);
+            formData.append('start_date', start_date);
+            formData.append('end_date', end_date);
+            formData.append('amount', expectedAmount);
+            if (school_id_picture) {
+                formData.append('school_id_picture', school_id_picture);
+            }
+
+            await addMemberToDatabase(formData);
         }
     }
 }
@@ -139,21 +171,11 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     return isConfirmed ? paymentDetails : null;
 }
 
-async function addMemberToDatabase(member_name, status, type, start_date, end_date, amount) {
+async function addMemberToDatabase(formData) {
     try {
         const response = await fetch(`${API_BASE_URL}/monthly-members/customer`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                member_name,
-                status,
-                type,
-                start_date,
-                end_date,
-                amount
-            })
+            body: formData
         });
 
         const data = await response.json();

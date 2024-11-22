@@ -1,5 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
 const PORT = 3000;
 
@@ -304,20 +306,28 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
 
 // Monthly Members Customer Routes
 // fixed
-app.post('/api/monthly-members/customer', async (req, res) => {
+app.post('/api/monthly-members/customer', upload.single('school_id_picture'), async (req, res) => {
     try {
-        const { member_name, status, type, start_date, end_date } = req.body;
-        
-        if (!member_name || !status || !type || !start_date || !end_date) {
+        const { member_name, type, start_date, end_date } = req.body;
+        const school_id_picture = req.file ? req.file.buffer : null;
+
+        if (!member_name || !type || !start_date || !end_date) {
             return res.status(400).json({ 
-                error: 'Member name, status, type, start date, and end date are required' 
+                error: 'Member name, type, start date, and end date are required' 
             });
+        }
+
+        let finalStatus = 'Pending';
+        if (type === 'Student' && school_id_picture) {
+            finalStatus = 'Pending';
+        } else if (type !== 'Student') {
+            finalStatus = 'Active';
         }
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
-                [member_name, status, type, start_date, end_date]
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture) VALUES (?, ?, ?, ?, ?, ?)',
+                [member_name, finalStatus, type, start_date, end_date, school_id_picture]
             );
             return insertResult;
         });
@@ -329,6 +339,26 @@ app.post('/api/monthly-members/customer', async (req, res) => {
     } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({ error: 'Failed to add member' });
+    }
+});
+
+app.put('/api/monthly-members/:id/verify', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE monthly_members SET status = ? WHERE id = ?',
+                ['Active', id]
+            );
+            return updateResult;
+        });
+
+        res.status(200).json({
+            message: 'Member verified successfully'
+        });
+    } catch (error) { 
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to verify member' });
     }
 });
 

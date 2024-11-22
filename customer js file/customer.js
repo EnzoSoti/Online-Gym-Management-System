@@ -184,23 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
     startPolling();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // + one hour every time the client set a start time
 function addOneHour(time) {
     const [hours, minutes] = time.split(':').map(Number);
