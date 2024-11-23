@@ -31,7 +31,8 @@ async function updateDashboardMetrics() {
         const elements = {
             'attendanceRegularValue': attendanceData.regular,
             'attendanceStudentValue': attendanceData.student,
-            'attendanceMonthlyValue': attendanceData.monthly
+            'attendanceMonthlyValue': attendanceData.monthly,
+            'reservationValue': attendanceData.reservation
         };
 
         for (const [elementId, value] of Object.entries(elements)) {

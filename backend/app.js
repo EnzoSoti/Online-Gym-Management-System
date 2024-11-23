@@ -736,19 +736,19 @@ app.get('/api/total-earnings', async (req, res) => {
             const [checkInsResults] = await connection.query(
                 'SELECT SUM(amount) as total FROM check_ins'
             );
+
+            // Get earnings from reservations
+            // const [reservationResults] = await connection.query(
+            //     'SELECT SUM(price) as total FROM reservation'
+            // );
             
             // Get earnings from monthly members
-            const [monthlyResults] = await connection.query(
-                `SELECT 
-                    (COUNT(CASE WHEN type = 'regular' AND status = 'Active' THEN 1 END) * 950) +
-                    (COUNT(CASE WHEN type = 'student' AND status = 'Active' THEN 1 END) * 850) as total 
-                FROM monthly_members`
-            );
-            
-            // Get earnings from reservations
-            const [reservationResults] = await connection.query(
-                'SELECT SUM(price) as total FROM reservation'
-            );
+            // const [monthlyResults] = await connection.query(
+            //     `SELECT 
+            //         (COUNT(CASE WHEN type = 'regular' AND status = 'Active' THEN 1 END) * 950) +
+            //         (COUNT(CASE WHEN type = 'student' AND status = 'Active' THEN 1 END) * 850) as total 
+            //     FROM monthly_members`
+            // );
             
             // Get earnings from supplements
             // const [supplementResults] = await connection.query(`
@@ -757,9 +757,9 @@ app.get('/api/total-earnings', async (req, res) => {
             //     WHERE quantity_sold > 0
             // `);
             
-            const totalEarnings = (checkInsResults[0].total || 0) +
-                                (monthlyResults[0].total || 0) +
-                                (reservationResults[0].total || 0);
+            const totalEarnings = (checkInsResults[0].total || 0);
+                                // (reservationResults[0].total || 0);
+                                // (monthlyResults[0].total || 0) +
                                 // (supplementResults[0].total || 0);
             
             return { total: totalEarnings };
@@ -790,11 +790,16 @@ app.get('/api/attendance-counts', async (req, res) => {
             const [monthlyCount] = await connection.query(
                 'SELECT COUNT(*) as count FROM monthly_members WHERE status = "Active"'
             );
+
+            const [reservationCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM reservation WHERE status = "active"'
+            );
             
             return {
                 regular: regularCount[0].count,
                 student: studentCount[0].count,
-                monthly: monthlyCount[0].count
+                monthly: monthlyCount[0].count,
+                reservation: reservationCount[0].count
             };
         });
         
