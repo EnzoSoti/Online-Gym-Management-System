@@ -16,6 +16,46 @@ body {
     overflow-y: hidden;
 }
 
+/* Add these styles to your CSS */
+.main-content {
+    height: 100vh;
+    overflow: hidden;
+}
+
+#dashboard {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 2rem;
+}
+
+/* For Firefox */
+#dashboard {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(251 146 60) transparent;
+}
+
+/* For Chrome, Safari, and Opera */
+#dashboard::-webkit-scrollbar {
+    width: 8px;
+}
+
+#dashboard::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#dashboard::-webkit-scrollbar-thumb {
+    background-color: rgb(251 146 60);
+    border-radius: 20px;
+    border: 3px solid transparent;
+}
+
+/* Optional: Add smooth padding to bottom of scrollable area */
+.min-h-screen {
+    min-height: 100vh;
+    padding-bottom: 2rem;
+}
+
 /* Refined Hamburger Button */
 .hamburger-btn {
     position: absolute;
