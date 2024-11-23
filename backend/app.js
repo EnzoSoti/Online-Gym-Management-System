@@ -748,9 +748,11 @@ app.get('/api/total-earnings', async (req, res) => {
             );
             
             // Get earnings from supplements
-            const [supplementResults] = await connection.query(
-                'SELECT SUM(quantity_sold) as total FROM supplements'
-            );
+            const [supplementResults] = await connection.query(`
+                SELECT COALESCE(SUM(total_sales), 0) as total 
+                FROM supplements 
+                WHERE quantity_sold > 0
+            `);
             
             const totalEarnings = (checkInsResults[0].total || 0) +
                                 (monthlyResults[0].total || 0) +

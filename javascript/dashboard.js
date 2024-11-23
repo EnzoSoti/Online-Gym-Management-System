@@ -1,11 +1,12 @@
-// API Base URL - Update this with your actual API base URL
 const API_BASE_URL = 'http://localhost:3000/api';
 
 // Format currency function
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-PH', {
         style: 'currency',
-        currency: 'PHP'
+        currency: 'PHP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
     }).format(amount);
 }
 
@@ -20,7 +21,8 @@ async function updateDashboardMetrics() {
         // Update total earnings display
         const totalEarningsElement = document.getElementById('totalEarningsValue');
         if (totalEarningsElement) {
-            totalEarningsElement.textContent = formatCurrency(earningsData.total);
+            const formattedAmount = formatCurrency(earningsData.total || 0);
+            totalEarningsElement.textContent = formattedAmount;
         }
 
         // Fetch attendance counts
@@ -30,9 +32,9 @@ async function updateDashboardMetrics() {
 
         // Update attendance displays
         const elements = {
-            'attendanceRegularValue': attendanceData.regular,
-            'attendanceStudentValue': attendanceData.student,
-            'attendanceMonthlyValue': attendanceData.monthly
+            'attendanceRegularValue': attendanceData.regular || 0,
+            'attendanceStudentValue': attendanceData.student || 0,
+            'attendanceMonthlyValue': attendanceData.monthly || 0
         };
 
         for (const [elementId, value] of Object.entries(elements)) {
@@ -174,10 +176,17 @@ async function loadDueMembers() {
         displayDueMembers(dueMembers);
     } catch (error) {
         console.error('Error loading due members:', error);
+        // Optionally show error to user using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load due members. Please try again later.',
+            confirmButtonColor: '#ea580c'
+        });
     }
     
-    // Immediately schedule the next update
-    setTimeout(loadDueMembers, 0);
+    // Schedule the next update after 5 seconds
+    setTimeout(loadDueMembers, 5000);
 }
 
 // Filter members due within 7 days
