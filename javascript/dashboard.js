@@ -4,9 +4,7 @@ const API_BASE_URL = 'http://localhost:3000/api';
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-PH', {
         style: 'currency',
-        currency: 'PHP',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        currency: 'PHP'
     }).format(amount);
 }
 
@@ -21,8 +19,7 @@ async function updateDashboardMetrics() {
         // Update total earnings display
         const totalEarningsElement = document.getElementById('totalEarningsValue');
         if (totalEarningsElement) {
-            const formattedAmount = formatCurrency(earningsData.total || 0);
-            totalEarningsElement.textContent = formattedAmount;
+            totalEarningsElement.textContent = formatCurrency(earningsData.total);
         }
 
         // Fetch attendance counts
@@ -32,9 +29,9 @@ async function updateDashboardMetrics() {
 
         // Update attendance displays
         const elements = {
-            'attendanceRegularValue': attendanceData.regular || 0,
-            'attendanceStudentValue': attendanceData.student || 0,
-            'attendanceMonthlyValue': attendanceData.monthly || 0
+            'attendanceRegularValue': attendanceData.regular,
+            'attendanceStudentValue': attendanceData.student,
+            'attendanceMonthlyValue': attendanceData.monthly
         };
 
         for (const [elementId, value] of Object.entries(elements)) {
@@ -128,35 +125,101 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+
+
+    
+    // Initialize pie chart
+    const pieCtx = document.getElementById('membershipPieChart').getContext('2d');
+    const membershipPieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Regular', 'Student'],
+            datasets: [{
+                data: [30, 40], // Replace with actual data
+                backgroundColor: [
+                    'rgb(74, 222, 128)', // green-400 for Regular
+                    'rgb(59, 130, 246)'  // blue-500 for Student
+                ],
+                borderColor: 'white',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Fetch member counts and update pie chart
+    fetch(`${API_BASE_URL}/member-counts`)
+        .then(response => response.json())
+        .then(data => {
+            membershipPieChart.data.datasets[0].data = [data.regular, data.student];
+            membershipPieChart.update();
+        })
+        .catch(error => {
+            console.error('Error fetching member counts:', error);
+        });
+
+
+
+
+        
+
     // Member Growth Chart
     const ctx = document.getElementById('memberGrowthChart');
     if (ctx) {
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'New Monthly Members',
-                    data: [30, 45, 38, 50, 65, 78],
-                    backgroundColor: [
-                        '#4f46e5', // January
-                        '#22c55e', // February
-                        '#f59e0b', // March
-                        '#3b82f6', // April
-                        '#ec4899', // May
-                        '#6366f1'  // June
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        fetch(`${API_BASE_URL}/monthly-members-chart`)
+            .then(response => response.json())
+            .then(data => {
+                const monthNames = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+
+                const labels = data.labels.map(month => monthNames[parseInt(month.split('-')[1]) - 1]);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'New Monthly Members',
+                            data: data.data,
+                            backgroundColor: [
+                                '#4f46e5', // January
+                                '#22c55e', // February
+                                '#f59e0b', // March
+                                '#3b82f6', // April
+                                '#ec4899', // May
+                                '#6366f1', // June
+                                '#10b981', // July
+                                '#f472b6', // August
+                                '#6b7280', // September
+                                '#34d399', // October
+                                '#a78bfa', // November
+                                '#fcd34d'  // December
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching chart data:', error);
+            });
     }
 
     // Initial load of metrics
@@ -176,17 +239,10 @@ async function loadDueMembers() {
         displayDueMembers(dueMembers);
     } catch (error) {
         console.error('Error loading due members:', error);
-        // Optionally show error to user using SweetAlert2
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to load due members. Please try again later.',
-            confirmButtonColor: '#ea580c'
-        });
     }
     
-    // Schedule the next update after 5 seconds
-    setTimeout(loadDueMembers, 5000);
+    // Immediately schedule the next update
+    setTimeout(loadDueMembers, 0);
 }
 
 // Filter members due within 7 days

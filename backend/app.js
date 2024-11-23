@@ -737,9 +737,10 @@ app.get('/api/total-earnings', async (req, res) => {
             
             // Get earnings from monthly members
             const [monthlyResults] = await connection.query(
-                'SELECT COUNT(CASE WHEN type = "regular" THEN 1 END) * 950 + ' +
-                'COUNT(CASE WHEN type = "student" THEN 1 END) * 850 as total ' +
-                'FROM monthly_members'
+                `SELECT 
+                    (COUNT(CASE WHEN type = 'regular' AND status = 'Active' THEN 1 END) * 950) +
+                    (COUNT(CASE WHEN type = 'student' AND status = 'Active' THEN 1 END) * 850) as total 
+                FROM monthly_members`
             );
             
             // Get earnings from reservations
@@ -748,16 +749,16 @@ app.get('/api/total-earnings', async (req, res) => {
             );
             
             // Get earnings from supplements
-            const [supplementResults] = await connection.query(`
-                SELECT COALESCE(SUM(total_sales), 0) as total 
-                FROM supplements 
-                WHERE quantity_sold > 0
-            `);
+            // const [supplementResults] = await connection.query(`
+            //     SELECT COALESCE(SUM(total_sales), 0) as total 
+            //     FROM supplements 
+            //     WHERE quantity_sold > 0
+            // `);
             
             const totalEarnings = (checkInsResults[0].total || 0) +
                                 (monthlyResults[0].total || 0) +
-                                (reservationResults[0].total || 0) +
-                                (supplementResults[0].total || 0);
+                                (reservationResults[0].total || 0);
+                                // (supplementResults[0].total || 0);
             
             return { total: totalEarnings };
         });
@@ -798,6 +799,56 @@ app.get('/api/attendance-counts', async (req, res) => {
         res.json(result);
     } catch (error) {
         console.error('Error fetching attendance counts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// chart API Routes
+app.get('/api/monthly-members-chart', async (req, res) => {
+    try {
+        const members = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(`
+                SELECT 
+                    DATE_FORMAT(start_date, '%Y-%m') as month, 
+                    COUNT(*) as count 
+                FROM monthly_members 
+                GROUP BY month 
+                ORDER BY month
+            `);
+            return rows;
+        });
+
+        const labels = members.map(row => row.month);
+        const data = members.map(row => row.count);
+
+        res.json({ labels, data });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to fetch chart data' });
+    }
+});
+
+// Pie Chart API Routes
+app.get('/api/member-counts', async (req, res) => {
+    try {
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [regularCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM check_ins WHERE client_type = "regular"'
+            );
+            
+            const [studentCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM check_ins WHERE client_type = "student"'
+            );
+            
+            return {
+                regular: regularCount[0].count,
+                student: studentCount[0].count
+            };
+        });
+        
+        res.json(result);
+    } catch (error) {
+        console.error('Error fetching member counts:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
