@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">${item.quantity || 0}</td>
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.price || 0}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${item.total_sales || 0}</td>
                     `;
                     break;
                 case 'regular':

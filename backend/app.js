@@ -429,7 +429,9 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
                     supplement_name, 
                     quantity, 
                     price, 
-                    (quantity * price) AS quantity_sold
+                    quantity_sold, 
+                    (price * quantity_sold) AS total_sales,
+                    total_sales
                 FROM supplements 
                 ORDER BY supplement_name
             `);
