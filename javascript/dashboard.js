@@ -1,4 +1,63 @@
-// loading
+// API Base URL - Update this with your actual API base URL
+const API_BASE_URL = 'http://localhost:3000/api';
+
+// Format currency function
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP'
+    }).format(amount);
+}
+
+// Update dashboard metrics
+async function updateDashboardMetrics() {
+    try {
+        // Fetch total earnings
+        const earningsResponse = await fetch(`${API_BASE_URL}/total-earnings`);
+        if (!earningsResponse.ok) throw new Error('Failed to fetch earnings');
+        const earningsData = await earningsResponse.json();
+        
+        // Update total earnings display
+        const totalEarningsElement = document.getElementById('totalEarningsValue');
+        if (totalEarningsElement) {
+            totalEarningsElement.textContent = formatCurrency(earningsData.total);
+        }
+
+        // Fetch attendance counts
+        const attendanceResponse = await fetch(`${API_BASE_URL}/attendance-counts`);
+        if (!attendanceResponse.ok) throw new Error('Failed to fetch attendance');
+        const attendanceData = await attendanceResponse.json();
+
+        // Update attendance displays
+        const elements = {
+            'attendanceRegularValue': attendanceData.regular,
+            'attendanceStudentValue': attendanceData.student,
+            'attendanceMonthlyValue': attendanceData.monthly
+        };
+
+        for (const [elementId, value] of Object.entries(elements)) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+
+    } catch (error) {
+        console.error('Error updating dashboard metrics:', error);
+        // Optionally show error to user using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update dashboard metrics. Please try again later.',
+            confirmButtonColor: '#ea580c'
+        });
+    }
+    
+    // Immediately schedule the next update
+    setTimeout(updateDashboardMetrics, 0);
+}
+
+// Loading animation
 document.addEventListener('DOMContentLoaded', function() {
     const goToCustomerPageBtn = document.getElementById('goToCustomerPageBtn');
     
@@ -66,12 +125,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         });
     }
-});
 
-
-
-// Member Growth Chart
-document.addEventListener('DOMContentLoaded', async function() {
+    // Member Growth Chart
     const ctx = document.getElementById('memberGrowthChart');
     if (ctx) {
         new Chart(ctx, {
@@ -100,15 +155,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             }
         });
-    } else {
-        console.error('Could not find memberGrowthChart canvas element');
     }
 
-    // Load and display due members initially
-    await loadDueMembers();
-
-    // Poll for updates every 5 minutes (300000 ms)
-    setInterval(loadDueMembers, 300000);
+    // Initial load of metrics
+    updateDashboardMetrics();
+    // Initial load of due members
+    loadDueMembers();
 });
 
 // Function to load members due within 7 days
@@ -123,6 +175,9 @@ async function loadDueMembers() {
     } catch (error) {
         console.error('Error loading due members:', error);
     }
+    
+    // Immediately schedule the next update
+    setTimeout(loadDueMembers, 0);
 }
 
 // Filter members due within 7 days
@@ -137,6 +192,7 @@ function filterDueMembers(members) {
     });
 }
 
+// Display due members in the dashboard
 function displayDueMembers(dueMembers) {
     const dueSection = document.querySelector('.monthly-due-section');
     if (!dueSection) return;

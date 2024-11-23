@@ -107,13 +107,12 @@
                         <button id="goToCustomerPageBtn" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
                             Go to Customer Page
                         </button>
-                        
                     </div>
 
                     <!-- Metrics Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <!-- Monthly Revenue -->
-                        <div class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
+                        <div id="totalEarnings" class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
                             <div class="flex items-center space-x-4">
                                 <div class="p-3 bg-orange-600 rounded-lg shadow-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,13 +121,13 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-orange-600">Total Earnings</p>
-                                    <h3 class="text-2xl font-bold text-black mt-1">0</h3>
+                                    <h3 id="totalEarningsValue" class="text-2xl font-bold text-black mt-1">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Active Regular -->
-                        <div class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
+                        <div id="attendanceRegular" class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
                             <div class="flex items-center space-x-4">
                                 <div class="p-3 bg-orange-600 rounded-lg shadow-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -137,13 +136,13 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-orange-600">Attendance as of now (Regular)</p>
-                                    <h3 class="text-2xl font-bold text-black mt-1">0</h3>
+                                    <h3 id="attendanceRegularValue" class="text-2xl font-bold text-black mt-1">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Active Student -->
-                        <div class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
+                        <div id="attendanceStudent" class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
                             <div class="flex items-center space-x-4">
                                 <div class="p-3 bg-orange-600 rounded-lg shadow-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -153,13 +152,13 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-orange-600">Attendance as of now (Student)</p>
-                                    <h3 class="text-2xl font-bold text-black mt-1">0</h3>
+                                    <h3 id="attendanceStudentValue" class="text-2xl font-bold text-black mt-1">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Active Monthly -->
-                        <div class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
+                        <div id="attendanceMonthly" class="bg-white rounded-lg shadow-lg border-2 border-orange-200 p-6 hover:border-orange-400 transition-all duration-300">
                             <div class="flex items-center space-x-4">
                                 <div class="p-3 bg-orange-600 rounded-lg shadow-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,7 +167,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-orange-600">Attendance as of now (monthly)</p>
-                                    <h3 class="text-2xl font-bold text-black mt-1">0</h3>
+                                    <h3 id="attendanceMonthlyValue" class="text-2xl font-bold text-black mt-1">0</h3>
                                 </div>
                             </div>
                         </div>

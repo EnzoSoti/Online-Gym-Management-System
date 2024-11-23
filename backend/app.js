@@ -726,6 +726,81 @@ app.delete('/api/admin/reservations/:id', async (req, res) => {
 });
 
 
+// Dashboard API Routes
+app.get('/api/total-earnings', async (req, res) => {
+    try {
+        const result = await handleDatabaseOperation(async (connection) => {
+            // Get earnings from check-ins
+            const [checkInsResults] = await connection.query(
+                'SELECT SUM(amount) as total FROM check_ins'
+            );
+            
+            // Get earnings from monthly members
+            const [monthlyResults] = await connection.query(
+                'SELECT COUNT(CASE WHEN type = "regular" THEN 1 END) * 950 + ' +
+                'COUNT(CASE WHEN type = "student" THEN 1 END) * 850 as total ' +
+                'FROM monthly_members'
+            );
+            
+            // Get earnings from reservations
+            const [reservationResults] = await connection.query(
+                'SELECT SUM(price) as total FROM reservation'
+            );
+            
+            // Get earnings from supplements
+            const [supplementResults] = await connection.query(
+                'SELECT SUM(quantity_sold) as total FROM supplements'
+            );
+            
+            const totalEarnings = (checkInsResults[0].total || 0) +
+                                (monthlyResults[0].total || 0) +
+                                (reservationResults[0].total || 0) +
+                                (supplementResults[0].total || 0);
+            
+            return { total: totalEarnings };
+        });
+        
+        res.json(result);
+    } catch (error) {
+        console.error('Error fetching total earnings:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get attendance counts
+app.get('/api/attendance-counts', async (req, res) => {
+    try {
+        const result = await handleDatabaseOperation(async (connection) => {
+            // Get regular attendance count
+            const [regularCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM check_ins WHERE client_type = "regular"'
+            );
+            
+            // Get student attendance count
+            const [studentCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM check_ins WHERE client_type = "student"'
+            );
+            
+            // Get monthly members count
+            const [monthlyCount] = await connection.query(
+                'SELECT COUNT(*) as count FROM monthly_members WHERE status = "Active"'
+            );
+            
+            return {
+                regular: regularCount[0].count,
+                student: studentCount[0].count,
+                monthly: monthlyCount[0].count
+            };
+        });
+        
+        res.json(result);
+    } catch (error) {
+        console.error('Error fetching attendance counts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
