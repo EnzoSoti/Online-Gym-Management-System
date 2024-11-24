@@ -390,10 +390,24 @@ function updateMember(btn) {
     const endDate = document.getElementById('endDate');
     
     if (memberName && memberType && startDate && endDate) {
-        memberName.value = selectedRow.cells[0].innerText;
-        memberType.value = selectedRow.cells[1].innerText.trim();
-        startDate.value = new Date(selectedRow.cells[3].innerText).toISOString().split('T')[0];
-        endDate.value = new Date(selectedRow.cells[4].innerText).toISOString().split('T')[0];
+        // Get cells with correct indices based on your table structure
+        const cells = selectedRow.cells;
+        memberName.value = cells[1].textContent.trim(); // Member name is in second column
+        memberType.value = cells[2].textContent.trim(); // Type is in third column
+        
+        // Convert date strings to proper format
+        const startDateStr = cells[4].textContent.trim(); // Start date is in fifth column
+        const endDateStr = cells[5].textContent.trim();   // End date is in sixth column
+        
+        // Parse and format dates correctly
+        const formatDate = (dateStr) => {
+            const [month, day, year] = dateStr.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        };
+        
+        startDate.value = formatDate(startDateStr);
+        endDate.value = formatDate(endDateStr);
+        
         openMemberModal();
     }
 }
@@ -413,12 +427,17 @@ function getOneMonthFromDate(dateString) {
 async function renewMembership(btn) {
     const row = btn.closest('tr');
     const memberId = row.dataset.id;
-    const memberName = row.cells[0].innerText;
-    const memberType = row.cells[1].innerText;
+    const cells = row.cells;
+    
+    // Get values from correct cell indices
+    const memberName = cells[1].textContent.trim();  // Member name is in second column
+    const memberType = cells[2].textContent.trim();  // Type is in third column
+    const statusSpan = cells[3].querySelector('span');  // Status is in fourth column
+    
     const originalData = {
-        status: row.cells[2].querySelector('span').innerText,
-        start_date: row.cells[3].innerText,
-        end_date: row.cells[4].innerText
+        status: statusSpan ? statusSpan.textContent.trim() : 'Unknown',
+        start_date: cells[4].textContent.trim(),  // Start date is in fifth column
+        end_date: cells[5].textContent.trim()     // End date is in sixth column
     };
 
     try {
