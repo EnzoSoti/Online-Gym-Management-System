@@ -348,7 +348,6 @@ function calculatePrice(serviceType, startTime, additionalMembers = []) {
     return 0;
 }
 
-
 // Helper function to parse time string to minutes
 function parseTimeToMinutes(timeString) {
     const [hours, minutes] = timeString.split(':').map(Number);
@@ -558,25 +557,6 @@ async function showPaymentDialog(totalPrice) {
                             </div>
                         </div>
                     </button>
-
-                    <button id="split-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-green-500/20 to-green-600/20 hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300">
-                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-white group-hover:text-green-400 transition-colors">Split Payment</h3>
-                                    <p class="text-sm text-gray-400">Pay using multiple methods</p>
-                                </div>
-                                <svg class="w-5 h-5 text-gray-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </button>
                 </div>
             </div>
         `,
@@ -591,7 +571,6 @@ async function showPaymentDialog(totalPrice) {
         didOpen: () => {
             const gymBtn = document.getElementById('gym-payment');
             const gcashBtn = document.getElementById('gcash-payment');
-            const splitBtn = document.getElementById('split-payment');
 
             gymBtn.addEventListener('click', () => {
                 Swal.clickConfirm();
@@ -603,14 +582,6 @@ async function showPaymentDialog(totalPrice) {
                 if (result) {
                     Swal.clickConfirm();
                     return { method: 'gcash', ...result };
-                }
-            });
-
-            splitBtn.addEventListener('click', async () => {
-                const result = await handleSplitPayment(totalPrice);
-                if (result) {
-                    Swal.clickConfirm();
-                    return { method: 'split', ...result };
                 }
             });
         }
@@ -670,80 +641,6 @@ async function handleGcashPayment(totalAmount) {
                 referenceNumber: refNumber,
                 accountName: accountName,
                 amount: totalAmount
-            };
-        }
-    });
-
-    return isConfirmed ? value : null;
-}
-
-async function handleSplitPayment(totalAmount) {
-    const { isConfirmed, value } = await Swal.fire({
-        html: `
-            <div class="max-w-2xl mx-auto p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <div class="mb-8 text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
-                        Split Payment Details
-                    </h2>
-                    <p class="mt-2 text-gray-400">Enter both GCash and cash payment information</p>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="text-left space-y-6">
-                        <div class="group">
-                            <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Amount</label>
-                            <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
-                                <input type="number" id="split-gcash-amount" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter GCash amount">
-                            </div>
-                        </div>
-                        <div class="group">
-                            <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Reference Number</label>
-                            <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
-                                <input type="text" id="split-gcash-ref" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter reference number">
-                            </div>
-                        </div>
-                        <div class="group">
-                            <label class="block text-gray-400 text-sm mb-3 font-medium">Cash Amount</label>
-                            <div class="p-1 rounded-2xl bg-gradient-to-r from-green-500/20 to-green-600/20 hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300">
-                                <input type="number" id="split-cash-amount" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all" placeholder="Enter cash amount">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,
-        confirmButtonText: 'Confirm Split Payment',
-        showCancelButton: true,
-        customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
-        },
-        buttonsStyling: false,
-        preConfirm: () => {
-            const gcashAmount = document.getElementById('split-gcash-amount').value;
-            const gcashRef = document.getElementById('split-gcash-ref').value;
-            const cashAmount = document.getElementById('split-cash-amount').value;
-
-            if (!gcashAmount || !gcashRef || !cashAmount) {
-                Swal.showValidationMessage('Please fill in all split payment details');
-                return false;
-            }
-
-            const total = parseFloat(gcashAmount) + parseFloat(cashAmount);
-            if (total !== totalAmount) {
-                Swal.showValidationMessage(`Total amount must equal ₱${totalAmount}`);
-                return false;
-            }
-
-            return {
-                gcash: {
-                    amount: parseFloat(gcashAmount),
-                    referenceNumber: gcashRef
-                },
-                cash: {
-                    amount: parseFloat(cashAmount)
-                }
             };
         }
     });
