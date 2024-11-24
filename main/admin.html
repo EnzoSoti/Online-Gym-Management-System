@@ -795,8 +795,9 @@
 
             <!-- Modal -->
             <div id="addMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-                <div class="fixed inset-0 flex items-center justify-center p-4">
-                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300" id="modalContent">
+                <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                    <!-- Added max-height and overflow for scrollability -->
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="modalContent">
                         <div class="p-6 border-b border-slate-100">
                             <div class="flex items-center gap-3">
                                 <div class="p-2 bg-orange-100 rounded-lg">
@@ -807,7 +808,7 @@
                                 <h3 class="text-2xl font-bold text-black" id="modalTitle">Add Member</h3>
                             </div>
                         </div>
-                        <form id="memberForm" class="p-6">
+                        <form id="memberForm" class="p-6" enctype="multipart/form-data">
                             <div class="space-y-6">
                                 <div>
                                     <label for="memberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
@@ -825,7 +826,8 @@
                                 <div>
                                     <label for="memberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
                                     <select id="memberType" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
+                                        onchange="handleMemberTypeChange()" required>
                                         <option value="Regular">Regular</option>
                                         <option value="Student">Student</option>
                                     </select>
@@ -839,6 +841,23 @@
                                     <label for="endDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
                                     <input type="date" id="endDate" 
                                         class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                </div>
+                                <!-- School ID Picture field - Initially hidden -->
+                                <div id="schoolIdContainer" class="hidden">
+                                    <label for="school_id_picture" class="block text-sm font-semibold text-black mb-2">School ID Picture</label>
+                                    <input type="file" id="school_id_picture" accept="image/*"
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200">
+                                    <div id="school_id_preview" class="mt-2 hidden">
+                                        <img src="" alt="School ID Preview" class="max-w-full h-32 object-contain rounded-lg">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="profile_picture" class="block text-sm font-semibold text-black mb-2">Profile Picture</label>
+                                    <input type="file" id="profile_picture" accept="image/*"
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    <div id="profile_preview" class="mt-2 hidden">
+                                        <img src="" alt="Profile Picture Preview" class="max-w-full h-32 object-contain rounded-lg">
+                                    </div>
                                 </div>
                             </div>
                             <div class="mt-8 flex justify-end gap-4">

@@ -318,29 +318,123 @@ async function loadMembers() {
     }
 }
 
+// Handle member type change
+function handleMemberTypeChange() {
+    const memberType = document.getElementById('memberType');
+    const schoolIdContainer = document.getElementById('schoolIdContainer');
+    const schoolIdInput = document.getElementById('school_id_picture');
+    
+    if (memberType.value === 'Student') {
+        schoolIdContainer.classList.remove('hidden');
+        schoolIdInput.required = true;
+    } else {
+        schoolIdContainer.classList.add('hidden');
+        schoolIdInput.required = false;
+        // Clear school ID input and preview when switching to Regular
+        schoolIdInput.value = '';
+        const schoolIdPreview = document.getElementById('school_id_preview');
+        schoolIdPreview.classList.add('hidden');
+        schoolIdPreview.querySelector('img').src = '';
+    }
+}
+
+// Image preview handlers with proper URL cleanup
+function setupImagePreviews() {
+    const schoolIdInput = document.getElementById('school_id_picture');
+    const profileInput = document.getElementById('profile_picture');
+    const schoolIdPreview = document.getElementById('school_id_preview').querySelector('img');
+    const profilePreview = document.getElementById('profile_preview').querySelector('img');
+
+    function handlePreview(file, previewElement, previewContainer) {
+        // Revoke previous object URL if it exists
+        if (previewElement.src) {
+            URL.revokeObjectURL(previewElement.src);
+        }
+
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            previewElement.src = objectUrl;
+            previewContainer.classList.remove('hidden');
+        } else {
+            previewElement.src = '';
+            previewContainer.classList.add('hidden');
+        }
+    }
+
+    schoolIdInput?.addEventListener('change', (e) => {
+        handlePreview(e.target.files[0], schoolIdPreview, schoolIdPreview.parentElement);
+    });
+
+    profileInput?.addEventListener('change', (e) => {
+        handlePreview(e.target.files[0], profilePreview, profilePreview.parentElement);
+    });
+}
+
+// Clear modal function
+function clearModal() {
+    const form = document.getElementById('memberForm');
+    const schoolIdPreview = document.getElementById('school_id_preview');
+    const profilePreview = document.getElementById('profile_preview');
+    
+    // Reset form
+    form.reset();
+    
+    // Clear previews and revoke object URLs
+    const previews = [schoolIdPreview, profilePreview];
+    previews.forEach(preview => {
+        const img = preview.querySelector('img');
+        if (img.src) {
+            URL.revokeObjectURL(img.src);
+            img.src = '';
+        }
+        preview.classList.add('hidden');
+    });
+
+    // Reset member type related fields
+    handleMemberTypeChange();
+}
+
+// Modified close modal function
+function closeMemberModal() {
+    const modal = document.getElementById('addMemberModal');
+    modal.classList.add('hidden');
+    clearModal();
+}
+
 // Add or Update Member
 if (memberForm) {
+    setupImagePreviews();
+    
     memberForm.addEventListener('submit', async function(event) {
         event.preventDefault();
         
         try {
             const memberName = document.getElementById('memberName');
+            const memberStatus = document.getElementById('memberStatus');
             const memberType = document.getElementById('memberType');
             const startDate = document.getElementById('startDate');
             const endDate = document.getElementById('endDate');
-            const schoolIdPicture = document.getElementById('school_id_picture').files[0];
+            const schoolIdPicture = document.getElementById('school_id_picture');
+            const profilePicture = document.getElementById('profile_picture');
 
-            if (!memberName || !memberType || !startDate || !endDate) {
-                throw new Error('Missing required form fields');
+            // Validate required fields based on member type
+            const isStudent = memberType.value === 'Student';
+            if (!memberName.value || !memberStatus.value || !memberType.value || 
+                !startDate.value || !endDate.value || !profilePicture.files[0] || 
+                (isStudent && !schoolIdPicture.files[0])) {
+                throw new Error('Please fill in all required fields');
             }
 
             const formData = new FormData();
             formData.append('member_name', memberName.value.trim());
-            formData.append('type', memberType.value.trim());
+            formData.append('status', memberStatus.value);
+            formData.append('type', memberType.value);
             formData.append('start_date', startDate.value);
             formData.append('end_date', endDate.value);
-            if (schoolIdPicture) {
-                formData.append('school_id_picture', schoolIdPicture);
+            formData.append('profile_picture', profilePicture.files[0]);
+            
+            if (isStudent && schoolIdPicture.files[0]) {
+                formData.append('school_id_picture', schoolIdPicture.files[0]);
             }
 
             const url = selectedRow 
@@ -360,7 +454,7 @@ if (memberForm) {
             }
 
             await loadMembers();
-            closeMemberModal();
+            closeMemberModal(); // This will also clear the form
             
             notificationSystem.notify(
                 selectedRow ? 'Member Updated' : 'Member Added',

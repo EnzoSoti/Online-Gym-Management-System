@@ -226,57 +226,100 @@ app.get('/api/monthly-members', async (req, res) => {
     }
 });
 
-app.post('/api/monthly-members', async (req, res) => {
-    try {
-        const { member_name, status, type, start_date, end_date } = req.body;
-        
-        if (!member_name || !status || !type || !start_date || !end_date) {
-            return res.status(400).json({ 
-                error: 'Member name, status, type, start date, and end date are required' 
+app.post('/api/monthly-members', 
+    upload.fields([
+        { name: 'school_id_picture', maxCount: 1 },
+        { name: 'profile_picture', maxCount: 1 }
+    ]), 
+    async (req, res) => {
+        try {
+            const { member_name, status, type, start_date, end_date } = req.body;
+            
+            if (!member_name || !status || !type || !start_date || !end_date) {
+                return res.status(400).json({ 
+                    error: 'All fields are required' 
+                });
+            }
+
+            if (!req.files || !req.files.school_id_picture || !req.files.profile_picture) {
+                return res.status(400).json({
+                    error: 'Both school ID and profile pictures are required'
+                });
+            }
+
+            const school_id_path = req.files.school_id_picture[0].filename;
+            const profile_picture_path = req.files.profile_picture[0].filename;
+
+            const result = await handleDatabaseOperation(async (connection) => {
+                const [insertResult] = await connection.query(
+                    `INSERT INTO monthly_members 
+                    (member_name, status, type, start_date, end_date, school_id_picture, profile_picture) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [member_name, status, type, start_date, end_date, school_id_path, profile_picture_path]
+                );
+                return insertResult;
             });
+
+            res.status(201).json({
+                message: 'Member added successfully',
+                memberId: result.insertId
+            });
+        } catch (error) {
+            console.error('Database error:', error);
+            res.status(500).json({ error: 'Failed to add member' });
         }
-
-        const result = await handleDatabaseOperation(async (connection) => {
-            const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
-                [member_name, status, type, start_date, end_date]
-            );
-            return insertResult;
-        });
-
-        res.status(201).json({
-            message: 'Member added successfully',
-            memberId: result.insertId
-        });
-    } catch (error) {
-        console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to add member' });
     }
-});
+);
 
-app.put('/api/monthly-members/:id', async (req, res) => {
-    try {
-        const { member_name, status, type, start_date, end_date } = req.body;
-        const { id } = req.params;
+app.put('/api/monthly-members/:id', 
+    upload.fields([
+        { name: 'school_id_picture', maxCount: 1 },
+        { name: 'profile_picture', maxCount: 1 }
+    ]), 
+    async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { member_name, status, type, start_date, end_date } = req.body;
+            
+            if (!member_name || !status || !type || !start_date || !end_date) {
+                return res.status(400).json({ 
+                    error: 'All fields are required' 
+                });
+            }
 
-        const result = await handleDatabaseOperation(async (connection) => {
-            const [updateResult] = await connection.query(
-                'UPDATE monthly_members SET member_name = ?, status = ?, type = ?, start_date = ?, end_date = ? WHERE id = ?',
-                [member_name, status, type, start_date, end_date, id]
-            );
-            return updateResult;
-        });
+            let updateFields = [member_name, status, type, start_date, end_date];
+            let updateQuery = `UPDATE monthly_members 
+                             SET member_name = ?, status = ?, type = ?, 
+                                 start_date = ?, end_date = ?`;
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Member not found' });
+            if (req.files.school_id_picture) {
+                updateQuery += ', school_id_picture = ?';
+                updateFields.push(req.files.school_id_picture[0].filename);
+            }
+
+            if (req.files.profile_picture) {
+                updateQuery += ', profile_picture = ?';
+                updateFields.push(req.files.profile_picture[0].filename);
+            }
+
+            updateQuery += ' WHERE id = ?';
+            updateFields.push(id);
+
+            const result = await handleDatabaseOperation(async (connection) => {
+                const [updateResult] = await connection.query(updateQuery, updateFields);
+                return updateResult;
+            });
+
+            res.json({
+                message: 'Member updated successfully',
+                memberId: id
+            });
+        } catch (error) {
+            console.error('Database error:', error);
+            res.status(500).json({ error: 'Failed to update member' });
         }
-
-        res.json({ message: 'Member updated successfully' });
-    } catch (error) {
-        console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed to update member' });
     }
-});
+);
 
 app.delete('/api/monthly-members/:id', async (req, res) => {
     try {
