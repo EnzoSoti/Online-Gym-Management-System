@@ -780,6 +780,19 @@
                 </div>
             </div>
 
+            <!-- enlarge picture -->
+            <div id="enlargedPictureModal" class="fixed inset-0 flex items-center justify-center hidden">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="relative bg-white p-4 rounded-lg shadow-lg">
+                    <img id="enlargedPicture" src="" alt="Enlarged Profile Picture" class="max-w-full max-h-full">
+                    <button id="closeEnlargedPicture" class="absolute top-2 right-2 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
             <!-- Modal -->
             <div id="addMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
                 <div class="fixed inset-0 flex items-center justify-center p-4">

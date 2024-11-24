@@ -170,6 +170,7 @@ function filterMembers() {
     );
     renderMembers(filteredMembers);
 }
+
 // Render members to table
 async function renderMembers(members) {
     const memberTableBody = document.getElementById('memberTableBody');
@@ -214,7 +215,7 @@ async function renderMembers(members) {
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full" src="${profilePictureUrl}" alt="Profile Picture">
+                    <img class="h-10 w-10 rounded-full profile-picture" src="${profilePictureUrl}" alt="Profile Picture">
                 </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -266,11 +267,37 @@ async function renderMembers(members) {
                 </div>
             </td>
         `;
+
+        // Add click event listener to the profile picture
+        const profilePicture = row.querySelector('.profile-picture');
+        if (profilePicture) {
+            profilePicture.addEventListener('click', () => {
+                showEnlargedPicture(profilePictureUrl);
+            });
+        }
     }
 
     // Restore scroll position
     memberTableBody.parentElement.scrollTop = scrollPos;
 }
+
+function showEnlargedPicture(imageUrl) {
+    const modal = document.getElementById('enlargedPictureModal');
+    const enlargedPicture = document.getElementById('enlargedPicture');
+    enlargedPicture.src = imageUrl;
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.classList.add('visible');
+    }, 10); // Small delay to ensure the transition starts after the modal is displayed
+}
+
+document.getElementById('closeEnlargedPicture').addEventListener('click', () => {
+    const modal = document.getElementById('enlargedPictureModal');
+    modal.classList.remove('visible');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300); // Wait for the transition to complete before hiding the modal
+});
 
 async function loadMembers() {
     try {

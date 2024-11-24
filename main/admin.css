@@ -29,6 +29,31 @@ body {
     padding-bottom: 2rem;
 }
 
+#enlargedPictureModal {
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#enlargedPictureModal.hidden {
+    display: none;
+}
+
+#enlargedPictureModal.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#enlargedPictureModal img {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+#enlargedPictureModal .absolute {
+    transition: opacity 0.3s ease;
+}
+
 /* For Firefox */
 #dashboard {
     scrollbar-width: thin;
