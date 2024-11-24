@@ -271,9 +271,19 @@ function displayDueMembers(dueMembers) {
     const membersList = dueMembers
         .map(member => `
             <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg mb-2 hover:bg-orange-100 transition-all">
-                <div>
-                    <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
-                    <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-orange-200 flex-shrink-0">
+                        <img 
+                            src="/api/monthly-members/${member.id}/profile-picture" 
+                            alt="${member.member_name}'s profile"
+                            class="w-full h-full object-cover"
+                            onerror="this.src='/path/to/default-avatar.jpg'" 
+                        />
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
+                        <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
+                    </div>
                 </div>
                 <span class="px-3 py-1 text-xs font-semibold rounded-full ${
                     member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

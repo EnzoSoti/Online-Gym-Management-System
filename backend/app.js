@@ -306,10 +306,14 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
 
 // Monthly Members Customer Routes
 // fixed
-app.post('/api/monthly-members/customer', upload.single('school_id_picture'), async (req, res) => {
+app.post('/api/monthly-members/customer', upload.fields([
+    { name: 'school_id_picture', maxCount: 1 },
+    { name: 'profile_picture', maxCount: 1 }
+]), async (req, res) => {
     try {
         const { member_name, type, start_date, end_date } = req.body;
-        const school_id_picture = req.file ? req.file.buffer : null;
+        const school_id_picture = req.files['school_id_picture'] ? req.files['school_id_picture'][0].buffer : null;
+        const profile_picture = req.files['profile_picture'] ? req.files['profile_picture'][0].buffer : null;
 
         if (!member_name || !type || !start_date || !end_date) {
             return res.status(400).json({ 
@@ -326,8 +330,8 @@ app.post('/api/monthly-members/customer', upload.single('school_id_picture'), as
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture) VALUES (?, ?, ?, ?, ?, ?)',
-                [member_name, finalStatus, type, start_date, end_date, school_id_picture]
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [member_name, finalStatus, type, start_date, end_date, school_id_picture, profile_picture]
             );
             return insertResult;
         });
@@ -382,6 +386,29 @@ app.get('/api/monthly-members/:id/picture', async (req, res) => {
     } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({ error: 'Failed to retrieve picture' });
+    }
+});
+
+app.get('/api/monthly-members/:id/profile-picture', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT profile_picture FROM monthly_members WHERE id = ?',
+                [id]
+            );
+            return rows[0];
+        });
+
+        if (!result || !result.profile_picture) {
+            return res.status(404).json({ error: 'Profile picture not found' });
+        }
+
+        res.contentType('image/jpeg'); // Adjust the content type based on your image format
+        res.send(result.profile_picture);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to retrieve profile picture' });
     }
 });
 

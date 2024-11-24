@@ -79,6 +79,10 @@ async function showSubscriptionForm() {
                     <input type="file" id="school_id_picture" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
                 </div>
                 <div class="mb-6">
+                    <label for="profile_picture" class="block text-gray-400 text-sm mb-2">Profile Picture</label>
+                    <input type="file" id="profile_picture" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
+                </div>
+                <div class="mb-6">
                     <label for="start_date" class="block text-gray-400 text-sm mb-2">Start Date</label>
                     <input type="date" id="start_date" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" readonly>
                 </div>
@@ -102,6 +106,7 @@ async function showSubscriptionForm() {
             const start_date = document.getElementById('start_date').value;
             const end_date = document.getElementById('end_date').value;
             const school_id_picture = document.getElementById('school_id_picture').files[0];
+            const profile_picture = document.getElementById('profile_picture').files[0];
 
             if (!member_name || !membership_type || !start_date || !end_date) {
                 Swal.showValidationMessage('Please fill in all required fields');
@@ -113,12 +118,18 @@ async function showSubscriptionForm() {
                 return false;
             }
 
+            if (!profile_picture) {
+                Swal.showValidationMessage('Please upload your Profile Picture');
+                return false;
+            }
+
             return {
                 member_name,
                 membership_type,
                 start_date,
                 end_date,
-                school_id_picture
+                school_id_picture,
+                profile_picture
             };
         },
         didOpen: () => {
@@ -143,7 +154,7 @@ async function showSubscriptionForm() {
     });
 
     if (formValues) {
-        const { member_name, membership_type, start_date, end_date, school_id_picture } = formValues;
+        const { member_name, membership_type, start_date, end_date, school_id_picture, profile_picture } = formValues;
         const expectedAmount = membership_type === 'Regular' ? 950 : 850;
         const paymentResult = await showPaymentDialogCustomer(expectedAmount, membership_type);
         
@@ -157,6 +168,9 @@ async function showSubscriptionForm() {
             formData.append('amount', expectedAmount);
             if (school_id_picture) {
                 formData.append('school_id_picture', school_id_picture);
+            }
+            if (profile_picture) {
+                formData.append('profile_picture', profile_picture);
             }
 
             await addMemberToDatabase(formData);
