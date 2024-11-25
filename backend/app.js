@@ -1022,6 +1022,46 @@ app.post('/api/login', async (req, res) => {
 });
 
 
+// admin login
+app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if username and password are provided
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
+        // Check user credentials
+        const [user] = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM admin_sign_up WHERE username = ? AND password = ?',
+                [username, password]
+            );
+            return rows;
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        res.json({
+            message: 'Login successful',
+            user: {
+                id: user.user_id,
+                username: user.username,
+                full_name: user.full_name
+            }
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Login failed' });
+    }
+});
+
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

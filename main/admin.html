@@ -73,24 +73,29 @@
 <body>
         <!-- sidebar -->
         <div class="wrapper">
-            <div class="sidenav w-64 bg-gray-900 text-white min-h-screen">
-                <button class="hamburger-btn p-4">
+            <div class="sidenav w-64 bg-gray-900 text-white min-h-screen" id="adminSidebar">
+                <button class="hamburger-btn p-4" id="sidebarToggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="logo-container p-4">
+                <div class="logo-container p-4" id="logoContainer">
                     <img src="../img/Fitworx logo.jpg" alt="logo" class="w-10 h-10 rounded-full">
                     <h1 class="text-lg font-bold ml-4">Fitworx <span class="text-orange-400">Gym</span> Admin</h1>
                 </div>
-                <ul class="nav-menu space-y-3 p-4">
-                    <li><a href="#dashboard" class="nav-item"><i class="fa-solid fa-home"></i>Dashboard</a></li>
-                    <li><a href="#check-in" class="nav-item"><i class="fa-solid fa-dumbbell"></i>Check-in</a></li>
-                    <li><a href="#reservation" class="nav-item"><i class="fa-solid fa-bookmark"></i>Reservation</a></li>
-                    <li><a href="#supplement" class="nav-item"><i class="fa-solid fa-box"></i>Stocks & Inventory</a></li>
-                    <li><a href="#monthlyMembers" class="nav-item"><i class="fa-solid fa-users"></i>Add Monthly Member</a></li>
-                    <li><a href="#reports" class="nav-item"><i class="fa-solid fa-clipboard"></i>Reports</a></li>
-                    <li><a href="#buy" class="nav-item"><i class="fa-solid fa-shopping-cart"></i>Product Sale</a></li>
+                <!-- Welcome Message with IDs -->
+                <div class="px-4 py-3 border-b border-gray-800" id="welcomeContainer">
+                    <p class="text-sm font-medium text-gray-300" id="welcomeText">Welcome admin,</p>
+                    <p class="text-base font-semibold text-orange-400" id="adminNameDisplay"></p>
+                </div>
+                <ul class="nav-menu space-y-3 p-4" id="adminNavMenu">
+                    <li><a href="#dashboard" class="nav-item" id="navDashboard"><i class="fa-solid fa-home"></i>Dashboard</a></li>
+                    <li><a href="#check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-dumbbell"></i>Check-in</a></li>
+                    <li><a href="#reservation" class="nav-item" id="navReservation"><i class="fa-solid fa-bookmark"></i>Reservation</a></li>
+                    <li><a href="#supplement" class="nav-item" id="navInventory"><i class="fa-solid fa-box"></i>Stocks & Inventory</a></li>
+                    <li><a href="#monthlyMembers" class="nav-item" id="navMembers"><i class="fa-solid fa-users"></i>Add Monthly Member</a></li>
+                    <li><a href="#reports" class="nav-item" id="navReports"><i class="fa-solid fa-clipboard"></i>Reports</a></li>
+                    <li><a href="#buy" class="nav-item" id="navSales"><i class="fa-solid fa-shopping-cart"></i>Product Sale</a></li>
                 </ul>
-        </div>
+            </div>
             
 
         <!-- Section 1 -->
