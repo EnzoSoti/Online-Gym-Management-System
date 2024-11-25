@@ -210,7 +210,6 @@ app.post('/api/buy-supplement', async (req, res) => {
 
 
 // Monthly Members API Routes
-// fixed
 app.get('/api/monthly-members', async (req, res) => {
     try {
         const members = await handleDatabaseOperation(async (connection) => {
@@ -242,14 +241,21 @@ app.post('/api/monthly-members',
                 });
             }
 
-            // For new members, require both pictures
-            if (!req.files || !req.files.school_id_picture || !req.files.profile_picture) {
+            // Validate profile picture
+            if (!req.files || !req.files.profile_picture) {
                 return res.status(400).json({
-                    error: 'Both school ID and profile pictures are required for new members'
+                    error: 'Profile picture is required for new members'
                 });
             }
 
-            const school_id_path = req.files.school_id_picture[0].filename;
+            // Validate school ID picture only if the type is "Student"
+            if (type === 'Student' && (!req.files || !req.files.school_id_picture)) {
+                return res.status(400).json({
+                    error: 'School ID picture is required for Student members'
+                });
+            }
+
+            const school_id_path = req.files.school_id_picture ? req.files.school_id_picture[0].filename : null;
             const profile_picture_path = req.files.profile_picture[0].filename;
 
             const result = await handleDatabaseOperation(async (connection) => {
@@ -352,7 +358,7 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
         res.json({ message: 'Member deleted successfully' });
     } catch (error) {
         console.error('Database error:', error);
-        res.status(500).json({ error: 'Failed tof delete member' });
+        res.status(500).json({ error: 'Failed to delete member' });
     }
 });
 
