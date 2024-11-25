@@ -1,5 +1,4 @@
-// API Base URL
-//const API_BASE_URL = 'http://localhost:3000/api';
+
 
 // DOM Elements
 const addMemberBtn = document.getElementById('addMemberBtn');
@@ -186,6 +185,45 @@ async function renderMembers(members) {
     memberTableBody.innerHTML = ''; 
     
     for (const member of members) {
+        // Calculate days left before status check
+        const endDate = new Date(member.end_date);
+        const today = new Date();
+        const timeDiff = endDate.getTime() - today.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        // Check and update expired status before rendering
+        if (daysLeft < 0 && member.status === 'Active') {
+            try {
+                const response = await fetch(`${API_BASE_URL}/monthly-members/${member.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        member_name: member.member_name,
+                        status: 'Inactive',
+                        type: member.type,
+                        start_date: member.start_date,
+                        end_date: member.end_date
+                    })
+                });
+
+                if (response.ok) {
+                    member.status = 'Inactive';
+                    // Show notification about the status change
+                    notificationSystem.notify('Status Updated', {
+                        body: `${member.member_name}'s membership has expired and status has been set to inactive`,
+                        icon: 'warning'
+                    });
+                } else {
+                    throw new Error('Failed to update member status');
+                }
+            } catch (error) {
+                console.error('Error updating member status:', error);
+                // Continue with rendering even if update fails
+            }
+        }
+
         const row = memberTableBody.insertRow();
         row.dataset.id = member.id;
 
@@ -203,19 +241,10 @@ async function renderMembers(members) {
             console.error('Error fetching profile picture:', error);
         }
 
-        // Calculate days left if status is Active
-        let daysLeft = 'N/A'; 
-        if (member.status === 'Active') {
-            const endDate = new Date(member.end_date);
-            const today = new Date();
-            const timeDiff = endDate.getTime() - today.getTime();
-            daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        }
-
         row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex-shrink-0 h-10 w-10">
-                    <img class="h-10 w-10 rounded-full profile-picture" src="${profilePictureUrl}" alt="Profile Picture">
+                    <img class="h-10 w-10 rounded-full profile-picture" src="${profilePictureUrl || '/path/to/default-profile.png'}" alt="Profile Picture">
                 </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -231,9 +260,9 @@ async function renderMembers(members) {
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(member.end_date).toLocaleDateString()}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${daysLeft}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm ${daysLeft < 0 ? 'text-red-500 font-semibold' : 'text-gray-500'}">${daysLeft}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <div class="flex items-start gap-2"> <!-- Changed from justify-center to align with header -->
+                <div class="flex items-start gap-2">
                     <button class="w-8 h-8 flex items-center justify-center border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200 rounded-lg" onclick="updateMember(this)" title="Update">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -531,7 +560,7 @@ async function renewMembership(btn) {
     const originalData = {
         status: statusSpan ? statusSpan.textContent.trim() : 'Unknown',
         start_date: cells[4].textContent.trim(),  // Start date is in fifth column
-        end_date: cells[5].textContent.trim()     // End date is in sixth column
+        end_date: cells[5].textContent.trim()     // End date is sixth column
     };
 
     try {
@@ -546,34 +575,34 @@ async function renewMembership(btn) {
             end_date: nextMonth
         };
 
-        // Show processing alert
-        let timerInterval;
-        const result = await Swal.fire({
-            title: 'Renewing Membership',
-            html: `Updating membership for ${memberName}`,
-            timer: 10000,
-            timerProgressBar: true,
+        // First confirmation
+        const initialConfirm = await Swal.fire({
+            title: 'Renew Membership',
+            html: `Do you want to renew membership for ${memberName}?`,
             showCancelButton: true,
             confirmButtonText: 'Proceed',
             cancelButtonText: 'Cancel',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-                timerInterval = setInterval(() => {
-                    const content = Swal.getHtmlContainer();
-                    if (content) {
-                        const seconds = Math.ceil(Swal.getTimerLeft() / 1000);
-                        content.textContent = `Updating membership for ${memberName} (${seconds}s to undo)`;
-                    }
-                }, 100);
-            },
-            willClose: () => {
-                clearInterval(timerInterval);
-            }
+            allowOutsideClick: false
         });
 
-        // If cancelled, don't proceed with the update
-        if (result.dismiss === Swal.DismissReason.cancel) {
+        // If cancelled, don't proceed
+        if (initialConfirm.dismiss === Swal.DismissReason.cancel) {
+            return;
+        }
+
+        // Second confirmation
+        const finalConfirm = await Swal.fire({
+            title: 'Are you sure?',
+            html: `This will renew ${memberName}'s membership and cannot be undone`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, proceed',
+            cancelButtonText: 'Cancel',
+            allowOutsideClick: false
+        });
+
+        // If cancelled at second confirmation, don't proceed
+        if (finalConfirm.dismiss === Swal.DismissReason.cancel) {
             return;
         }
 
@@ -590,45 +619,14 @@ async function renewMembership(btn) {
 
         await loadMembers();
 
-        // Show success message with undo option
-        const undoResult = await Swal.fire({
+        // Show success message
+        await Swal.fire({
             icon: 'success',
             title: 'Membership Renewed!',
             html: `${memberName}'s membership has been renewed successfully`,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Undo',
-            timer: 5000,
-            timerProgressBar: true
+            timer: 3000,
+            showConfirmButton: false
         });
-
-        // If undo is clicked, revert the changes
-        if (undoResult.dismiss === Swal.DismissReason.cancel) {
-            const undoResponse = await fetch(`${API_BASE_URL}/monthly-members/${memberId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    member_name: memberName,
-                    type: memberType,
-                    ...originalData
-                })
-            });
-
-            if (!undoResponse.ok) throw new Error('Failed to undo renewal');
-
-            await loadMembers();
-            
-            // Show undo success message
-            await Swal.fire({
-                icon: 'info',
-                title: 'Changes Undone',
-                text: 'Membership renewal has been reversed',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        }
 
     } catch (error) {
         console.error('Error:', error);

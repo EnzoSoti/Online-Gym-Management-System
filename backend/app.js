@@ -235,15 +235,17 @@ app.post('/api/monthly-members',
         try {
             const { member_name, status, type, start_date, end_date } = req.body;
             
+            // Validate required fields
             if (!member_name || !status || !type || !start_date || !end_date) {
                 return res.status(400).json({ 
                     error: 'All fields are required' 
                 });
             }
 
+            // For new members, require both pictures
             if (!req.files || !req.files.school_id_picture || !req.files.profile_picture) {
                 return res.status(400).json({
-                    error: 'Both school ID and profile pictures are required'
+                    error: 'Both school ID and profile pictures are required for new members'
                 });
             }
 
@@ -281,6 +283,7 @@ app.put('/api/monthly-members/:id',
             const { id } = req.params;
             const { member_name, status, type, start_date, end_date } = req.body;
             
+            // Validate required fields
             if (!member_name || !status || !type || !start_date || !end_date) {
                 return res.status(400).json({ 
                     error: 'All fields are required' 
@@ -292,14 +295,17 @@ app.put('/api/monthly-members/:id',
                              SET member_name = ?, status = ?, type = ?, 
                                  start_date = ?, end_date = ?`;
 
-            if (req.files.school_id_picture) {
-                updateQuery += ', school_id_picture = ?';
-                updateFields.push(req.files.school_id_picture[0].filename);
-            }
+            // Only check for files if they exist in the request
+            if (req.files) {
+                if (req.files.school_id_picture) {
+                    updateQuery += ', school_id_picture = ?';
+                    updateFields.push(req.files.school_id_picture[0].filename);
+                }
 
-            if (req.files.profile_picture) {
-                updateQuery += ', profile_picture = ?';
-                updateFields.push(req.files.profile_picture[0].filename);
+                if (req.files.profile_picture) {
+                    updateQuery += ', profile_picture = ?';
+                    updateFields.push(req.files.profile_picture[0].filename);
+                }
             }
 
             updateQuery += ' WHERE id = ?';
@@ -309,6 +315,12 @@ app.put('/api/monthly-members/:id',
                 const [updateResult] = await connection.query(updateQuery, updateFields);
                 return updateResult;
             });
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({
+                    error: 'Member not found'
+                });
+            }
 
             res.json({
                 message: 'Member updated successfully',
