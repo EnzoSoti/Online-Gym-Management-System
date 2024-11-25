@@ -943,6 +943,86 @@ app.get('/api/member-counts', async (req, res) => {
 });
 
 
+// ===================================================================================
+// login credentials
+app.post('/api/register', async (req, res) => {
+    try {
+        const { full_name, username, password } = req.body;
+
+        // Check if all fields are provided
+        if (!full_name || !username || !password) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        // Check if username already exists
+        const [existingUser] = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT username FROM user_sign_up WHERE username = ?',
+                [username]
+            );
+            return rows;
+        });
+
+        if (existingUser && existingUser.length > 0) {
+            return res.status(400).json({ error: 'Username already exists' });
+        }
+
+        // Insert new user
+        await handleDatabaseOperation(async (connection) => {
+            await connection.query(
+                'INSERT INTO user_sign_up (full_name, username, password, created_at) VALUES (?, ?, ?, NOW())',
+                [full_name, username, password]
+            );
+        });
+
+        res.status(201).json({ message: 'Registration successful' });
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ error: 'Registration failed' });
+    }
+});
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if username and password are provided
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
+        // Check user credentials
+        const [user] = await handleDatabaseOperation(async (connection) => {
+            const [rows] = await connection.query(
+                'SELECT * FROM user_sign_up WHERE username = ? AND password = ?',
+                [username, password]
+            );
+            return rows;
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        res.json({
+            message: 'Login successful',
+            user: {
+                id: user.user_id,
+                username: user.username,
+                full_name: user.full_name
+            }
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Login failed' });
+    }
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

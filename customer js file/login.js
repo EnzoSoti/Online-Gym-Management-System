@@ -2,6 +2,8 @@
 const loginForm = document.getElementById('loginForm');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
+const fullName = document.getElementById('fullName');
+const fullNameField = document.getElementById('fullNameField');
 const formTitle = document.getElementById('formTitle');
 const formSubtitle = document.getElementById('formSubtitle');
 const toggleText = document.getElementById('toggleText');
@@ -9,170 +11,294 @@ const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
 
-// Static credentials
-const VALID_USERNAME = "user";
-const VALID_PASSWORD = "user";
+// API URL - Update this with your server URL
+const API_URL = 'http://localhost:3000/api';
 
-// Show terms and conditions popup on page load
-// window.addEventListener('load', function() {
-//     Swal.fire({
-//         width: '900px',
-//         html: `
-//             <style>
-//                 @keyframes scaleIn {
-//                     from { 
-//                         opacity: 0; 
-//                         transform: scale(0.95) translateX(-10px); 
-//                     }
-//                     to { 
-//                         opacity: 1; 
-//                         transform: scale(1) translateX(0); 
-//                     }
-//                 }
+// User-friendly validation messages
+const USER_MESSAGES = {
+    password: {
+        requirements: "Your password must have:",
+        minLength: "• At least 8 characters",
+        uppercase: "• One capital letter",
+        lowercase: "• One small letter",
+        number: "• One number",
+        special: "• One special character (!@#$%^&*)"
+    },
+    username: {
+        requirements: "Username must be:",
+        format: "• 3-30 characters long",
+        allowed: "• Can use letters, numbers, dots, and dashes"
+    },
+    fullName: {
+        requirements: "Please enter your real name:",
+        format: "• First and last name",
+        allowed: "• Letters, spaces, and hyphens only"
+    },
+    throttle: {
+        tooMany: "Too many attempts. Please try again in 5 minutes.",
+        tooFast: "Please wait a moment before trying again."
+    }
+};
 
-//                 .animate-scale-in {
-//                     animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-//                 }
+// Throttling configuration
+const THROTTLE_CONFIG = {
+    maxAttempts: 5,
+    timeWindow: 5 * 60 * 1000, // 5 minutes
+    attempts: new Map(),
+    lastSubmitTime: 0,
+    minSubmitInterval: 1000 // Minimum 1 second between submissions
+};
 
-//                 .term-item {
-//                     transition: all 0.3s ease;
-//                 }
+// Validation functions
+const validatePassword = (password) => {
+    const errors = [];
+    if (password.length < 8) {
+        errors.push(USER_MESSAGES.password.minLength);
+    }
+    if (!/[A-Z]/.test(password)) {
+        errors.push(USER_MESSAGES.password.uppercase);
+    }
+    if (!/[a-z]/.test(password)) {
+        errors.push(USER_MESSAGES.password.lowercase);
+    }
+    if (!/\d/.test(password)) {
+        errors.push(USER_MESSAGES.password.number);
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) {
+        errors.push(USER_MESSAGES.password.special);
+    }
+    return errors;
+};
 
-//                 .term-item:hover {
-//                     background-color: rgba(255, 255, 255, 0.95);
-//                     transform: translateX(5px);
-//                 }
+const validateUsername = (username) => {
+    const errors = [];
+    if (username.length < 3 || username.length > 30) {
+        errors.push(USER_MESSAGES.username.format);
+    }
+    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
+        errors.push(USER_MESSAGES.username.allowed);
+    }
+    return errors;
+};
 
-//                 .terms-grid {
-//                     display: grid;
-//                     grid-template-columns: repeat(2, 1fr);
-//                     gap: 1rem;
-//                 }
-//             </style>
-//             <div class="p-6 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100 rounded-xl shadow-xl">
-//                 <h2 class="text-2xl font-bold mb-5 text-center text-orange-800 border-b border-orange-200 pb-3">Terms and Agreement</h2>
+const validateFullName = (fullName) => {
+    const errors = [];
+    if (!/^[a-zA-Z\s'-]+$/.test(fullName)) {
+        errors.push(USER_MESSAGES.fullName.allowed);
+    }
+    if (fullName.length < 2) {
+        errors.push(USER_MESSAGES.fullName.format);
+    }
+    return errors;
+};
 
-//                 <div class="terms-grid">
-//                     <div class="space-y-3">
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.1s;">
-//                             <i class="fas fa-dumbbell mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">No dropping dumbbells. Lower them carefully.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.2s;">
-//                             <i class="fas fa-broom mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">Wipe down your equipment after use.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.3s;">
-//                             <i class="fas fa-directions mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">Follow equipment instructions.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.4s;">
-//                             <i class="fas fa-exclamation-triangle mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">Management not liable for injuries.</span>
-//                         </div>
-//                     </div>
+// Sanitize input to prevent XSS
+const sanitizeInput = (input) => {
+    return input
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
+};
 
-//                     <div class="space-y-3">
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.5s;">
-//                             <i class="fas fa-tshirt mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">Shirts and closed shoes required.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.6s;">
-//                             <i class="fas fa-utensils mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">No food, drinks, or glass containers.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.7s;">
-//                             <i class="fas fa-smoking-ban mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">No smoking.</span>
-//                         </div>
-//                         <div class="term-item bg-white/80 backdrop-blur-sm p-3 rounded-lg text-orange-900 flex items-center animate-scale-in shadow-sm" style="animation-delay: 0.8s;">
-//                             <i class="fas fa-eye mr-3 text-lg text-orange-500"></i>
-//                             <span class="font-medium">Watch your personal belongings.</span>
-//                         </div>
-//                     </div>
-//                 </div>
+// Check if the form submission is being throttled
+const isThrottled = (clientIP = 'default') => {
+    const now = Date.now();
+    const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
+    
+    // Clean up old attempts
+    const recentAttempts = attempts.filter(time => now - time < THROTTLE_CONFIG.timeWindow);
+    THROTTLE_CONFIG.attempts.set(clientIP, recentAttempts);
 
-//                 <div class="mt-5 flex items-center justify-center bg-white/50 p-3 rounded-lg backdrop-blur-sm">
-//                     <input 
-//                         type="checkbox" 
-//                         id="agreeCheckbox" 
-//                         class="form-checkbox h-5 w-5 text-orange-500 rounded border-orange-300 focus:ring-orange-500 mr-3"
-//                     >
-//                     <label 
-//                         for="agreeCheckbox" 
-//                         class="text-sm text-orange-900 font-medium"
-//                     >
-//                         I agree to the terms and conditions
-//                     </label>
-//                 </div>
-//             </div>
-//         `,
-//         icon: 'info',
-//         confirmButtonText: 'Accept & Continue',
-//         confirmButtonColor: '#f97316', // Orange-500
-//         allowOutsideClick: false,
-//         allowEscapeKey: false,
-//         showClass: {
-//             popup: 'animate__animated animate__fadeInRight animate__faster'
-//         },
-//         hideClass: {
-//             popup: 'animate__animated animate__fadeOutRight animate__faster'
-//         },
-//         preConfirm: () => {
-//             const agreeCheckbox = Swal.getPopup().querySelector('#agreeCheckbox');
-//             if (!agreeCheckbox.checked) {
-//                 Swal.showValidationMessage('You must agree to the terms to proceed');
-//             }
-//             return agreeCheckbox.checked;
-//         },
-//         willClose: () => {
-//             if (typeof formSection !== 'undefined') {
-//                 formSection.classList.remove('hidden');
-//             }
-//         }
-//     });
-// });
+    // Check submission interval
+    if (now - THROTTLE_CONFIG.lastSubmitTime < THROTTLE_CONFIG.minSubmitInterval) {
+        return true;
+    }
 
-// Handle login form submission
-loginForm.addEventListener('submit', function (e) {
+    // Check number of attempts
+    return recentAttempts.length >= THROTTLE_CONFIG.maxAttempts;
+};
+
+// Show validation errors in a user-friendly way
+const showValidationErrors = (errors, type) => {
+    Swal.fire({
+        title: `Please Check Your ${type}`,
+        html: `
+            <div class="text-left">
+                <p>${USER_MESSAGES[type].requirements}</p>
+                ${errors.join('<br>')}
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Got it!',
+        confirmButtonColor: '#3b82f6',
+        background: '#f0f9ff',
+        iconColor: '#0ea5e9',
+        color: '#0c4a6e'
+    });
+};
+
+// Handle form submission
+loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    if (username.value === VALID_USERNAME && password.value === VALID_PASSWORD) {
-        // Successful login
+    if (isThrottled()) {
         Swal.fire({
-            title: '🎉 Success!',
-            text: 'Welcome back!',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1000,
-            background: '#f0fdf4', // Light green background
-            iconColor: '#22c55e', // Green-500 color
-            color: '#064e3b', // Dark green text color
-            willClose: () => {
-                window.location.href = '../customer file/customer.html';
-            }
+            title: 'Please Wait',
+            text: USER_MESSAGES.throttle.tooMany,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#eab308',
+            background: '#fefce8',
+            iconColor: '#ca8a04',
+            color: '#854d0e'
         });
-    } else {
-        // Failed login
+        return;
+    }
+
+    const isLoginMode = formTitle.textContent === 'Sign in to Account';
+
+    // Validate and sanitize inputs
+    const sanitizedUsername = sanitizeInput(username.value.trim());
+    const sanitizedPassword = password.value; // Don't sanitize password
+    const sanitizedFullName = isLoginMode ? '' : sanitizeInput(fullName.value.trim());
+
+    // Validate inputs
+    const usernameErrors = validateUsername(sanitizedUsername);
+    if (usernameErrors.length > 0) {
+        showValidationErrors(usernameErrors, 'username');
+        return;
+    }
+
+    const passwordErrors = validatePassword(sanitizedPassword);
+    if (passwordErrors.length > 0) {
+        showValidationErrors(passwordErrors, 'password');
+        return;
+    }
+
+    if (!isLoginMode) {
+        const fullNameErrors = validateFullName(sanitizedFullName);
+        if (fullNameErrors.length > 0) {
+            showValidationErrors(fullNameErrors, 'fullName');
+            return;
+        }
+    }
+
+    try {
+        // Update throttling data
+        const clientIP = 'default'; // In real implementation, get client IP
+        const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
+        attempts.push(Date.now());
+        THROTTLE_CONFIG.attempts.set(clientIP, attempts);
+        THROTTLE_CONFIG.lastSubmitTime = Date.now();
+
+        if (isLoginMode) {
+            // Handle Login
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: sanitizedUsername,
+                    password: sanitizedPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    title: '🎉 Welcome Back!',
+                    text: 'Login successful!',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: '#f0fdf4',
+                    iconColor: '#22c55e',
+                    color: '#064e3b',
+                    willClose: () => {
+                        window.location.href = '../customer file/customer.html';
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Login Failed',
+                    text: 'Please check your username and password.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#ef4444',
+                    background: '#fef2f2',
+                    iconColor: '#b91c1c',
+                    color: '#7f1d1d'
+                });
+            }
+        } else {
+            // Handle Signup
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    full_name: sanitizedFullName,
+                    username: sanitizedUsername,
+                    password: sanitizedPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    title: '🎉 Welcome!',
+                    text: 'Your account has been created successfully!',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: '#f0fdf4',
+                    iconColor: '#22c55e',
+                    color: '#064e3b',
+                    willClose: () => {
+                        toggleForms();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Registration Failed',
+                    text: data.error || 'Please try again with different information.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ef4444',
+                    background: '#fef2f2',
+                    iconColor: '#b91c1c',
+                    color: '#7f1d1d'
+                });
+            }
+        }
+    } catch (error) {
+        console.error('API Error:', error);
         Swal.fire({
-            title: '⚠️ Error!',
-            text: 'Invalid username or password.',
+            title: 'Oops!',
+            text: 'Something went wrong. Please try again later.',
             icon: 'error',
-            confirmButtonText: 'Try Again',
-            confirmButtonColor: '#ef4444', // Red-500 color
-            background: '#fef2f2', // Light red background
-            iconColor: '#b91c1c', // Dark red color
-            color: '#7f1d1d' // Darker red text color
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ef4444',
+            background: '#fef2f2',
+            iconColor: '#b91c1c',
+            color: '#7f1d1d'
         });
     }
 });
 
 // Toggle between login and signup forms
 function toggleForms() {
-    const signupForm = document.getElementById('signupForm');
-    
-    if (formTitle.textContent === 'Sign in to Account') {
-        // Show signup form
+    const isLoginMode = formTitle.textContent === 'Sign in to Account';
+
+    if (isLoginMode) {
+        // Switch to signup
         formTitle.textContent = 'Create Account';
         formSubtitle.textContent = 'Join us and start your fitness journey';
         toggleText.textContent = 'Already have an account?';
@@ -181,8 +307,9 @@ function toggleForms() {
             <h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
             <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>
         `;
+        fullNameField.classList.remove('hidden');
     } else {
-        // Show login form
+        // Switch to login
         formTitle.textContent = 'Sign in to Account';
         formSubtitle.textContent = 'Start managing your fitness journey today';
         toggleText.textContent = "Don't have an account?";
@@ -191,7 +318,13 @@ function toggleForms() {
             <h1 class="text-4xl font-bold text-white mb-6">Welcome Back!</h1>
             <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>
         `;
+        fullNameField.classList.add('hidden');
     }
+
+    // Clear form fields
+    username.value = '';
+    password.value = '';
+    fullName.value = '';
 }
 
 // Add click event listener to toggle button
@@ -204,17 +337,5 @@ toggleButton.addEventListener('click', function(e) {
 window.addEventListener('load', function() {
     username.value = '';
     password.value = '';
-});
-
-// Prevent form submission for social login buttons
-document.querySelectorAll('.social-button').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Info',
-            text: 'Social login is not implemented in this demo',
-            icon: 'info',
-            confirmButtonColor: '#f97316'
-        });
-    });
+    fullName.value = '';
 });

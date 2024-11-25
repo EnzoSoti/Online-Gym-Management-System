@@ -56,6 +56,18 @@
 
                 <!-- Login Form -->
                 <form class="space-y-6" id="loginForm">
+                    <!-- Full Name Input (Hidden by default) -->
+                    <div class="relative hidden" id="fullNameField">
+                        <input type="text" 
+                               id="fullName"
+                               class="w-full px-4 py-3 bg-gray-50 rounded-lg outline-none border border-gray-200 focus:border-orange-500 transition-colors peer"
+                               placeholder=" "
+                        />
+                        <label class="absolute left-4 top-3 text-gray-400 text-sm transition-all peer-focus:-top-6 peer-focus:text-orange-500 peer-focus:text-xs peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs">
+                            Full Name
+                        </label>
+                    </div>
+
                     <!-- Username Input -->
                     <div class="relative">
                         <input type="text" 
@@ -80,45 +92,11 @@
                         </label>
                     </div>
 
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between">
-                        <label class="flex items-center space-x-2 text-sm">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"/>
-                            <span class="text-gray-600">Remember me</span>
-                        </label>
-                        <a href="#" class="text-sm text-orange-600 hover:text-orange-700 transition-colors">
-                            Forgot Password?
-                        </a>
-                    </div>
-
                     <!-- Sign In Button -->
                     <button type="submit" class="w-full py-3 px-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
                         Sign In
                     </button>
                 </form>
-
-                <!-- Social Login -->
-                <div class="relative my-8">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-200"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-gray-500">Or continue with</span>
-                    </div>
-                </div>
-
-                <!-- Social Buttons -->
-                <div class="grid grid-cols-3 gap-4">
-                    <button class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center">
-                        <i class="fa-brands fa-google text-xl"></i>
-                    </button>
-                    <button class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center">
-                        <i class="fa-brands fa-apple text-xl"></i>
-                    </button>
-                    <button class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center">
-                        <i class="fa-brands fa-facebook text-xl"></i>
-                    </button>
-                </div>
 
                 <!-- Toggle Form Link -->
                 <p class="text-center text-gray-600 text-sm mt-6">
