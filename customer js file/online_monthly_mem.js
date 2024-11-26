@@ -109,16 +109,19 @@ async function showSubscriptionForm() {
             const profile_picture = document.getElementById('profile_picture').files[0];
 
             if (!member_name || !membership_type || !start_date || !end_date) {
+                playSound('error-sound');
                 Swal.showValidationMessage('Please fill in all required fields');
                 return false;
             }
 
             if (membership_type === 'Student' && !school_id_picture) {
+                playSound('error-sound');
                 Swal.showValidationMessage('Please upload your Student ID picture');
                 return false;
             }
 
             if (!profile_picture) {
+                playSound('error-sound');
                 Swal.showValidationMessage('Please upload your Profile Picture');
                 return false;
             }
@@ -235,6 +238,11 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     return isConfirmed ? paymentDetails : null;
 }
 
+function playSound(soundId) {
+    const sound = document.getElementById(soundId);
+    sound.play();
+}
+
 async function addMemberToDatabase(formData) {
     try {
         const response = await fetch(`${API_BASE_URL}/monthly-members/customer`, {
@@ -244,6 +252,7 @@ async function addMemberToDatabase(formData) {
 
         const data = await response.json();
         if (response.ok) {
+            playSound('success-sound');
             Swal.fire({
                 title: 'Success!',
                 text: 'Member added successfully',

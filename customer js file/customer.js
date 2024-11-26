@@ -682,6 +682,8 @@ async function processReservation(reservationData) {
 }
 
 function showSuccessMessage() {
+    const successSound = document.getElementById('success-sound');
+    successSound.play();
     Swal.fire({
         title: '✅ Success!',
         html: '<div class="space-y-2">' +

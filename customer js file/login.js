@@ -186,7 +186,15 @@ loginForm.addEventListener('submit', async function (e) {
         }
     }
 
+    
+
     try {
+
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            sound.play();
+        }
+        
         // Update throttling data
         const clientIP = 'default'; // In real implementation, get client IP
         const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
@@ -210,6 +218,7 @@ loginForm.addEventListener('submit', async function (e) {
             const data = await response.json();
 
             if (response.ok) {
+                playSound('success-sound');
                 Swal.fire({
                     title: '🎉 Welcome Back!',
                     text: 'Login successful!',
@@ -252,6 +261,7 @@ loginForm.addEventListener('submit', async function (e) {
             const data = await response.json();
 
             if (response.ok) {
+                playSound('success-sound');
                 Swal.fire({
                     title: '🎉 Welcome!',
                     text: 'Your account has been created successfully!',
@@ -266,6 +276,7 @@ loginForm.addEventListener('submit', async function (e) {
                     }
                 });
             } else {
+                playSound('success-sound');
                 Swal.fire({
                     title: 'Registration Failed',
                     text: data.error || 'Please try again with different information.',
@@ -279,6 +290,7 @@ loginForm.addEventListener('submit', async function (e) {
             }
         }
     } catch (error) {
+        playSound('success-sound');
         console.error('API Error:', error);
         Swal.fire({
             title: 'Oops!',
