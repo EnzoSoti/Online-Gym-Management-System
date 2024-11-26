@@ -83,13 +83,17 @@
                     <!-- Password Input -->
                     <div class="relative">
                         <input type="password" 
-                               id="password"
-                               class="w-full px-4 py-3 bg-gray-50 rounded-lg outline-none border border-gray-200 focus:border-orange-500 transition-colors peer"
-                               placeholder=" "
+                            id="password"
+                            class="w-full px-4 py-3 bg-gray-50 rounded-lg outline-none border border-gray-200 focus:border-orange-500 transition-colors peer"
+                            placeholder=" "
                         />
                         <label class="absolute left-4 top-3 text-gray-400 text-sm transition-all peer-focus:-top-6 peer-focus:text-orange-500 peer-focus:text-xs peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs">
                             Password
                         </label>
+                        <!-- Show Password Button -->
+                        <button type="button" id="showPassword" class="absolute right-4 top-3 text-gray-400 hover:text-orange-500 focus:outline-none">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
 
                     <!-- Sign In Button -->

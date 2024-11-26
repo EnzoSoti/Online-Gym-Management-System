@@ -339,3 +339,16 @@ window.addEventListener('load', function() {
     password.value = '';
     fullName.value = '';
 });
+
+// Get the show password button
+const showPasswordButton = document.getElementById('showPassword');
+
+// Add click event listener to the show password button
+showPasswordButton.addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    // Toggle the eye icon
+    this.querySelector('i').classList.toggle('fa-eye');
+    this.querySelector('i').classList.toggle('fa-eye-slash');
+});
