@@ -473,6 +473,62 @@ app.get('/api/monthly-members/:id/profile-picture', async (req, res) => {
     }
 });
 
+app.put('/api/monthly-members/:id/renew', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { start_date, end_date } = req.body;
+
+        if (!start_date || !end_date) {
+            return res.status(400).json({ error: 'Start date and end date are required' });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            // Fetch the member details
+            console.log('Fetching member details for ID:', id);
+            const [memberRows] = await connection.query(
+                'SELECT type FROM monthly_members WHERE id = ?',
+                [id]
+            );
+
+            if (memberRows.length === 0) {
+                console.log('Member not found for ID:', id);
+                return res.status(404).json({ error: 'Member not found' });
+            }
+
+            const memberType = memberRows[0].type;
+            let renewalAmount = 0;
+
+            // Calculate the renewal amount based on the member type
+            if (memberType === 'student') {
+                renewalAmount = 850;
+            } else if (memberType === 'regular') {
+                renewalAmount = 950;
+            }
+
+            console.log('Renewal amount calculated:', renewalAmount);
+
+            // Update the member's renewal details
+            console.log('Updating member details for ID:', id);
+            const [updateResult] = await connection.query(
+                'UPDATE monthly_members SET status = ?, start_date = ?, end_date = ?, renewal_date = ?, renewal_amount = ? WHERE id = ?',
+                ['Active', start_date, end_date, new Date(), renewalAmount, id]
+            );
+
+            console.log('Update result:', updateResult);
+
+            return { renewalAmount };
+        });
+
+        res.status(200).json({
+            message: 'Membership renewed successfully',
+            renewalAmount: result.renewalAmount
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to renew membership' });
+    }
+});
+
 
 
 
@@ -489,7 +545,8 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
                         WHEN 'regular' THEN 950 
                         WHEN 'student' THEN 850 
                         ELSE 0 
-                    END as amount
+                    END as amount,
+                    renewal_amount
                 FROM monthly_members 
                 ORDER BY start_date`
             );

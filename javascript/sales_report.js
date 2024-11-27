@@ -223,10 +223,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error(`Table body not found for ${tabId}`);
             return;
         }
-
+    
         const scrollPos = tableBody.parentElement.scrollTop;
         tableBody.innerHTML = '';
-
+    
         data.forEach(item => {
             const newRow = document.createElement('tr');
             switch (tabId) {
@@ -243,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.start_date)}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.end_date)}</td>
                         <td class="px-6 py-4 whitespace-nowrap">₱${item.amount || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">₱${item.renewal_amount || 0}</td>
                     `;
                     break;
                 case 'supplements':
@@ -280,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             tableBody.appendChild(newRow);
         });
-
+    
         tableBody.parentElement.scrollTop = scrollPos;
     }
 

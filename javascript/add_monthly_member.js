@@ -606,24 +606,32 @@ async function renewMembership(btn) {
             return;
         }
 
-        // Proceed with the update
-        const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}`, {
+        // Proceed with the renewal
+        const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}/renew`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(memberData)
+            body: JSON.stringify({
+                start_date: today,
+                end_date: nextMonth
+            })
         });
 
-        if (!response.ok) throw new Error('Failed to renew membership');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to renew membership');
+        }
+
+        const data = await response.json();
 
         await loadMembers();
 
-        // Show success message
+        // Show success message with renewal amount
         await Swal.fire({
             icon: 'success',
             title: 'Membership Renewed!',
-            html: `${memberName}'s membership has been renewed successfully`,
+            html: `${memberName}'s membership has been renewed successfully. Renewal Amount: ${data.renewalAmount} Pesos`,
             timer: 3000,
             showConfirmButton: false
         });
