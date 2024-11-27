@@ -497,6 +497,7 @@ if (memberForm) {
                         ? `Successfully updated ${memberName.value.trim()}`
                         : `Successfully added ${memberName.value.trim()}`,
                     icon: 'success'
+                    
                 }
             );
         } catch (error) {
@@ -632,14 +633,15 @@ async function renewMembership(btn) {
 
         await loadMembers();
 
-        // Show success message with renewal amount
+        playSound('success-sound');
         await Swal.fire({
             icon: 'success',
             title: 'Membership Renewed!',
             html: `${memberName}'s membership has been renewed successfully. Renewal Amount: ${data.renewalAmount} Pesos`,
-            timer: 3000,
+            timer: 800,
             showConfirmButton: false
         });
+        
 
     } catch (error) {
         console.error('Error:', error);
@@ -678,6 +680,7 @@ async function deleteMember(btn) {
             if (!response.ok) throw new Error('Failed to delete member');
 
             await loadMembers();
+            playSound('success-sound');
             notificationSystem.notify('Member Deleted', {
                 body: `Successfully deleted ${memberName}`,
                 icon: 'success'
