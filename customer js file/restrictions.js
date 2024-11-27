@@ -169,7 +169,16 @@ async function handleReservationSubmit(e) {
             payment_details: paymentResult
         });
 
-        e.target.reset();
+        // Preserve the "Main Client Name" field
+        const mainClientNameInput = document.querySelector('input[type="text"]');
+        if (mainClientNameInput) {
+            const mainClientName = mainClientNameInput.value;
+            e.target.reset();
+            mainClientNameInput.value = mainClientName;
+        } else {
+            e.target.reset();
+        }
+
         clearAdditionalMembers();
         showSuccessMessage();
 

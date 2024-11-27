@@ -7,6 +7,10 @@ function parseTimeToMinutes(timeString) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // Retrieve the full name from sessionStorage
+    const fullName = sessionStorage.getItem('full_name');
+    
     // Fix: Only attach admin login to the specific admin login button
     const adminLoginBtn = document.querySelector('a[href="#"].text-orange-600');
     if (adminLoginBtn) {
@@ -21,8 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // cannot put number in client name
+    // Populate the "Main Client Name" field
     const mainClientNameInput = document.querySelector('input[type="text"]');
+    if (mainClientNameInput && fullName) {
+        mainClientNameInput.value = fullName;
+        mainClientNameInput.readOnly = true;
+    }
+
+    // Add event listener to prevent numbers in the main client name field
     if (mainClientNameInput) {
         mainClientNameInput.addEventListener('input', function(e) {
             const value = e.target.value;

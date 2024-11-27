@@ -186,15 +186,12 @@ loginForm.addEventListener('submit', async function (e) {
         }
     }
 
-    
-
     try {
-
         function playSound(soundId) {
             const sound = document.getElementById(soundId);
             sound.play();
         }
-        
+
         // Update throttling data
         const clientIP = 'default'; // In real implementation, get client IP
         const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
@@ -219,6 +216,7 @@ loginForm.addEventListener('submit', async function (e) {
 
             if (response.ok) {
                 playSound('success-sound');
+                sessionStorage.setItem('full_name', data.user.full_name); // Store full name in sessionStorage
                 Swal.fire({
                     title: '🎉 Welcome Back!',
                     text: 'Login successful!',

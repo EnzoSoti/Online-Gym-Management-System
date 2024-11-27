@@ -1086,7 +1086,7 @@ app.post('/api/login', async (req, res) => {
 
 
 // admin login
-app.post('/api/admin/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -1098,7 +1098,7 @@ app.post('/api/admin/login', async (req, res) => {
         // Check user credentials
         const [user] = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(
-                'SELECT * FROM admin_sign_up WHERE username = ? AND password = ?',
+                'SELECT * FROM user_sign_up WHERE username = ? AND password = ?',
                 [username, password]
             );
             return rows;
@@ -1108,6 +1108,7 @@ app.post('/api/admin/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
+        // Store the full name in sessionStorage
         res.json({
             message: 'Login successful',
             user: {
