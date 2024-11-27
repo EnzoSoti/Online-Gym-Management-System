@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Retrieve the full name from sessionStorage
     const fullName = sessionStorage.getItem('full_name');
+
+    // Update the welcome message in the header
+    const welcomeMessageElement = document.getElementById('welcome-message');
+    if (welcomeMessageElement && fullName) {
+        welcomeMessageElement.textContent = `Welcome ${fullName}`;
+    }
     
     // Fix: Only attach admin login to the specific admin login button
     const adminLoginBtn = document.querySelector('a[href="#"].text-orange-600');
