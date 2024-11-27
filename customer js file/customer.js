@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Retrieve the full name from sessionStorage
     const fullName = sessionStorage.getItem('full_name');
+    const admin = JSON.parse(sessionStorage.getItem('admin'));
 
     // Update the welcome message in the header
     const welcomeMessageElement = document.getElementById('welcome-message');
@@ -21,6 +22,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const adminLoginBtn = document.querySelector('a[href="#"].text-orange-600');
     if (adminLoginBtn) {
         adminLoginBtn.addEventListener('click', showAdminLogin);
+    }
+
+    if (admin) {
+        const welcomeTextElement = document.getElementById('welcomeText');
+        const adminFullNameElement = document.getElementById('adminFullName');
+        const adminNameDisplayElement = document.getElementById('adminNameDisplay');
+
+        if (welcomeTextElement && adminFullNameElement && adminNameDisplayElement) {
+            adminFullNameElement.textContent = admin.full_name;
+            adminNameDisplayElement.textContent = admin.full_name;
+        }
     }
 
     const logoutBtn = document.querySelector('a[href="#"].text-orange-600:last-of-type');
@@ -755,10 +767,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Admin login function
-function showAdminLogin(e) {
+async function showAdminLogin(e) {
     e.preventDefault();
 
-    Swal.fire({
+    const { value: formValues } = await Swal.fire({
         title: '<div class="flex flex-col items-center gap-3">' +
                '<div class="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center">' +
                '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
@@ -811,61 +823,63 @@ function showAdminLogin(e) {
         buttonsStyling: false,
         showLoaderOnConfirm: true,
 
-        preConfirm: () => {
-            return new Promise((resolve) => {
-                const username = document.getElementById('admin-username').value;
-                const password = document.getElementById('admin-password').value;
+        preConfirm: async () => {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
 
-                if (!username || !password) {
-                    Swal.showValidationMessage('All fields are required to proceed');
-                    resolve(false);
-                    return;
-                }
+            if (!username || !password) {
+                Swal.showValidationMessage('All fields are required to proceed');
+                return false;
+            }
 
-                Swal.update({
-                    html: `
-                        <div class="flex flex-col items-center gap-4 py-8">
-                            <div class="w-8 h-8 border-t-2 border-gray-400 border-solid rounded-full animate-spin"></div>
-                            <p class="text-gray-500">Authenticating, please wait...</p>
-                        </div>
-                    `,
-                    showConfirmButton: false,
-                    showCancelButton: false
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
                 });
 
-                setTimeout(() => {
-                    if (username === 'admin' && password === 'admin') {
-                        resolve(true);
-                    } else {
-                        Swal.showValidationMessage('Invalid credentials provided');
-                        resolve(false);
-                    }
-                }, 500);
-            });
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                html: `
-                    <div class="flex flex-col items-center gap-4 py-8">
-                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-800">Access Granted</h3>
-                    </div>
-                `,
-                showConfirmButton: false,
-                timer: 500,
-                customClass: {
-                    popup: 'rounded-lg bg-white border border-gray-300'
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store the full name in sessionStorage
+                    sessionStorage.setItem('admin_full_name', data.admin.full_name);
+                    return true;
+                } else {
+                    Swal.showValidationMessage(data.error || 'Invalid credentials');
+                    return false;
                 }
-            }).then(() => {
-                window.location.href = '../main/admin.html';
-            });
+            } catch (error) {
+                console.error('Login error:', error);
+                Swal.showValidationMessage('An error occurred during login');
+                return false;
+            }
         }
     });
+
+    if (formValues) {
+        Swal.fire({
+            html: `
+                <div class="flex flex-col items-center gap-4 py-8">
+                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Access Granted</h3>
+                </div>
+            `,
+            showConfirmButton: false,
+            timer: 500,
+            customClass: {
+                popup: 'rounded-lg bg-white border border-gray-300'
+            }
+        }).then(() => {
+            window.location.href = '../main/admin.html';
+        });
+    }
 }
 
 // Improved function to clear additional members

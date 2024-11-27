@@ -1086,7 +1086,7 @@ app.post('/api/login', async (req, res) => {
 
 
 // admin login
-app.post('/api/login', async (req, res) => {
+app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -1095,32 +1095,32 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ error: 'Username and password are required' });
         }
 
-        // Check user credentials
-        const [user] = await handleDatabaseOperation(async (connection) => {
+        // Check admin credentials
+        const [admin] = await handleDatabaseOperation(async (connection) => {
             const [rows] = await connection.query(
-                'SELECT * FROM user_sign_up WHERE username = ? AND password = ?',
+                'SELECT * FROM admin_sign_up WHERE username = ? AND password = ?',
                 [username, password]
             );
             return rows;
         });
 
-        if (!user) {
+        if (!admin) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
         // Store the full name in sessionStorage
         res.json({
-            message: 'Login successful',
-            user: {
-                id: user.user_id,
-                username: user.username,
-                full_name: user.full_name
+            message: 'Admin login successful',
+            admin: {
+                id: admin.user_id,
+                username: admin.username,
+                full_name: admin.full_name
             }
         });
 
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ error: 'Login failed' });
+        console.error('Admin login error:', error);
+        res.status(500).json({ error: 'Admin login failed' });
     }
 });
 
