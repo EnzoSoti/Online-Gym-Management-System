@@ -68,6 +68,11 @@ if (searchInput) {
     });
 }
 
+function playSound(soundId) {
+    const sound = document.getElementById(soundId);
+    sound.play();
+}
+
 // Polling function with notification for changes
 function startPolling() {
     setInterval(async () => {
@@ -715,6 +720,7 @@ async function verifyMember(btn) {
                 body: `Successfully verified ${memberName}`,
                 icon: 'success'
             });
+            playSound('success-sound');
         } catch (error) {
             console.error('Error:', error);
             notificationSystem.notify('Error', {

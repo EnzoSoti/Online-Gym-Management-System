@@ -793,6 +793,11 @@ class ReservationManager {
         }
 }
 
+        playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            sound.play();
+        }
+
     async cancelReservation(id) {
         try {
             const result = await Swal.fire({
@@ -826,6 +831,7 @@ class ReservationManager {
                 });
 
                 if (response.ok) {
+                    playSound('success-sound');
                     await Swal.fire({
                         icon: 'success',
                         title: 'Cancelled!',
