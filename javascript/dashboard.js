@@ -52,9 +52,74 @@ async function updateDashboardMetrics() {
             confirmButtonColor: '#ea580c'
         });
     }
-    
-    // Immediately schedule the next update
-    setTimeout(updateDashboardMetrics, 0);
+}
+
+// Function to load members due within 7 days
+async function loadDueMembers() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/monthly-members`);
+        if (!response.ok) throw new Error('Failed to fetch members');
+        
+        const members = await response.json();
+        const dueMembers = filterDueMembers(members);
+        displayDueMembers(dueMembers);
+    } catch (error) {
+        console.error('Error loading due members:', error);
+    }
+}
+
+// Filter members due within 7 days
+function filterDueMembers(members) {
+    const today = new Date();
+    const sevenDaysFromNow = new Date(today);
+    sevenDaysFromNow.setDate(today.getDate() + 7);
+
+    return members.filter(member => {
+        const endDate = new Date(member.end_date);
+        return endDate >= today && endDate <= sevenDaysFromNow;
+    });
+}
+
+// Display due members in the dashboard
+function displayDueMembers(dueMembers) {
+    const dueSection = document.querySelector('.monthly-due-section');
+    if (!dueSection) return;
+
+    if (dueMembers.length === 0) {
+        dueSection.innerHTML = '<p class="text-orange-800">No members due within the next 7 days</p>';
+        return;
+    }
+
+    const membersList = dueMembers
+        .map(member => `
+            <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg mb-2 hover:bg-orange-100 transition-all">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-orange-200 flex-shrink-0">
+                        <img 
+                            src="/api/monthly-members/${member.id}/profile-picture" 
+                            alt="${member.member_name}'s profile"
+                            class="w-full h-full object-cover"
+                            onerror="this.src='/path/to/default-avatar.jpg'" 
+                        />
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
+                        <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
+                    </div>
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full ${
+                    member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }">${member.status}</span>
+            </div>
+        `)
+        .join('');
+
+    dueSection.innerHTML = `
+        <div class="space-y-2">
+            <h3 class="text-lg font-semibold text-orange-900 mb-3">Members Due (Next 7 Days)</h3>
+            ${membersList}
+        </div>
+    `;
 }
 
 // Loading animation
@@ -126,9 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-
-    
     // Initialize pie chart
     const pieCtx = document.getElementById('membershipPieChart').getContext('2d');
     const membershipPieChart = new Chart(pieCtx, {
@@ -157,27 +219,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Fetch member counts and update pie chart
-    fetch(`${API_BASE_URL}/member-counts`)
-        .then(response => response.json())
-        .then(data => {
+    async function updateMembershipPieChart() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/member-counts`);
+            if (!response.ok) throw new Error('Failed to fetch member counts');
+            const data = await response.json();
             membershipPieChart.data.datasets[0].data = [data.regular, data.student];
             membershipPieChart.update();
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error fetching member counts:', error);
-        });
-
-
-
-
-        
+        }
+    }
 
     // Member Growth Chart
     const ctx = document.getElementById('memberGrowthChart');
     if (ctx) {
-        fetch(`${API_BASE_URL}/monthly-members-chart`)
-            .then(response => response.json())
-            .then(data => {
+        async function updateMemberGrowthChart() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/monthly-members-chart`);
+                if (!response.ok) throw new Error('Failed to fetch chart data');
+                const data = await response.json();
+
                 const monthNames = [
                     'January', 'February', 'March', 'April', 'May', 'June',
                     'July', 'August', 'September', 'October', 'November', 'December'
@@ -217,85 +279,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 });
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching chart data:', error);
-            });
-    }
+            }
+        }
 
-    // Initial load of metrics
-    updateDashboardMetrics();
-    // Initial load of due members
-    loadDueMembers();
+        // Initial load of metrics
+        updateDashboardMetrics();
+        // Initial load of due members
+        loadDueMembers();
+        // Initial load of pie chart
+        updateMembershipPieChart();
+        // Initial load of member growth chart
+        updateMemberGrowthChart();
+
+        // Set intervals for real-time updates
+        setInterval(updateDashboardMetrics, 5000); // Update every 5 seconds
+        setInterval(loadDueMembers, 5000); // Update every 5 seconds
+        setInterval(updateMembershipPieChart, 5000); // Update every 5 seconds
+        setInterval(updateMemberGrowthChart, 5000); // Update every 5 seconds
+    }
 });
-
-// Function to load members due within 7 days
-async function loadDueMembers() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/monthly-members`);
-        if (!response.ok) throw new Error('Failed to fetch members');
-        
-        const members = await response.json();
-        const dueMembers = filterDueMembers(members);
-        displayDueMembers(dueMembers);
-    } catch (error) {
-        console.error('Error loading due members:', error);
-    }
-    
-    // Immediately schedule the next update
-    setTimeout(loadDueMembers, 0);
-}
-
-// Filter members due within 7 days
-function filterDueMembers(members) {
-    const today = new Date();
-    const sevenDaysFromNow = new Date(today);
-    sevenDaysFromNow.setDate(today.getDate() + 7);
-
-    return members.filter(member => {
-        const endDate = new Date(member.end_date);
-        return endDate >= today && endDate <= sevenDaysFromNow;
-    });
-}
-
-// Display due members in the dashboard
-function displayDueMembers(dueMembers) {
-    const dueSection = document.querySelector('.monthly-due-section');
-    if (!dueSection) return;
-
-    if (dueMembers.length === 0) {
-        dueSection.innerHTML = '<p class="text-orange-800">No members due within the next 7 days</p>';
-        return;
-    }
-
-    const membersList = dueMembers
-        .map(member => `
-            <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg mb-2 hover:bg-orange-100 transition-all">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full overflow-hidden bg-orange-200 flex-shrink-0">
-                        <img 
-                            src="/api/monthly-members/${member.id}/profile-picture" 
-                            alt="${member.member_name}'s profile"
-                            class="w-full h-full object-cover"
-                            onerror="this.src='/path/to/default-avatar.jpg'" 
-                        />
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
-                        <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
-                    </div>
-                </div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full ${
-                    member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }">${member.status}</span>
-            </div>
-        `)
-        .join('');
-
-    dueSection.innerHTML = `
-        <div class="space-y-2">
-            <h3 class="text-lg font-semibold text-orange-900 mb-3">Members Due (Next 7 Days)</h3>
-            ${membersList}
-        </div>
-    `;
-}

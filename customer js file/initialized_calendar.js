@@ -279,6 +279,31 @@ async function initializeCalendar() {
         .fc-daygrid-day-events {
             max-height: none !important;
         }
+        /* New classes for days with reservations */
+            .fc-day-today.has-reservation::before {
+                color: #facc15 !important; /* Yellow color */
+                border-color: #eab308 !important; /* Dark yellow border color */
+                background: rgba(250, 204, 21, 0.1) !important; /* Very light yellow background color */
+            }
+
+            .fc-day-today.has-reservation:hover::before {
+                background: rgba(250, 204, 21, 0.2) !important; /* Slightly darker light yellow background color on hover */
+            }
+
+            .fc-day-future.has-reservation::before {
+                color: #facc15 !important; /* Yellow color */
+            }
+
+            /* New class for displaying reservation count */
+            .fc-day-reservation-count::after {
+                content: attr(data-reservation-count) " booked";
+                position: absolute;
+                bottom: 4px;
+                right: 4px;
+                color: black;
+                font-size: 1rem;
+                font-weight: 600;
+            }
         `;
         document.head.appendChild(style);
 
@@ -372,6 +397,17 @@ async function initializeCalendar() {
                 try {
                     const reservations = await fetchReservationsByDate(info.dateStr);
                     displayReservations(reservations);
+
+                    // Check if the clicked date has reservations and update the class
+                    if (reservations.length > 0) {
+                        info.dayEl.classList.add('has-reservation');
+                        info.dayEl.setAttribute('data-reservation-count', reservations.length);
+                        info.dayEl.classList.add('fc-day-reservation-count');
+                    } else {
+                        info.dayEl.classList.remove('has-reservation');
+                        info.dayEl.removeAttribute('data-reservation-count');
+                        info.dayEl.classList.remove('fc-day-reservation-count');
+                    }
                 } catch (error) {
                     console.error('Error fetching reservations by date:', error);
                     showErrorMessage('Failed to fetch reservations for the selected date.');
@@ -399,6 +435,26 @@ async function initializeCalendar() {
             }));
             
             calendar.addEventSource(calendarEvents);
+
+            // Add the 'has-reservation' class to the appropriate days
+            const todayCell = document.querySelector('.fc-day-today');
+            if (todayCell && initialReservations.length > 0) {
+                todayCell.classList.add('has-reservation');
+                todayCell.setAttribute('data-reservation-count', initialReservations.length);
+                todayCell.classList.add('fc-day-reservation-count');
+            }
+
+            initialReservations.forEach(reservation => {
+                const date = new Date(reservation.reservation_date);
+                const dateStr = date.toISOString().split('T')[0];
+                const cell = document.querySelector(`.fc-day[data-date="${dateStr}"]`);
+                if (cell) {
+                    cell.classList.add('has-reservation');
+                    cell.setAttribute('data-reservation-count', initialReservations.length);
+                    cell.classList.add('fc-day-reservation-count');
+                }
+            });
+
         } catch (error) {
             console.error('Error loading initial reservations:', error);
         }
