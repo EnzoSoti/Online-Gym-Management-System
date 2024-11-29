@@ -195,17 +195,13 @@ async function renderMembers(members) {
 
         if (daysLeft < 0 && member.status === 'Active') {
             try {
-                const response = await fetch(`${API_BASE_URL}/monthly-members/${member.id}`, {
+                const response = await fetch(`${API_BASE_URL}/monthly-members/${member.id}/update-status`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        member_name: member.member_name,
-                        status: 'Inactive',
-                        type: member.type,
-                        start_date: member.start_date,
-                        end_date: member.end_date
+                        status: 'Inactive'
                     })
                 });
 

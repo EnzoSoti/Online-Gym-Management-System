@@ -347,6 +347,34 @@ app.delete('/api/monthly-members/:id', async (req, res) => {
     }
 });
 
+app.put('/api/monthly-members/:id/update-status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status) {
+            return res.status(400).json({ error: 'Status is required' });
+        }
+
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE monthly_members SET status = ? WHERE id = ?',
+                [status, id]
+            );
+            return updateResult;
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Member not found' });
+        }
+
+        res.json({ message: 'Status updated successfully' });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to update status' });
+    }
+});
+
 
 
 
