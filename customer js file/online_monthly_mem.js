@@ -59,13 +59,16 @@ async function showPolicyAgreement() {
 }
 
 async function showSubscriptionForm() {
+    // Retrieve the full name from sessionStorage
+    const fullName = sessionStorage.getItem('full_name');
+
     const { value: formValues } = await Swal.fire({
         title: 'Monthly Membership Registration',
         html: `
             <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
                 <div class="mb-6">
                     <label for="member_name" class="block text-gray-400 text-sm mb-2">Member Name</label>
-                    <input type="text" id="member_name" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
+                    <input type="text" id="member_name" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" value="${fullName || ''}" readonly>
                 </div>
                 <div class="mb-6">
                     <label for="membership_type" class="block text-gray-400 text-sm mb-2">Membership Type</label>
