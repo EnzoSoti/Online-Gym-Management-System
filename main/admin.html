@@ -888,6 +888,70 @@
                     </div>
                 </div>
             </div>
+            <!-- Update Member Modal -->
+            <div id="updateMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+                <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="updateModalContent">
+                        <div class="p-6 border-b border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-orange-100 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-black" id="updateModalTitle">Update Member</h3>
+                            </div>
+                        </div>
+                        <form id="updateMemberForm" class="p-6" enctype="multipart/form-data">
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="updateMemberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
+                                    <input type="text" id="updateMemberName" 
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                </div>
+                                <div>
+                                    <label for="updateMemberStatus" class="block text-sm font-semibold text-black mb-2">Status</label>
+                                    <select id="updateMemberStatus" 
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="updateMemberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
+                                    <select id="updateMemberType" 
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
+                                        onchange="handleMemberTypeChange()" required>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Student">Student</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="updateStartDate" class="block text-sm font-semibold text-black mb-2">Start Date</label>
+                                    <input type="date" id="updateStartDate" 
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                </div>
+                                <div>
+                                    <label for="updateEndDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
+                                    <input type="date" id="updateEndDate" 
+                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                </div>
+                            </div>
+                            <div class="mt-8 flex justify-end gap-4">
+                                <button type="button" 
+                                    class="px-6 py-3 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200" 
+                                    onclick="closeUpdateMemberModal()">
+                                    Cancel
+                                </button>
+                                <button type="submit" 
+                                    class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 transition-all duration-200 shadow-lg hover:shadow-orange-200">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Section 6 -->

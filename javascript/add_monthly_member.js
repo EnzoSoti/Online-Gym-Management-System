@@ -507,25 +507,39 @@ if (memberForm) {
     });
 }
 
-// Update Member
+function openUpdateMemberModal() {
+    const updateMemberModal = document.getElementById('updateMemberModal');
+    if (updateMemberModal) {
+        updateMemberModal.classList.remove('hidden');
+    }
+}
+
+function closeUpdateMemberModal() {
+    const updateMemberModal = document.getElementById('updateMemberModal');
+    if (updateMemberModal) {
+        updateMemberModal.classList.add('hidden');
+        selectedRow = null;
+        if (updateMemberForm) {
+            updateMemberForm.reset();
+        }
+    }
+}
+
 function updateMember(btn) {
     selectedRow = btn.closest('tr');
-    const memberName = document.getElementById('memberName');
-    const memberType = document.getElementById('memberType');
-    const startDate = document.getElementById('startDate');
-    const endDate = document.getElementById('endDate');
+    const memberName = document.getElementById('updateMemberName');
+    const memberType = document.getElementById('updateMemberType');
+    const startDate = document.getElementById('updateStartDate');
+    const endDate = document.getElementById('updateEndDate');
     
     if (memberName && memberType && startDate && endDate) {
-        // Get cells with correct indices based on your table structure
         const cells = selectedRow.cells;
-        memberName.value = cells[1].textContent.trim(); // Member name is in second column
-        memberType.value = cells[2].textContent.trim(); // Type is in third column
+        memberName.value = cells[1].textContent.trim();
+        memberType.value = cells[2].textContent.trim();
         
-        // Convert date strings to proper format
-        const startDateStr = cells[4].textContent.trim(); // Start date is in fifth column
-        const endDateStr = cells[5].textContent.trim();   // End date is in sixth column
+        const startDateStr = cells[4].textContent.trim();
+        const endDateStr = cells[5].textContent.trim();
         
-        // Parse and format dates correctly
         const formatDate = (dateStr) => {
             const [month, day, year] = dateStr.split('/');
             return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
@@ -534,8 +548,66 @@ function updateMember(btn) {
         startDate.value = formatDate(startDateStr);
         endDate.value = formatDate(endDateStr);
         
-        openMemberModal();
+        openUpdateMemberModal();
     }
+}
+
+const updateMemberForm = document.getElementById('updateMemberForm');
+if (updateMemberForm) {
+    setupImagePreviews();
+    
+    updateMemberForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        try {
+            const memberName = document.getElementById('updateMemberName');
+            const memberStatus = document.getElementById('updateMemberStatus');
+            const memberType = document.getElementById('updateMemberType');
+            const startDate = document.getElementById('updateStartDate');
+            const endDate = document.getElementById('updateEndDate');
+
+            if (!memberName.value || !memberStatus.value || !memberType.value || 
+                !startDate.value || !endDate.value) {
+                throw new Error('Please fill in all required fields');
+            }
+
+            const formData = new FormData();
+            formData.append('member_name', memberName.value.trim());
+            formData.append('status', memberStatus.value);
+            formData.append('type', memberType.value);
+            formData.append('start_date', startDate.value);
+            formData.append('end_date', endDate.value);
+
+            const url = `${API_BASE_URL}/monthly-members/${selectedRow.dataset.id}`;
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to update member');
+            }
+
+            await loadMembers();
+            closeUpdateMemberModal();
+            
+            notificationSystem.notify(
+                'Member Updated',
+                {
+                    body: `Successfully updated ${memberName.value.trim()}`,
+                    icon: 'success'
+                }
+            );
+        } catch (error) {
+            console.error('Form submission error:', error);
+            notificationSystem.notify('Error', {
+                body: error.message,
+                icon: 'error'
+            });
+        }
+    });
 }
 
 // Renew function

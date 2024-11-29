@@ -289,33 +289,18 @@ app.put('/api/monthly-members/:id',
             const { id } = req.params;
             const { member_name, status, type, start_date, end_date } = req.body;
             
-            // Validate required fields
             if (!member_name || !status || !type || !start_date || !end_date) {
                 return res.status(400).json({ 
                     error: 'All fields are required' 
                 });
             }
 
-            let updateFields = [member_name, status, type, start_date, end_date];
-            let updateQuery = `UPDATE monthly_members 
-                             SET member_name = ?, status = ?, type = ?, 
-                                 start_date = ?, end_date = ?`;
+            const updateQuery = `UPDATE monthly_members 
+                               SET member_name = ?, status = ?, type = ?, 
+                                   start_date = ?, end_date = ?
+                               WHERE id = ?`;
 
-            // Only check for files if they exist in the request
-            if (req.files) {
-                if (req.files.school_id_picture) {
-                    updateQuery += ', school_id_picture = ?';
-                    updateFields.push(req.files.school_id_picture[0].filename);
-                }
-
-                if (req.files.profile_picture) {
-                    updateQuery += ', profile_picture = ?';
-                    updateFields.push(req.files.profile_picture[0].filename);
-                }
-            }
-
-            updateQuery += ' WHERE id = ?';
-            updateFields.push(id);
+            const updateFields = [member_name, status, type, start_date, end_date, id];
 
             const result = await handleDatabaseOperation(async (connection) => {
                 const [updateResult] = await connection.query(updateQuery, updateFields);
