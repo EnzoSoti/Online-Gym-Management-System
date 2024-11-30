@@ -148,24 +148,58 @@ class SupplementManager {
 
     showLowStockNotification(items) {
         Swal.fire({
-            icon: 'warning',
-            title: 'Low Stock Alert!',
+            icon: '',
+            iconHtml: `
+                <div class="w-32 h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+            `,
+            title: 'Inventory Insights',
+            background: '#ffffff',
+            color: '#1a202c',
             html: `
-                <div class="text-left">
-                    <p class="mb-2">The following items are running low:</p>
-                    <div class="bg-yellow-50 p-3 rounded-lg">
-                        ${items.map(item => `
-                            <div class="mb-2">
-                                <span class="font-semibold">${item.supplement_name}</span>
-                                <span class="text-red-600 ml-2">(${item.quantity} remaining)</span>
-                            </div>
-                        `).join('')}
+                <div class="text-center">
+                    <div class="mb-4 p-6 rounded-2xl bg-gray-50 border border-gray-200 shadow-2xl">
+                        <h2 class="text-2xl font-extrabold text-gray-900 mb-5 tracking-tight leading-none">
+                            Stock Level Notification
+                        </h2>
+                        <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+                            The following supplements require immediate attention
+                        </p>
+                        <div class="space-y-4">
+                            ${items.map(item => `
+                                <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-base font-semibold text-gray-800">${item.supplement_name}</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-orange-700 font-bold bg-orange-100 px-3 py-1 rounded-full text-sm">
+                                        ${item.quantity} remaining
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 </div>
             `,
             showConfirmButton: true,
-            confirmButtonText: 'Acknowledge',
-            confirmButtonColor: '#4F46E5'
+            confirmButtonText: 'Review Inventory',
+            confirmButtonColor: '#DD6B20',
+            customClass: {
+                popup: 'rounded-3xl overflow-hidden',
+                title: 'text-3xl font-bold text-gray-900',
+                content: 'text-gray-700'
+            },
+            width: '600px',
+            padding: '2rem'
         });
     }
 
