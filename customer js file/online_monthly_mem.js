@@ -233,8 +233,13 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
             <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
                 <div class="mb-6 text-center">
                     <h3 class="text-xl font-bold text-white mb-2">Total Amount for ${membershipType} Membership: ₱${expectedAmount}</h3>
-                    <p class="text-gray-400">Please enter your GCash transaction information</p>
+                    <p class="text-gray-400">Please scan the QR code below to pay via GCash</p>
                 </div>
+
+                <div class="mb-6 text-center">
+                    <img src="../img/photo_2024-11-30_21-50-23.jpg" alt="GCash QR Code" class="mx-auto w-48 h-48 rounded-lg">
+                </div>
+                
                 <div class="mb-6">
                     <label for="gcash_ref" class="block text-gray-400 text-sm mb-2">GCash Reference Number</label>
                     <div class="relative">
