@@ -11,6 +11,10 @@ const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
 
+// Get the password input and strength indicator container
+const passwordInput = document.getElementById('password');
+const passwordStrengthIndicator = document.getElementById('passwordStrength');
+
 // API URL - Update this with your server URL
 const API_URL = 'http://localhost:3000/api';
 
@@ -318,6 +322,7 @@ function toggleForms() {
             <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>
         `;
         fullNameField.classList.remove('hidden');
+        passwordStrengthIndicator.classList.remove('hidden'); // Show password strength indicator
     } else {
         // Switch to login
         formTitle.textContent = 'Sign in to Account';
@@ -329,6 +334,7 @@ function toggleForms() {
             <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>
         `;
         fullNameField.classList.add('hidden');
+        passwordStrengthIndicator.classList.add('hidden'); // Hide password strength indicator
     }
 
     // Clear form fields
@@ -361,4 +367,55 @@ showPasswordButton.addEventListener('click', function() {
     // Toggle the eye icon
     this.querySelector('i').classList.toggle('fa-eye');
     this.querySelector('i').classList.toggle('fa-eye-slash');
+});
+
+// Function to evaluate password strength
+function evaluatePasswordStrength(password) {
+    const strength = { score: 0, feedback: [] };
+
+    if (password.length >= 8) strength.score++;
+    else strength.feedback.push("At least 8 characters.");
+
+    if (/[A-Z]/.test(password)) strength.score++;
+    else strength.feedback.push("Add an uppercase letter.");
+
+    if (/[a-z]/.test(password)) strength.score++;
+    else strength.feedback.push("Add a lowercase letter.");
+
+    if (/\d/.test(password)) strength.score++;
+    else strength.feedback.push("Include a number.");
+
+    if (/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) strength.score++;
+    else strength.feedback.push("Use a special character.");
+
+    return strength;
+}
+
+
+// Function to update password strength indicator
+function updatePasswordStrengthIndicator(strength) {
+    if (strength.score === 5) {
+        passwordStrengthIndicator.textContent = "Strong password";
+        passwordStrengthIndicator.classList.remove('text-red-500', 'text-yellow-500');
+        passwordStrengthIndicator.classList.add('text-green-500');
+    } else if (strength.score >= 3) {
+        passwordStrengthIndicator.textContent = "Moderate password";
+        passwordStrengthIndicator.classList.remove('text-red-500', 'text-green-500');
+        passwordStrengthIndicator.classList.add('text-yellow-500');
+    } else {
+        passwordStrengthIndicator.textContent = "Weak password";
+        passwordStrengthIndicator.classList.remove('text-yellow-500', 'text-green-500');
+        passwordStrengthIndicator.classList.add('text-red-500');
+    }
+
+    if (strength.feedback.length > 0) {
+        passwordStrengthIndicator.textContent += ` (${strength.feedback.join(', ')})`;
+    }
+}
+
+// Add input event listener to the password input
+passwordInput.addEventListener('input', function() {
+    const password = passwordInput.value;
+    const strength = evaluatePasswordStrength(password);
+    updatePasswordStrengthIndicator(strength);
 });
