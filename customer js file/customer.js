@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update the welcome message in the header
     const welcomeMessageElement = document.getElementById('welcome-message');
     if (welcomeMessageElement && fullName) {
-        welcomeMessageElement.textContent = `Welcome ${fullName}`;
+        welcomeMessageElement.textContent = `Welcome, ${fullName}`;
     }
     
     // Fix: Only attach admin login to the specific admin login button

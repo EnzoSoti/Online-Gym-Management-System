@@ -86,38 +86,119 @@ function displayDueMembers(dueMembers) {
     if (!dueSection) return;
 
     if (dueMembers.length === 0) {
-        dueSection.innerHTML = '<p class="text-orange-800">No members due within the next 7 days</p>';
+        dueSection.innerHTML = `
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg shadow-md text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-orange-800 font-medium">No members due within the next 7 days</p>
+            </div>
+        `;
         return;
     }
 
+    // Function to generate avatar based on member's name initials
+    function generateAvatar(name) {
+        const colors = [
+            'bg-orange-200', 'bg-amber-200', 'bg-yellow-200', 
+            'bg-lime-200', 'bg-emerald-200', 'bg-teal-200'
+        ];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+        const initials = name
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase())
+            .slice(0, 2)
+            .join('');
+
+        return `
+            <div class="w-12 h-12 rounded-full ${randomColor} flex items-center justify-center 
+                        text-orange-900 font-bold text-lg shadow-md border-2 border-white">
+                ${initials}
+            </div>
+        `;
+    }
+
+    // Calculate days until due date
+    function calculateDaysUntilDue(endDate) {
+        const today = new Date();
+        const due = new Date(endDate);
+        const timeDiff = due.getTime() - today.getTime();
+        return Math.ceil(timeDiff / (1000 * 3600 * 24));
+    }
+
+    // Add color-coded risk indicator
+    function getRiskIndicator(member) {
+        const daysUntilDue = calculateDaysUntilDue(member.end_date);
+        
+        if (daysUntilDue <= 3) {
+            return {
+                class: 'bg-red-100 text-red-800 border-red-200',
+                text: 'Urgent'
+            };
+        } else if (daysUntilDue <= 5) {
+            return {
+                class: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                text: 'Soon'
+            };
+        }
+        return {
+            class: 'bg-green-100 text-green-800 border-green-200',
+            text: 'Upcoming'
+        };
+    }
+
     const membersList = dueMembers
-        .map(member => `
-            <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg mb-2 hover:bg-orange-100 transition-all">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full overflow-hidden bg-orange-200 flex-shrink-0">
-                        <img 
-                            src="/api/monthly-members/${member.id}/profile-picture" 
-                            alt="${member.member_name}'s profile"
-                            class="w-full h-full object-cover"
-                            onerror="this.src='/path/to/default-avatar.jpg'" 
-                        />
+        .map(member => {
+            const riskIndicator = getRiskIndicator(member);
+            const daysLeft = calculateDaysUntilDue(member.end_date);
+
+            return `
+            <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 
+                        overflow-hidden border-l-4 ${
+                            riskIndicator.class.includes('red') ? 'border-red-500' : 
+                            riskIndicator.class.includes('yellow') ? 'border-yellow-500' : 
+                            'border-green-500'
+                        }">
+                <div class="flex justify-between items-center p-4">
+                    <div class="flex items-center space-x-4">
+                        ${generateAvatar(member.member_name)}
+                        <div>
+                            <h3 class="font-semibold text-gray-800 text-base">${member.member_name}</h3>
+                            <p class="text-sm text-gray-600">
+                                Due: ${new Date(member.end_date).toLocaleDateString()}
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="font-semibold text-orange-900">${member.member_name}</h3>
-                        <p class="text-sm text-orange-600">Due: ${new Date(member.end_date).toLocaleDateString()}</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                     ${riskIndicator.class} border">
+                            ${daysLeft} days | ${riskIndicator.text}
+                        </span>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full ${
+                            member.status === 'Active' 
+                                ? 'bg-green-100 text-green-800 border-green-200' 
+                                : 'bg-red-100 text-red-800 border-red-200'
+                        } border">${member.status}</span>
                     </div>
                 </div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full ${
-                    member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }">${member.status}</span>
             </div>
-        `)
+        `;})
         .join('');
 
     dueSection.innerHTML = `
-        <div class="space-y-2">
-            <h3 class="text-lg font-semibold text-orange-900 mb-3">Members Due (Next 7 Days)</h3>
-            ${membersList}
+        <div class="space-y-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Members Due (Next 7 Days)
+                </h3>
+            </div>
+            <div class="space-y-3">
+                ${membersList}
+            </div>
         </div>
     `;
 }
