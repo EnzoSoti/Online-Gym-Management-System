@@ -330,7 +330,12 @@ async function addMemberToDatabase(formData, paymentDetails) {
             playSound('success-sound');
             Swal.fire({
                 title: 'Success!',
-                text: 'Member added successfully',
+                html: `
+                    <div style="text-align: center;">
+                        <p>Member added successfully.</p>
+                        <p>Please wait for admin verification.</p>
+                    </div>
+                `,
                 icon: 'success',
                 confirmButtonText: 'OK',
                 customClass: {
