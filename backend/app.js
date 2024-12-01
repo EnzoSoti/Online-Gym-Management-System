@@ -385,27 +385,23 @@ app.post('/api/monthly-members/customer', upload.fields([
     { name: 'profile_picture', maxCount: 1 }
 ]), async (req, res) => {
     try {
-        const { member_name, type, start_date, end_date } = req.body;
+        const { member_name, type, start_date, end_date, gcash_ref, gcash_name, amount_paid } = req.body;
         const school_id_picture = req.files['school_id_picture'] ? req.files['school_id_picture'][0].buffer : null;
         const profile_picture = req.files['profile_picture'] ? req.files['profile_picture'][0].buffer : null;
 
-        if (!member_name || !type || !start_date || !end_date) {
+        if (!member_name || !type || !start_date || !end_date || !gcash_ref || !gcash_name || !amount_paid) {
             return res.status(400).json({ 
-                error: 'Member name, type, start date, and end date are required' 
+                error: 'Member name, type, start date, end date, GCash reference number, account name, and amount paid are required' 
             });
         }
 
-        let finalStatus = 'Pending';
-        if (type === 'Student' && school_id_picture) {
-            finalStatus = 'Pending';
-        } else if (type !== 'Student') {
-            finalStatus = 'Active';
-        }
+        // Set the status to "Pending" for all members
+        const finalStatus = 'Pending';
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture, profile_picture) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [member_name, finalStatus, type, start_date, end_date, school_id_picture, profile_picture]
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [member_name, finalStatus, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid]
             );
             return insertResult;
         });
@@ -417,6 +413,26 @@ app.post('/api/monthly-members/customer', upload.fields([
     } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({ error: 'Failed to add member' });
+    }
+});
+
+app.put('/api/monthly-members/:id/verify-payment', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await handleDatabaseOperation(async (connection) => {
+            const [updateResult] = await connection.query(
+                'UPDATE monthly_members SET status = ? WHERE id = ?',
+                ['Active', id]
+            );
+            return updateResult;
+        });
+
+        res.status(200).json({
+            message: 'Payment verified and member status updated to Active'
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to verify payment' });
     }
 });
 

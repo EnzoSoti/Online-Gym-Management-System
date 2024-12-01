@@ -261,6 +261,9 @@ async function renderMembers(members) {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${new Date(member.end_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm ${daysLeft < 0 ? 'text-rose-700 font-bold' : 'text-gray-700'} tracking-tight">${daysLeft}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.gcash_ref || 'N/A'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.gcash_name || 'N/A'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.amount_paid || 'N/A'}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-start gap-2">
                     <button class="w-8 h-8 flex items-center justify-center bg-indigo-500 text-white hover:bg-indigo-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md group" onclick="updateMember(this)" title="Update">
@@ -281,7 +284,7 @@ async function renderMembers(members) {
                         </svg>
                     </button>
         
-                    <button class="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white hover:bg-emerald-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md group ${member.type === 'regular' ? 'hidden' : ''}" onclick="verifyMember(this)" title="Verify">
+                    <button class="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white hover:bg-emerald-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md group" onclick="verifyMember(this)" title="Verify">
                         <svg class="w-4 h-4 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                         </svg>

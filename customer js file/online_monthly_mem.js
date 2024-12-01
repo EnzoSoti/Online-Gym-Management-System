@@ -221,7 +221,7 @@ async function showSubscriptionForm() {
                 formData.append('profile_picture', profile_picture);
             }
 
-            await addMemberToDatabase(formData);
+            await addMemberToDatabase(formData, paymentResult);
         }
     }
 }
@@ -275,7 +275,7 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
                 </div>
             </div>
         `,
-        confirmButtonText: 'Confirm Payment',
+        confirmButtonText: 'Submit Payment Details',
         showCancelButton: true,
         customClass: {
             popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
@@ -314,8 +314,12 @@ function playSound(soundId) {
     sound.play();
 }
 
-async function addMemberToDatabase(formData) {
+async function addMemberToDatabase(formData, paymentDetails) {
     try {
+        formData.append('gcash_ref', paymentDetails.gcash_ref);
+        formData.append('gcash_name', paymentDetails.gcash_name);
+        formData.append('amount_paid', paymentDetails.amount);
+
         const response = await fetch(`${API_BASE_URL}/monthly-members/customer`, {
             method: 'POST',
             body: formData
