@@ -261,9 +261,15 @@ async function renderMembers(members) {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${new Date(member.start_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${new Date(member.end_date).toLocaleDateString()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm ${daysLeft < 0 ? 'text-rose-700 font-bold' : 'text-gray-700'} tracking-tight">${daysLeft}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.gcash_ref || 'N/A'}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.gcash_name || 'N/A'}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${member.amount_paid || 'N/A'}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    <div class="border-l-4 border-indigo-500 pl-2">${member.gcash_ref || 'N/A'}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <div class="border-l-4 border-emerald-500 pl-2">${member.gcash_name || 'N/A'}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    <div class="border-l-4 border-rose-500 pl-2">${member.amount_paid || 'N/A'}</div>
+                </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-start gap-2">
                     <button class="w-8 h-8 flex items-center justify-center bg-indigo-500 text-white hover:bg-indigo-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md group" onclick="updateMember(this)" title="Update">
