@@ -348,6 +348,7 @@ async function addMemberToDatabase(formData, paymentDetails) {
                     <div style="text-align: center;">
                         <p>Member added successfully.</p>
                         <p>Please wait for admin verification.</p>
+                        <p>You will receive an email notification to the address you provided once your account is verified.</p>
                     </div>
                 `,
                 icon: 'success',

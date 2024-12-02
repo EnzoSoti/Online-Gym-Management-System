@@ -492,27 +492,39 @@ app.post('/api/monthly-members/:id/send-email', async (req, res) => {
         // Fetch the email address of the member
         const [member] = await handleDatabaseOperation(async (connection) => {
             return connection.query(
-                'SELECT email FROM monthly_members WHERE id = ?',
+                'SELECT email, member_name FROM monthly_members WHERE id = ?',
                 [id]
             );
         });
 
+        if (!member || member.length === 0) {
+            console.error(`Member with ID ${id} not found.`);
+            return res.status(404).json({ error: 'Member not found' });
+        }
+
         const email = member[0].email;
+        const memberName = member[0].member_name;
 
         // Send email notification
         await transporter.sendMail({
             from: '"Fitworx Gym" <fitworxgym082@gmail.com>',
             to: email,
-            subject: 'Membership Notification',
-            text: 'Your membership status has been updated.',
-            html: '<b>Your membership status has been updated.</b>'
+            subject: 'Your Monthly Pass Membership is Now Active!',
+            text: `Dear ${memberName},\n\nWe are pleased to inform you that your monthly pass membership at Fitworx Gym is now active. Enjoy your workouts!\n\nBest regards,\nFitworx Gym Team`,
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #333;">Dear ${memberName},</h2>
+                    <p>We are pleased to inform you that your monthly pass membership at Fitworx Gym is now active. Enjoy your workouts!</p>
+                    <p style="color: #666;">Best regards,<br>Fitworx Gym Team</p>
+                </div>
+            `
         });
 
         res.status(200).json({
             message: 'Email notification sent successfully'
         });
     } catch (error) { 
-        console.error('Database error:', error);
+        console.error('Error sending email notification:', error);
         res.status(500).json({ error: 'Failed to send email notification' });
     }
 });
