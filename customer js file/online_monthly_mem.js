@@ -78,6 +78,17 @@ async function showSubscriptionForm() {
                     </div>
                 </div>
                 <div class="mb-6">
+                    <label for="email" class="block text-gray-400 text-sm mb-2">Email Address</label>
+                    <div class="relative">
+                        <input type="email" id="email" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" required>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M2.003 5.884l7.197 4.147L16.397 5.884 2.003 5.884zM17 6.5l-7.197 4.147L2.803 6.5 17 6.5zM17 8.5l-7.197 4.147L2.803 8.5 17 8.5zM17 10.5l-7.197 4.147L2.803 10.5 17 10.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
                     <label for="membership_type" class="block text-gray-400 text-sm mb-2">Membership Type</label>
                     <div class="relative">
                         <select id="membership_type" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
@@ -147,13 +158,14 @@ async function showSubscriptionForm() {
         buttonsStyling: false,
         preConfirm: () => {
             const member_name = document.getElementById('member_name').value;
+            const email = document.getElementById('email').value;
             const membership_type = document.getElementById('membership_type').value;
             const start_date = document.getElementById('start_date').value;
             const end_date = document.getElementById('end_date').value;
             const school_id_picture = document.getElementById('school_id_picture').files[0];
             const profile_picture = document.getElementById('profile_picture').files[0];
 
-            if (!member_name || !membership_type || !start_date || !end_date) {
+            if (!member_name || !email || !membership_type || !start_date || !end_date) {
                 playSound('error-sound');
                 Swal.showValidationMessage('Please fill in all required fields');
                 return false;
@@ -173,6 +185,7 @@ async function showSubscriptionForm() {
 
             return {
                 member_name,
+                email,
                 membership_type,
                 start_date,
                 end_date,
@@ -202,13 +215,14 @@ async function showSubscriptionForm() {
     });
 
     if (formValues) {
-        const { member_name, membership_type, start_date, end_date, school_id_picture, profile_picture } = formValues;
+        const { member_name, email, membership_type, start_date, end_date, school_id_picture, profile_picture } = formValues;
         const expectedAmount = membership_type === 'Regular' ? 950 : 850;
         const paymentResult = await showPaymentDialogCustomer(expectedAmount, membership_type);
         
         if (paymentResult) {
             const formData = new FormData();
             formData.append('member_name', member_name);
+            formData.append('email', email);
             formData.append('status', 'Pending'); // Set status to Pending
             formData.append('type', membership_type);
             formData.append('start_date', start_date);

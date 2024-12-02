@@ -302,6 +302,12 @@ async function renderMembers(members) {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                     </button>
+
+                    <button class="w-8 h-8 flex items-center justify-center bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md group ${member.status === 'Active' ? '' : 'hidden'}" onclick="sendEmailNotification(this)" title="Send Email Notification">
+                        <svg class="w-4 h-4 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </button>
                 </div>
             </td>
         `;
@@ -315,6 +321,43 @@ async function renderMembers(members) {
     }
 
     memberTableBody.parentElement.scrollTop = scrollPos;
+}
+
+async function sendEmailNotification(btn) {
+    const row = btn.closest('tr');
+    const memberId = row.dataset.id;
+    const memberName = row.cells[1].textContent.trim();
+
+    const result = await Swal.fire({
+        title: 'Send Email Notification',
+        text: `Are you sure you want to send an email notification to ${memberName}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, send',
+        cancelButtonText: 'No, cancel'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/monthly-members/${memberId}/send-email`, {
+                method: 'POST'
+            });
+
+            if (!response.ok) throw new Error('Failed to send email notification');
+
+            notificationSystem.notify('Email Sent', {
+                body: `Successfully sent email notification to ${memberName}`,
+                icon: 'success'
+            });
+            playSound('success-sound');
+        } catch (error) {
+            console.error('Error:', error);
+            notificationSystem.notify('Error', {
+                body: error.message,
+                icon: 'error'
+            });
+        }
+    }
 }
 
 function showEnlargedPicture(imageUrl) {

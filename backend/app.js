@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const multer = require('multer');
+const nodemailer = require("nodemailer");
 const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
 const PORT = 3000;
@@ -58,6 +59,16 @@ const handleDatabaseOperation = async (operation) => {
         connection.release();
     }
 };
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: 'enzoparanedaniela00@gmail.com',
+        pass: 'ntgo qnpi podq yyzy'
+    }
+});
 
 // Supplements API Routes
 app.get('/api/supplements', async (req, res) => {
@@ -385,23 +396,22 @@ app.post('/api/monthly-members/customer', upload.fields([
     { name: 'profile_picture', maxCount: 1 }
 ]), async (req, res) => {
     try {
-        const { member_name, type, start_date, end_date, gcash_ref, gcash_name, amount_paid } = req.body;
+        const { member_name, type, start_date, end_date, gcash_ref, gcash_name, amount_paid, email } = req.body;
         const school_id_picture = req.files['school_id_picture'] ? req.files['school_id_picture'][0].buffer : null;
         const profile_picture = req.files['profile_picture'] ? req.files['profile_picture'][0].buffer : null;
 
-        if (!member_name || !type || !start_date || !end_date || !gcash_ref || !gcash_name || !amount_paid) {
+        if (!member_name || !type || !start_date || !end_date || !gcash_ref || !gcash_name || !amount_paid || !email) {
             return res.status(400).json({ 
-                error: 'Member name, type, start date, end date, GCash reference number, account name, and amount paid are required' 
+                error: 'Member name, type, start date, end date, GCash reference number, account name, amount paid, and email are required' 
             });
         }
 
-        // Set the status to "Pending" for all members
         const finalStatus = 'Pending';
 
         const result = await handleDatabaseOperation(async (connection) => {
             const [insertResult] = await connection.query(
-                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [member_name, finalStatus, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid]
+                'INSERT INTO monthly_members (member_name, status, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [member_name, finalStatus, type, start_date, end_date, school_id_picture, profile_picture, gcash_ref, gcash_name, amount_paid, email]
             );
             return insertResult;
         });
@@ -447,12 +457,63 @@ app.put('/api/monthly-members/:id/verify', async (req, res) => {
             return updateResult;
         });
 
+        // Fetch the email address of the member
+        const [member] = await handleDatabaseOperation(async (connection) => {
+            return connection.query(
+                'SELECT email FROM monthly_members WHERE id = ?',
+                [id]
+            );
+        });
+
+        const email = member[0].email;
+
+        // Send email notification
+        await transporter.sendMail({
+            from: '"Fitworx Gym" <fitworxgym082@gmail.com>',
+            to: email,
+            subject: 'Membership Verified',
+            text: 'Your membership has been verified and is now active.',
+            html: '<b>Your membership has been verified and is now active.</b>'
+        });
+
         res.status(200).json({
             message: 'Member verified successfully'
         });
     } catch (error) { 
         console.error('Database error:', error);
         res.status(500).json({ error: 'Failed to verify member' });
+    }
+});
+
+app.post('/api/monthly-members/:id/send-email', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Fetch the email address of the member
+        const [member] = await handleDatabaseOperation(async (connection) => {
+            return connection.query(
+                'SELECT email FROM monthly_members WHERE id = ?',
+                [id]
+            );
+        });
+
+        const email = member[0].email;
+
+        // Send email notification
+        await transporter.sendMail({
+            from: '"Fitworx Gym" <fitworxgym082@gmail.com>',
+            to: email,
+            subject: 'Membership Notification',
+            text: 'Your membership status has been updated.',
+            html: '<b>Your membership status has been updated.</b>'
+        });
+
+        res.status(200).json({
+            message: 'Email notification sent successfully'
+        });
+    } catch (error) { 
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Failed to send email notification' });
     }
 });
 
