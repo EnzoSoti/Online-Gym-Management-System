@@ -343,21 +343,32 @@ async function addMemberToDatabase(formData, paymentDetails) {
         if (response.ok) {
             playSound('success-sound');
             Swal.fire({
-                title: 'Success!',
+                title: 'Account Verification Pending',
                 html: `
                     <div style="text-align: center;">
                         <p>Member added successfully.</p>
                         <p>Please wait for admin verification.</p>
-                        <p>You will receive an email notification to the address you provided once your account is verified.</p>
+                        <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mt-4 rounded-lg">
+                            <p class="text-blue-700 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                An email will be sent to your provided address upon account verification.
+                            </p>
+                        </div>
                     </div>
                 `,
-                icon: 'success',
-                confirmButtonText: 'OK',
+                icon: 'info',
+                confirmButtonText: 'Got It',
                 customClass: {
                     popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                    confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
+                    title: 'text-xl font-bold text-blue-400',
+                    content: 'text-gray-300',
+                    confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 mt-4',
                 },
-                buttonsStyling: false
+                buttonsStyling: false,
+                backdrop: 'rgba(0,0,0,0.7)',
+                grow: true,
             });
         } else {
             Swal.fire({
