@@ -489,10 +489,10 @@ app.post('/api/monthly-members/:id/send-email', async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Fetch the email address of the member
+        // Fetch the email address and other details of the member
         const [member] = await handleDatabaseOperation(async (connection) => {
             return connection.query(
-                'SELECT email, member_name FROM monthly_members WHERE id = ?',
+                'SELECT email, member_name, type, amount_paid, gcash_ref, gcash_name FROM monthly_members WHERE id = ?',
                 [id]
             );
         });
@@ -504,6 +504,10 @@ app.post('/api/monthly-members/:id/send-email', async (req, res) => {
 
         const email = member[0].email;
         const memberName = member[0].member_name;
+        const membershipType = member[0].type;
+        const amountPaid = member[0].amount_paid;
+        const gcashRef = member[0].gcash_ref;
+        const gcashName = member[0].gcash_name;
 
         // Send email notification
         await transporter.sendMail({
@@ -515,7 +519,23 @@ app.post('/api/monthly-members/:id/send-email', async (req, res) => {
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <h2 style="color: #333;">Dear ${memberName},</h2>
                     <p>We are pleased to inform you that your monthly pass membership at Fitworx Gym is now active. Enjoy your workouts!</p>
-                    <p style="color: #666;">Best regards,<br>Fitworx Gym Team</p>
+                    
+                    <h3 style="color: #333;">Transaction Breakdown</h3>
+                    <ul>
+                        <li><strong>Membership Type:</strong> ${membershipType}</li>
+                        <li><strong>Amount Paid:</strong> ₱${amountPaid}</li>
+                        <li><strong>GCash Reference Number:</strong> ${gcashRef}</li>
+                        <li><strong>GCash Account Name:</strong> ${gcashName}</li>
+                    </ul>
+
+                    <a href="https://www.facebook.com/fitworxgymph" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #3b5998; color: #fff; text-decoration: none; border-radius: 5px;">Visit Our Facebook Page</a>
+
+                    <p style="color: #666; margin-top: 20px;">Best regards,<br>Fitworx Gym Team</p>
+
+                    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #999;">
+                        <p>Fitworx Gym &copy; ${new Date().getFullYear()}. All rights reserved.</p>
+                        <p>Contact us at <a href="mailto:support@fitworxgym.com" style="color: #3b5998; text-decoration: none;">support@fitworxgym.com</a></p>
+                    </footer>
                 </div>
             `
         });
