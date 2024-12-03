@@ -244,44 +244,46 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
         title: 'Payment Details',
         html: `
-            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <div class="mb-6 text-center">
-                    <h3 class="text-xl font-bold text-white mb-2">Total Amount for ${membershipType} Membership: ₱${expectedAmount}</h3>
-                    <p class="text-gray-400">Please scan the QR code below to pay via GCash</p>
+            <div class="p-4 bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl">
+                <div class="text-center mb-4">
+                    <h3 class="text-lg font-bold text-white">Total for ${membershipType}: ₱${expectedAmount}</h3>
+                    <p class="text-gray-400">Scan QR code below via GCash</p>
                 </div>
-
-                <div class="mb-6 text-center">
+                <div class="mb-4 text-center">
                     <img src="../img/photo_2024-11-30_21-50-23.jpg" alt="GCash QR Code" class="mx-auto w-48 h-48 rounded-lg">
                 </div>
-                
-                <div class="mb-6">
-                    <label for="gcash_ref" class="block text-gray-400 text-sm mb-2">GCash Reference Number</label>
+                <div class="text-center text-white mb-4">
+                    <p>Account: Enzo Daniela</p>
+                    <p>Number: 09633226873</p>
+                </div>
+                <div class="mb-4">
+                    <label for="gcash_ref" class="block text-gray-400 text-xs mb-1">GCash Ref. No.</label>
                     <div class="relative">
-                        <input type="text" id="gcash_ref" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                        <input type="text" id="gcash_ref" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 0H4v10h12V5zm-2 2a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                             </svg>
                         </div>
                     </div>
                 </div>
-                <div class="mb-6">
-                    <label for="gcash_name" class="block text-gray-400 text-sm mb-2">Account Name</label>
+                <div class="mb-4">
+                    <label for="gcash_name" class="block text-gray-400 text-xs mb-1">Account Name</label>
                     <div class="relative">
-                        <input type="text" id="gcash_name" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                        <input type="text" id="gcash_name" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
                         </div>
                     </div>
                 </div>
-                <div class="mb-6">
-                    <label for="amount_paid" class="block text-gray-400 text-sm mb-2">Amount Paid</label>
+                <div class="mb-4">
+                    <label for="amount_paid" class="block text-gray-400 text-xs mb-1">Amount Paid</label>
                     <div class="relative">
-                        <input type="number" id="amount_paid" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                        <input type="number" id="amount_paid" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                             </svg>
                         </div>
