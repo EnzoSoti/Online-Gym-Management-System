@@ -11,38 +11,8 @@ const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
 
-// Get the password input and strength indicator container
-const passwordInput = document.getElementById('password');
-const passwordStrengthIndicator = document.getElementById('passwordStrength');
-
 // API URL - Update this with your server URL
 const API_URL = 'http://localhost:3000/api';
-
-// User-friendly validation messages
-const USER_MESSAGES = {
-    password: {
-        requirements: "Your password must have:",
-        minLength: "• At least 8 characters",
-        uppercase: "• One capital letter",
-        lowercase: "• One small letter",
-        number: "• One number",
-        special: "• One special character (!@#$%^&*)"
-    },
-    username: {
-        requirements: "Username must be:",
-        format: "• 3-30 characters long",
-        allowed: "• Can use letters, numbers, dots, and dashes"
-    },
-    fullName: {
-        requirements: "Please enter your real name:",
-        format: "• First and last name",
-        allowed: "• Letters, spaces, and hyphens only"
-    },
-    throttle: {
-        tooMany: "Too many attempts. Please try again in 5 minutes.",
-        tooFast: "Please wait a moment before trying again."
-    }
-};
 
 // Throttling configuration
 const THROTTLE_CONFIG = {
@@ -51,49 +21,6 @@ const THROTTLE_CONFIG = {
     attempts: new Map(),
     lastSubmitTime: 0,
     minSubmitInterval: 1000 // Minimum 1 second between submissions
-};
-
-// Validation functions
-const validatePassword = (password) => {
-    const errors = [];
-    if (password.length < 8) {
-        errors.push(USER_MESSAGES.password.minLength);
-    }
-    if (!/[A-Z]/.test(password)) {
-        errors.push(USER_MESSAGES.password.uppercase);
-    }
-    if (!/[a-z]/.test(password)) {
-        errors.push(USER_MESSAGES.password.lowercase);
-    }
-    if (!/\d/.test(password)) {
-        errors.push(USER_MESSAGES.password.number);
-    }
-    if (!/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) {
-        errors.push(USER_MESSAGES.password.special);
-    }
-    return errors;
-};
-
-const validateUsername = (username) => {
-    const errors = [];
-    if (username.length < 3 || username.length > 30) {
-        errors.push(USER_MESSAGES.username.format);
-    }
-    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
-        errors.push(USER_MESSAGES.username.allowed);
-    }
-    return errors;
-};
-
-const validateFullName = (fullName) => {
-    const errors = [];
-    if (!/^[a-zA-Z\s'-]+$/.test(fullName)) {
-        errors.push(USER_MESSAGES.fullName.allowed);
-    }
-    if (fullName.length < 2) {
-        errors.push(USER_MESSAGES.fullName.format);
-    }
-    return errors;
 };
 
 // Sanitize input to prevent XSS
@@ -125,25 +52,6 @@ const isThrottled = (clientIP = 'default') => {
     return recentAttempts.length >= THROTTLE_CONFIG.maxAttempts;
 };
 
-// Show validation errors in a user-friendly way
-const showValidationErrors = (errors, type) => {
-    Swal.fire({
-        title: `Please Check Your ${type}`,
-        html: `
-            <div class="text-left">
-                <p>${USER_MESSAGES[type].requirements}</p>
-                ${errors.join('<br>')}
-            </div>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Got it!',
-        confirmButtonColor: '#3b82f6',
-        background: '#f0f9ff',
-        iconColor: '#0ea5e9',
-        color: '#0c4a6e'
-    });
-};
-
 // Handle form submission
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -151,7 +59,7 @@ loginForm.addEventListener('submit', async function (e) {
     if (isThrottled()) {
         Swal.fire({
             title: 'Please Wait',
-            text: USER_MESSAGES.throttle.tooMany,
+            text: 'Too many attempts. Please try again in 5 minutes.',
             icon: 'warning',
             confirmButtonText: 'OK',
             confirmButtonColor: '#eab308',
@@ -168,27 +76,6 @@ loginForm.addEventListener('submit', async function (e) {
     const sanitizedUsername = sanitizeInput(username.value.trim());
     const sanitizedPassword = password.value; // Don't sanitize password
     const sanitizedFullName = isLoginMode ? '' : sanitizeInput(fullName.value.trim());
-
-    // Validate inputs
-    const usernameErrors = validateUsername(sanitizedUsername);
-    if (usernameErrors.length > 0) {
-        showValidationErrors(usernameErrors, 'username');
-        return;
-    }
-
-    const passwordErrors = validatePassword(sanitizedPassword);
-    if (passwordErrors.length > 0) {
-        showValidationErrors(passwordErrors, 'password');
-        return;
-    }
-
-    if (!isLoginMode) {
-        const fullNameErrors = validateFullName(sanitizedFullName);
-        if (fullNameErrors.length > 0) {
-            showValidationErrors(fullNameErrors, 'fullName');
-            return;
-        }
-    }
 
     try {
         function playSound(soundId) {
@@ -322,7 +209,6 @@ function toggleForms() {
             <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>
         `;
         fullNameField.classList.remove('hidden');
-        passwordStrengthIndicator.classList.remove('hidden'); // Show password strength indicator
     } else {
         // Switch to login
         formTitle.textContent = 'Sign in to Account';
@@ -334,7 +220,6 @@ function toggleForms() {
             <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>
         `;
         fullNameField.classList.add('hidden');
-        passwordStrengthIndicator.classList.add('hidden'); // Hide password strength indicator
     }
 
     // Clear form fields
@@ -367,55 +252,4 @@ showPasswordButton.addEventListener('click', function() {
     // Toggle the eye icon
     this.querySelector('i').classList.toggle('fa-eye');
     this.querySelector('i').classList.toggle('fa-eye-slash');
-});
-
-// Function to evaluate password strength
-function evaluatePasswordStrength(password) {
-    const strength = { score: 0, feedback: [] };
-
-    if (password.length >= 8) strength.score++;
-    else strength.feedback.push("At least 8 characters.");
-
-    if (/[A-Z]/.test(password)) strength.score++;
-    else strength.feedback.push("Add an uppercase letter.");
-
-    if (/[a-z]/.test(password)) strength.score++;
-    else strength.feedback.push("Add a lowercase letter.");
-
-    if (/\d/.test(password)) strength.score++;
-    else strength.feedback.push("Include a number.");
-
-    if (/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) strength.score++;
-    else strength.feedback.push("Use a special character.");
-
-    return strength;
-}
-
-
-// Function to update password strength indicator
-function updatePasswordStrengthIndicator(strength) {
-    if (strength.score === 5) {
-        passwordStrengthIndicator.textContent = "Strong password";
-        passwordStrengthIndicator.classList.remove('text-red-500', 'text-yellow-500');
-        passwordStrengthIndicator.classList.add('text-green-500');
-    } else if (strength.score >= 3) {
-        passwordStrengthIndicator.textContent = "Moderate password";
-        passwordStrengthIndicator.classList.remove('text-red-500', 'text-green-500');
-        passwordStrengthIndicator.classList.add('text-yellow-500');
-    } else {
-        passwordStrengthIndicator.textContent = "Weak password";
-        passwordStrengthIndicator.classList.remove('text-yellow-500', 'text-green-500');
-        passwordStrengthIndicator.classList.add('text-red-500');
-    }
-
-    if (strength.feedback.length > 0) {
-        passwordStrengthIndicator.textContent += ` (${strength.feedback.join(', ')})`;
-    }
-}
-
-// Add input event listener to the password input
-passwordInput.addEventListener('input', function() {
-    const password = passwordInput.value;
-    const strength = evaluatePasswordStrength(password);
-    updatePasswordStrengthIndicator(strength);
 });
