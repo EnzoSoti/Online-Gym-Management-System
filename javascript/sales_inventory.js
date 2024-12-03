@@ -7,6 +7,7 @@ class SupplementManager {
         this.modalTitle = document.getElementById('modalTitle');
         this.currentId = null;
         this.LOW_STOCK_THRESHOLD = 5;
+        this.CRITICAL_LOW_THRESHOLD = 10; // New threshold for critical low
         this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
         this.currentSupplements = []; // Store current state
         this.isPolling = true; // Flag to control polling
@@ -129,9 +130,7 @@ class SupplementManager {
             );
         });
 
-        if (newLowStockItems.length > 0) {
-            this.showLowStockNotification(newLowStockItems);
-        }
+        // No need to call showLowStockNotification since it's removed
     }
 
     showUpdateNotification() {
@@ -146,110 +145,60 @@ class SupplementManager {
         });
     }
 
-    showLowStockNotification(items) {
-        Swal.fire({
-            icon: '',
-            iconHtml: `
-                <div class="w-32 h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                </div>
-            `,
-            title: 'Inventory Insights',
-            background: '#ffffff',
-            color: '#1a202c',
-            html: `
-                <div class="text-center">
-                    <div class="mb-4 p-6 rounded-2xl bg-gray-50 border border-gray-200 shadow-2xl">
-                        <h2 class="text-2xl font-extrabold text-gray-900 mb-5 tracking-tight leading-none">
-                            Stock Level Notification
-                        </h2>
-                        <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-                            The following supplements require immediate attention
-                        </p>
-                        <div class="space-y-4">
-                            ${items.map(item => `
-                                <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-base font-semibold text-gray-800">${item.supplement_name}</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-orange-700 font-bold bg-orange-100 px-3 py-1 rounded-full text-sm">
-                                        ${item.quantity} remaining
-                                    </span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: 'Review Inventory',
-            confirmButtonColor: '#DD6B20',
-            customClass: {
-                popup: 'rounded-3xl overflow-hidden',
-                title: 'text-3xl font-bold text-gray-900',
-                content: 'text-gray-700'
-            },
-            width: '600px',
-            padding: '2rem'
-        });
-    }
-
     createTableRow(supplement) {
         const stockClass = supplement.quantity <= this.LOW_STOCK_THRESHOLD 
             ? 'bg-red-100 text-red-800' 
             : 'bg-green-100 text-green-800';
     
+        const criticalLowClass = supplement.quantity < this.CRITICAL_LOW_THRESHOLD 
+            ? 'bg-red-100 text-red-800' 
+            : 'bg-green-100 text-green-800';
+    
         return `
-            <tr data-id="${supplement.id}" class="group transition-all duration-300 ease-in-out hover:bg-slate-50 hover:shadow-sm border-b border-slate-100 last:border-b-0"> 
-                <td class="px-6 py-4 whitespace-nowrap"> 
-                    <div class="flex items-center space-x-4"> 
-                        <div class="h-12 w-12 flex-shrink-0 bg-indigo-100 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-105"> 
-                            <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> 
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/> 
-                            </svg> 
-                        </div> 
-                        <div> 
-                            <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">${supplement.supplement_name}</div> 
-                            <div class="text-xs text-slate-500 group-hover:text-slate-700 transition-colors">Supplement ID: ${supplement.id}</div> 
-                        </div> 
-                    </div> 
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${stockClass}">
-                        ${supplement.quantity} Available
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        ${supplement.price} ₱
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="edit-btn inline-flex items-center gap-2 border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Restock
-                    </button>
+<tr data-id="${supplement.id}" class="group transition-all duration-300 ease-in-out hover:bg-slate-50 hover:shadow-sm border-b border-slate-100 last:border-b-0"> 
+    <td class="px-6 py-4 whitespace-nowrap"> 
+        <div class="flex items-center space-x-4"> 
+            <div class="h-12 w-12 flex-shrink-0 bg-indigo-100 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-105"> 
+                <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> 
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/> 
+                </svg> 
+            </div> 
+            <div> 
+                <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">${supplement.supplement_name}</div> 
+                <div class="text-xs text-slate-500 group-hover:text-slate-700 transition-colors">Supplement ID: ${supplement.id}</div> 
+            </div> 
+        </div> 
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${stockClass}">
+            ${supplement.quantity} Available
+        </span>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${criticalLowClass}">
+            ${supplement.quantity < this.CRITICAL_LOW_THRESHOLD ? 'Critical Low' : ''}
+        </span>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            ${supplement.price} ₱
+        </span>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="edit-btn inline-flex items-center border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white px-2 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+        </button>
 
-                    <button class="delete-btn inline-flex items-center gap-2 border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white px-4 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        `;
+        <button class="delete-btn inline-flex items-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white px-2 py-2 transition-all duration-200 text-sm font-medium mr-4" onclick="renewMembership(this)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </button>
+    </td>
+</tr>
+`;
     }
 
     async handleSubmit(e) {
