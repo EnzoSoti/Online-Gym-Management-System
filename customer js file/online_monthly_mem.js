@@ -65,84 +65,92 @@ async function showSubscriptionForm() {
     const { value: formValues } = await Swal.fire({
         title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Monthly Membership Registration</span>',
         html: `
-            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <div class="mb-6">
-                    <label for="member_name" class="block text-gray-400 text-sm mb-2">Member Name</label>
-                    <div class="relative">
-                        <input type="text" id="member_name" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" value="${fullName || ''}" readonly>
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                            </svg>
+            <div class="p-4 bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl">
+                <div class="space-y-4">
+                    <div>
+                        <label for="member_name" class="text-gray-400 text-xs mb-1 block">Member Name</label>
+                        <div class="relative">
+                            <input type="text" id="member_name" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${fullName || ''}" readonly>
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-6">
-                    <label for="email" class="block text-gray-400 text-sm mb-2">Email Address</label>
-                    <div class="relative">
-                        <input type="email" id="email" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" required>
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M2.003 5.884l7.197 4.147L16.397 5.884 2.003 5.884zM17 6.5l-7.197 4.147L2.803 6.5 17 6.5zM17 8.5l-7.197 4.147L2.803 8.5 17 8.5zM17 10.5l-7.197 4.147L2.803 10.5 17 10.5z" />
-                            </svg>
+
+                    <div>
+                        <label for="email" class="text-gray-400 text-xs mb-1 block">Email Address</label>
+                        <div class="relative">
+                            <input type="email" id="email" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" required>
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2.003 5.884l7.197 4.147L16.397 5.884 2.003 5.884zM17 6.5l-7.197 4.147L2.803 6.5 17 6.5zM17 8.5l-7.197 4.147L2.803 8.5 17 8.5zM17 10.5l-7.197 4.147L2.803 10.5 17 10.5z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-6">
-                    <label for="membership_type" class="block text-gray-400 text-sm mb-2">Membership Type</label>
-                    <div class="relative">
-                        <select id="membership_type" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                            <option value="Regular">Regular (950₱)</option>
-                            <option value="Student">Student (850₱)</option>
-                        </select>
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                            </svg>
+
+                    <div>
+                        <label for="membership_type" class="text-gray-400 text-xs mb-1 block">Membership Type</label>
+                        <div class="relative">
+                            <select id="membership_type" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                                <option value="Regular">Regular (950₱)</option>
+                                <option value="Student">Student (850₱)</option>
+                            </select>
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="student-id-picture-field" style="display: none;" class="mb-6">
-                    <label for="school_id_picture" class="block text-gray-400 text-sm mb-2">Student ID Picture</label>
-                    <div class="relative">
-                        <input type="file" id="school_id_picture" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
-                            </svg>
+
+                    <div id="student-id-picture-field" style="display: none;" class="mb-4">
+                        <label for="school_id_picture" class="text-gray-400 text-xs mb-1 block">Student ID Picture</label>
+                        <div class="relative">
+                            <input type="file" id="school_id_picture" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-6">
-                    <label for="profile_picture" class="block text-gray-400 text-sm mb-2">Profile Picture</label>
-                    <div class="relative">
-                        <input type="file" id="profile_picture" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                            </svg>
+
+                    <div>
+                        <label for="profile_picture" class="text-gray-400 text-xs mb-1 block">Profile Picture</label>
+                        <div class="relative">
+                            <input type="file" id="profile_picture" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-6">
-                    <label for="start_date" class="block text-gray-400 text-sm mb-2">Start Date</label>
-                    <div class="relative">
-                        <input type="date" id="start_date" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" readonly>
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                            </svg>
+
+                    <div>
+                        <label for="start_date" class="text-gray-400 text-xs mb-1 block">Start Date</label>
+                        <div class="relative">
+                            <input type="date" id="start_date" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" readonly>
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-6">
-                    <label for="end_date" class="block text-gray-400 text-sm mb-2">End Date</label>
-                    <div class="relative">
-                        <input type="date" id="end_date" class="w-full px-4 py-3 pl-10 rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" readonly>
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                            </svg>
+
+                    <div>
+                        <label for="end_date" class="text-gray-400 text-xs mb-1 block">End Date</label>
+                        <div class="relative">
+                            <input type="date" id="end_date" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" readonly>
+                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
