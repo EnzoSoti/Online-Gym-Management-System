@@ -631,6 +631,9 @@ async function handleGcashPayment(totalAmount) {
                 </div>
 
                 <div class="space-y-6">
+                    <div class="text-center">
+                        <img src="../img/photo_2024-11-30_21-50-23.jpg" alt="QR Code" class="mx-auto mb-6 rounded-xl shadow-lg" style="max-width: 200px;">
+                    </div>
                     <div class="text-left space-y-6">
                         <div class="group">
                             <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Reference Number</label>

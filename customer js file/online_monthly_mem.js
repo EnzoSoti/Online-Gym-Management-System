@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function showPolicyAgreement() {
     const { isConfirmed } = await Swal.fire({
-        title: 'Online Monthly Pass',
+        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Online Monthly Pass</span>',
         html: `
             <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
                 <h3 class="text-xl font-semibold text-white mb-4 text-center">Payment Policy</h3>
@@ -63,7 +63,7 @@ async function showSubscriptionForm() {
     const fullName = sessionStorage.getItem('full_name');
 
     const { value: formValues } = await Swal.fire({
-        title: 'Monthly Membership Registration',
+        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Monthly Membership Registration</span>',
         html: `
             <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
                 <div class="mb-6">
@@ -242,7 +242,7 @@ async function showSubscriptionForm() {
 
 async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
-        title: 'Payment Details',
+        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Payment Details</span>',
         html: `
             <div class="p-4 bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl">
                 <div class="text-center mb-4">
