@@ -365,6 +365,14 @@ async function showFullDetailsModal(member) {
                     <p class="text-sm text-gray-500 mb-1">Amount Paid</p>
                     <p class="font-medium text-green-600">₱${member.amount_paid || 'N/A'}</p>
                 </div>
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">GCash Reference</p>
+                    <p class="font-medium text-gray-800">${member.gcash_ref || 'N/A'}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">GCash Name</p>
+                    <p class="font-medium text-gray-800">${member.gcash_name || 'N/A'}</p>
+                </div>
                 <div className="col-span-2">
                     <p class="text-sm text-gray-500 mb-1">Email</p>
                     <p class="font-medium text-gray-800">${member.email || 'N/A'}</p>
