@@ -206,4 +206,127 @@ updateDateTime();
 document.addEventListener('DOMContentLoaded', () => {
     loadCheckins();
     setInterval(checkTimeAndClear, 60000); // Check every minute
+
+    // Autocomplete functionality
+    const clientNameInput = document.getElementById('monthly-client-name');
+    const suggestionsContainer = document.getElementById('suggestions');
+
+    let allMembers = [];
+
+    // Fetch all members from the API
+    async function fetchAllMembers() {
+        try {
+            const response = await fetch(`${API_URL}/monthly-members`);
+            allMembers = await response.json();
+        } catch (error) {
+            console.error('Error fetching monthly members for autocomplete:', error);
+        }
+    }
+
+    // Display suggestions based on input
+    function displaySuggestions(query) {
+        suggestionsContainer.innerHTML = '';
+        const matchingMembers = allMembers
+            .filter(member => member.status === 'Active')
+            .filter(member => member.member_name.toLowerCase().includes(query));
+
+        matchingMembers.forEach(member => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.textContent = member.member_name;
+            suggestionItem.classList.add('p-2', 'cursor-pointer', 'hover:bg-slate-100');
+            suggestionItem.addEventListener('click', () => {
+                clientNameInput.value = member.member_name;
+                suggestionsContainer.innerHTML = '';
+                suggestionsContainer.classList.add('hidden');
+            });
+            suggestionsContainer.appendChild(suggestionItem);
+        });
+
+        if (matchingMembers.length > 0) {
+            suggestionsContainer.classList.remove('hidden');
+        } else {
+            suggestionsContainer.classList.add('hidden');
+        }
+    }
+
+    // Fetch all members on page load
+    fetchAllMembers();
+
+    // Event listener for input changes
+    clientNameInput.addEventListener('input', () => {
+        const query = clientNameInput.value.toLowerCase();
+        displaySuggestions(query);
+    });
+
+    // Event listener for focus on input
+    clientNameInput.addEventListener('focus', () => {
+        const query = clientNameInput.value.toLowerCase();
+        displaySuggestions(query);
+    });
+
+    // Hide suggestions when clicking outside the input field
+    document.addEventListener('click', (event) => {
+        if (event.target !== clientNameInput && !suggestionsContainer.contains(event.target)) {
+            suggestionsContainer.innerHTML = '';
+            suggestionsContainer.classList.add('hidden');
+        }
+    });
+
+    // Function to update the list of monthly members every second
+    async function updateMonthlyMembers() {
+        try {
+            const response = await fetch(`${API_URL}/monthly-members`);
+            allMembers = await response.json();
+        } catch (error) {
+            console.error('Error fetching monthly members:', error);
+        }
+    }
+
+    // Function to update the check-ins table every second
+    function updateCheckinsTable() {
+        const checkins = JSON.parse(localStorage.getItem('monthlyCheckins')) || [];
+        const checkinsBody = document.getElementById('monthly-checkins-body');
+        checkinsBody.innerHTML = ''; // Clear existing rows
+
+        checkins.forEach(checkIn => {
+            const newRow = document.createElement('tr');
+            newRow.className = 'hover:bg-slate-50 transition-colors duration-200';
+            newRow.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="font-medium text-slate-900">${checkIn.id}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-slate-900">${checkIn.clientName}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-3 py-1 rounded-full text-xs font-medium ${
+                        checkIn.status === 'Active' 
+                            ? 'bg-green-50 text-green-700' 
+                            : 'bg-red-50 text-red-700'
+                    }">
+                        ${checkIn.status}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-slate-900">${new Date(checkIn.startDate).toLocaleDateString()}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-slate-900">${new Date(checkIn.endDate).toLocaleDateString()}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-slate-900">${calculateDaysLeft(checkIn.endDate)}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-slate-900">${checkIn.timeIn}</span>
+                </td>
+            `;
+            checkinsBody.appendChild(newRow);
+        });
+    }
+
+    // Update the list of monthly members and check-ins table every second
+    setInterval(() => {
+        updateMonthlyMembers();
+        updateCheckinsTable();
+    }, 1000);
 });
