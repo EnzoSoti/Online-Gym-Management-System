@@ -135,13 +135,10 @@ async function handleCheckin(event) {
 
         // Show success message with auto-close and no buttons
         Swal.fire({
-            title: 'Success!',
-            text: 'Client has been checked in successfully',
+            text: 'Client Checked In Successfully',
             icon: 'success',
             timer: 1500,
-            showConfirmButton: false,
-            position: 'top-end',
-            toast: true
+            showConfirmButton: false
         }).then(() => {
             // Clear form fields immediately after success message
             resetForm();

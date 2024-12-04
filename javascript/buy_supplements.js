@@ -169,12 +169,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         quantity: quantity
                     })
                 });
-
+            
                 if (!response.ok) {
                     throw new Error('Purchase failed');
                 }
-
-                await Swal.fire('Success', 'Purchase completed successfully', 'success');
+            
+                await Swal.fire({
+                    title: 'Purchase Successful!',
+                    text: 'Your supplement has been purchased.',
+                    icon: 'success'
+                });
+                
                 buyModal.classList.add('hidden');
                 await fetchSupplements(); // Immediate refresh after purchase
             } catch (error) {

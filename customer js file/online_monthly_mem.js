@@ -12,28 +12,60 @@ async function showPolicyAgreement() {
     const { isConfirmed } = await Swal.fire({
         title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Online Monthly Pass</span>',
         html: `
-            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <h3 class="text-xl font-semibold text-white mb-4 text-center">Payment Policy</h3>
-                
-                <div class="text-left text-gray-300 space-y-3 mb-6">
-                    <p>Before proceeding with your registration, please note our payment policy:</p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li>Payment must be made through GCash before registration can be completed</li>
-                        <li>Regular Membership: ₱950</li>
-                        <li>Student Membership: ₱850</li>
-                        <li>Your membership will only be activated after payment verification</li>
-                        <li>Please prepare your GCash reference number for verification</li>
-                        <li>No refunds will be issued for incomplete or invalid payments</li>
-                    </ul>
-                </div>
-                
-                <div class="flex items-center space-x-2 mb-6">
-                    <input type="checkbox" id="policy-agreement" class="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-500">
-                    <label for="policy-agreement" class="text-gray-300">
-                        I have read and agree to the payment policy
-                    </label>
-                </div>
-            </div>
+            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl shadow-lg border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-5 text-center flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                            </svg>
+                            Payment Policy
+                        </h3>
+                        
+                        <div class="bg-gray-800 rounded-xl p-5 mb-6 border border-gray-700">
+                            <p class="text-gray-300 mb-4 italic">Before proceeding with your registration, please carefully review our payment guidelines:</p>
+                            <div class="space-y-3 pl-4 border-l-4 border-blue-500">
+                                <div class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-gray-300">Payment must be made through <span class="font-semibold text-blue-300">GCash</span> before registration completion</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-gray-300">Membership Rates: 
+                                        <span class="font-semibold text-blue-300">Regular ₱950</span> | 
+                                        <span class="font-semibold text-blue-300">Student ₱850</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-gray-300">Membership activates only after <span class="font-semibold text-blue-300">payment verification</span></span>
+                                </div>
+                                <div class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-gray-300">Prepare your <span class="font-semibold text-blue-300">GCash reference number</span> for verification</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-red-300">No refunds for incomplete or invalid payments</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 bg-gray-800 p-4 rounded-xl border border-gray-700">
+                            <input type="checkbox" id="policy-agreement" class="w-5 h-5 rounded border-gray-600 bg-gray-900 text-blue-500 focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                            <label for="policy-agreement" class="text-gray-300 select-none hover:text-blue-300 transition-colors duration-300">
+                                I have read and agree to the payment policy
+                            </label>
+                        </div>
+                    </div>
         `,
         confirmButtonText: 'Proceed to Registration',
         showCancelButton: true,
@@ -257,8 +289,14 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
                     <h3 class="text-lg font-bold text-white">Total for ${membershipType}: ₱${expectedAmount}</h3>
                     <p class="text-gray-400">Scan QR code below via GCash</p>
                 </div>
-                <div class="mb-4 text-center">
-                    <img src="../img/photo_2024-11-30_21-50-23.jpg" alt="GCash QR Code" class="mx-auto w-48 h-48 rounded-lg">
+                <div class="mb-6 flex justify-center">
+                    <div class="p-4 bg-white/10 rounded-xl border border-white/20 shadow-xl hover:scale-105 transition-all duration-300">
+                        <img 
+                            src="../img/photo_2024-11-30_21-50-23.jpg" 
+                            alt="GCash QR Code" 
+                            class="mx-auto w-64 h-64 rounded-lg object-cover ring-4 ring-blue-500/50 hover:ring-blue-500/70 transition-all duration-300"
+                        >
+                    </div>
                 </div>
                 <div class="text-center text-white mb-4">
                     <p>Account: Enzo Daniela</p>
@@ -267,7 +305,10 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
                 <div class="mb-4">
                     <label for="gcash_ref" class="block text-gray-400 text-xs mb-1">GCash Ref. No.</label>
                     <div class="relative">
-                        <input type="text" id="gcash_ref" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <input type="text" id="gcash_ref" 
+                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            placeholder="Enter reference number"
+                        >
                         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 0H4v10h12V5zm-2 2a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -278,7 +319,10 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
                 <div class="mb-4">
                     <label for="gcash_name" class="block text-gray-400 text-xs mb-1">Account Name</label>
                     <div class="relative">
-                        <input type="text" id="gcash_name" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <input type="text" id="gcash_name" 
+                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            placeholder="Enter account name"
+                        >
                         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -289,7 +333,10 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
                 <div class="mb-4">
                     <label for="amount_paid" class="block text-gray-400 text-xs mb-1">Amount Paid</label>
                     <div class="relative">
-                        <input type="number" id="amount_paid" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                        <input type="number" id="amount_paid" 
+                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            placeholder="Enter amount"
+                        >
                         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                             <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
