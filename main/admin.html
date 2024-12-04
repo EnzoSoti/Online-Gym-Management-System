@@ -96,7 +96,8 @@
                 </div>
                 <ul class="nav-menu space-y-3 p-4" id="adminNavMenu">
                     <li><a href="#dashboard" class="nav-item" id="navDashboard"><i class="fa-solid fa-home"></i>Dashboard</a></li>
-                    <li><a href="#check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-dumbbell"></i>Check-in</a></li>
+                    <li><a href="#check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-dumbbell"></i>Regular Check-in</a></li>
+                    <li><a href="#monthly-check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-dumbbell"></i>Monthly Check-in</a></li>
                     <li><a href="#reservation" class="nav-item" id="navReservation"><i class="fa-solid fa-bookmark"></i>Reservation list</a></li>
                     <li><a href="#supplement" class="nav-item" id="navInventory"><i class="fa-solid fa-box"></i>Product Stocks</a></li>
                     <li><a href="#monthlyMembers" class="nav-item" id="navMembers"><i class="fa-solid fa-users"></i>Monthly Member</a></li>
@@ -1273,6 +1274,135 @@
             </div>
         </section>
 
+        <!-- Section 8 -->
+        <!-- Monthly check-in -->
+        <div class="main-content">
+            <section id="monthly-check-in" class="min-h-screen bg-slate-50">
+                <!-- Clean Header -->
+                <header class="bg-orange-600">
+                    <div class="max-w-[2000px] mx-auto py-4 px-6">
+                        <div class="grid grid-cols-3 items-center">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-orange-500 p-2 rounded-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-2xl font-bold text-white">Fitworx GYM</h1>
+                                    <p class="text-orange-100 text-sm">Monthly Member Check-in Portal</p>
+                                </div>
+                            </div>
+                            
+                            <div class="justify-self-center">
+                                <div class="flex items-center gap-2 bg-orange-500/20 px-4 py-2 rounded-full">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    <span class="text-white font-medium">Live System</span>
+                                </div>
+                            </div>
+                            <!-- real time -->
+                            <div class="justify-self-end bg-orange-500/20 p-3 rounded-md flex flex-col items-center shadow-md">
+                                <div class="text-2xl font-semibold text-white tracking-wide" id="current-time-monthly"></div>
+                                <div class="mt-1 text-orange-100 text-[10px] uppercase tracking-wider" id="current-date-monthly"></div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="max-w-[2000px] mx-auto p-6">
+                    <div class="grid grid-cols-3 gap-6">
+                        <!-- Check-in Form -->
+                        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                            <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-500">
+                                <div class="flex items-center gap-3">
+                                    <h2 class="text-xl font-bold text-white">Monthly Check-in</h2>
+                                    <span class="px-3 py-1 bg-white/20 rounded-full text-white text-sm">
+                                        Member Access
+                                    </span>
+                                </div>
+                            </div>
+
+                            <form id="monthly-checkin-form" onsubmit="handleMonthlyCheckin(event)" class="p-6 space-y-6">
+                                <!-- Name Input -->
+                                <div class="space-y-2">
+                                    <label for="monthly-client-name" class="block text-sm font-medium text-slate-700">
+                                        Your Name
+                                    </label>
+                                    <input type="text" 
+                                        id="monthly-client-name" 
+                                        class="w-full h-12 px-4 bg-slate-50 rounded-lg border-slate-200 text-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                                        placeholder="Enter your full name" 
+                                        required />
+                                </div>
+
+                                <!-- Time Display -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-slate-700">
+                                        Check-in Time
+                                    </label>
+                                    <div id="current-time-display-monthly" 
+                                        class="w-full h-12 px-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-800 flex items-center">
+                                    </div>
+                                </div>
+
+                                <button type="submit" 
+                                        class="w-full h-12 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-500 transition-colors flex items-center justify-center gap-2">
+                                    <span>Check In</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Activity Feed -->
+                        <div class="col-span-2 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                            <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-500">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <h2 class="text-xl font-bold text-white">Monthly Activity</h2>
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                        <span class="text-white text-sm">Live Updates</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <!-- Table Header -->
+                                <div class="sticky top-0 bg-slate-50 border-b border-slate-200">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">ID</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Client Name</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Status</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Start Date</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">End Date</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Days Left</th>
+                                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Time In</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <!-- Table Body -->
+                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
+                                    <table class="w-full">
+                                        <tbody id="monthly-checkins-body" class="divide-y divide-slate-100">
+                                            <!-- Check-in rows will be added here by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </section>
+        </div>
+
         </div>
 
         <audio id="success-sound" src="../img/Apple Pay Success Sound Effect.mp3"></audio>
@@ -1287,6 +1417,7 @@
     <script src="../javascript/sales_inventory.js"></script>
     <script src="../javascript/attendance_client_cin.js"></script>
     <script src="../javascript/buy_supplements.js"></script>
+    <script src="../javascript/monthly_check_in.js"></script>
 
 </body>
 </html>
