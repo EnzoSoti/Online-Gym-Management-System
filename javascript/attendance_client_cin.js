@@ -13,7 +13,7 @@ function updateClock() {
     const currentTime = now.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
+        // second: '2-digit',
         hour12: true
     });
     // Get the current date in the desired format

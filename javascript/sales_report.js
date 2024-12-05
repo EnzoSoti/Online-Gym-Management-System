@@ -217,73 +217,83 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to populate table with fetched data
-    function populateTable(tabId, data) {
-        const tableBody = document.querySelector(`#${tabId} tbody`);
-        if (!tableBody) {
-            console.error(`Table body not found for ${tabId}`);
-            return;
-        }
-    
-        const scrollPos = tableBody.parentElement.scrollTop;
-        tableBody.innerHTML = '';
-    
-        data.forEach(item => {
-            const newRow = document.createElement('tr');
-            switch (tabId) {
-                case 'monthly':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">MMR#${item.id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.member_name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.type}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                                ${item.status}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.start_date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.end_date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount || 0}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.renewal_amount || 0}</td>
-                    `;
-                    break;
-                case 'supplements':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">PRDT#${item.id || ''}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.supplement_name || ''}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity || 0}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.price || 0}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.quantity_sold || 0}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.total_sales || 0}</td>
-                    `;
-                    break;
-                case 'regular':
-                case 'student':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">CHK#${item.id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.client_type}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.client_name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDateTime(item.time_in)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.amount}</td>
-                    `;
-                    break;
-                case 'reservations':
-                    newRow.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">RES#${item.id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.service_type}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.customer_name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.start_time}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.end_time}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${formatDate(item.reservation_date)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${item.additional_members}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">₱${item.price}</td>
-                    `;
-                    break;
-            }
-            tableBody.appendChild(newRow);
-        });
-    
-        tableBody.parentElement.scrollTop = scrollPos;
+function populateTable(tabId, data) {
+    const tableBody = document.querySelector(`#${tabId} tbody`);
+    if (!tableBody) {
+        console.error(`Table body not found for ${tabId}`);
+        return;
     }
+
+    const scrollPos = tableBody.parentElement.scrollTop;
+    tableBody.innerHTML = '';
+
+    data.forEach((item, index) => {
+        const newRow = document.createElement('tr');
+        newRow.classList.add(
+            'transition-colors', 
+            'duration-200', 
+            'ease-in-out',
+            'hover:bg-blue-50/50',
+            index % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'
+        );
+
+        switch (tabId) {
+            case 'monthly':
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">MMR#${item.id}</td>
+                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.member_name}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.type}</td>
+                    <td class="px-4 py-3 border-b border-gray-200">
+                        <span class="px-2 py-1 text-xs rounded-full ${item.status === 'Active' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-red-100 text-red-800'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.start_date)}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.end_date)}</td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.amount || 0}</td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.renewal_amount || 0}</td>
+                `;
+                break;
+            case 'supplements':
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">PRDT#${item.id || ''}</td>
+                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.supplement_name || ''}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.quantity || 0}</td>
+                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">₱${item.price || 0}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.quantity_sold || 0}</td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">${item.total_sales || 0}</td>
+                `;
+                break;
+            case 'regular':
+            case 'student':
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">CHK#${item.id}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.client_type}</td>
+                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.client_name}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDateTime(item.time_in)}</td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.amount}</td>
+                `;
+                break;
+            case 'reservations':
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">RES#${item.id}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.service_type}</td>
+                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.customer_name}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.start_time}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.end_time}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.reservation_date)}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.additional_members}</td>
+                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.price}</td>
+                `;
+                break;
+        }
+        tableBody.appendChild(newRow);
+    });
+
+    tableBody.parentElement.scrollTop = scrollPos;
+}
 
     // Handle export/print functionality
     document.querySelectorAll('button').forEach(button => {
