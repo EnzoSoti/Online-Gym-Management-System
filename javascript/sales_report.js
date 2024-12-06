@@ -304,7 +304,7 @@ function populateTable(tabId, data) {
                 const filterElement = document.getElementById(`${tabId}-month-filter`) || 
                                     document.getElementById(`${tabId}-date-filter`);
                 const filterValue = filterElement?.value;
-
+    
                 const tableContent = tabPanel.querySelector('table').cloneNode(true);
                 
                 let totalAmount = 0;
@@ -317,13 +317,15 @@ function populateTable(tabId, data) {
                         }
                     }
                 });
-
+    
                 const currentDate = new Date().toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 });
-
+    
+                const adminFullName = sessionStorage.getItem('admin_full_name') || 'Unknown Admin';
+    
                 const totalRow = document.createElement('tr');
                 totalRow.className = 'total-row';
                 const colSpan = tableContent.querySelectorAll('thead th').length - 1;
@@ -332,7 +334,7 @@ function populateTable(tabId, data) {
                     <td style="text-align: left; font-weight: bold;">₱${totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 `;
                 tableContent.querySelector('tbody').appendChild(totalRow);
-
+    
                 const printWindow = window.open('', '_blank');
                 printWindow.document.write(`
                     <html>
@@ -404,18 +406,17 @@ function populateTable(tabId, data) {
                                 <div class="content">
                                     ${tableContent.outerHTML}
                                 </div>
-
+    
                                 <div class="footer">
                                     <div class="prepared-by">
-                                        <div class="signature-line"></div>
-                                        <p>Prepared By</p>
+                                        <p>Prepared By: ${adminFullName}</p>
                                     </div>
                                     <p>Printed Date: ${currentDate}</p>
                                 </div>
-
+    
                                 <div class="page-number"></div>
                             </div>
-
+    
                             <script>
                                 const pages = document.querySelectorAll('.page-number');
                                 pages.forEach((page, index) => {

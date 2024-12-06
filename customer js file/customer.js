@@ -632,7 +632,13 @@ async function handleGcashPayment(totalAmount) {
 
                 <div class="space-y-6">
                     <div class="text-center">
-                        <img src="../img/photo_2024-11-30_21-50-23.jpg" alt="QR Code" class="mx-auto mb-6 rounded-xl shadow-lg" style="max-width: 200px;">
+                        <div class="p-4 bg-white/10 rounded-xl border border-white/20 shadow-xl hover:scale-105 transition-all duration-300">
+                            <img 
+                                src="../img/photo_2024-11-30_21-50-23.jpg" 
+                                alt="GCash QR Code" 
+                                class="mx-auto w-64 h-64 rounded-lg object-cover ring-4 ring-blue-500/50 hover:ring-blue-500/70 transition-all duration-300"
+                            >
+                        </div>
                     </div>
                     <div class="text-left space-y-6">
                         <div class="group">
