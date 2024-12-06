@@ -185,18 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         teamMembersContainer.appendChild(memberField);
         memberCount++;
-
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Player Added Successfully!',
-            showConfirmButton: false,
-            timer: 1500,
-            toast: true,
-            customClass: {
-                popup: 'rounded-3xl'
-            }
-        });
     };
 
     // Initialize the calendar
