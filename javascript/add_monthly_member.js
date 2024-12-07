@@ -470,6 +470,22 @@ async function loadMembers() {
     }
 }
 
+function filterMembersByStatus(status) {
+    let filteredMembers = [];
+    if (status === 'All') {
+        filteredMembers = allMembers;
+    } else {
+        filteredMembers = allMembers.filter(member => member.status === status);
+    }
+    renderMembers(filteredMembers);
+}
+
+// Add event listeners to the tabs
+document.getElementById('tabAll').addEventListener('click', () => filterMembersByStatus('All'));
+document.getElementById('tabActive').addEventListener('click', () => filterMembersByStatus('Active'));
+document.getElementById('tabInactive').addEventListener('click', () => filterMembersByStatus('Inactive'));
+document.getElementById('tabPending').addEventListener('click', () => filterMembersByStatus('Pending'));
+
 // Handle member type change
 function handleMemberTypeChange() {
     const memberType = document.getElementById('memberType');
