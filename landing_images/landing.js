@@ -6,26 +6,49 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
 
     function showSlide(index) {
-        // Hide all slides
         carouselItems.forEach(item => item.classList.remove('active'));
-        
-        // Ensure index wraps around
         currentIndex = (index + carouselItems.length) % carouselItems.length;
-        
-        // Show current slide
         carouselItems[currentIndex].classList.add('active');
     }
 
-    // Auto-advance slides every 3 seconds
+    // Auto-advance slides every 3 seconds with smooth transition
     setInterval(() => {
         showSlide(currentIndex + 1);
-    }, 3000);
+    }, 3000); // Increased to 3 seconds for better readability
 
-    // Add event listener for admin login button
-    const adminLoginBtn = document.getElementById('admin-login-btn');
-    if (adminLoginBtn) {
-        adminLoginBtn.addEventListener('click', showAdminLogin);
-    }
+    // Section visibility tracking
+    const sections = document.querySelectorAll('section');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // FAQ Accordion Functionality (keep your existing code)
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+
+        question.addEventListener('click', () => {
+            answer.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+    });
 });
 
 async function showAdminLogin(e) {
