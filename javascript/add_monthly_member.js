@@ -470,21 +470,17 @@ async function loadMembers() {
     }
 }
 
-function filterMembersByStatus(status) {
-    let filteredMembers = [];
-    if (status === 'All') {
-        filteredMembers = allMembers;
-    } else {
-        filteredMembers = allMembers.filter(member => member.status === status);
-    }
+// Sorting functions
+function sortMembersByStatus(status) {
+    const filteredMembers = allMembers.filter(member => member.status === status);
     renderMembers(filteredMembers);
 }
 
-// Add event listeners to the tabs
-document.getElementById('tabAll').addEventListener('click', () => filterMembersByStatus('All'));
-document.getElementById('tabActive').addEventListener('click', () => filterMembersByStatus('Active'));
-document.getElementById('tabInactive').addEventListener('click', () => filterMembersByStatus('Inactive'));
-document.getElementById('tabPending').addEventListener('click', () => filterMembersByStatus('Pending'));
+// Event listeners for sort buttons
+document.getElementById('sortActiveBtn').addEventListener('click', () => sortMembersByStatus('Active'));
+document.getElementById('sortInactiveBtn').addEventListener('click', () => sortMembersByStatus('Inactive'));
+document.getElementById('sortPendingBtn').addEventListener('click', () => sortMembersByStatus('Pending'));
+document.getElementById('displayAllBtn').addEventListener('click', () => {renderMembers(allMembers);});
 
 // Handle member type change
 function handleMemberTypeChange() {
