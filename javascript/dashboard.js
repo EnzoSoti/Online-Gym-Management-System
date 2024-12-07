@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }).then(() => {
                     // Redirect to customer page
-                    window.location.href = '../customer file/customer.html';
+                    window.location.href = '../landing_images/landing.html';
                 });
             }, 500);
         });

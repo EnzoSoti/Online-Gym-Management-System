@@ -109,7 +109,7 @@ loginForm.addEventListener('submit', async function (e) {
                 playSound('success-sound');
                 sessionStorage.setItem('full_name', data.user.full_name); // Store full name in sessionStorage
                 Swal.fire({
-                    title: '🎉 Welcome Back!',
+                    title: '🎉 Welcome!',
                     text: 'Login successful!',
                     icon: 'success',
                     showConfirmButton: false,

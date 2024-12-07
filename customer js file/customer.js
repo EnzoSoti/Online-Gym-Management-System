@@ -763,121 +763,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Admin login function
-async function showAdminLogin(e) {
-    e.preventDefault();
+// // Admin login function
+// async function showAdminLogin(e) {
+//     e.preventDefault();
 
-    const { value: formValues } = await Swal.fire({
-        title: '<div class="flex flex-col items-center gap-3">' +
-               '<div class="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center">' +
-               '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-               '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>' +
-               '</svg></div>' +
-               '<h2 class="text-2xl font-bold text-gray-800">Admin Login</h2>' +
-               '</div>',
+//     const { value: formValues } = await Swal.fire({
+//         title: '<div class="flex flex-col items-center gap-3">' +
+//                '<div class="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center">' +
+//                '<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+//                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>' +
+//                '</svg></div>' +
+//                '<h2 class="text-2xl font-bold text-gray-800">Admin Login</h2>' +
+//                '</div>',
 
-        html: `
-            <div class="space-y-6 pt-4">
-                <div class="space-y-5">
-                    <div class="group">
-                        <label class="block text-gray-500 text-sm mb-2 ml-1 text-left">Username</label>
-                        <div class="relative">
-                            <input type="text" 
-                                id="admin-username" 
-                                class="w-full px-5 py-3 rounded bg-gray-200 text-gray-800
-                                        border border-gray-400 focus:outline-none focus:ring-0"
-                                placeholder="Enter your username">
-                        </div>
-                    </div>
-                    <div class="group">
-                        <label class="block text-gray-500 text-sm mb-2 ml-1 text-left">Password</label>
-                        <div class="relative">
-                            <input type="password" 
-                                id="admin-password" 
-                                class="w-full px-5 py-3 rounded bg-gray-200 text-gray-800
-                                        border border-gray-400 focus:outline-none focus:ring-0"
-                                placeholder="Enter your password">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,
+//         html: `
+//             <div class="space-y-6 pt-4">
+//                 <div class="space-y-5">
+//                     <div class="group">
+//                         <label class="block text-gray-500 text-sm mb-2 ml-1 text-left">Username</label>
+//                         <div class="relative">
+//                             <input type="text" 
+//                                 id="admin-username" 
+//                                 class="w-full px-5 py-3 rounded bg-gray-200 text-gray-800
+//                                         border border-gray-400 focus:outline-none focus:ring-0"
+//                                 placeholder="Enter your username">
+//                         </div>
+//                     </div>
+//                     <div class="group">
+//                         <label class="block text-gray-500 text-sm mb-2 ml-1 text-left">Password</label>
+//                         <div class="relative">
+//                             <input type="password" 
+//                                 id="admin-password" 
+//                                 class="w-full px-5 py-3 rounded bg-gray-200 text-gray-800
+//                                         border border-gray-400 focus:outline-none focus:ring-0"
+//                                 placeholder="Enter your password">
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         `,
 
-        showCancelButton: true,
-        confirmButtonText: 'Login',
-        cancelButtonText: 'Cancel',
-        customClass: {
-            container: 'Poppins',
-            popup: 'rounded-lg bg-white border border-gray-300 shadow',
-            title: 'text-center border-b border-gray-200 pb-4',
-            htmlContainer: 'px-6',
-            confirmButton: 'w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2',
-            cancelButton: 'w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold rounded px-4 py-2',
-            actions: 'grid grid-cols-2 gap-4 px-6 pb-6 pt-6',
-            validationMessage: 'bg-red-100 text-red-500 rounded py-2 px-4 mt-3 text-sm font-medium'
-        },
+//         showCancelButton: true,
+//         confirmButtonText: 'Login',
+//         cancelButtonText: 'Cancel',
+//         customClass: {
+//             container: 'Poppins',
+//             popup: 'rounded-lg bg-white border border-gray-300 shadow',
+//             title: 'text-center border-b border-gray-200 pb-4',
+//             htmlContainer: 'px-6',
+//             confirmButton: 'w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2',
+//             cancelButton: 'w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold rounded px-4 py-2',
+//             actions: 'grid grid-cols-2 gap-4 px-6 pb-6 pt-6',
+//             validationMessage: 'bg-red-100 text-red-500 rounded py-2 px-4 mt-3 text-sm font-medium'
+//         },
 
-        buttonsStyling: false,
-        showLoaderOnConfirm: true,
+//         buttonsStyling: false,
+//         showLoaderOnConfirm: true,
 
-        preConfirm: async () => {
-            const username = document.getElementById('admin-username').value;
-            const password = document.getElementById('admin-password').value;
+//         preConfirm: async () => {
+//             const username = document.getElementById('admin-username').value;
+//             const password = document.getElementById('admin-password').value;
 
-            if (!username || !password) {
-                Swal.showValidationMessage('All fields are required to proceed');
-                return false;
-            }
+//             if (!username || !password) {
+//                 Swal.showValidationMessage('All fields are required to proceed');
+//                 return false;
+//             }
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/admin/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
+//             try {
+//                 const response = await fetch(`${API_BASE_URL}/admin/login`, {
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/json',
+//                     },
+//                     body: JSON.stringify({ username, password }),
+//                 });
 
-                const data = await response.json();
+//                 const data = await response.json();
 
-                if (response.ok) {
-                    // Store the full name in sessionStorage
-                    sessionStorage.setItem('admin_full_name', data.admin.full_name);
-                    return true;
-                } else {
-                    Swal.showValidationMessage(data.error || 'Invalid credentials');
-                    return false;
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                Swal.showValidationMessage('An error occurred during login');
-                return false;
-            }
-        }
-    });
+//                 if (response.ok) {
+//                     // Store the full name in sessionStorage
+//                     sessionStorage.setItem('admin_full_name', data.admin.full_name);
+//                     return true;
+//                 } else {
+//                     Swal.showValidationMessage(data.error || 'Invalid credentials');
+//                     return false;
+//                 }
+//             } catch (error) {
+//                 console.error('Login error:', error);
+//                 Swal.showValidationMessage('An error occurred during login');
+//                 return false;
+//             }
+//         }
+//     });
 
-    if (formValues) {
-        Swal.fire({
-            html: `
-                <div class="flex flex-col items-center gap-4 py-8">
-                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800">Access Granted</h3>
-                </div>
-            `,
-            showConfirmButton: false,
-            timer: 500,
-            customClass: {
-                popup: 'rounded-lg bg-white border border-gray-300'
-            }
-        }).then(() => {
-            window.location.href = '../main/admin.html';
-        });
-    }
-}
+//     if (formValues) {
+//         Swal.fire({
+//             html: `
+//                 <div class="flex flex-col items-center gap-4 py-8">
+//                     <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+//                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+//                         </svg>
+//                     </div>
+//                     <h3 class="text-lg font-semibold text-gray-800">Access Granted</h3>
+//                 </div>
+//             `,
+//             showConfirmButton: false,
+//             timer: 500,
+//             customClass: {
+//                 popup: 'rounded-lg bg-white border border-gray-300'
+//             }
+//         }).then(() => {
+//             window.location.href = '../main/admin.html';
+//         });
+//     }
+// }
 
 // Improved function to clear additional members
 function clearAdditionalMembers() {

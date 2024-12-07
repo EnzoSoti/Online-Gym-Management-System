@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../img/Fitworx logo.jpg">
+    <title>Fitworx Gym</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .carousel-item {
+            transition: all 0.7s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: scale(1.05);
+        }
+        .carousel-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .nav-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .feature-card {
+            transition: all 0.3s ease-in-out;
+            transform: translateY(0);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .membership-card {
+            transition: all 0.3s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .membership-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+    </style>
+
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="bg-orange-800 text-white p-4 fixed w-full top-0 z-50 nav-shadow">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4 group">
+                <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-12 w-12 rounded-full transition-transform group-hover:rotate-12">
+                <h1 class="text-2xl font-bold tracking-wide">Fitworx Gym</h1>
+            </div>
+            <div class="space-x-4">
+                <button id="admin-login-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition duration-300 hover:shadow-md">
+                    Admin Login
+                </button>
+                <a href="../customer file/login.html" class="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold hover:bg-orange-50 transition duration-300 hover:shadow-md">
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Carousel -->
+    <header class="relative pt-24 pb-16 bg-orange-600 text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="white" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,197.3C672,181,768,171,864,181.3C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center relative z-10">
+            <div class="animate-fade-in-left">
+                <h2 class="text-4xl font-bold mb-4 tracking-tight">Transform Your Fitness Journey</h2>
+                <p class="text-lg mb-6 leading-relaxed opacity-90">Unleash your potential at Fitworx Gym! Our cutting-edge facilities, expert trainers, and dynamic classes are designed to make every workout an exciting adventure.</p>
+                <div class="space-x-4">
+                    <a href="../customer file/login.html" class="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition duration-300 hover:shadow-lg">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+            <div class="hidden md:block relative">
+                <div id="carousel" class="relative overflow-hidden rounded-lg shadow-2xl h-80">
+                    <!-- Carousel Items -->
+                    <div class="carousel-item active">
+                        <img src="../landing_images/374589421_816260866835968_1113194790681554257_n.jpg" alt="Gym Interior" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/374630195_816260550169333_5843130271831819157_n.jpg" alt="Workout Area" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/406242404_863993535396034_6764961563443403549_n.jpg" alt="Gym Equipment" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/416355892_887540493041338_6907486057570493182_n.jpg" alt="Training Session" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/373303152_816260856835969_3157184598239307855_n.jpg" alt="Fitness Area" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/466871426_1088367472958638_4668885632206509993_n.jpg" alt="Training Session" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../landing_images/393690129_841819490946772_3577864543363292080_n.jpg" alt="Training Session" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Why Choose Fitworx Gym?</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-100 p-6 rounded-lg text-center feature-card">
+                    <img src="../landing_images/Hammer.jpg" alt="Hammer Strength Equipment" class="mx-auto mb-4 rounded-lg h-48 w-full object-cover">
+                    <h4 class="text-xl font-semibold mb-2">Premium Hammer Strength Equipment</h4>
+                    <p class="text-gray-600">Top-of-the-line Hammer Strength fitness equipment designed for optimal performance and results.</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg text-center feature-card">
+                    <img src="../landing_images/393690129_841819490946772_3577864543363292080_n.jpg" alt="Diverse Classes" class="mx-auto mb-4 rounded-lg h-48 w-full object-cover">
+                    <h4 class="text-xl font-semibold mb-2">Diverse Classes</h4>
+                    <p class="text-gray-600">From high-energy Zumba to competitive basketball, we've got something for everyone!</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg text-center feature-card">
+                    <img src="../landing_images/Whey.png" alt="Nutrition Supplements" class="mx-auto mb-4 rounded-lg h-48 w-full object-cover">
+                    <h4 class="text-xl font-semibold mb-2">Nutrition Support</h4>
+                    <p class="text-gray-600">High-quality whey protein and nutritional supplements to support your fitness goals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rest of the code remains the same as in the original file -->
+    <!-- Special Classes Section -->
+    <section class="py-16 bg-orange-50">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Exciting Classes That Will Get You Moving!</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-2xl font-semibold mb-4 text-orange-600">Basketball Court: Where Champions Train</h4>
+                    <p class="text-gray-700 mb-4">Unleash your inner athlete on our professional-grade basketball court! Whether you're a seasoned player or a beginner, our court offers:</p>
+                    <ul class="list-disc list-inside text-gray-600 mb-4">
+                        <li>Half basketball court</li>
+                        <li>Professional-grade flooring for optimal performance</li>
+                    </ul>
+                    <p class="text-gray-700 italic">Elevate your game at Fitworx Gym!</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-2xl font-semibold mb-4 text-orange-600">Zumba: Dance Your Way to Fitness!</h4>
+                    <p class="text-gray-700 mb-4">Get ready to sweat, smile, and have the time of your life with our explosive Zumba classes! Experience:</p>
+                    <ul class="list-disc list-inside text-gray-600 mb-4">
+                        <li>High-energy music</li>
+                        <li>Professional dance instructors</li>
+                        <li>Multiple difficulty levels for all fitness stages</li>
+                        <li>Fun, calorie-burning dance fitness experience</li>
+                    </ul>
+                    <p class="text-gray-700 italic">Dance, move, and transform at Fitworx Gym!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Section -->
+    <section class="py-16 bg-orange-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold mb-6 tracking-tight">Membership Options</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white text-orange-600 p-8 rounded-lg membership-card">
+                    <h4 class="text-2xl font-semibold mb-4">Regular Monthly Pass</h4>
+                    <p class="text-3xl font-bold mb-4">₱950/month</p>
+                    <ul class="mb-6 space-y-2">
+                        <li>Full Gym Access</li>
+                        <li>All Facility Bookings</li>
+                        <li>No Membership Fee</li>
+                    </ul>
+                    <a href="../customer file/login.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition duration-300">Join Now</a>
+                </div>
+                <div class="bg-white text-orange-600 p-8 rounded-lg membership-card">
+                    <h4 class="text-2xl font-semibold mb-4">Student Monthly Pass</h4>
+                    <p class="text-3xl font-bold mb-4">₱850/month</p>
+                    <ul class="mb-6 space-y-2">
+                        <li>Full Gym Access</li>
+                        <li>Student Discount</li>
+                        <li>No Membership Fee</li>
+                    </ul>
+                    <a href="../customer file/login.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition duration-300">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div>
+                <h5 class="text-xl font-semibold mb-4 tracking-wide">Fitworx Gym</h5>
+                <p class="opacity-80">Transform your fitness journey with our modern facilities and expert guidance.</p>
+            </div>
+            <div>
+                <h5 class="text-xl font-semibold mb-4 tracking-wide">Quick Links</h5>
+                <ul class="space-y-2">
+                    <li><a href="../customer file/about_us.html" class="hover:text-orange-600 transition duration-300">About Us</a></li>
+                    <li><a href="../customer file/Privacy_Policy.html" class="hover:text-orange-600 transition duration-300">Privacy Policy</a></li>
+                    <li><a href="../customer file/terms_of_service.html" class="hover:text-orange-600 transition duration-300">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-xl font-semibold mb-4 tracking-wide">Contact</h5>
+                <p>Email: fitworx@gmail.com</p>
+                <p>Phone: 0933 874 533</p>
+            </div>
+        </div>
+        <div class="text-center mt-8 border-t border-gray-700 pt-4">
+            <p>&copy; 2024 Fitworx Gym. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../landing_images/landing.js"></script>
+</body>
+</html>
