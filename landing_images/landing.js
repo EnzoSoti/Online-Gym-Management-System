@@ -6,12 +6,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
 
     function showSlide(index) {
+        // Hide all slides
         carouselItems.forEach(item => item.classList.remove('active'));
+        
+        // Ensure index wraps around
         currentIndex = (index + carouselItems.length) % carouselItems.length;
+        
+        // Show current slide
         carouselItems[currentIndex].classList.add('active');
     }
 
-    // Auto-advance slides every 3 seconds with smooth transition
+    // Auto-advance slides every 3 seconds
     setInterval(() => {
         showSlide(currentIndex + 1);
     }, 3000); // Increased to 3 seconds for better readability
@@ -36,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionObserver.observe(section);
     });
 
-    // FAQ Accordion Functionality (keep your existing code)
+    // FAQ Accordion Functionality
     const faqItems = document.querySelectorAll('.faq-item');
     
     faqItems.forEach(item => {
@@ -45,10 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const icon = item.querySelector('.faq-icon');
 
         question.addEventListener('click', () => {
+            // Toggle answer visibility
             answer.classList.toggle('hidden');
+            
+            // Rotate icon
             icon.classList.toggle('rotate-180');
         });
     });
+
+    // Attach the event listener to the "Admin Login" button
+    const adminLoginBtn = document.getElementById('admin-login-btn');
+    adminLoginBtn.addEventListener('click', showAdminLogin);
 });
 
 async function showAdminLogin(e) {

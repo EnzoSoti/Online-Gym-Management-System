@@ -233,7 +233,7 @@ function logout() {
             sessionStorage.clear();
 
             // Redirect to the login page
-            window.location.href = '../customer file/login.html';
+            window.location.href = '../landing_images/landing.html';
 
             // Prevent going back to the previous page
             window.addEventListener('popstate', function(event) {
