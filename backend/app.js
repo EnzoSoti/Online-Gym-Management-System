@@ -516,25 +516,40 @@ app.post('/api/monthly-members/:id/send-email', async (req, res) => {
             subject: 'Your Monthly Pass Membership is Now Active!',
             text: `Dear ${memberName},\n\nWe are pleased to inform you that your monthly pass membership at Fitworx Gym is now active. Enjoy your workouts!\n\nBest regards,\nFitworx Gym Team`,
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #333;">Dear ${memberName},</h2>
-                    <p>We are pleased to inform you that your monthly pass membership at Fitworx Gym is now active. Enjoy your workouts!</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+                    <h2 style="color: #1a1a1a;">Dear ${memberName},</h2>
+                    <p style="font-size: 16px; line-height: 1.6;">We are pleased to confirm that your monthly pass membership at Fitworx Gym is now active.</p>
                     
-                    <h3 style="color: #333;">Transaction Breakdown</h3>
-                    <ul>
-                        <li><strong>Membership Type:</strong> ${membershipType}</li>
-                        <li><strong>Amount Paid:</strong> ₱${amountPaid}</li>
-                        <li><strong>GCash Reference Number:</strong> ${gcashRef}</li>
-                        <li><strong>GCash Account Name:</strong> ${gcashName}</li>
-                    </ul>
+                    <div style="background-color: #f4f4f4; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <h3 style="color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Membership Details</h3>
+                        <ul style="list-style-type: none; padding: 0;">
+                            <li><strong>Membership Type:</strong> ${membershipType}</li>
+                            <li><strong>Amount Paid:</strong> ₱${amountPaid}</li>
+                            <li><strong>GCash Reference Number:</strong> ${gcashRef}</li>
+                            <li><strong>GCash Account Name:</strong> ${gcashName}</li>
+                        </ul>
+                    </div>
 
-                    <a href="https://www.facebook.com/fitworxgymph" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #3b5998; color: #fff; text-decoration: none; border-radius: 5px;">Visit Our Facebook Page</a>
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Membership Perks</h3>
+                        <ul style="color: #333; padding-left: 20px;">
+                            <li>24/7 Gym Access</li>
+                            <li>Access to All Equipment</li>
+                        </ul>
+                    </div>
 
-                    <p style="color: #666; margin-top: 20px;">Best regards,<br>Fitworx Gym Team</p>
+                    <p style="line-height: 1.6;">We look forward to supporting your fitness journey and helping you achieve your health goals at Fitworx Gym.</p>
 
-                    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #999;">
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <a href="https://www.facebook.com/fitworxgymph" style="display: inline-block; padding: 10px 20px; background-color: #2c3e50; color: #fff; text-decoration: none; border-radius: 4px;">Visit Our Facebook Page</a>
+                        <a href="mailto:support@fitworxgym.com" style="display: inline-block; padding: 10px 20px; background-color: #34495e; color: #fff; text-decoration: none; border-radius: 4px;">Contact Support</a>
+                    </div>
+
+                    <p style="margin-top: 20px; color: #666;">Best regards,<br>Fitworx Gym Team</p>
+
+                    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666;">
                         <p>Fitworx Gym &copy; ${new Date().getFullYear()}. All rights reserved.</p>
-                        <p>Contact us at <a href="mailto:support@fitworxgym.com" style="color: #3b5998; text-decoration: none;">support@fitworxgym.com</a></p>
+                        <p>Contact us at <a href="mailto:support@fitworxgym.com" style="color: #2c3e50; text-decoration: none;">support@fitworxgym.com</a></p>
                     </footer>
                 </div>
             `

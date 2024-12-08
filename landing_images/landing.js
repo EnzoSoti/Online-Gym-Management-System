@@ -57,7 +57,30 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.classList.toggle('rotate-180');
         });
     });
+    // Feedback Form Submission
+    const feedbackForm = document.getElementById('feedback-form');
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(feedbackForm);
+            const data = Object.fromEntries(formData.entries());
 
+            // Here you would typically send this data to a backend server
+            // For this example, we'll use SweetAlert to show a success message
+            Swal.fire({
+                title: 'Thank You!',
+                text: 'Your feedback has been submitted successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+            // Reset the form
+            feedbackForm.reset();
+        });
+    }
+    
     // Attach the event listener to the "Admin Login" button
     const adminLoginBtn = document.getElementById('admin-login-btn');
     adminLoginBtn.addEventListener('click', showAdminLogin);

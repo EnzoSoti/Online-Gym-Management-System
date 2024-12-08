@@ -91,6 +91,34 @@
         opacity: 1;
         transform: scale(1);
     }
+    .services-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .services-dropdown a {
+            color: #EA580C; /* orange-600 */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .services-dropdown a:hover {
+            background-color: #FDBA74; /* orange-200 */
+        }
+        .services-menu:hover .services-dropdown {
+            display: block;
+        }
+        .location-menu:hover .services-dropdown {
+        display: block;
+    }
     </style>
 
 </head>
@@ -102,12 +130,46 @@
                 <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-12 w-12 rounded-full transition-transform group-hover:rotate-12">
                 <h1 class="text-2xl font-bold tracking-wide">Fitworx Gym</h1>
             </div>
-            <div class="space-x-4">
+            <div class="space-x-4 flex items-center">
+                <!-- New Services Dropdown -->
+                <div class="relative services-menu">
+                    <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
+                        Services
+                        <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="services-dropdown">
+                        <a href="#" class="block">Basketball Court</a>
+                        <a href="#" class="block">Zumba Classes</a>
+                        <a href="#" class="block">No membership fee</a>
+                        <a href="#" class="block">Muscle Gain Training</a>
+                    </div>
+                </div>
+                <!-- New Location Dropdown -->
+            <div class="relative location-menu">
+                <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
+                    Location
+                    <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div class="services-dropdown">
+                    <a href="https://www.google.com/maps/place/Fitworx+Gym/@14.7669369,121.0416393,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b15cafadc1fd:0x6e899f7ad07653bc!8m2!3d14.7669369!4d121.0442142!16s%2Fg%2F11fhypwt56?entry=ttu" target="_blank" class="block flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
+                        </svg>
+                        Open in Google Maps
+                    </a>
+                </div>
+            </div>
                 <button id="admin-login-btn" class="bg-green-500 text-white-600 px-4 py-2 rounded-lg font-semibold hover:bg-orange-50 transition hover:shadow-md">
                     Admin Login
                 </button>
                 <a href="../customer file/login.html" class="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold hover:bg-orange-50 transition duration-300 hover:shadow-md">
-                    Login
+                    Join Now
                 </a>
             </div>
         </div>
@@ -279,56 +341,112 @@
         </div>
     </section>
     
-    <!-- Compact FAQ Section -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Frequently Asked Questions</h3>
-            <div class="max-w-2xl mx-auto space-y-2">
-                <div class="faq-item bg-white border border-gray-200 rounded-lg">
-                    <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
-                        <span class="font-semibold text-orange-600">What are the gym's operating hours?</span>
-                        <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                    <div class="faq-answer hidden p-4 pt-0 text-gray-700">
-                        Fitworx Gym is open from 9:00 AM to 11:59 PM daily, providing flexible hours to accommodate your fitness schedule.
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- FAQ Column -->
+                <div>
+                    <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Frequently Asked Questions</h3>
+                    <div class="space-y-2">
+                        <div class="faq-item bg-white border border-gray-200 rounded-lg">
+                            <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
+                                <span class="font-semibold text-orange-600">What are the gym's operating hours?</span>
+                                <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="faq-answer hidden p-4 pt-0 text-gray-700">
+                                Fitworx Gym is open from 9:00 AM to 11:59 PM daily, providing flexible hours to accommodate your fitness schedule.
+                            </div>
+                        </div>
+
+                        <div class="faq-item bg-white border border-gray-200 rounded-lg">
+                            <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
+                                <span class="font-semibold text-orange-600">Do you offer personal training?</span>
+                                <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="faq-answer hidden p-4 pt-0 text-gray-700">
+                                Yes, we have personal trainers but all the coaches in out gym is freelance only you can message them if you want to.
+                            </div>
+                        </div>
+
+                        <div class="faq-item bg-white border border-gray-200 rounded-lg">
+                            <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
+                                <span class="font-semibold text-orange-600">Are there any age restrictions?</span>
+                                <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="faq-answer hidden p-4 pt-0 text-gray-700">
+                                Members must be at least 16 years old. Individuals between 16-18 years require parental consent. We offer student memberships with special rates for those in school.
+                            </div>
+                        </div>
+
+                        <div class="faq-item bg-white border border-gray-200 rounded-lg">
+                            <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
+                                <span class="font-semibold text-orange-600">What facilities are included in my membership?</span>
+                                <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="faq-answer hidden p-4 pt-0 text-gray-700">
+                                Your membership includes full access to our gym floor.
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="faq-item bg-white border border-gray-200 rounded-lg">
-                    <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
-                        <span class="font-semibold text-orange-600">Do you offer personal training?</span>
-                        <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
+                <!-- Feedback Column -->
+                <div>
+                    <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Your Feedback Matters</h3>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <form id="feedback-form" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-orange-600 font-semibold mb-2">Your Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-orange-600 font-semibold mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            </div>
+                            <div>
+                                <label for="feedback" class="block text-orange-600 font-semibold mb-2">Your Feedback</label>
+                                <textarea id="feedback" name="feedback" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-orange-600 font-semibold mb-2">How would you rate your experience?</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="rating" value="1" class="form-radio text-orange-600">
+                                        <span class="ml-2">1 (Poor)</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="rating" value="2" class="form-radio text-orange-600">
+                                        <span class="ml-2">2</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="rating" value="3" class="form-radio text-orange-600">
+                                        <span class="ml-2">3 (Average)</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="rating" value="4" class="form-radio text-orange-600">
+                                        <span class="ml-2">4</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="rating" value="5" class="form-radio text-orange-600">
+                                        <span class="ml-2">5 (Excellent)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition duration-300">
+                                    Submit Feedback
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="faq-answer hidden p-4 pt-0 text-gray-700">
-                        Yes, we have personal trainers but all the coaches in out gym is freelance only you can message them if you want to.
-                    </div>
-                </div>
-
-                <div class="faq-item bg-white border border-gray-200 rounded-lg">
-                    <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
-                        <span class="font-semibold text-orange-600">Are there any age restrictions?</span>
-                        <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                    <div class="faq-answer hidden p-4 pt-0 text-gray-700">
-                        Members must be at least 16 years old. Individuals between 16-18 years require parental consent. We offer student memberships with special rates for those in school.
-                    </div>
-                </div>
-
-                <div class="faq-item bg-white border border-gray-200 rounded-lg">
-                    <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition duration-300">
-                        <span class="font-semibold text-orange-600">What facilities are included in my membership?</span>
-                        <svg class="w-5 h-5 text-orange-600 transform transition-transform duration-300 faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                    <div class="faq-answer hidden p-4 pt-0 text-gray-700">
-                        Your membership includes full access to our gym floor.
                 </div>
             </div>
         </div>
