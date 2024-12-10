@@ -6,7 +6,7 @@ class SupplementManager {
         this.table = document.getElementById('supplementsTable');
         this.modalTitle = document.getElementById('modalTitle');
         this.currentId = null;
-        this.LOW_STOCK_THRESHOLD = 5;
+        this.LOW_STOCK_THRESHOLD = 9;
         this.CRITICAL_LOW_THRESHOLD = 10; // New threshold for critical low
         this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
         this.currentSupplements = []; // Store current state
