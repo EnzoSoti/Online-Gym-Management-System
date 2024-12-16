@@ -61,15 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon: 'warning',
                     confirmButtonText: 'OK',
                     showClass: {
-                        popup: 'animate__animated animate__fadeIn'
+                        popup: ''
                     },
-                    customClass: {
-                        popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
-                        title: 'text-yellow-500 font-bold',
-                        htmlContainer: 'text-gray-200',
-                        confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
-                    },
-                    buttonsStyling: false
+                    customClass: {},
+                    buttonsStyling: true
                 });
                 e.target.value = value.replace(/\d/g, ''); // Remove numbers from the input
             }
@@ -150,13 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon: 'warning',
                 confirmButtonText: 'Got it',
                 showConfirmButton: true,
-                timer: 3000,
+                // timer: 3000,
                 timerProgressBar: true,
-                iconColor: '#ea580c',
-                customClass: {
-                    confirmButton: 'swal2-confirm',
-                    popup: 'rounded-3xl'
-                }
+                customClass: {}
             });
             return;
         }
@@ -221,12 +212,8 @@ function logout() {
         showCancelButton: true,
         confirmButtonText: 'Yes, log out',
         cancelButtonText: 'Cancel',
-        customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
-        },
-        buttonsStyling: false
+        customClass: {},
+        buttonsStyling: true
     }).then((result) => {
         if (result.isConfirmed) {
             // Clear session storage
@@ -394,20 +381,15 @@ function getFormData() {
             Swal.fire({
                 title: '⚠️ Required Fields Missing',
                 html: '<div class="space-y-2">' +
-                    `<p class="text-red-400 font-semibold">Please fill in all required fields:</p>` +
-                    `<p class="text-sm text-gray-300">${missingFields.join(', ')}</p>` +
+                    `<p class="text-red-400 font-semibold">Please fill in all required fields</p>` +
                     '</div>',
                 icon: 'warning',
                 confirmButtonText: 'Complete Fields',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: ''
                 },
-                customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
-                    title: 'text-red-500 font-bold',
-                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
-                },
-                buttonsStyling: false
+                customClass: {},
+                buttonsStyling: true
             });
             return;
         }
@@ -717,14 +699,14 @@ function showSuccessMessage() {
         icon: 'success',
         confirmButtonText: 'OK',
         showClass: {
-            popup: 'animate__animated animate__fadeIn'
+            popup: '' // Removed animation
         },
         customClass: {
-            popup: 'rounded-lg border-l-4 border-l-green-500 bg-gray-900',
-            title: 'text-green-500 font-bold',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+            popup: '',
+            title: '',
+            confirmButton: ''
         },
-        buttonsStyling: false
+        buttonsStyling: true // Reverted to default styling
     });
 }
 
@@ -738,14 +720,14 @@ function showErrorMessage(message) {
         icon: 'warning',
         confirmButtonText: 'Select Another Time',
         showClass: {
-            popup: 'animate__animated animate__fadeIn'
+            popup: '' // Removed animation
         },
         customClass: {
-            popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
-            title: 'text-red-500 font-bold',
-            confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+            popup: '',
+            title: '',
+            confirmButton: ''
         },
-        buttonsStyling: false
+        buttonsStyling: true // Reverted to default styling
     });
     return;
 }

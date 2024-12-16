@@ -381,15 +381,15 @@ async function initializeCalendar() {
                         icon: 'warning',
                         confirmButtonText: 'Update Date',
                         showClass: {
-                            popup: 'animate__animated animate__fadeIn'
+                            popup: '' // Removed animation
                         },
                         customClass: {
-                            popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
-                            title: 'text-yellow-500 font-bold',
-                            htmlContainer: 'text-gray-200',
-                            confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                            popup: '',
+                            title: '',
+                            htmlContainer: '',
+                            confirmButton: ''
                         },
-                        buttonsStyling: false
+                        buttonsStyling: true // Reverted to default styling
                     });
                     return;
                 }

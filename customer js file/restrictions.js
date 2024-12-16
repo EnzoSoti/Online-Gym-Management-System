@@ -33,21 +33,20 @@ async function handleReservationSubmit(e) {
                 title: '⚠️ Time Restriction',
                 html: '<div class="space-y-2">' +
                     '<p class="text-yellow-400 font-semibold">Selected time has already passed</p>' +
-                    `<p class="text-sm text-gray-300">Please select ${displayHour}:${currentMinute.toString().padStart(2, '0')} ${period} or a future time</p>` +
                     '</div>',
                 icon: 'warning',
                 confirmButtonText: 'Update Time',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: '' // Removed animation
                 },
                 customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
-                    title: 'text-yellow-500 font-bold',
-                    htmlContainer: 'text-gray-200',
-                    confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    popup: '',
+                    title: '',
+                    htmlContainer: '',
+                    confirmButton: ''
                 },
-                buttonsStyling: false
-            });
+                buttonsStyling: true // Reverted to default styling
+             });
             return;
         }
 
@@ -62,16 +61,16 @@ async function handleReservationSubmit(e) {
                 icon: 'warning',
                 confirmButtonText: 'Update Date',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: '' // Removed animation
                 },
                 customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-yellow-500 bg-gray-900',
-                    title: 'text-yellow-500 font-bold',
-                    htmlContainer: 'text-gray-200',
-                    confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    popup: '',
+                    title: '',
+                    htmlContainer: '',
+                    confirmButton: ''
                 },
-                buttonsStyling: false
-            });
+                buttonsStyling: true // Reverted to default styling
+             });
             return;
         }
 
@@ -92,15 +91,15 @@ async function handleReservationSubmit(e) {
                 icon: 'error',
                 confirmButtonText: 'Adjust Time',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: '' // Removed animation
                 },
                 customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
-                    title: 'text-red-500 font-bold',
-                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    popup: '',
+                    title: '',
+                    confirmButton: ''
                 },
-                buttonsStyling: false
-            });
+                buttonsStyling: true // Reverted to default styling
+             });
             return;
         }
 
@@ -116,14 +115,14 @@ async function handleReservationSubmit(e) {
                 icon: 'error',
                 confirmButtonText: 'Adjust Duration',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: ''  // Removed animation
                 },
                 customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
-                    title: 'text-red-500 font-bold',
-                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    popup: '',  // Removed custom styling
+                    title: '',  // Removed custom styling
+                    confirmButton: ''  // Removed custom styling
                 },
-                buttonsStyling: false
+                buttonsStyling: true  // Reverted to default button styling
             });
             return;
         }
@@ -139,14 +138,14 @@ async function handleReservationSubmit(e) {
                 icon: 'warning',
                 confirmButtonText: 'Select Another Time',
                 showClass: {
-                    popup: 'animate__animated animate__fadeIn'
+                    popup: ''  // Removed animation
                 },
                 customClass: {
-                    popup: 'rounded-lg border-l-4 border-l-red-500 bg-gray-900',
-                    title: 'text-red-500 font-bold',
-                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
+                    popup: '',  // Removed custom styling
+                    title: '',  // Removed custom styling
+                    confirmButton: ''  // Removed custom styling
                 },
-                buttonsStyling: false
+                buttonsStyling: true  // Reverted to default button styling
             });
             return;
         }

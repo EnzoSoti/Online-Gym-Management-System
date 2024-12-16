@@ -19,15 +19,10 @@ function displayReservations(reservations) {
             icon: 'info',
             confirmButtonText: 'Close',
             showClass: {
-                popup: 'animate__animated animate__fadeIn'
+                popup: ''
             },
-            customClass: {
-                popup: 'rounded-lg border-l-4 border-l-blue-500 bg-gray-900',
-                title: 'text-blue-500 font-bold',
-                htmlContainer: 'text-gray-200',
-                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg px-6 py-2.5 transition-colors duration-200'
-            },
-            buttonsStyling: false
+            customClass: {},
+            buttonsStyling: true
         });
         return;
     }
@@ -116,15 +111,10 @@ function displayReservations(reservations) {
         html: htmlContent,
         confirmButtonText: 'Close',
         showClass: {
-            popup: 'animate__animated animate__fadeIn'
+            popup: ''
         },
-        customClass: {
-            popup: 'rounded-lg bg-white max-w-3xl w-full shadow-lg',
-            title: 'text-2xl text-gray-900 font-semibold mb-6',
-            htmlContainer: 'py-4',
-            confirmButton: 'bg-indigo-600 text-white font-medium rounded-md px-6 py-2'
-        },
-        buttonsStyling: false
+        customClass: {},
+        buttonsStyling: true
     });
 }
 

@@ -114,9 +114,6 @@ loginForm.addEventListener('submit', async function (e) {
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500,
-                    background: '#f0fdf4',
-                    iconColor: '#22c55e',
-                    color: '#064e3b',
                     willClose: () => {
                         window.location.href = '../customer file/customer.html';
                     }
@@ -126,11 +123,7 @@ loginForm.addEventListener('submit', async function (e) {
                     title: 'Login Failed',
                     text: 'Please check your username and password.',
                     icon: 'error',
-                    confirmButtonText: 'Try Again',
-                    confirmButtonColor: '#ef4444',
-                    background: '#fef2f2',
-                    iconColor: '#b91c1c',
-                    color: '#7f1d1d'
+                    confirmButtonText: 'Try Again'
                 });
             }
         } else {
@@ -157,25 +150,18 @@ loginForm.addEventListener('submit', async function (e) {
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500,
-                    background: '#f0fdf4',
-                    iconColor: '#22c55e',
-                    color: '#064e3b',
                     willClose: () => {
                         toggleForms();
                     }
-                });
+                 });
             } else {
                 playSound('success-sound');
                 Swal.fire({
                     title: 'Registration Failed',
                     text: data.error || 'Please try again with different information.',
                     icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#ef4444',
-                    background: '#fef2f2',
-                    iconColor: '#b91c1c',
-                    color: '#7f1d1d'
-                });
+                    confirmButtonText: 'OK'
+                 });
             }
         }
     } catch (error) {
@@ -216,7 +202,7 @@ function toggleForms() {
         toggleText.textContent = "Don't have an account?";
         toggleButton.textContent = 'Sign up for free';
         welcomeText.innerHTML = `
-            <h1 class="text-4xl font-bold text-white mb-6">Welcome Back!</h1>
+            <h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
             <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>
         `;
         fullNameField.classList.add('hidden');
