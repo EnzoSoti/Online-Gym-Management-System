@@ -33,78 +33,212 @@
             width: 100%;
             height: 100%;
             background: inherit;
-            filter: blur(8px);
+            filter: blur(12px);
             z-index: -1;
         }
 
         .login-container {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            box-shadow: 0 0 40px rgba(249, 115, 22, 0.15);
+            animation: containerReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        @keyframes containerReveal {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .input-field {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(249, 115, 22, 0.2);
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1rem 1.25rem;
+            position: relative;
+            overflow: hidden;
+            animation: inputAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+            animation-delay: calc(var(--index) * 0.2s);
+        }
+
+        @keyframes inputAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .input-field:focus {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(249, 115, 22, 0.1);
             border-color: #f97316;
-        }
-
-        .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .submit-button {
-            background: #f97316;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.2);
+            transform: scale(1.02);
             letter-spacing: 1px;
         }
 
+        .submit-button {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            animation: buttonFloat 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards 1s;
+        }
+
+        @keyframes buttonFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .submit-button:hover {
-            background: #ea580c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+            letter-spacing: 4px;
+        }
+
+        .submit-button:active {
+            transform: translateY(1px);
         }
 
         .welcome-section {
             background: linear-gradient(135deg, #f97316, #ea580c);
+            position: relative;
+            overflow: hidden;
+            animation: welcomeSlide 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes welcomeSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotateBG 20s linear infinite;
+        }
+
+        @keyframes rotateBG {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #showPassword {
+            transition: all 0.3s ease;
+        }
+
+        #showPassword:hover {
+            transform: scale(1.2) rotate(5deg);
+            color: #f97316;
+        }
+
+        #toggleForm {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #toggleForm::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f97316;
+            transition: width 0.3s ease;
+        }
+
+        #toggleForm:hover::after {
+            width: 100%;
+        }
+
+        #username { --index: 1; }
+        #password { --index: 2; }
+        #fullName { --index: 0; }
+
+        .form-transition {
+            animation: formSwitch 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes formSwitch {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            50% {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            51% {
+                transform: translateX(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl flex rounded-xl shadow-2xl overflow-hidden login-container">
+    <div class="w-full max-w-4xl flex rounded-2xl shadow-2xl overflow-hidden login-container">
         <!-- Left Side - Welcome Section -->
-        <div class="hidden lg:flex lg:w-1/2 welcome-section p-8 flex-col justify-between">
+        <div class="hidden lg:flex lg:w-1/2 welcome-section p-12 flex-col justify-between">
             <div class="relative z-10" id="welcomeText">
-                <h1 class="text-4xl font-bold text-white mb-4">WELCOME TO FITWORX</h1>
-                <p class="text-white text-lg opacity-90">Transform your body, transform your life.</p>
+                <h1 class="text-5xl font-bold text-white mb-6">WELCOME TO FITWORX</h1>
+                <p class="text-white text-xl opacity-90">Transform your body, transform your life.</p>
             </div>
             
             <div class="relative z-10">
-                <h2 class="text-2xl font-bold text-white">Fitworx GYM</h2>
-                <p class="text-white mt-2 opacity-90">Your premium fitness destination</p>
+                <h2 class="text-3xl font-bold text-white">Fitworx GYM</h2>
+                <p class="text-white mt-3 opacity-90 text-lg">Your premium fitness destination</p>
             </div>
         </div>
 
         <!-- Right Side - Form Section -->
-        <div class="w-full lg:w-1/2 p-8 hidden" id="formSection">
+        <div class="w-full lg:w-1/2 p-12 hidden" id="formSection">
             <div class="max-w-md mx-auto">
-                <div class="text-center mb-8">
-                    <h3 class="text-3xl font-bold text-white mb-2" id="formTitle">Sign in to Account</h3>
-                    <p class="text-gray-400" id="formSubtitle">Start your fitness journey today</p>
+                <div class="text-center mb-10">
+                    <h3 class="text-4xl font-bold text-white mb-3" id="formTitle">Sign in to Account</h3>
+                    <p class="text-gray-400 text-lg" id="formSubtitle">Start your fitness journey today</p>
                 </div>
 
                 <form class="space-y-6" id="loginForm">
                     <div class="relative hidden" id="fullNameField">
                         <input type="text" 
                                id="fullName"
-                               class="w-full px-4 py-3 rounded-lg input-field"
+                               class="w-full rounded-xl input-field"
                                placeholder="Full Name"
                         />
                     </div>
@@ -112,7 +246,7 @@
                     <div class="relative">
                         <input type="text" 
                                id="username"
-                               class="w-full px-4 py-3 rounded-lg input-field"
+                               class="w-full rounded-xl input-field"
                                placeholder="Username"
                         />
                     </div>
@@ -120,22 +254,22 @@
                     <div class="relative">
                         <input type="password" 
                             id="password"
-                            class="w-full px-4 py-3 rounded-lg input-field"
+                            class="w-full rounded-xl input-field"
                             placeholder="Password"
                         />
-                        <button type="button" id="showPassword" class="absolute right-4 top-3 text-gray-400 hover:text-white transition-colors">
+                        <button type="button" id="showPassword" class="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
 
-                    <button type="submit" class="w-full py-3 px-4 rounded-lg font-semibold submit-button">
+                    <button type="submit" class="w-full py-4 px-6 rounded-xl font-semibold submit-button mt-8">
                         Sign In
                     </button>
                 </form>
 
-                <p class="text-center text-gray-400 text-sm mt-8">
+                <p class="text-center text-gray-400 text-sm mt-10">
                     <span id="toggleText">Don't have an account?</span>
-                    <a href="#" class="text-orange-500 hover:text-orange-400 font-medium ml-1 transition-colors" id="toggleForm">
+                    <a href="#" class="text-orange-500 hover:text-orange-400 font-medium ml-2 transition-colors" id="toggleForm">
                         Sign up for free
                     </a>
                 </p>

@@ -1,5 +1,20 @@
 const API_BASE_URL = 'http://localhost:3000/api';
 
+document.getElementById('mobile-menu-button').addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('hidden');
+});
+
+// Toggle mobile submenu visibility
+document.querySelectorAll('#mobile-menu button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const submenu = e.target.nextElementSibling;
+        if (submenu) {
+            submenu.classList.toggle('hidden');
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.getElementById('carousel');
     const carouselItems = carousel.querySelectorAll('.carousel-item');

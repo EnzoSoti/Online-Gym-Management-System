@@ -177,18 +177,20 @@
 </head>
 <body class="bg-white text-gray-900">
     <!-- Navigation -->
-    <nav class="bg-orange-800 text-white p-4 fixed w-full top-0 z-50 nav-shadow">
-        <div class="container mx-auto flex justify-between items-center">
+<nav class="bg-orange-800 text-white p-4 fixed w-full top-0 z-50 nav-shadow">
+    <div class="container mx-auto">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex justify-between items-center">
             <div class="flex items-center space-x-4 group">
                 <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-12 w-12 rounded-full transition-transform group-hover:rotate-12">
                 <h1 class="text-4xl font-bold uppercase tracking-wide text-gray-100 bg-gray-800 px-4 py-2 border-2 border-gray-600 shadow-md transform skew-x-[-2deg] hover:skew-x-0 transition">Fitworx Gym</h1>
             </div>
             <div class="space-x-4 flex items-center">
-                <!-- New Services Dropdown -->
+                <!-- Services Dropdown -->
                 <div class="relative services-menu">
                     <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
                         Services
-                        <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
@@ -199,42 +201,84 @@
                         <a href="#" class="block">Muscle Gain Training</a>
                     </div>
                 </div>
-                <!-- New Location Dropdown -->
-            <div class="relative location-menu">
-                <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
-                    Location
-                    <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="services-dropdown">
-                    <a href="https://www.google.com/maps/place/Fitworx+Gym/@14.7669369,121.0416393,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b15cafadc1fd:0x6e899f7ad07653bc!8m2!3d14.7669369!4d121.0442142!16s%2Fg%2F11fhypwt56?entry=ttu" target="_blank" class="block flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
+                <!-- Location Dropdown -->
+                <div class="relative location-menu">
+                    <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
+                        Location
+                        <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
-                        Open in Google Maps
-                    </a>
-                    <a href="https://www.waze.com/live-map/directions/ph/ncr/caloocan/fitworx-gym?to=place.ChIJ_cGtr1yxlzMRvFN20HqfiW4" target="_blank" class="block flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
-                        </svg>
-                        Open in Waze
-                    </a>
+                    </button>
+                    <div class="services-dropdown">
+                        <a href="https://www.google.com/maps" target="_blank" class="block flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
+                            </svg>
+                            Open in Google Maps
+                        </a>
+                        <a href="https://www.waze.com" target="_blank" class="block flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
+                            </svg>
+                            Open in Waze
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <button id="admin-login-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition duration-300 hover:shadow-md border-b-4 border-green-700">
-                Admin Login
-            </button>
-            <a href="../customer file/login.html" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 hover:shadow-md border-b-4 border-blue-700">
-                Login
-            </a>
+                <button id="admin-login-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition duration-300 hover:shadow-md border-b-4 border-green-700">
+                    Admin Login
+                </button>
+                <a href="../customer file/login.html" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 hover:shadow-md border-b-4 border-blue-700">
+                    Login
+                </a>
             </div>
         </div>
-    </nav>
+
+        <!-- Mobile Menu -->
+        <div class="flex md:hidden justify-between items-center">
+            <div class="flex items-center space-x-2 group">
+                <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-8 w-8 rounded-full">
+                <h1 class="text-2xl font-bold uppercase">Fitworx Gym</h1>
+            </div>
+            <button id="mobile-menu-button" class="text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4">
+            <div class="flex flex-col space-y-2">
+                <div class="space-y-2">
+                    <button class="w-full text-left px-3 py-2 hover:bg-orange-700 rounded">Services</button>
+                    <div class="pl-6 space-y-2">
+                        <a href="#" class="block py-1">Basketball Court</a>
+                        <a href="#" class="block py-1">Zumba Classes</a>
+                        <a href="#" class="block py-1">No membership fee</a>
+                        <a href="#" class="block py-1">Muscle Gain Training</a>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <button class="w-full text-left px-3 py-2 hover:bg-orange-700 rounded">Location</button>
+                    <div class="pl-6 space-y-2">
+                        <a href="https://www.google.com/maps" target="_blank" class="block py-1">Open in Google Maps</a>
+                        <a href="https://www.waze.com" target="_blank" class="block py-1">Open in Waze</a>
+                    </div>
+                </div>
+                <button id="mobile-admin-login-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600">
+                    Admin Login
+                </button>
+                <a href="../customer file/login.html" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 text-center">
+                    Login
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
     <!-- Hero Section with Carousel -->
     <header class="relative pt-32 pb-16 bg-orange-600 text-white overflow-hidden">
