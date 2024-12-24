@@ -77,10 +77,10 @@
                 <button class="hamburger-btn p-4" id="sidebarToggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="logo-container p-4" id="logoContainer">
+                <!-- <div class="logo-container p-4" id="logoContainer">
                     <img src="../img/Fitworx logo.jpg" alt="logo" class="w-10 h-10 rounded-full">
                     <h1 class="text-lg font-bold ml-4">Fitworx <span class="text-orange-400">Gym</span> Admin</h1>
-                </div>
+                </div> -->
                 <!-- Welcome Message with IDs -->
                 <div class="px-4 py-3 border-b border-gray-800" id="welcomeContainer">
                     <div class="flex flex-col items-center">
@@ -116,9 +116,7 @@
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-4">
                                 <div class="p-3 bg-orange-100 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76zM16 8L2 22M17.5 15H9"/>
-                                    </svg>
+                                    <img src="../landing_images/logo.jpg" alt="Logo" class="h-10 w-10 object-cover"/>
                                 </div>
                                 <h1 class="text-4xl font-bold text-black">Fitworx GYM</h1>
                             </div>
@@ -389,10 +387,9 @@
                             </div>
         
                             <div class="relative">
-                                <!-- Table Header -->
-                                <div class="sticky top-0 bg-slate-50 border-b border-slate-200">
+                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
                                     <table class="w-full">
-                                        <thead>
+                                        <thead class="sticky top-0 bg-slate-50 border-b border-slate-200">
                                             <tr>
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">ID</th>
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Type</th>
@@ -400,12 +397,6 @@
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Time In</th>
                                             </tr>
                                         </thead>
-                                    </table>
-                                </div>
-        
-                                <!-- Table Body -->
-                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
-                                    <table class="w-full">
                                         <tbody id="checkins-body" class="divide-y divide-slate-100">
                                             <!-- Check-in rows will be added here by JavaScript -->
                                         </tbody>
@@ -1338,10 +1329,9 @@
                             </div>
 
                             <div class="relative">
-                                <!-- Table Header -->
-                                <div class="sticky top-0 bg-slate-50 border-b border-slate-200">
+                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
                                     <table class="w-full">
-                                        <thead>
+                                        <thead class="sticky top-0 bg-slate-50 border-b border-slate-200">
                                             <tr>
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">ID</th>
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Client Name</th>
@@ -1352,12 +1342,6 @@
                                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-black uppercase tracking-wider">Time In</th>
                                             </tr>
                                         </thead>
-                                    </table>
-                                </div>
-
-                                <!-- Table Body -->
-                                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
-                                    <table class="w-full">
                                         <tbody id="monthly-checkins-body" class="divide-y divide-slate-100">
                                             <!-- Check-in rows will be added here by JavaScript -->
                                         </tbody>
