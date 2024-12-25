@@ -111,7 +111,6 @@
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <header class="flex items-center justify-start space-x-4 py-2">
-
                     <div class="flex items-center bg-white p-1.5 rounded-xl shadow-sm max-w-md space-x-2">
                         <div class="relative">
                             <img 
@@ -135,7 +134,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </header>
                 
                 <!-- Navigation Links (Desktop) -->
@@ -150,13 +148,7 @@
                         </svg>
                         9:00 AM - 11:59 PM
                     </div>
-                    <div id="clock" class="text-orange-100 flex items-center gap-1.5 text-xs font-bold"></div> <!-- Add this line -->
-                    <!-- <a href="#" class="inline-flex items-center px-4 py-1.5 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-xs font-medium">
-                        <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                        Admin Login
-                    </a> -->
+                    <div id="clock" class="text-orange-100 flex items-center gap-1.5 text-xs font-bold"></div>
                     <a href="#" class="inline-flex items-center px-4 py-1.5 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-xs font-medium">
                         <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -167,35 +159,60 @@
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-1.5 rounded-full text-white hover:text-orange-200">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-1.5 rounded-full text-white hover:text-orange-200 transition-colors">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                 </div>
             </div>
+
+            <!-- Mobile Menu (Hidden by default) -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 border-t border-orange-500 mt-2">
+                    <div class="px-3 py-2 bg-white bg-opacity-10 backdrop-blur-lg rounded-lg text-sm font-medium flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                        Facility Open
+                    </div>
+                    <div class="text-orange-100 flex items-center gap-1.5 px-3 py-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        9:00 AM - 11:59 PM
+                    </div>
+                    <div id="mobile-clock" class="text-orange-100 flex items-center gap-1.5 px-3 py-2 font-bold"></div>
+                    <a href="#" class="flex items-center px-3 py-2 bg-white text-orange-600 rounded-lg hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm font-medium">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </div>
         </div>
     </nav>
-
+    
     <!-- Hero Section -->
     <div class="w-full bg-gradient-to-r from-orange-600 to-orange-800 text-white relative overflow-hidden">
         <div class="absolute inset-0 bg-black opacity-10"></div>
-        <div class="container mx-auto px-4 py-16 relative">
+        <div class="container mx-auto px-4 py-8 sm:py-12 md:py-16 relative">
             <div class="max-w-3xl mx-auto text-center">
-                <h1 class="text-3xl lg:text-5xl font-bold mb-4 leading-tight">Welcome!</h1>
-                <p class="text-base lg:text-lg mb-6 text-orange-100">Experience top-notch facilities and expert guidance. Book your session now!</p>
-                <a href="#booking-form" class="inline-flex items-center px-6 py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-base font-medium shadow-lg">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Click to Start Booking
-                </a>
-                <a href="#subscription-form" id="subscription-form" class="inline-flex items-center px-6 py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-base font-medium shadow-lg">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Click to Online Monthly Pass
-                </a>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Welcome!</h1>
+                <p class="text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 text-orange-100">Experience top-notch facilities and expert guidance. Book your session now!</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#booking-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm sm:text-base font-medium shadow-lg">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Click to Start Booking
+                    </a>
+                    <a href="#subscription-form" id="subscription-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm sm:text-base font-medium shadow-lg">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Click to Online Monthly Pass
+                    </a>
+                </div>
             </div>
         </div>
     </div>

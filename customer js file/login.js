@@ -145,7 +145,7 @@ loginForm.addEventListener('submit', async function (e) {
             if (response.ok) {
                 playSound('success-sound');
                 Swal.fire({
-                    title: '🎉 Welcome!',
+                    title: 'Welcome to Our Gym! 🎉',
                     text: 'Your account has been created successfully!',
                     icon: 'success',
                     showConfirmButton: false,
