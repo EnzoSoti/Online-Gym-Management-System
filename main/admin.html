@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="sidebar.css">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js'></script>
 
@@ -77,11 +78,6 @@
                 <button class="hamburger-btn p-4" id="sidebarToggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <!-- <div class="logo-container p-4" id="logoContainer">
-                    <img src="../img/Fitworx logo.jpg" alt="logo" class="w-10 h-10 rounded-full">
-                    <h1 class="text-lg font-bold ml-4">Fitworx <span class="text-orange-400">Gym</span> Admin</h1>
-                </div> -->
-                <!-- Welcome Message with IDs -->
                 <div class="px-4 py-3 border-b border-gray-800" id="welcomeContainer">
                     <div class="flex flex-col items-center">
                         <span class="admin-icon bg-orange-400 p-2 rounded-full">
@@ -95,35 +91,52 @@
                     <p class="text-base font-semibold text-orange-400" id="adminNameDisplay"></p>
                 </div>
                 <ul class="nav-menu space-y-3 p-4" id="adminNavMenu">
-                    <li><a href="#dashboard" class="nav-item" id="navDashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</a></li>
-                    <li><a href="#check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-right-to-bracket"></i>Regular Check-in</a></li>
-                    <li><a href="#monthly-check-in" class="nav-item" id="navCheckin"><i class="fa-solid fa-calendar-check"></i>Monthly Check-in</a></li>
-                    <li><a href="#reservation" class="nav-item" id="navReservation"><i class="fa-solid fa-calendar-days"></i>Reservation list</a></li>
-                    <li><a href="#supplement" class="nav-item" id="navInventory"><i class="fa-solid fa-boxes-stacked"></i>Product Stocks</a></li>
-                    <li><a href="#monthlyMembers" class="nav-item" id="navMembers"><i class="fa-solid fa-user-group"></i>Monthly Member</a></li>
-                    <li><a href="#reports" class="nav-item" id="navReports"><i class="fa-solid fa-file-lines"></i>Reports</a></li>
-                    <li><a href="#buy" class="nav-item" id="navSales"><i class="fa-solid fa-cart-shopping"></i>Product Sale</a></li>
+                    <li><a href="#dashboard" class="nav-item" id="navDashboard">
+                        <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                    </a></li>
+                    <li><a href="#check-in" class="nav-item" id="navCheckin">
+                        <i class="fa-solid fa-right-to-bracket"></i><span>Regular Check-in</span>
+                    </a></li>
+                    <li><a href="#monthly-check-in" class="nav-item" id="navMonthlyCheckin">
+                        <i class="fa-solid fa-calendar-check"></i><span>Monthly Check-in</span>
+                    </a></li>
+                    <li><a href="#reservation" class="nav-item" id="navReservation">
+                        <i class="fa-solid fa-calendar-days"></i><span>Reservation list</span>
+                    </a></li>
+                    <li><a href="#supplement" class="nav-item" id="navInventory">
+                        <i class="fa-solid fa-boxes-stacked"></i><span>Product Stocks</span>
+                    </a></li>
+                    <li><a href="#monthlyMembers" class="nav-item" id="navMembers">
+                        <i class="fa-solid fa-user-group"></i><span>Monthly Member</span>
+                    </a></li>
+                    <li><a href="#reports" class="nav-item" id="navReports">
+                        <i class="fa-solid fa-file-lines"></i><span>Reports</span>
+                    </a></li>
+                    <li><a href="#buy" class="nav-item" id="navSales">
+                        <i class="fa-solid fa-cart-shopping"></i><span>Product Sale</span>
+                    </a></li>
                 </ul>
             </div>
             
 
         <!-- Section 1 -->
+        <!-- Dashboard -->
         <div class="main-content">
             <section id="dashboard">
                 <div class="p-6 bg-orange-50 min-h-screen">
                     <!-- Header -->
-                    <div class="mb-8 bg-white rounded-lg shadow border-l-4 border-orange-600 p-6">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <div class="p-3 bg-orange-100 rounded-lg">
-                                    <img src="../landing_images/logo.jpg" alt="Logo" class="h-10 w-10 object-cover"/>
+                    <div class="mb-4 sm:mb-8 bg-white rounded-lg shadow border-l-4 border-orange-600 p-4 sm:p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
+                            <div class="flex items-center gap-3 sm:gap-4">
+                                <div class="p-2 sm:p-3 bg-orange-100 rounded-lg">
+                                    <img src="../landing_images/logo.jpg" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10 object-cover"/>
                                 </div>
-                                <h1 class="text-4xl font-bold text-black">Fitworx GYM</h1>
+                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-black">Fitworx GYM</h1>
                             </div>
-                            <button id="goToCustomerPageBtn" class="px-6 py-3 bg-orange-600 text-white rounded-lg">
-                                <div class="flex items-center gap-2">
-                                    <span>Go to Page</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <button id="goToCustomerPageBtn" class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-orange-600 hover:bg-orange-700 transition-colors text-white rounded-lg">
+                                <div class="flex items-center justify-center sm:justify-start gap-2">
+                                    <span class="text-sm sm:text-base">Go to Page</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                     </svg>
                                 </div>
@@ -134,79 +147,78 @@
                     <!-- Metrics Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                         <!-- Total Earnings -->
-                        <div id="totalEarnings" class="bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex flex-col gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg w-fit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div id="totalEarnings" class="bg-white rounded-lg p-4 shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-orange-600">Walk-in Earnings</p>
-                                    <h3 id="totalEarningsValue" class="text-xl font-bold text-black">0</h3>
+                                    <p class="text-sm text-gray-600 font-medium">Walk-in Earnings</p>
+                                    <h3 id="totalEarningsValue" class="text-xl font-bold">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Regular Walk-in -->
-                        <div id="attendanceRegular" class="bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex flex-col gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg w-fit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 15.5c0 1 1.5 2 1.5 2h10s1.5-1 1.5-2v-3h-13v3zm14-3V8c0-1.1-.9-2-2-2H6.5c-1.1 0-2 .9-2 2v4.5"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6V4c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v2"/>
+                        <div id="attendanceRegular" class="bg-white rounded-lg p-4 shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 15.5c0 1 1.5 2 1.5 2h10s1.5-1 1.5-2v-3h-13v3zm14-3V8c0-1.1-.9-2-2-2H6.5c-1.1 0-2 .9-2 2v4.5M8 6V4c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v2"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-orange-600">Regular Walk-in</p>
-                                    <h3 id="attendanceRegularValue" class="text-xl font-bold text-black">0</h3>
+                                    <p class="text-sm text-gray-600 font-medium">Regular Walk-in</p>
+                                    <h3 id="attendanceRegularValue" class="text-xl font-bold">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Student Walk-in -->
-                        <div id="attendanceStudent" class="bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex flex-col gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg w-fit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div id="attendanceStudent" class="bg-white rounded-lg p-4 shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path d="M12 14l9-5-9-5-9 5 9 5z"/>
                                         <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-orange-600">Student Walk-in</p>
-                                    <h3 id="attendanceStudentValue" class="text-xl font-bold text-black">0</h3>
+                                    <p class="text-sm text-gray-600 font-medium">Student Walk-in</p>
+                                    <h3 id="attendanceStudentValue" class="text-xl font-bold">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Monthly Members -->
-                        <div id="attendanceMonthly" class="bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex flex-col gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg w-fit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div id="attendanceMonthly" class="bg-white rounded-lg p-4 shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-orange-600">Active Monthly Members</p>
-                                    <h3 id="attendanceMonthlyValue" class="text-xl font-bold text-black">0</h3>
+                                    <p class="text-sm text-gray-600 font-medium">Active Monthly Members</p>
+                                    <h3 id="attendanceMonthlyValue" class="text-xl font-bold">0</h3>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Reservations -->
-                        <div id="attendanceReservation" class="bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex flex-col gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg w-fit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div id="attendanceReservation" class="bg-white rounded-lg p-4 shadow">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-gray-100 rounded-lg">
+                                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2h2c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h2z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v3m0 3h.01"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-orange-600">Active Reservation</p>
-                                    <h3 id="reservationValue" class="text-xl font-bold text-black">0</h3>
+                                    <p class="text-sm text-gray-600 font-medium">Active Reservation</p>
+                                    <h3 id="reservationValue" class="text-xl font-bold">0</h3>
                                 </div>
                             </div>
                         </div>
@@ -215,38 +227,34 @@
                     <!-- Charts Section -->
                     <div class="grid grid-cols-12 gap-4 mb-8">
                         <!-- Member Growth Chart -->
-                        <div class="col-span-12 lg:col-span-8 bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="p-2 bg-orange-100 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="col-span-12 lg:col-span-8">
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                     </svg>
+                                    <div>
+                                        <h2 class="text-lg font-semibold">Membership Growth</h2>
+                                        <p class="text-sm text-gray-500">Monthly member tracking</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 class="text-lg font-bold text-black">Membership Growth</h2>
-                                    <p class="text-orange-600 text-sm">Monthly member tracking</p>
-                                </div>
-                            </div>
-                            <div class="bg-orange-50 p-4 rounded-lg">
                                 <canvas id="memberGrowthChart" class="max-h-[500px]"></canvas>
                             </div>
                         </div>
 
                         <!-- Membership Distribution -->
-                        <div class="col-span-12 lg:col-span-4 bg-white rounded-lg shadow p-4 border-t-4 border-orange-600">
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="p-2 bg-orange-100 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="col-span-12 lg:col-span-4">
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
                                     </svg>
+                                    <div>
+                                        <h2 class="text-lg font-semibold">Membership Types</h2>
+                                        <p class="text-sm text-gray-500">Regular/Student analysis</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 class="text-lg font-bold text-black">Membership Types</h2>
-                                    <p class="text-orange-600 text-sm">Regular/Student analysis</p>
-                                </div>
-                            </div>
-                            <div class="bg-orange-50 p-4 rounded-lg">
                                 <canvas id="membershipPieChart" class="max-h-[300px]"></canvas>
                             </div>
                         </div>
@@ -1041,28 +1049,31 @@
                                     <div class="flex justify-between items-center">
                                         <h3 class="text-xl font-semibold text-slate-800">Student Members Report</h3>
                                         <div class="flex gap-3">
-                                            
                                             <button class="px-6 py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors duration-200 font-medium text-sm flex items-center gap-2">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                                </svg>
                                                 Export
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                                <table class="min-w-full divide-y divide-slate-200">
-                                    <thead class="bg-slate-50 sticky top-[72px]">
-                                        <tr>
-                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">ID</th>
-                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Client Name</th>
-                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Time in</th>
-                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 bg-white" id="student-members-table">
-                                        <!-- Data will be inserted here -->
-                                    </tbody>
-                                </table>
+                                <div class="overflow-auto max-h-[calc(100vh-200px)]">
+                                    <table class="min-w-full divide-y divide-slate-200">
+                                        <thead class="bg-slate-50 sticky top-0">
+                                            <tr>
+                                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">ID</th>
+                                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Type</th>
+                                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Client Name</th>
+                                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Time in</th>
+                                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100 bg-white" id="student-members-table">
+                                            <!-- Data will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- Supplements Table -->

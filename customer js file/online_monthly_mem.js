@@ -10,71 +10,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function showPolicyAgreement() {
     const { isConfirmed } = await Swal.fire({
-        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Online Monthly Pass</span>',
+        title: 'Online Monthly Pass',
         html: `
-            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl shadow-lg border border-gray-800">
-                        <h3 class="text-2xl font-bold text-white mb-5 text-center flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            <div class="p-4">
+                <h3 class="text-xl font-bold mb-4 text-center flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    Payment Policy
+                </h3>
+                
+                <div class="bg-gray-50 rounded p-4 mb-4 border">
+                    <p class="text-gray-600 mb-4 italic">Before proceeding with your registration, please carefully review our payment guidelines:</p>
+                    <div class="space-y-3 pl-4 border-l-2 border-blue-400">
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
                             </svg>
-                            Payment Policy
-                        </h3>
-                        
-                        <div class="bg-gray-800 rounded-xl p-5 mb-6 border border-gray-700">
-                            <p class="text-gray-300 mb-4 italic">Before proceeding with your registration, please carefully review our payment guidelines:</p>
-                            <div class="space-y-3 pl-4 border-l-4 border-blue-500">
-                                <div class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-300">Payment must be made through <span class="font-semibold text-blue-300">GCash</span> before registration completion</span>
-                                </div>
-                                <div class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-300">Membership Rates: 
-                                        <span class="font-semibold text-blue-300">Regular ₱950</span> | 
-                                        <span class="font-semibold text-blue-300">Student ₱850</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-300">Membership activates only after <span class="font-semibold text-blue-300">payment verification</span></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-300">Prepare your <span class="font-semibold text-blue-300">GCash reference number</span> for verification</span>
-                                </div>
-                                <div class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-400 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-red-300">No refunds for incomplete or invalid payments</span>
-                                </div>
-                            </div>
+                            <span class="text-gray-600">Payment must be made through <span class="font-semibold text-blue-600">GCash</span> before registration completion</span>
                         </div>
-                        
-                        <div class="flex items-center space-x-3 bg-gray-800 p-4 rounded-xl border border-gray-700">
-                            <input type="checkbox" id="policy-agreement" class="w-5 h-5 rounded border-gray-600 bg-gray-900 text-blue-500 focus:ring-2 focus:ring-blue-500 transition-all duration-300">
-                            <label for="policy-agreement" class="text-gray-300 select-none hover:text-blue-300 transition-colors duration-300">
-                                I have read and agree to the payment policy
-                            </label>
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-600">Membership Rates: 
+                                <span class="font-semibold text-blue-600">Regular ₱950</span> | 
+                                <span class="font-semibold text-blue-600">Student ₱850</span>
+                            </span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-600">Membership activates only after <span class="font-semibold text-blue-600">payment verification</span></span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-600">Prepare your <span class="font-semibold text-blue-600">GCash reference number</span> for verification</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-500 flex-shrink-0 mt-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-red-600">No refunds for incomplete or invalid payments</span>
                         </div>
                     </div>
+                </div>
+                
+                <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded border">
+                    <input type="checkbox" id="policy-agreement" class="w-4 h-4 rounded border-gray-300 text-blue-500">
+                    <label for="policy-agreement" class="text-gray-600">
+                        I have read and agree to the payment policy
+                    </label>
+                </div>
+            </div>
         `,
         confirmButtonText: 'Proceed to Registration',
         showCancelButton: true,
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded'
         },
-        buttonsStyling: false,
+        buttonsStyling: true,  // Enable default SweetAlert button styling
         preConfirm: () => {
             const checkbox = document.getElementById('policy-agreement');
             if (!checkbox.checked) {
@@ -95,95 +93,46 @@ async function showSubscriptionForm() {
     const fullName = sessionStorage.getItem('full_name');
 
     const { value: formValues } = await Swal.fire({
-        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Monthly Membership Registration</span>',
+        title: 'Monthly Membership Registration',
         html: `
-            <div class="p-4 bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl">
-                <div class="space-y-4">
+            <div class="p-4">
+                <div class="space-y-3">
                     <div>
-                        <label for="member_name" class="text-gray-400 text-xs mb-1 block">Member Name</label>
-                        <div class="relative">
-                            <input type="text" id="member_name" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${fullName || ''}" readonly>
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="member_name" class="text-sm mb-1 block">Member Name</label>
+                        <input type="text" id="member_name" class="w-full px-3 py-2 rounded border" value="${fullName || ''}" readonly>
                     </div>
-
+    
                     <div>
-                        <label for="email" class="text-gray-400 text-xs mb-1 block">Email Address</label>
-                        <div class="relative">
-                            <input type="email" id="email" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" required>
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M2.003 5.884l7.197 4.147L16.397 5.884 2.003 5.884zM17 6.5l-7.197 4.147L2.803 6.5 17 6.5zM17 8.5l-7.197 4.147L2.803 8.5 17 8.5zM17 10.5l-7.197 4.147L2.803 10.5 17 10.5z" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="email" class="text-sm mb-1 block">Email Address</label>
+                        <input type="email" id="email" class="w-full px-3 py-2 rounded border" required>
                     </div>
-
+    
                     <div>
-                        <label for="membership_type" class="text-gray-400 text-xs mb-1 block">Membership Type</label>
-                        <div class="relative">
-                            <select id="membership_type" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
-                                <option value="Regular">Regular (950₱)</option>
-                                <option value="Student">Student (850₱)</option>
-                            </select>
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="membership_type" class="text-sm mb-1 block">Membership Type</label>
+                        <select id="membership_type" class="w-full px-3 py-2 rounded border">
+                            <option value="Regular">Regular (950₱)</option>
+                            <option value="Student">Student (850₱)</option>
+                        </select>
                     </div>
-
-                    <div id="student-id-picture-field" style="display: none;" class="mb-4">
-                        <label for="school_id_picture" class="text-gray-400 text-xs mb-1 block">Student ID Picture</label>
-                        <div class="relative">
-                            <input type="file" id="school_id_picture" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
+    
+                    <div id="student-id-picture-field" style="display: none;">
+                        <label for="school_id_picture" class="text-sm mb-1 block">Student ID Picture</label>
+                        <input type="file" id="school_id_picture" class="w-full px-3 py-2 rounded border">
                     </div>
-
+    
                     <div>
-                        <label for="profile_picture" class="text-gray-400 text-xs mb-1 block">Profile Picture</label>
-                        <div class="relative">
-                            <input type="file" id="profile_picture" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="profile_picture" class="text-sm mb-1 block">Profile Picture</label>
+                        <input type="file" id="profile_picture" class="w-full px-3 py-2 rounded border">
                     </div>
-
+    
                     <div>
-                        <label for="start_date" class="text-gray-400 text-xs mb-1 block">Start Date</label>
-                        <div class="relative">
-                            <input type="date" id="start_date" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" readonly>
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="start_date" class="text-sm mb-1 block">Start Date</label>
+                        <input type="date" id="start_date" class="w-full px-3 py-2 rounded border" readonly>
                     </div>
-
+    
                     <div>
-                        <label for="end_date" class="text-gray-400 text-xs mb-1 block">End Date</label>
-                        <div class="relative">
-                            <input type="date" id="end_date" class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50" readonly>
-                            <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
+                        <label for="end_date" class="text-sm mb-1 block">End Date</label>
+                        <input type="date" id="end_date" class="w-full px-3 py-2 rounded border" readonly>
                     </div>
                 </div>
             </div>
@@ -191,9 +140,9 @@ async function showSubscriptionForm() {
         confirmButtonText: 'Register',
         showCancelButton: true,
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded',
+            confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded',
+            cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded'
         },
         buttonsStyling: false,
         preConfirm: () => {
@@ -282,66 +231,52 @@ async function showSubscriptionForm() {
 
 async function showPaymentDialogCustomer(expectedAmount, membershipType) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
-        title: '<span class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Payment Details</span>',
+        title: 'Payment Details',
         html: `
-            <div class="p-4 bg-gradient-to-b from-gray-900 to-gray-950 rounded-xl">
+            <div class="p-4">
                 <div class="text-center mb-4">
-                    <h3 class="text-lg font-bold text-white">Total for ${membershipType}: ₱${expectedAmount}</h3>
-                    <p class="text-gray-400">Scan QR code below via GCash</p>
+                    <h3 class="text-lg font-bold">Total for ${membershipType}: ₱${expectedAmount}</h3>
+                    <p class="text-sm">Scan QR code below via GCash</p>
                 </div>
+                
                 <div class="mb-6 flex justify-center">
-                    <div class="p-4 bg-white/10 rounded-xl border border-white/20 shadow-xl hover:scale-105 transition-all duration-300">
+                    <div class="p-4 bg-gray-100 rounded">
                         <img 
                             src="../img/photo_2024-11-30_21-50-23.jpg" 
                             alt="GCash QR Code" 
-                            class="mx-auto w-64 h-64 rounded-lg object-cover ring-4 ring-blue-500/50 hover:ring-blue-500/70 transition-all duration-300"
+                            class="mx-auto w-64 h-64 rounded object-cover"
                         >
                     </div>
                 </div>
-                <div class="text-center text-white mb-4">
+                
+                <div class="text-center mb-4">
                     <p>Account: Enzo Daniela</p>
                     <p>Number: 09633226873</p>
                 </div>
-                <div class="mb-4">
-                    <label for="gcash_ref" class="block text-gray-400 text-xs mb-1">GCash Ref. No.</label>
-                    <div class="relative">
+                
+                <div class="space-y-3">
+                    <div>
+                        <label for="gcash_ref" class="block text-sm mb-1">GCash Ref. No.</label>
                         <input type="text" id="gcash_ref" 
-                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            class="w-full px-3 py-2 rounded border" 
                             placeholder="Enter reference number"
                         >
-                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 0H4v10h12V5zm-2 2a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
                     </div>
-                </div>
-                <div class="mb-4">
-                    <label for="gcash_name" class="block text-gray-400 text-xs mb-1">Account Name</label>
-                    <div class="relative">
+                    
+                    <div>
+                        <label for="gcash_name" class="block text-sm mb-1">Account Name</label>
                         <input type="text" id="gcash_name" 
-                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            class="w-full px-3 py-2 rounded border" 
                             placeholder="Enter account name"
                         >
-                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
                     </div>
-                </div>
-                <div class="mb-4">
-                    <label for="amount_paid" class="block text-gray-400 text-xs mb-1">Amount Paid</label>
-                    <div class="relative">
+                    
+                    <div>
+                        <label for="amount_paid" class="block text-sm mb-1">Amount Paid</label>
                         <input type="number" id="amount_paid" 
-                            class="w-full px-3 py-2 pl-8 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition duration-300" 
+                            class="w-full px-3 py-2 rounded border" 
                             placeholder="Enter amount"
                         >
-                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                            <svg class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -349,9 +284,9 @@ async function showPaymentDialogCustomer(expectedAmount, membershipType) {
         confirmButtonText: 'Submit Payment Details',
         showCancelButton: true,
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded',
+            confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded',
+            cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded'
         },
         buttonsStyling: false,
         preConfirm: () => {
@@ -402,14 +337,11 @@ async function addMemberToDatabase(formData, paymentDetails) {
             Swal.fire({
                 title: 'Account Verification Pending',
                 html: `
-                    <div style="text-align: center;">
+                    <div class="text-center">
                         <p>Member added successfully.</p>
                         <p>Please wait for admin verification.</p>
-                        <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mt-4 rounded-lg">
-                            <p class="text-blue-700 font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
+                        <div class="border-l-4 border-blue-500 p-4 mt-4">
+                            <p>
                                 An email will be sent to your provided address upon account verification.
                             </p>
                         </div>
@@ -418,16 +350,14 @@ async function addMemberToDatabase(formData, paymentDetails) {
                 icon: 'info',
                 confirmButtonText: 'Got It',
                 customClass: {
-                    popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-                    title: 'text-xl font-bold text-blue-400',
-                    content: 'text-gray-300',
-                    confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 mt-4',
+                    popup: 'rounded',
+                    title: 'text-xl',
+                    confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4'
                 },
                 buttonsStyling: false,
-                backdrop: 'rgba(0,0,0,0.7)',
-                grow: true,
+                backdrop: 'rgba(0,0,0,0.4)'
             });
-        } else {
+        }else {
             Swal.fire({
                 title: 'Error!',
                 text: data.error || 'Failed to add member',

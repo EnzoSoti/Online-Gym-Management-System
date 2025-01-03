@@ -396,7 +396,6 @@ function getFormData() {
 
     return { service_type, customer_name, start_time, end_time, reservation_date };
 }
-
 // Dialog modules
 async function showPricingDialog(serviceType, price, additionalMembers, startTime) {
     let pricingContent = '';
@@ -405,41 +404,40 @@ async function showPricingDialog(serviceType, price, additionalMembers, startTim
     if (serviceType === 'court') {
         const hour = parseInt(startTime.split(':')[0]);
         pricingContent = `
-            <div class="text-center mb-6">
-                <h3 class="text-xl font-bold text-white mb-2">Basketball Court Reservation</h3>
-                <p class="text-gray-400">
+            <div class="text-center mb-4">
+                <h3 class="text-lg font-bold mb-2">Basketball Court Reservation</h3>
+                <p class="text-gray-600">
                     Court rate: ₱${price} (${hour >= 18 ? 'After' : 'Before'} 6 PM)
                 </p>
             </div>
-            <div class="text-center text-white text-lg font-bold">
+            <div class="text-center font-bold">
                 Total Amount: ₱${price}
             </div>
         `;
     } else if (serviceType === 'zumba') {
-        // Initialize with current user + additional members
         let initialParticipants = additionalMembers.length + 1;
         
         pricingContent = `
-            <div class="text-center mb-6">
-                <h3 class="text-xl font-bold text-white mb-2">Zumba Class Reservation</h3>
-                <div class="mb-4">
-                    <label class="text-gray-400 block mb-2">Number of Participants:</label>
+            <div class="text-center mb-4">
+                <h3 class="text-lg font-bold mb-2">Zumba Class Reservation</h3>
+                <div class="mb-3">
+                    <label class="block mb-1">Number of Participants:</label>
                     <input type="number" 
                            id="participantsInput" 
                            value="${initialParticipants}" 
                            min="1" 
-                           class="w-24 px-3 py-2 bg-gray-800 text-white rounded-lg text-center mx-auto block"
+                           class="w-20 px-2 py-1 border rounded text-center mx-auto"
                            oninput="updateZumbaPrice(this.value)">
                 </div>
-                <div class="mt-4">
-                    <table class="mx-auto text-left">
+                <div class="mt-3">
+                    <table class="mx-auto">
                         <tr>
-                            <td class="pr-4 text-gray-400">Rate per person:</td>
-                            <td class="text-white">₱${RATE_PER_PERSON}</td>
+                            <td class="pr-3">Rate per person:</td>
+                            <td>₱${RATE_PER_PERSON}</td>
                         </tr>
-                        <tr class="border-t border-gray-700">
-                            <td class="pr-4 pt-2 text-gray-400">Total Amount:</td>
-                            <td class="pt-2 text-white font-bold" id="totalAmount">₱${initialParticipants * RATE_PER_PERSON}</td>
+                        <tr class="border-t">
+                            <td class="pr-3 pt-2">Total Amount:</td>
+                            <td class="pt-2 font-bold" id="totalAmount">₱${initialParticipants * RATE_PER_PERSON}</td>
                         </tr>
                     </table>
                 </div>
@@ -447,31 +445,26 @@ async function showPricingDialog(serviceType, price, additionalMembers, startTim
         `;
     }
 
-    // Add the updateZumbaPrice function to window scope
     window.updateZumbaPrice = function(participants) {
-        // Ensure the value is at least 1
         participants = Math.max(1, parseInt(participants) || 1);
         const total = participants * RATE_PER_PERSON;
         document.getElementById('totalAmount').textContent = `₱${total}`;
-        // Update the input value in case it was adjusted
         document.getElementById('participantsInput').value = participants;
     };
 
     const { isConfirmed } = await Swal.fire({
         title: 'Pricing Details',
         html: `
-            <div class="p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
+            <div class="p-4 border rounded">
                 ${pricingContent}
             </div>
         `,
         confirmButtonText: 'Proceed to Payment',
         showCancelButton: true,
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded border'
         },
-        buttonsStyling: false,
+        buttonsStyling: true,  // Enable default SweetAlert button styling
         preConfirm: () => {
             if (serviceType === 'zumba') {
                 const participants = document.getElementById('participantsInput').value;
@@ -511,48 +504,42 @@ function handleServiceTypeChange(e) {
 async function showPaymentDialog(totalPrice) {
     const { isConfirmed, value: paymentDetails } = await Swal.fire({
         html: `
-            <div class="max-w-2xl mx-auto p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <div class="mb-8 text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                        Select Payment Method
-                    </h2>
-                    <p class="mt-2 text-gray-400">Choose your preferred way to pay</p>
+            <div class="p-4">
+                <div class="mb-6 text-center">
+                    <h2 class="text-xl font-bold">Select Payment Method</h2>
+                    <p class="mt-2 text-gray-600">Choose your preferred way to pay</p>
                 </div>
 
                 <div class="space-y-4">
-                    <button id="gym-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-orange-500/20 to-orange-600/20 hover:from-orange-500/30 hover:to-orange-600/30 transition-all duration-300">
-                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-white group-hover:text-orange-400 transition-colors">Pay in the Gym</h3>
-                                    <p class="text-sm text-gray-400">Pay when you arrive at the facility</p>
-                                </div>
-                                <svg class="w-5 h-5 text-gray-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    <button id="gym-payment" class="w-full p-4 rounded border hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded bg-orange-100 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                                 </svg>
                             </div>
+                            <div class="flex-1 text-left">
+                                <h3 class="font-semibold">Pay in the Gym</h3>
+                                <p class="text-sm text-gray-600">Pay when you arrive at the facility</p>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
                         </div>
                     </button>
 
-                    <button id="gcash-payment" class="group w-full p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
-                        <div class="px-6 py-4 rounded-xl bg-gray-900 hover:bg-gray-900/80 transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                                    <img src="../img/gcash-seeklogo.png" alt="GCash Logo" class="w-8 h-8">
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-white group-hover:text-blue-400 transition-colors">Pay with GCash</h3>
-                                    <p class="text-sm text-gray-400">Pay securely using GCash</p>
-                                </div>
-                                <svg class="w-5 h-5 text-gray-600 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
+                    <button id="gcash-payment" class="w-full p-4 rounded border hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded bg-blue-100 flex items-center justify-center">
+                                <img src="../img/gcash-seeklogo.png" alt="GCash Logo" class="w-6 h-6">
                             </div>
+                            <div class="flex-1 text-left">
+                                <h3 class="font-semibold">Pay with GCash</h3>
+                                <p class="text-sm text-gray-600">Pay securely using GCash</p>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
                         </div>
                     </button>
                 </div>
@@ -562,10 +549,9 @@ async function showPaymentDialog(totalPrice) {
         showCancelButton: true,
         cancelButtonText: 'Cancel',
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded'
         },
-        buttonsStyling: false,
+        buttonsStyling: true,  // Enable default SweetAlert button styling
         didOpen: () => {
             const gymBtn = document.getElementById('gym-payment');
             const gcashBtn = document.getElementById('gcash-payment');
@@ -588,40 +574,43 @@ async function showPaymentDialog(totalPrice) {
     return isConfirmed ? paymentDetails : null;
 }
 
-// Payment handling modules
 async function handleGcashPayment(totalAmount) {
     const { isConfirmed, value } = await Swal.fire({
         html: `
-            <div class="max-w-2xl mx-auto p-6 bg-gradient-to-b from-gray-900 to-gray-950 rounded-3xl">
-                <div class="mb-8 text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                        GCash Payment Details
-                    </h2>
-                    <p class="mt-2 text-gray-400">Please enter your GCash transaction information</p>
+            <div class="p-4">
+                <div class="mb-6 text-center">
+                    <h2 class="text-xl font-bold">GCash Payment Details</h2>
+                    <p class="mt-2 text-gray-600">Please enter your GCash transaction information</p>
                 </div>
 
                 <div class="space-y-6">
                     <div class="text-center">
-                        <div class="p-4 bg-white/10 rounded-xl border border-white/20 shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="p-4 bg-gray-50 rounded border">
                             <img 
                                 src="../img/photo_2024-11-30_21-50-23.jpg" 
                                 alt="GCash QR Code" 
-                                class="mx-auto w-64 h-64 rounded-lg object-cover ring-4 ring-blue-500/50 hover:ring-blue-500/70 transition-all duration-300"
+                                class="mx-auto w-64 h-64 rounded object-cover border-4 border-blue-100"
                             >
                         </div>
                     </div>
-                    <div class="text-left space-y-6">
-                        <div class="group">
-                            <label class="block text-gray-400 text-sm mb-3 font-medium">GCash Reference Number</label>
-                            <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
-                                <input type="text" id="gcash-ref" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter reference number">
-                            </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 text-sm mb-2 font-medium">GCash Reference Number</label>
+                            <input 
+                                type="text" 
+                                id="gcash-ref" 
+                                class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all" 
+                                placeholder="Enter reference number"
+                            >
                         </div>
-                        <div class="group">
-                            <label class="block text-gray-400 text-sm mb-3 font-medium">Account Name</label>
-                            <div class="p-1 rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300">
-                                <input type="text" id="gcash-name" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" placeholder="Enter GCash account name">
-                            </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm mb-2 font-medium">Account Name</label>
+                            <input 
+                                type="text" 
+                                id="gcash-name" 
+                                class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all" 
+                                placeholder="Enter GCash account name"
+                            >
                         </div>
                     </div>
                 </div>
@@ -630,11 +619,9 @@ async function handleGcashPayment(totalAmount) {
         confirmButtonText: 'Confirm Payment',
         showCancelButton: true,
         customClass: {
-            popup: 'rounded-2xl bg-gray-900 border-2 border-gray-800/50',
-            confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300',
-            cancelButton: 'bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold rounded-xl px-6 py-3 transition duration-300 border border-gray-700/50',
+            popup: 'rounded'
         },
-        buttonsStyling: false,
+        buttonsStyling: true,  // Enable default SweetAlert button styling
         preConfirm: () => {
             const refNumber = document.getElementById('gcash-ref').value;
             const accountName = document.getElementById('gcash-name').value;
@@ -745,7 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// // Admin login function
+// Admin login function
 async function showAdminLogin(e) {
     e.preventDefault();
 

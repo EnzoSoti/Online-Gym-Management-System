@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +41,21 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
     <!-- pop up sweet alert -->
     <style>
         .swal2-popup {
@@ -101,6 +116,153 @@
             background: white;
         }
         
+    </style>
+
+    <style>
+        /* Base styles */
+        * {
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sweet Alert Customization */
+        .swal2-popup {
+            font-family: 'Poppins', sans-serif;
+            border-radius: 1rem;
+        }
+        .swal2-confirm {
+            background: linear-gradient(to right, #ea580c, #c2410c) !important;
+            border-radius: 0.75rem !important;
+            padding: 0.75rem 1.5rem !important;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #ea580c !important;
+            color: #ea580c !important;
+        }
+
+        /* Calendar Styles */
+        .fc {
+            height: 100%;
+            background: white;
+            --fc-button-bg-color: #EA580C;
+            --fc-button-border-color: #EA580C;
+            --fc-button-hover-bg-color: #C2410C;
+            --fc-button-hover-border-color: #C2410C;
+            --fc-button-active-bg-color: #9A3412;
+            --fc-button-active-border-color: #9A3412;
+            --fc-today-bg-color: #FFF7ED;
+            --fc-border-color: #FDBA74;
+            --fc-event-border-color: #EA580C;
+            --fc-event-bg-color: #FFF7ED;
+            --fc-event-text-color: #431407;
+        }
+        
+        .fc-event {
+            cursor: pointer;
+            padding: 2px 4px;
+        }
+
+        .fc-daygrid-event {
+            white-space: normal !important;
+            align-items: normal !important;
+        }
+
+        .fc-header-toolbar {
+            padding: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .fc-header-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .fc-toolbar-chunk {
+                display: flex;
+                justify-content: center;
+                margin: 0.25rem 0;
+            }
+        }
+
+        /* Responsive Form Elements */
+        input, select, textarea {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Responsive Grid Layout */
+        @media (max-width: 1024px) {
+            .grid-cols-5 {
+                grid-template-columns: 1fr;
+            }
+            
+            .lg\:col-span-2,
+            .lg\:col-span-3 {
+                grid-column: span 1;
+            }
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: none;
+            }
+            
+            .mobile-menu.active {
+                display: block;
+            }
+        }
+
+        /* Form Responsiveness */
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .hero-buttons a {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+
+        /* Container Padding Adjustments */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        /* Calendar Event Responsiveness */
+        @media (max-width: 480px) {
+            .fc-daygrid-event {
+                font-size: 0.75rem;
+            }
+            
+            .fc-header-toolbar {
+                font-size: 0.875rem;
+            }
+        }
     </style>
 
 </head>
