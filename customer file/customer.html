@@ -355,22 +355,22 @@
     </nav>
     
     <!-- Hero Section -->
-    <div class="w-full bg-gradient-to-r from-orange-600 to-orange-800 text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="w-full bg-gradient-to-r from-orange-600 to-orange-800 text-white relative overflow-hidden border-b border-orange-400">
+        <div class="absolute inset-0 border border-black/10"></div>
         <div class="container mx-auto px-4 py-8 sm:py-12 md:py-16 relative">
             <div class="max-w-3xl mx-auto text-center">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Welcome!</h1>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight border-b border-white/20 inline-block pb-2">Welcome!</h1>
                 <p class="text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 text-orange-100">Experience top-notch facilities and expert guidance. Book your session now!</p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="#booking-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm sm:text-base font-medium shadow-lg">
+                    <a href="#booking-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 border border-white text-white rounded-none hover:bg-orange-700 transition-all focus:border-orange-100 text-sm sm:text-base font-medium">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"/>
                         </svg>
                         Click to Start Booking
                     </a>
-                    <a href="#subscription-form" id="subscription-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm sm:text-base font-medium shadow-lg">
+                    <a href="#subscription-form" id="subscription-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 border border-white text-white rounded-none hover:bg-orange-700 transition-all focus:border-orange-100 text-sm sm:text-base font-medium">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"/>
                         </svg>
                         Click to Online Monthly Pass
                     </a>
@@ -378,7 +378,6 @@
             </div>
         </div>
     </div>
-    
 </body>
 
     <!-- Main Content -->
@@ -387,12 +386,12 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <!-- Booking Form Section -->
                 <div class="lg:col-span-2">
-                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-orange-100 h-full flex flex-col">
+                    <div class="bg-white border-2 border-orange-200 h-full flex flex-col">
                         <!-- Form Header -->
-                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 shrink-0">
+                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 border-b border-orange-400 shrink-0">
                             <h2 class="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                 </svg>
                                 Book Your Session
                             </h2>
@@ -408,7 +407,7 @@
                                     <select 
                                         name="service_type" 
                                         id="service-type"
-                                        class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50"
+                                        class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
                                     >
                                         <option value="court">Basketball Court</option>
                                         <option value="zumba">Zumba</option>
@@ -419,16 +418,16 @@
                                 <div class="space-y-2">
                                     <label class="block text-sm font-medium text-slate-700">Main Client Name</label>
                                     <input type="text" 
-                                           placeholder="Enter your full name" 
-                                           class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50">
+                                        placeholder="Enter your full name" 
+                                        class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent">
                                 </div>
 
-                                <!-- Add the new Time Slot Notice here, before Team Members Section -->
-                                <div class="bg-gradient-to-r from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-300">
+                                <!-- Time Slot Notice -->
+                                <div class="border-2 border-orange-300 p-4">
                                     <div class="flex items-start gap-3">
                                         <div class="shrink-0">
                                             <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                         </div>
                                         <div>
@@ -454,16 +453,16 @@
                                         <div class="space-y-2">
                                             <label class="block text-sm font-medium text-slate-700">Start Time</label>
                                             <input type="time" 
-                                                   class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50"
-                                                   min="09:00" 
-                                                   max="23:59">
+                                                class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
+                                                min="09:00" 
+                                                max="23:59">
                                         </div>
                                         <div class="space-y-2">
                                             <label class="block text-sm font-medium text-slate-700">End Time</label>
                                             <input type="time" 
-                                                   class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50"
-                                                   min="09:00" 
-                                                   max="23:59">
+                                                class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
+                                                min="09:00" 
+                                                max="23:59">
                                         </div>
                                     </div>
                         
@@ -471,14 +470,12 @@
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-slate-700">Select Date</label>
                                         <input type="date" 
-                                               class="w-full px-4 py-3 rounded-xl border border-orange-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 transition-all bg-orange-50">
+                                            class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent">
                                     </div>
                                 </div>
-
-                                
                         
                                 <!-- Team Members Section -->
-                                <div id="team-members-section" class="bg-orange-50 p-6 rounded-xl border border-orange-200">
+                                <div id="team-members-section" class="border-2 border-orange-200 p-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <label class="block text-sm font-medium text-slate-700">Team Members</label>
                                         <span class="text-xs text-slate-500">Max 8 additional players</span>
@@ -488,9 +485,9 @@
                                     </div>
                                     <button type="button" 
                                             id="add-player-btn"
-                                            class="mt-4 inline-flex items-center px-4 py-2 text-sm bg-white text-orange-600 rounded-xl border border-orange-200 hover:bg-orange-50 transition-colors">
+                                            class="mt-4 inline-flex items-center px-4 py-2 text-sm text-orange-600 border-2 border-orange-200 hover:border-orange-600 transition-colors">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                         </svg>
                                         Add Player
                                     </button>
@@ -498,9 +495,9 @@
                         
                                 <!-- Form Buttons -->
                                 <button type="submit" 
-                                        class="w-full px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl hover:from-orange-700 hover:to-orange-800 transition-all focus:ring-2 focus:ring-orange-100 flex items-center justify-center gap-2 text-lg font-semibold">
+                                        class="w-full px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white border border-orange-400 hover:from-orange-700 hover:to-orange-800 transition-all flex items-center justify-center gap-2 text-lg font-semibold">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                     </svg>
                                     Book Now
                                 </button>
@@ -511,13 +508,13 @@
 
                 <!-- Calendar Section -->
                 <div class="lg:col-span-3">
-                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-orange-100 h-full flex flex-col">
-                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 shrink-0">
+                    <div class="bg-white border-2 border-orange-200 h-full flex flex-col">
+                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 border-b border-orange-400 shrink-0">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h2 class="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
                                         Available Time Slots
                                     </h2>
@@ -531,7 +528,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
