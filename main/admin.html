@@ -131,18 +131,21 @@
             <section id="dashboard">
                 <div class="p-6 bg-orange-50 min-h-screen">
                     <!-- Header -->
-                    <div class="mb-4 sm:mb-8 bg-white rounded-lg border-2 border-orange-600 p-4 sm:p-6">
+                    <div class="mb-4 sm:mb-8 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg p-4 sm:p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                             <div class="flex items-center gap-3 sm:gap-4">
-                                <div class="p-2 sm:p-3 border border-orange-200 rounded-lg">
-                                    <img src="../landing_images/logo.jpg" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10 object-cover"/>
+                                <div class="p-2 sm:p-3 bg-white/20 backdrop-blur-sm rounded-lg">
+                                    <img src="../landing_images/logo.jpg" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10 object-cover rounded-lg"/>
                                 </div>
-                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-black">Fitworx GYM</h1>
+                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white uppercase tracking-wider">
+                                    Fitworx
+                                    <span class="block text-sm text-white/80 tracking-widest">ADMIN DASHBOARD</span>
+                                </h1>
                             </div>
-                            <button id="goToCustomerPageBtn" class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-orange-600 hover:bg-orange-700 transition-colors text-white rounded-lg">
+                            <button id="goToCustomerPageBtn" class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-white text-red-500 rounded-lg hover:bg-gray-100 transition-all group font-bold">
                                 <div class="flex items-center justify-center sm:justify-start gap-2">
-                                    <span class="text-sm sm:text-base">Go to Page</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <span class="text-sm sm:text-base">PORTAL ACCESS</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                     </svg>
                                 </div>
@@ -153,9 +156,9 @@
                     <!-- Metrics Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                         <!-- Total Earnings -->
-                        <div id="totalEarnings" class="border-2 border-gray-200 rounded-lg p-4">
+                        <div id="totalEarnings" class="border-2 border-orange-600 rounded-lg p-4">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 border border-gray-200 rounded-lg">
+                                <div class="p-2 border border-orange-200 rounded-lg">
                                     <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
@@ -168,9 +171,9 @@
                         </div>
 
                         <!-- Regular Walk-in -->
-                        <div id="attendanceRegular" class="border-2 border-gray-200 rounded-lg p-4">
+                        <div id="attendanceRegular" class="border-2 border-orange-600 rounded-lg p-4">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 border border-gray-200 rounded-lg">
+                                <div class="p-2 border border-orange-200 rounded-lg">
                                     <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 15.5c0 1 1.5 2 1.5 2h10s1.5-1 1.5-2v-3h-13v3zm14-3V8c0-1.1-.9-2-2-2H6.5c-1.1 0-2 .9-2 2v4.5M8 6V4c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v2"/>
                                     </svg>
@@ -183,9 +186,9 @@
                         </div>
 
                         <!-- Student Walk-in -->
-                        <div id="attendanceStudent" class="border-2 border-gray-200 rounded-lg p-4">
+                        <div id="attendanceStudent" class="border-2 border-orange-600 rounded-lg p-4">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 border border-gray-200 rounded-lg">
+                                <div class="p-2 border border-orange-200 rounded-lg">
                                     <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path d="M12 14l9-5-9-5-9 5 9 5z"/>
                                         <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
@@ -199,9 +202,9 @@
                         </div>
 
                         <!-- Monthly Members -->
-                        <div id="attendanceMonthly" class="border-2 border-gray-200 rounded-lg p-4">
+                        <div id="attendanceMonthly" class="border-2 border-orange-600 rounded-lg p-4">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 border border-gray-200 rounded-lg">
+                                <div class="p-2 border border-orange-200 rounded-lg">
                                     <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
@@ -214,9 +217,9 @@
                         </div>
 
                         <!-- Reservations -->
-                        <div id="attendanceReservation" class="border-2 border-gray-200 rounded-lg p-4">
+                        <div id="attendanceReservation" class="border-2 border-orange-600 rounded-lg p-4">
                             <div class="flex items-center gap-3">
-                                <div class="p-2 border border-gray-200 rounded-lg">
+                                <div class="p-2 border border-orange-200 rounded-lg">
                                     <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2h2c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h2z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v3m0 3h.01"/>
@@ -234,7 +237,7 @@
                     <div class="grid grid-cols-12 gap-4 mb-8">
                         <!-- Member Growth Chart -->
                         <div class="col-span-12 lg:col-span-8">
-                            <div class="border-2 border-gray-200 p-6 rounded-lg">
+                            <div class="border-2 border-orange-600 p-6 rounded-lg h-full">
                                 <div class="flex items-center gap-3 mb-6">
                                     <div>
                                         <h2 class="text-lg font-semibold">Membership Growth</h2>
@@ -244,29 +247,24 @@
                                 <canvas id="memberGrowthChart" class="max-h-[500px]"></canvas>
                             </div>
                         </div>
-
+                    
                         <!-- Membership Distribution -->
                         <div class="col-span-12 lg:col-span-4">
-                            <div class="border-2 border-gray-200 p-6 rounded-lg">
+                            <div class="border-2 border-orange-600 p-6 rounded-lg h-full">
                                 <div class="flex items-center gap-3 mb-6">
                                     <div>
                                         <h2 class="text-lg font-semibold">Membership Types</h2>
                                         <p class="text-sm text-gray-500">Regular/Student analysis</p>
                                     </div>
                                 </div>
-                                <canvas id="membershipPieChart" class="max-h-[300px]"></canvas>
+                                <canvas id="membershipPieChart" class="max-h-[500px]"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- Monthly Due Date Section -->
-                    <div class="border-2 border-gray-200 border-t-4 border-t-orange-600 rounded-lg p-4">
+                    <div class="border-2 border-orange-600 rounded-lg p-4">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="p-2 border border-orange-200 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
                             <div>
                                 <h2 class="text-lg font-bold text-black">Upcoming Renewals</h2>
                                 <p class="text-orange-600 text-sm">Members due for membership renewal</p>
