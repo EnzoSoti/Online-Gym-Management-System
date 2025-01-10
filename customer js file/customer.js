@@ -776,7 +776,6 @@ async function showAdminLogin(e) {
         confirmButtonText: 'Login',
         cancelButtonText: 'Cancel',
         customClass: {
-            container: 'Poppins',
             popup: 'rounded-lg bg-white border border-gray-300 shadow',
             title: 'text-center border-b border-gray-200 pb-4',
             htmlContainer: 'px-6',
