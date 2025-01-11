@@ -160,3 +160,31 @@ display: block;
 .feature-icon {
     stroke: #ff6b00;
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 100px;
+    }
+    .hero-section h2 {
+        font-size: 2rem;
+    }
+    .hero-section p {
+        font-size: 1rem;
+    }
+    .features-section .grid {
+        grid-template-columns: 1fr;
+    }
+    .special-classes-section .grid {
+        grid-template-columns: 1fr;
+    }
+    .membership-section .grid {
+        grid-template-columns: 1fr;
+    }
+    .faq-feedback-section .grid {
+        grid-template-columns: 1fr;
+    }
+    .footer .grid {
+        grid-template-columns: 1fr;
+    }
+}

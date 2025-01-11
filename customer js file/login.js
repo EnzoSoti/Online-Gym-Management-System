@@ -11,17 +11,8 @@ const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
 
-// API URL - Update this with your server URL
+// API URL
 const API_URL = 'http://localhost:3000/api';
-
-// Throttling configuration
-const THROTTLE_CONFIG = {
-    maxAttempts: 5,
-    timeWindow: 5 * 60 * 1000, // 5 minutes
-    attempts: new Map(),
-    lastSubmitTime: 0,
-    minSubmitInterval: 1000 // Minimum 1 second between submissions
-};
 
 // Sanitize input to prevent XSS
 const sanitizeInput = (input) => {
@@ -34,41 +25,9 @@ const sanitizeInput = (input) => {
         .replace(/\//g, '&#x2F;');
 };
 
-// Check if the form submission is being throttled
-const isThrottled = (clientIP = 'default') => {
-    const now = Date.now();
-    const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
-    
-    // Clean up old attempts
-    const recentAttempts = attempts.filter(time => now - time < THROTTLE_CONFIG.timeWindow);
-    THROTTLE_CONFIG.attempts.set(clientIP, recentAttempts);
-
-    // Check submission interval
-    if (now - THROTTLE_CONFIG.lastSubmitTime < THROTTLE_CONFIG.minSubmitInterval) {
-        return true;
-    }
-
-    // Check number of attempts
-    return recentAttempts.length >= THROTTLE_CONFIG.maxAttempts;
-};
-
 // Handle form submission
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-
-    if (isThrottled()) {
-        Swal.fire({
-            title: 'Please Wait',
-            text: 'Too many attempts. Please try again in 5 minutes.',
-            icon: 'warning',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#eab308',
-            background: '#fefce8',
-            iconColor: '#ca8a04',
-            color: '#854d0e'
-        });
-        return;
-    }
 
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
 
@@ -82,13 +41,6 @@ loginForm.addEventListener('submit', async function (e) {
             const sound = document.getElementById(soundId);
             sound.play();
         }
-
-        // Update throttling data
-        const clientIP = 'default'; // In real implementation, get client IP
-        const attempts = THROTTLE_CONFIG.attempts.get(clientIP) || [];
-        attempts.push(Date.now());
-        THROTTLE_CONFIG.attempts.set(clientIP, attempts);
-        THROTTLE_CONFIG.lastSubmitTime = Date.now();
 
         if (isLoginMode) {
             // Handle Login
@@ -153,7 +105,7 @@ loginForm.addEventListener('submit', async function (e) {
                     willClose: () => {
                         toggleForms();
                     }
-                 });
+                });
             } else {
                 playSound('success-sound');
                 Swal.fire({
@@ -161,7 +113,7 @@ loginForm.addEventListener('submit', async function (e) {
                     text: data.error || 'Please try again with different information.',
                     icon: 'error',
                     confirmButtonText: 'OK'
-                 });
+                });
             }
         }
     } catch (error) {

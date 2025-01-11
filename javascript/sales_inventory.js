@@ -288,26 +288,11 @@ class SupplementManager {
 
     showSuccess(message) {
         Swal.fire({
-            icon: '',
-            iconHtml: `
-                <div class="w-32 h-32 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-            `,
+            icon: 'success',
             title: 'Success',
             text: message,
-            timer: 2000,
-            showConfirmButton: false,
-            customClass: {
-                popup: 'rounded-3xl overflow-hidden shadow-2xl',
-                title: 'text-2xl font-extrabold text-gray-900 tracking-tight',
-                content: 'text-base text-gray-600 leading-relaxed'
-            },
-            background: '#ffffff',
-            width: '500px',
-            padding: '2rem'
+            timer: 4000,
+            showConfirmButton: false
         });
     }
 
