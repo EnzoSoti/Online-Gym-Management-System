@@ -5,6 +5,23 @@ document.getElementById('mobile-menu-button').addEventListener('click', () => {
     mobileMenu.classList.toggle('hidden');
 });
 
+// Dark mode toggle functionality
+const themeToggleBtn = document.getElementById('theme-toggle');
+const html = document.documentElement;
+
+// Check for saved theme preference, otherwise use system preference
+if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    html.classList.add('dark');
+} else {
+    html.classList.remove('dark');
+}
+
+// Toggle theme
+themeToggleBtn.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+});
+
 // Toggle mobile submenu visibility
 document.querySelectorAll('#mobile-menu button').forEach(button => {
     button.addEventListener('click', (e) => {

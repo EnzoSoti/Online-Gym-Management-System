@@ -8,6 +8,23 @@
     <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"> -->
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#1a1a1a',
+                            800: '#2d2d2d',
+                            700: '#3d3d3d',
+                            600: '#4d4d4d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="../css/landing.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
@@ -23,6 +40,17 @@
                     <h1 class="text-4xl font-bold uppercase tracking-wide text-gray-100 bg-gray-800 px-4 py-2 border-2 border-gray-600 shadow-md transform skew-x-[-2deg] hover:skew-x-0 transition">Fitworx Gym</h1>
                 </div>
                 <div class="space-x-4 flex items-center">
+                    <!-- Dark Mode Toggle -->
+                    <button id="theme-toggle" class="p-2.5 rounded-lg bg-gradient-to-br from-sky-100 to-blue-200 dark:from-slate-800 dark:to-gray-900 hover:opacity-90 transition-opacity duration-200 shadow-sm">
+                        <!-- Sun icon -->
+                        <svg class="w-5 h-5 hidden dark:block text-amber-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                        </svg>
+                        <!-- Moon icon -->
+                        <svg class="w-5 h-5 block dark:hidden text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
                     <!-- Services Dropdown -->
                     <div class="relative services-menu">
                         <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
@@ -114,7 +142,7 @@
     </nav>
 
     <!-- Hero Section with Carousel -->
-    <header class="relative pt-32 pb-16 bg-orange-600 text-white overflow-hidden">
+    <header class="relative pt-32 pb-16 bg-orange-600 dark:bg-dark-800 text-white overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                 <path fill="white" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,197.3C672,181,768,171,864,181.3C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
@@ -160,9 +188,9 @@
     </header>
 
     <!-- Features Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white dark:bg-dark-900">
         <div class="container mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-12 tracking-tight">Why Choose Fitworx Gym?</h3>
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Why Choose Fitworx Gym?</h3>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="bg-gray-100 p-6 rounded-lg text-center feature-card">
                     <img src="../landing_images/Hammer.jpg" alt="Hammer Strength Equipment" class="mx-auto mb-4 rounded-lg h-48 w-full object-cover">
@@ -184,7 +212,7 @@
     </section>
 
     <!-- Special Classes Section -->
-    <section class="py-16 bg-gradient-to-br from-orange-50 to-orange-100">
+    <section class="py-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-dark-800 dark:to-dark-700">
         <div class="container mx-auto px-4">
             <h3 class="text-4xl font-extrabold text-center mb-12 tracking-tight text-orange-800">Exciting Classes That Will Get You Moving!</h3>
             <div class="grid md:grid-cols-2 gap-8">
@@ -254,9 +282,9 @@
     </section>
 
     <!-- Fitness Goal Tracking -->
-    <section class="py-16 bg-orange-50">
+    <section class="py-16 bg-orange-50 dark:bg-dark-800">
         <div class="container mx-auto px-4 text-center">
-            <h3 class="text-3xl font-bold mb-12 tracking-tight">Your Fitness, Your Goals</h3>
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Your Fitness, Your Goals</h3>
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -290,9 +318,8 @@
         </div>
     </section>
     
-
     <!-- Membership Section -->
-    <section class="py-16 bg-gradient-to-br from-orange-500 to-red-600 text-white">
+    <section class="py-16 bg-gradient-to-br from-orange-500 to-red-600 dark:from-dark-700 dark:to-dark-800 text-white">
         <div class="container mx-auto px-4 text-center">
             <h3 class="text-4xl font-extrabold mb-8 tracking-tight text-shadow">Monthly Pass Options</h3>
             <div class="grid md:grid-cols-2 gap-8 relative">
@@ -361,12 +388,12 @@
         </div>
     </section>
     
-    <section class="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section class="py-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-800 dark:to-dark-700">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid md:grid-cols-2 gap-12">
                 <!-- FAQ Column -->
                 <div>
-                    <h3 class="text-3xl font-bold text-center mb-12 tracking-tight text-gray-800">Frequently Asked Questions</h3>
+                    <h3 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Frequently Asked Questions</h3>
                     <div class="space-y-4">
                         <div class="faq-item bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                             <div class="faq-question flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 transition duration-300">
@@ -420,7 +447,7 @@
     
                 <!-- Feedback Column -->
                 <div>
-                    <h3 class="text-3xl font-bold text-center mb-12 tracking-tight text-gray-800">Your Feedback Matters</h3>
+                    <h3 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Your Feedback Matters</h3>
                     <div class="bg-white p-8 rounded-xl shadow-lg">
                         <form id="feedback-form" class="space-y-6">
                             <div>
@@ -472,7 +499,7 @@
         </div>
     </section>
 
-    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 text-white py-12 shadow-lg">
+    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 dark:from-dark-900 dark:via-dark-800 dark:to-dark-700 text-white py-12 shadow-lg">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
