@@ -21,7 +21,7 @@ document.getElementById('navLogout').addEventListener('click', function(e) {
                 showConfirmButton: false
             }).then(() => {
                 // Redirect to landing page
-                window.location.href = '../landing_images/index.html';
+                window.location.href = '/index.html';
             });
         }
     });
