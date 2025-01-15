@@ -115,6 +115,9 @@
                     <li><a href="#buy" class="nav-item" id="navSales">
                         <i class="fa-solid fa-cart-shopping"></i><span>Product Sale</span>
                     </a></li>
+                    <li><a href="#maintenance" class="nav-item" id="navMaintenance">
+                        <i class="fa-solid fa-wrench"></i><span>Maintenance</span>
+                    </a></li>
                     <li class="mt-4 pt-4 border-t border-gray-700">
                         <a href="#" class="nav-item flex items-center text-red-400 hover:text-red-300 hover:bg-red-900/50 rounded-lg p-2 transition-colors duration-200" id="navLogout">
                             <i class="fa-solid fa-sign-out-alt mr-3"></i>
@@ -501,419 +504,423 @@
 
         <!-- Section 4 -->
         <!-- Sales and Inventory - Supplements -->
-        <section id="supplement" class="ml-64 h-screen bg-white">
-            <div class="h-full p-8">
-                <div class="flex flex-col h-full border border-slate-200 rounded-3xl">
-                    <!-- Header -->
-                    <div class="p-8 border-b border-slate-200 flex-shrink-0">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <div class="flex items-center gap-3">
-                                    <div class="p-2 border border-orange-600 rounded-xl">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
-                                        </svg>
+        <div class="main-content">
+            <section id="supplement" class="h-screen bg-white">
+                <div class="h-full p-8">
+                    <div class="flex flex-col h-full border border-slate-200 rounded-3xl">
+                        <!-- Header -->
+                        <div class="p-8 border-b border-slate-200 flex-shrink-0">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 border border-orange-600 rounded-xl">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M17.498 6.871l-3.37-3.37a1 1 0 01-.29-.708V2a1 1 0 00-1-1h-6a1 1 0 00-1 1v.793a1 1 0 01-.29.708l-3.37 3.37A1 1 0 002 7.586V16a1 1 0 001 1h14a1 1 0 001-1V7.586a1 1 0 00-.502-.715zM14 16h-4v-4h4v4zm-6-4H4v-4h4v4zm6-4h-4V4h4v4zm-6-4H4v-.586l3-3V4h1v4z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
                                     </div>
-                                    <h2 class="text-3xl font-extrabold text-slate-800">Product</h2>
+                                    <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
                                 </div>
-                                <p class="text-slate-500 mt-2 text-lg">Manage our product inventory</p>
-                            </div>
-                            <button id="openModalBtn" 
-                                    class="group flex items-center gap-2 px-6 py-3.5 border border-orange-600 text-orange-600 rounded-xl hover:bg-orange-50 transition-all duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="font-semibold">Add Supplement</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Table Container with Scroll -->
-                    <div class="flex-1 p-8 overflow-hidden">
-                        <div class="h-full overflow-auto rounded-xl border border-slate-200">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-white sticky top-0 border-b border-slate-200">
-                                    <tr>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Quantity</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Critical Low</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Price</th>
-                                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="supplementsTable" class="divide-y divide-slate-200 bg-white">
-                                    <!-- Data will be inserted here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div id="supplementModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-                <div class="flex items-center justify-center min-h-screen p-4">
-                    <div class="bg-white rounded-2xl border border-slate-200 max-w-md w-full">
-                        <div class="p-6 border-b border-slate-200">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 border border-orange-600 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                <button id="openModalBtn" 
+                                        class="group flex items-center gap-2 px-6 py-3.5 border border-orange-600 text-orange-600 rounded-xl hover:bg-orange-50 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                                     </svg>
-                                </div>
-                                <h3 id="modalTitle" class="text-2xl font-bold text-slate-800">Add Supplement</h3>
+                                    <span class="font-semibold">Add Supplement</span>
+                                </button>
                             </div>
                         </div>
-                        <form id="supplementForm" class="p-6">
-                            <input type="hidden" id="supplementId">
-                            <div class="space-y-6">
-                                <div>
-                                    <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">Supplement Name</label>
-                                    <input type="text" id="name" name="name" required
-                                        class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
-                                </div>
-                                <div>
-                                    <label for="quantity" class="block text-sm font-semibold text-slate-700 mb-2">Quantity</label>
-                                    <input type="number" id="quantity" name="quantity" required min="0"
-                                        class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
-                                </div>
-                                <div>
-                                    <label for="price" class="block text-sm font-semibold text-slate-700 mb-2">Price</label>
-                                    <input type="number" id="price" name="price" required min="0" step="0.01"
-                                        class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
-                                </div>
+
+                        <!-- Table Container with Scroll -->
+                        <div class="flex-1 p-8 overflow-hidden">
+                            <div class="h-full overflow-auto rounded-xl border border-slate-200">
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-white sticky top-0 border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Quantity</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Critical Low</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Price</th>
+                                            <th class="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="supplementsTable" class="divide-y divide-slate-200 bg-white">
+                                        <!-- Data will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="mt-8 flex justify-end gap-4">
-                                <button type="button" id="closeModalBtn"
-                                    class="px-6 py-3 text-sm font-semibold text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all duration-200">
-                                    Cancel
-                                </button>
-                                <button type="submit"
-                                    class="px-6 py-3 text-sm font-semibold text-orange-600 border border-orange-600 rounded-xl hover:bg-orange-50 transition-all duration-200">
-                                    Save
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+
+                <!-- Modal -->
+                <div id="supplementModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+                    <div class="flex items-center justify-center min-h-screen p-4">
+                        <div class="bg-white rounded-2xl border border-slate-200 max-w-md w-full">
+                            <div class="p-6 border-b border-slate-200">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 border border-orange-600 rounded-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <h3 id="modalTitle" class="text-2xl font-bold text-slate-800">Add Supplement</h3>
+                                </div>
+                            </div>
+                            <form id="supplementForm" class="p-6">
+                                <input type="hidden" id="supplementId">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="name" class="block text-sm font-semibold text-slate-700 mb-2">Supplement Name</label>
+                                        <input type="text" id="name" name="name" required
+                                            class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
+                                    </div>
+                                    <div>
+                                        <label for="quantity" class="block text-sm font-semibold text-slate-700 mb-2">Quantity</label>
+                                        <input type="number" id="quantity" name="quantity" required min="0"
+                                            class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
+                                    </div>
+                                    <div>
+                                        <label for="price" class="block text-sm font-semibold text-slate-700 mb-2">Price</label>
+                                        <input type="number" id="price" name="price" required min="0" step="0.01"
+                                            class="block w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-600 focus:ring-1 focus:ring-orange-600 transition-colors duration-200">
+                                    </div>
+                                </div>
+                                <div class="mt-8 flex justify-end gap-4">
+                                    <button type="button" id="closeModalBtn"
+                                        class="px-6 py-3 text-sm font-semibold text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                        class="px-6 py-3 text-sm font-semibold text-orange-600 border border-orange-600 rounded-xl hover:bg-orange-50 transition-all duration-200">
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <!-- Section 5 -->
-        <!-- monthly member -->
-        <section id="monthlyMembers" class="ml-64 h-screen bg-gradient-to-br from-slate-50 to-orange-50">
-            <!-- Main Content -->
-            <div class="h-full p-8">
-                <!-- Main Card -->
-                <div class="flex flex-col h-full bg-white border border-slate-200 rounded-3xl">
-                    <!-- Header Section -->
-                    <div class="p-8 border-b border-slate-200">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div>
+        <!-- Monthly Member -->
+        <div class="main-content">
+            <section id="monthlyMembers" class="h-screen bg-gradient-to-br from-slate-50 to-orange-50">
+                <!-- Main Content -->
+                <div class="h-full p-8">
+                    <!-- Main Card -->
+                    <div class="flex flex-col h-full bg-white border border-slate-200 rounded-3xl">
+                        <!-- Header Section -->
+                        <div class="p-8 border-b border-slate-200">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-orange-100 rounded-xl">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 15v3h6v-3a5 5 0 00-6 0zM4 15v3H0v-3a5 5 0 016 0z"/>
+                                            </svg>
+                                        </div>
+                                        <h2 class="text-3xl font-extrabold text-black">Monthly Members</h2>
+                                    </div>
+                                    <p class="text-slate-500 mt-2 text-lg">Track and manage your gym membership base</p>
+                                </div>
+                                <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                                    <div class="relative flex-grow md:flex-grow-0 md:w-72">
+                                        <input 
+                                            type="text" 
+                                            id="memberSearch" 
+                                            placeholder="Search members..." 
+                                            class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 pl-12 transition-all duration-200 text-sm"
+                                        >
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <svg class="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <button id="displayAllBtn" 
+                                            class="px-3 py-1.5 border border-blue-500 text-blue-500 rounded-xl hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>All</span>
+                                    </button>
+                                    <button id="sortActiveBtn" 
+                                            class="px-3 py-1.5 border border-green-500 text-green-500 rounded-xl hover:bg-green-50 transition-all duration-300 flex items-center gap-2 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Active</span>
+                                    </button>
+                                    <button id="sortInactiveBtn" 
+                                            class="px-3 py-1.5 border border-red-500 text-red-500 rounded-xl hover:bg-red-50 transition-all duration-300 flex items-center gap-2 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M13.293 6.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-2 2a1 1 0 01-1.414-1.414L14.586 10l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Inactive</span>
+                                    </button>
+                                    <button id="sortPendingBtn" 
+                                            class="px-3 py-1.5 border border-yellow-500 text-yellow-500 rounded-xl hover:bg-yellow-50 transition-all duration-300 flex items-center gap-2 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                                        </svg>
+                                        <span>Pending</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Table Section with Scroll -->
+                        <div class="flex-1 p-8 overflow-hidden">
+                            <div class="h-full overflow-auto border border-slate-200 rounded-xl">
+                                <table class="w-full">
+                                    <thead class="sticky top-0 bg-white border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Profile</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Member Name</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Type</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Status</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Start Date</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">End Date</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Days Left</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="memberTableBody">
+                                        <!-- Table rows will be dynamically populated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-b-xl border-t border-slate-100">
+                            <div class="flex flex-wrap items-center gap-4 justify-center">
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-indigo-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-indigo-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">Update</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-rose-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-rose-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">Delete</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-emerald-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-emerald-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">Renew</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-emerald-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-emerald-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">Verify</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-indigo-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-indigo-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">View ID</span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2">
+                                    <button class="w-5 h-5 flex items-center justify-center bg-blue-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-blue-600 hover:shadow-md active:scale-95">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </button>
+                                    <span class="text-xs text-slate-600">Email</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- enlarge picture -->
+                <div id="enlargedPictureModal" class="fixed inset-0 flex items-center justify-center hidden">
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                    <div class="relative bg-white p-4 rounded-lg shadow-lg">
+                        <img id="enlargedPicture" src="" alt="Enlarged Profile Picture" class="max-w-full max-h-full">
+                        <button id="closeEnlargedPicture" class="absolute top-2 right-2 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div id="addMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+                    <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                        <!-- Added max-height and overflow for scrollability -->
+                        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="modalContent">
+                            <div class="p-6 border-b border-slate-100">
                                 <div class="flex items-center gap-3">
-                                    <div class="p-2 bg-orange-100 rounded-xl">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 15v3h6v-3a5 5 0 00-6 0zM4 15v3H0v-3a5 5 0 016 0z"/>
+                                    <div class="p-2 bg-orange-100 rounded-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
                                         </svg>
                                     </div>
-                                    <h2 class="text-3xl font-extrabold text-black">Monthly Members</h2>
+                                    <h3 class="text-2xl font-bold text-black" id="modalTitle">Add Member</h3>
                                 </div>
-                                <p class="text-slate-500 mt-2 text-lg">Track and manage your gym membership base</p>
                             </div>
-                            <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-                                <div class="relative flex-grow md:flex-grow-0 md:w-72">
-                                    <input 
-                                        type="text" 
-                                        id="memberSearch" 
-                                        placeholder="Search members..." 
-                                        class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 pl-12 transition-all duration-200 text-sm"
-                                    >
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg class="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            <form id="memberForm" class="p-6" enctype="multipart/form-data">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="memberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
+                                        <input type="text" id="memberName" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    </div>
+                                    <div>
+                                        <label for="memberStatus" class="block text-sm font-semibold text-black mb-2">Status</label>
+                                        <select id="memberStatus" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="memberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
+                                        <select id="memberType" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
+                                            onchange="handleMemberTypeChange()" required>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Student">Student</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="startDate" class="block text-sm font-semibold text-black mb-2">Start Date</label>
+                                        <input type="date" id="startDate" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    </div>
+                                    <div>
+                                        <label for="endDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
+                                        <input type="date" id="endDate" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    </div>
+                                    <!-- School ID Picture field - Initially hidden -->
+                                    <div id="schoolIdContainer" class="hidden">
+                                        <label for="school_id_picture" class="block text-sm font-semibold text-black mb-2">School ID Picture</label>
+                                        <input type="file" id="school_id_picture" accept="image/*"
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200">
+                                        <div id="school_id_preview" class="mt-2 hidden">
+                                            <img src="" alt="School ID Preview" class="max-w-full h-32 object-contain rounded-lg">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="profile_picture" class="block text-sm font-semibold text-black mb-2">Profile Picture</label>
+                                        <input type="file" id="profile_picture" accept="image/*"
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                        <div id="profile_preview" class="mt-2 hidden">
+                                            <img src="" alt="Profile Picture Preview" class="max-w-full h-32 object-contain rounded-lg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-8 flex justify-end gap-4">
+                                    <button type="button" 
+                                        class="px-6 py-3 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200" 
+                                        onclick="closeMemberModal()">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                        class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 transition-all duration-200 shadow-lg hover:shadow-orange-200">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Update Member Modal -->
+                <div id="updateMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+                    <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="updateModalContent">
+                            <div class="p-6 border-b border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-orange-100 rounded-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
                                         </svg>
                                     </div>
+                                    <h3 class="text-2xl font-bold text-black" id="updateModalTitle">Update Member</h3>
                                 </div>
-                                <button id="displayAllBtn" 
-                                        class="px-3 py-1.5 border border-blue-500 text-blue-500 rounded-xl hover:bg-blue-50 transition-all duration-300 flex items-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span>All</span>
-                                </button>
-                                <button id="sortActiveBtn" 
-                                        class="px-3 py-1.5 border border-green-500 text-green-500 rounded-xl hover:bg-green-50 transition-all duration-300 flex items-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span>Active</span>
-                                </button>
-                                <button id="sortInactiveBtn" 
-                                        class="px-3 py-1.5 border border-red-500 text-red-500 rounded-xl hover:bg-red-50 transition-all duration-300 flex items-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M13.293 6.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-2 2a1 1 0 01-1.414-1.414L14.586 10l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span>Inactive</span>
-                                </button>
-                                <button id="sortPendingBtn" 
-                                        class="px-3 py-1.5 border border-yellow-500 text-yellow-500 rounded-xl hover:bg-yellow-50 transition-all duration-300 flex items-center gap-2 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                                    </svg>
-                                    <span>Pending</span>
-                                </button>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Table Section with Scroll -->
-                    <div class="flex-1 p-8 overflow-hidden">
-                        <div class="h-full overflow-auto border border-slate-200 rounded-xl">
-                            <table class="w-full">
-                                <thead class="sticky top-0 bg-white border-b border-slate-200">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Profile</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Member Name</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Type</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Status</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Start Date</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">End Date</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Days Left</th>
-                                        <th class="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border-b border-slate-200">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="memberTableBody">
-                                    <!-- Table rows will be dynamically populated -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-slate-50 rounded-b-xl border-t border-slate-100">
-                        <div class="flex flex-wrap items-center gap-4 justify-center">
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-indigo-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-indigo-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">Update</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-rose-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-rose-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">Delete</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-emerald-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-emerald-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">Renew</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-emerald-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-emerald-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">Verify</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-indigo-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-indigo-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">View ID</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <button class="w-5 h-5 flex items-center justify-center bg-blue-500 text-white rounded-md shadow-sm transition-all duration-200 hover:bg-blue-600 hover:shadow-md active:scale-95">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs text-slate-600">Email</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- enlarge picture -->
-            <div id="enlargedPictureModal" class="fixed inset-0 flex items-center justify-center hidden">
-                <div class="absolute inset-0 bg-black opacity-50"></div>
-                <div class="relative bg-white p-4 rounded-lg shadow-lg">
-                    <img id="enlargedPicture" src="" alt="Enlarged Profile Picture" class="max-w-full max-h-full">
-                    <button id="closeEnlargedPicture" class="absolute top-2 right-2 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div id="addMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-                <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
-                    <!-- Added max-height and overflow for scrollability -->
-                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="modalContent">
-                        <div class="p-6 border-b border-slate-100">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-black" id="modalTitle">Add Member</h3>
-                            </div>
-                        </div>
-                        <form id="memberForm" class="p-6" enctype="multipart/form-data">
-                            <div class="space-y-6">
-                                <div>
-                                    <label for="memberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
-                                    <input type="text" id="memberName" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                                <div>
-                                    <label for="memberStatus" class="block text-sm font-semibold text-black mb-2">Status</label>
-                                    <select id="memberStatus" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="memberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
-                                    <select id="memberType" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
-                                        onchange="handleMemberTypeChange()" required>
-                                        <option value="Regular">Regular</option>
-                                        <option value="Student">Student</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="startDate" class="block text-sm font-semibold text-black mb-2">Start Date</label>
-                                    <input type="date" id="startDate" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                                <div>
-                                    <label for="endDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
-                                    <input type="date" id="endDate" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                                <!-- School ID Picture field - Initially hidden -->
-                                <div id="schoolIdContainer" class="hidden">
-                                    <label for="school_id_picture" class="block text-sm font-semibold text-black mb-2">School ID Picture</label>
-                                    <input type="file" id="school_id_picture" accept="image/*"
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200">
-                                    <div id="school_id_preview" class="mt-2 hidden">
-                                        <img src="" alt="School ID Preview" class="max-w-full h-32 object-contain rounded-lg">
+                            <form id="updateMemberForm" class="p-6" enctype="multipart/form-data">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="updateMemberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
+                                        <input type="text" id="updateMemberName" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    </div>
+                                    <div>
+                                        <label for="updateMemberStatus" class="block text-sm font-semibold text-black mb-2">Status</label>
+                                        <select id="updateMemberStatus" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Pending">Pending</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="updateMemberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
+                                        <select id="updateMemberType" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
+                                            onchange="handleMemberTypeChange()" required>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Student">Student</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="updateStartDate" class="block text-sm font-semibold text-black mb-2">Start Date</label>
+                                        <input type="date" id="updateStartDate" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
+                                    </div>
+                                    <div>
+                                        <label for="updateEndDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
+                                        <input type="date" id="updateEndDate" 
+                                            class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
                                     </div>
                                 </div>
-                                <div>
-                                    <label for="profile_picture" class="block text-sm font-semibold text-black mb-2">Profile Picture</label>
-                                    <input type="file" id="profile_picture" accept="image/*"
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                    <div id="profile_preview" class="mt-2 hidden">
-                                        <img src="" alt="Profile Picture Preview" class="max-w-full h-32 object-contain rounded-lg">
-                                    </div>
+                                <div class="mt-8 flex justify-end gap-4">
+                                    <button type="button" 
+                                        class="px-6 py-3 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200" 
+                                        onclick="closeUpdateMemberModal()">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                        class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 transition-all duration-200 shadow-lg hover:shadow-orange-200">
+                                        Save Changes
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="mt-8 flex justify-end gap-4">
-                                <button type="button" 
-                                    class="px-6 py-3 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200" 
-                                    onclick="closeMemberModal()">
-                                    Cancel
-                                </button>
-                                <button type="submit" 
-                                    class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 transition-all duration-200 shadow-lg hover:shadow-orange-200">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Update Member Modal -->
-            <div id="updateMemberModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-                <div class="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
-                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 my-8" id="updateModalContent">
-                        <div class="p-6 border-b border-slate-100">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 bg-orange-100 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-black" id="updateModalTitle">Update Member</h3>
-                            </div>
+                            </form>
                         </div>
-                        <form id="updateMemberForm" class="p-6" enctype="multipart/form-data">
-                            <div class="space-y-6">
-                                <div>
-                                    <label for="updateMemberName" class="block text-sm font-semibold text-black mb-2">Member Name</label>
-                                    <input type="text" id="updateMemberName" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                                <div>
-                                    <label for="updateMemberStatus" class="block text-sm font-semibold text-black mb-2">Status</label>
-                                    <select id="updateMemberStatus" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                        <option value="Pending">Pending</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="updateMemberType" class="block text-sm font-semibold text-black mb-2">Membership Type</label>
-                                    <select id="updateMemberType" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" 
-                                        onchange="handleMemberTypeChange()" required>
-                                        <option value="Regular">Regular</option>
-                                        <option value="Student">Student</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="updateStartDate" class="block text-sm font-semibold text-black mb-2">Start Date</label>
-                                    <input type="date" id="updateStartDate" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                                <div>
-                                    <label for="updateEndDate" class="block text-sm font-semibold text-black mb-2">End Date</label>
-                                    <input type="date" id="updateEndDate" 
-                                        class="block w-full px-4 py-3 rounded-xl border-slate-200 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-colors duration-200" required>
-                                </div>
-                            </div>
-                            <div class="mt-8 flex justify-end gap-4">
-                                <button type="button" 
-                                    class="px-6 py-3 text-sm font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all duration-200" 
-                                    onclick="closeUpdateMemberModal()">
-                                    Cancel
-                                </button>
-                                <button type="submit" 
-                                    class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 rounded-xl hover:bg-orange-700 transition-all duration-200 shadow-lg hover:shadow-orange-200">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
-            <div id="fullDetailsModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50">
-                <div id="fullDetailsModalContent" class="bg-white rounded-lg shadow-lg"></div>
-            </div>
-        </section>
+                <div id="fullDetailsModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50">
+                    <div id="fullDetailsModalContent" class="bg-white rounded-lg shadow-lg"></div>
+                </div>
+            </section>
+        </div>
 
         <!-- Section 6 -->
         <!-- sales & report -->
@@ -1137,101 +1144,103 @@
         </section>
 
         <!-- Section 7 -->
-        <!-- Sell section -->
-        <section id="buy" class="ml-64 h-screen bg-slate-50">
-            <div class="h-full p-6">
-                <div class="h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200">
-                    <!-- Header with new design -->
-                    <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h2 class="text-3xl font-bold text-white">Store Products</h2>
-                                <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Search Bar with new design -->
-                    <div class="p-6 border-b border-slate-200 bg-white">
-                        <div class="max-w-2xl mx-auto">
-                            <div class="relative flex items-center">
-                                <input
-                                    type="search"
-                                    id="searchInput"
-                                    placeholder="Search by product name or ID..."
-                                    class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
-                                >
-                                <div class="absolute left-4">
-                                    <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                                    </svg>
+        <!-- Sell Section -->
+        <div class="main-content">
+            <section id="buy" class="h-screen bg-slate-50">
+                <div class="h-full p-6">
+                    <div class="h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200">
+                        <!-- Header with new design -->
+                        <div class="p-8 border-b border-slate-200 bg-orange-600 rounded-t-2xl">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h2 class="text-3xl font-bold text-white">Store Products</h2>
+                                    <p class="text-orange-100 mt-2">Manage your supplement and equipment inventory</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Cards Container with Scroll -->
-                    <div class="flex-1 p-6 min-h-0 overflow-y-auto">
-                        <div id="supplementsCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Cards will be dynamically inserted here -->
+                        <!-- Search Bar with new design -->
+                        <div class="p-6 border-b border-slate-200 bg-white">
+                            <div class="max-w-2xl mx-auto">
+                                <div class="relative flex items-center">
+                                    <input
+                                        type="search"
+                                        id="searchInput"
+                                        placeholder="Search by product name or ID..."
+                                        class="block w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-slate-600 placeholder-slate-400"
+                                    >
+                                    <div class="absolute left-4">
+                                        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cards Container with Scroll -->
+                        <div class="flex-1 p-6 min-h-0 overflow-y-auto">
+                            <div id="supplementsCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Cards will be dynamically inserted here -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal with new design -->
-            <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm">
-                <div class="flex items-center justify-center min-h-screen p-4">
-                    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full">
-                        <div class="p-6 border-b border-slate-200 bg-orange-50 rounded-t-xl">
-                            <h3 id="modalTitle" class="text-2xl font-bold text-black">Purchase Details</h3>
+                <!-- Modal with new design -->
+                <div id="buyModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm">
+                    <div class="flex items-center justify-center min-h-screen p-4">
+                        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full">
+                            <div class="p-6 border-b border-slate-200 bg-orange-50 rounded-t-xl">
+                                <h3 id="modalTitle" class="text-2xl font-bold text-black">Purchase Details</h3>
+                            </div>
+                            <form id="buyForm" class="p-8">
+                                <input type="hidden" id="productId">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="productName" class="block text-sm font-semibold text-slate-700">Product Name</label>
+                                        <input type="text" id="productName" name="productName" required
+                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="productPrice" class="block text-sm font-semibold text-slate-700">Price per Unit</label>
+                                            <input type="text" id="productPrice" name="productPrice" required
+                                                class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
+                                        </div>
+                                        <div>
+                                            <label for="productStock" class="block text-sm font-semibold text-slate-700">Available Stock</label>
+                                            <input type="text" id="productStock" name="productStock" required
+                                                class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="productQuantity" class="block text-sm font-semibold text-slate-700">Quantity to Purchase</label>
+                                        <input type="number" id="productQuantity" name="productQuantity" required min="1" value="1"
+                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                                    </div>
+                                    <div class="bg-orange-50 p-4 rounded-lg">
+                                        <label for="totalPrice" class="block text-sm font-semibold text-black">Total Amount</label>
+                                        <input type="text" id="totalPrice" name="totalPrice" required
+                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white font-bold text-lg" readonly>
+                                    </div>
+                                </div>
+                                <div class="mt-8 flex justify-end gap-4">
+                                    <button type="button" id="closeModalBtn"
+                                        class="px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-lg border border-slate-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                        class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow-sm">
+                                        Confirm Purchase
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form id="buyForm" class="p-8">
-                            <input type="hidden" id="productId">
-                            <div class="space-y-6">
-                                <div>
-                                    <label for="productName" class="block text-sm font-semibold text-slate-700">Product Name</label>
-                                    <input type="text" id="productName" name="productName" required
-                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="productPrice" class="block text-sm font-semibold text-slate-700">Price per Unit</label>
-                                        <input type="text" id="productPrice" name="productPrice" required
-                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
-                                    </div>
-                                    <div>
-                                        <label for="productStock" class="block text-sm font-semibold text-slate-700">Available Stock</label>
-                                        <input type="text" id="productStock" name="productStock" required
-                                            class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-slate-50" readonly>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="productQuantity" class="block text-sm font-semibold text-slate-700">Quantity to Purchase</label>
-                                    <input type="number" id="productQuantity" name="productQuantity" required min="1" value="1"
-                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500">
-                                </div>
-                                <div class="bg-orange-50 p-4 rounded-lg">
-                                    <label for="totalPrice" class="block text-sm font-semibold text-black">Total Amount</label>
-                                    <input type="text" id="totalPrice" name="totalPrice" required
-                                        class="mt-2 block w-full rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white font-bold text-lg" readonly>
-                                </div>
-                            </div>
-                            <div class="mt-8 flex justify-end gap-4">
-                                <button type="button" id="closeModalBtn"
-                                    class="px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-lg border border-slate-200">
-                                    Cancel
-                                </button>
-                                <button type="submit"
-                                    class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow-sm">
-                                    Confirm Purchase
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <!-- Section 8 -->
         <!-- Monthly check-in -->
@@ -1353,6 +1362,129 @@
                         </div>
                     </div>
                 </main>
+            </section>
+        </div>
+
+        <!-- Section 9 -->
+        <!-- Maintenance -->
+        <div class="main-content">
+            <section id="maintenance" class="min-h-screen bg-white p-6">
+                <!-- Header -->
+                <div class="mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-orange-100 rounded-lg">
+                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800">Maintenance Log</h2>
+                    </div>
+                    <p class="text-slate-500 mt-2">Track and manage maintenance tasks for gym equipment and facilities.</p>
+                </div>
+
+                <!-- Maintenance Table -->
+                <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <!-- Table Header -->
+                    <div class="p-4 bg-slate-50 border-b border-slate-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-slate-800">Active Maintenance Tasks</h3>
+                            <button class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span>Add Task</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table Content -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Task ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Description</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Assigned To</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Priority</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 bg-white">
+                                <!-- Example Row -->
+                                <tr>
+                                    <td class="px-6 py-4 text-sm text-slate-800">#001</td>
+                                    <td class="px-6 py-4 text-sm text-slate-800">Treadmill belt replacement</td>
+                                    <td class="px-6 py-4 text-sm text-slate-800">John Doe</td>
+                                    <td class="px-6 py-4 text-sm text-slate-800">
+                                        <span class="px-2 py-1 bg-red-100 text-red-600 rounded-full text-xs">High</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-slate-800">
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-full text-xs">In Progress</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-slate-800">
+                                        <button class="px-2 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
+                                            Edit
+                                        </button>
+                                        <button class="px-2 py-1 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors ml-2">
+                                            Complete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Add more rows dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Task Modal -->
+                <div id="addTaskModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
+                    <div class="flex items-center justify-center min-h-screen p-4">
+                        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
+                            <div class="p-6 border-b border-slate-200">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-orange-100 rounded-lg">
+                                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-slate-800">Add Maintenance Task</h3>
+                                </div>
+                            </div>
+                            <form id="addTaskForm" class="p-6 space-y-6">
+                                <div>
+                                    <label for="taskDescription" class="block text-sm font-semibold text-slate-700 mb-2">Task Description</label>
+                                    <input type="text" id="taskDescription" required
+                                        class="block w-full px-4 py-3 rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                                </div>
+                                <div>
+                                    <label for="assignedTo" class="block text-sm font-semibold text-slate-700 mb-2">Assigned To</label>
+                                    <input type="text" id="assignedTo" required
+                                        class="block w-full px-4 py-3 rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                                </div>
+                                <div>
+                                    <label for="taskPriority" class="block text-sm font-semibold text-slate-700 mb-2">Priority</label>
+                                    <select id="taskPriority" required
+                                        class="block w-full px-4 py-3 rounded-lg border-slate-200 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                </div>
+                                <div class="flex justify-end gap-4">
+                                    <button type="button" id="closeTaskModalBtn"
+                                        class="px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-lg border border-slate-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit"
+                                        class="px-6 py-3 text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow-sm">
+                                        Save Task
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
 
