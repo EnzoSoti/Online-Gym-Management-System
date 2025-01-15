@@ -220,11 +220,11 @@ function logout() {
             sessionStorage.clear();
 
             // Redirect to the login page
-            window.location.href = '../landing_images/landing.html';
+            window.location.href = '../landing_images/index.html';
 
             // Prevent going back to the previous page
             window.addEventListener('popstate', function(event) {
-                window.location.href = '../landing_images/landing.html';
+                window.location.href = '../landing_images/index.html';
             });
 
             // Push a new state to the history to prevent going back
