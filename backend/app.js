@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2/promise');
 const multer = require('multer');
@@ -7,13 +8,13 @@ const app = express();
 const PORT = 3000;
 
 const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'WJ28@krhps', 
-    database: 'fitworx_gym_db',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT, 10),
+    queueLimit: parseInt(process.env.DB_QUEUE_LIMIT, 10)
 };
 
 // Create connection pool
@@ -61,12 +62,12 @@ const handleDatabaseOperation = async (operation) => {
 };
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT, 10),
     secure: false,
     auth: {
-        user: 'enzoparanedaniela00@gmail.com',
-        pass: 'ntgo qnpi podq yyzy'
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
@@ -216,8 +217,6 @@ app.post('/api/buy-supplement', async (req, res) => {
         });
     }
 });
-
-
 
 
 // Monthly Members API Routes
@@ -696,9 +695,6 @@ app.get('/api/sales-reports/monthly-members', async (req, res) => {
     }
 });
 
-
-
-
 // Sales Reports API Routes
 // Supplements
 // fixed
@@ -725,7 +721,6 @@ app.get('/api/sales-reports/supplements', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch supplements' });
     }
 });
-
 
 // Sales Reports API Routes
 // regular
@@ -865,7 +860,6 @@ app.post('/api/check-ins', async (req, res) => {
         res.status(500).json({ error: 'Failed to record check-in' });
     }
 });
-
 
 // customer reservation booking API Routes
 app.post('/api/reservations', async (req, res) => {
@@ -1009,7 +1003,6 @@ app.delete('/api/admin/reservations/:id', async (req, res) => {
     }
 });
 
-
 // Dashboard API Routes
 app.get('/api/total-earnings', async (req, res) => {
     try {
@@ -1143,8 +1136,7 @@ app.get('/api/member-counts', async (req, res) => {
 });
 
 
-// ===================================================================================
-// login credentials
+// =============================== Login ===============================
 app.post('/api/register', async (req, res) => {
     try {
         const { full_name, username, password } = req.body;
@@ -1221,7 +1213,6 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-
 // admin login
 app.post('/api/admin/login', async (req, res) => {
     try {
@@ -1260,8 +1251,6 @@ app.post('/api/admin/login', async (req, res) => {
         res.status(500).json({ error: 'Admin login failed' });
     }
 });
-
-
 
 
 app.listen(PORT, () => {
