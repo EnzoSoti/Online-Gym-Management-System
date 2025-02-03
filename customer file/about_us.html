@@ -1,201 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fitworx Gym - About Us</title>
-    <link rel="icon" href="../img/Fitworx logo.jpg">
+    <link rel="icon" href="../img/Fitworx logo.jpg" />
     <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
-    
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        poppins: ['sans-serif'],
-                    },
-                },
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              poppins: ["sans-serif"],
             },
-        }
+          },
+        },
+      };
     </script>
-</head>
-<body class="bg-orange-50 font-poppins">
+  </head>
+  <body class="bg-orange-50 font-poppins">
     <!-- Hero Section with Parallax Effect -->
     <div class="relative h-[600px] overflow-hidden">
-        <div class="absolute inset-0 bg-orange-900 bg-opacity-90">
-            <div class="absolute inset-0 bg-black/50"></div>
+      <div class="absolute inset-0 bg-orange-900 bg-opacity-90">
+        <div class="absolute inset-0 bg-black/50"></div>
+      </div>
+      <div
+        class="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center"
+      >
+        <h1 class="text-6xl font-bold mb-6 text-white tracking-tight">
+          Welcome to Fitworx Gym
+        </h1>
+        <p class="text-2xl font-light text-orange-100 max-w-2xl">
+          Your Journey to Fitness Starts Here
+        </p>
+        <div class="mt-8">
+          <a href="#story" class="inline-block animate-bounce">
+            <svg
+              class="w-8 h-8 text-orange-100"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              ></path>
+            </svg>
+          </a>
         </div>
-        <div class="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 class="text-6xl font-bold mb-6 text-white tracking-tight">Welcome to Fitworx Gym</h1>
-            <p class="text-2xl font-light text-orange-100 max-w-2xl">Your Journey to Fitness Starts Here</p>
-            <div class="mt-8">
-                <a href="#story" class="inline-block animate-bounce">
-                    <svg class="w-8 h-8 text-orange-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-20">
-        <!-- Our Story -->
-        <div id="story" class="max-w-4xl mx-auto mb-24 text-center">
-            <h2 class="text-4xl font-bold text-orange-900 mb-8 relative inline-block">
-                Our Story
-                <div class="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform -translate-y-2"></div>
-            </h2>
-            <p class="text-lg text-orange-800 mb-6 leading-relaxed">
-                Fitworx Gym began as a personal fitness sanctuary, created by a passionate gym enthusiast. What started as a private training space soon evolved into a vibrant community fitness center, opening its doors to serve the public with the same dedication and commitment to excellence that inspired its creation.
+      <!-- Our Story -->
+      <div id="story" class="max-w-4xl mx-auto mb-24 text-center">
+        <h2
+          class="text-4xl font-bold text-orange-900 mb-8 relative inline-block"
+        >
+          Our Story
+          <div
+            class="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform -translate-y-2"
+          ></div>
+        </h2>
+        <p class="text-lg text-orange-800 mb-6 leading-relaxed">
+          Fitworx Gym began as a personal fitness sanctuary, created by a
+          passionate gym enthusiast. What started as a private training space
+          soon evolved into a vibrant community fitness center, opening its
+          doors to serve the public with the same dedication and commitment to
+          excellence that inspired its creation.
+        </p>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="grid md:grid-cols-3 gap-12 mb-24">
+        <!-- Membership Options -->
+        <div
+          class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div
+            class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+          >
+            <svg
+              class="w-8 h-8 text-orange-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">
+            Flexible Memberships
+          </h3>
+          <ul class="text-orange-700 space-y-3 font-light">
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Regular Rate: ₱950/month
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Student Rate: ₱850/month
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              No membership fees
+            </li>
+          </ul>
+        </div>
+
+        <!-- Facilities -->
+        <div
+          class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div
+            class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+          >
+            <svg
+              class="w-8 h-8 text-orange-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">
+            Premium Facilities
+          </h3>
+          <ul class="text-orange-700 space-y-3 font-light">
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Modern gym equipment
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Basketball court
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Billiards area
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Zumba session space
+            </li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div
+          class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div
+            class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+          >
+            <svg
+              class="w-8 h-8 text-orange-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">
+            Professional Services
+          </h3>
+          <ul class="text-orange-700 space-y-3 font-light">
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Personal training
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Fitness supplements
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Equipment maintenance
+            </li>
+            <li class="flex items-center">
+              <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              Professional staff support
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Stats with Animation -->
+      <div
+        class="bg-gradient-to-r from-orange-800 to-orange-900 text-white rounded-2xl p-12 mb-24 transform hover:scale-[1.02] transition-transform duration-300"
+      >
+        <div class="grid md:grid-cols-3 gap-12 text-center">
+          <div class="space-y-4">
+            <p class="text-5xl font-bold mb-2">50-100</p>
+            <p class="text-orange-200 text-lg">Daily Visitors</p>
+          </div>
+          <div class="space-y-4">
+            <p class="text-5xl font-bold mb-2">5+</p>
+            <p class="text-orange-200 text-lg">Professional Staff</p>
+          </div>
+          <div class="space-y-4">
+            <p class="text-5xl font-bold mb-2">365</p>
+            <p class="text-orange-200 text-lg">Days of Operation</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="text-center mb-24">
+        <h2
+          class="text-4xl font-bold text-orange-900 mb-12 relative inline-block"
+        >
+          Our Team
+          <div
+            class="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform -translate-y-2"
+          ></div>
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12">
+          <div
+            class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+          >
+            <div
+              class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+            >
+              <svg
+                class="w-8 h-8 text-orange-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold text-orange-800 mb-4">
+              Front Desk & Cashier
+            </h3>
+            <p class="text-orange-700 font-light leading-relaxed">
+              Our friendly front desk staff is always ready to assist you with
+              memberships, scheduling, and inquiries.
             </p>
+          </div>
+          <div
+            class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+          >
+            <div
+              class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+            >
+              <svg
+                class="w-8 h-8 text-orange-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold text-orange-800 mb-4">
+              Maintenance & Cleaning
+            </h3>
+            <p class="text-orange-700 font-light leading-relaxed">
+              Our dedicated maintenance team ensures that our facilities are
+              always clean, safe, and ready for your workout.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <!-- Features Grid -->
-        <div class="grid md:grid-cols-3 gap-12 mb-24">
-            <!-- Membership Options -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">Flexible Memberships</h3>
-                <ul class="text-orange-700 space-y-3 font-light">
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Regular Rate: ₱950/month
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Student Rate: ₱850/month
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        No membership fees
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Facilities -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">Premium Facilities</h3>
-                <ul class="text-orange-700 space-y-3 font-light">
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Modern gym equipment
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Basketball court
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Billiards area
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Zumba session space
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Services -->
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-semibold text-orange-800 mb-4 text-center">Professional Services</h3>
-                <ul class="text-orange-700 space-y-3 font-light">
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Personal training
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Fitness supplements
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Equipment maintenance
-                    </li>
-                    <li class="flex items-center">
-                        <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-                        Professional staff support
-                    </li>
-                </ul>
-            </div>
+      <!-- Contact -->
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-orange-900 mb-6">Visit Us Today</h2>
+        <p class="text-orange-800 mb-4 font-light">
+          Experience the Fitworx difference for yourself. Join our growing
+          fitness community!
+        </p>
+        <div class="flex justify-center gap-4">
+          <a
+            href="../customer file/terms_of_service.html"
+            class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium"
+            >Contact Us</a
+          >
+          <a
+            href="/index.html"
+            class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium"
+            >Back to home page</a
+          >
         </div>
-
-        <!-- Stats with Animation -->
-        <div class="bg-gradient-to-r from-orange-800 to-orange-900 text-white rounded-2xl p-12 mb-24 transform hover:scale-[1.02] transition-transform duration-300">
-            <div class="grid md:grid-cols-3 gap-12 text-center">
-                <div class="space-y-4">
-                    <p class="text-5xl font-bold mb-2">50-100</p>
-                    <p class="text-orange-200 text-lg">Daily Visitors</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="text-5xl font-bold mb-2">5+</p>
-                    <p class="text-orange-200 text-lg">Professional Staff</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="text-5xl font-bold mb-2">365</p>
-                    <p class="text-orange-200 text-lg">Days of Operation</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team -->
-        <div class="text-center mb-24">
-            <h2 class="text-4xl font-bold text-orange-900 mb-12 relative inline-block">
-                Our Team
-                <div class="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform -translate-y-2"></div>
-            </h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
-                    <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-orange-800 mb-4">Front Desk & Cashier</h3>
-                    <p class="text-orange-700 font-light leading-relaxed">Our friendly front desk staff is always ready to assist you with memberships, scheduling, and inquiries.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
-                    <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-orange-800 mb-4">Maintenance & Cleaning</h3>
-                    <p class="text-orange-700 font-light leading-relaxed">Our dedicated maintenance team ensures that our facilities are always clean, safe, and ready for your workout.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact -->
-        <div class="text-center">
-            <h2 class="text-3xl font-bold text-orange-900 mb-6">Visit Us Toda</h2>
-            <p class="text-orange-800 mb-4 font-light">Experience the Fitworx difference for yourself. Join our growing fitness community!</p>
-            <div class="flex justify-center gap-4">
-                <a href="../customer file/terms_of_service.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">Contact Us</a>
-                <a href="/index.html" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">Back to home page</a>
-            </div>
-        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
