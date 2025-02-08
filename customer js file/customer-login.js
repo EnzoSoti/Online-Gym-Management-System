@@ -15,6 +15,7 @@ const formSection = document.getElementById('formSection');
 const API_URL = 'http://localhost:3000/api';
 
 // Sanitize input to prevent XSS
+// to prevent the malicious to inject to web app
 const sanitizeInput = (input) => {
     return input
         .replace(/&/g, '&amp;')
@@ -121,7 +122,7 @@ loginForm.addEventListener('submit', async function (e) {
         console.error('API Error:', error);
         Swal.fire({
             title: 'Oops!',
-            text: 'Something went wrong. Please try again later.',
+            text: 'Something went wrong. Please try again later.',  
             icon: 'error',
             confirmButtonText: 'OK',
             confirmButtonColor: '#ef4444',
