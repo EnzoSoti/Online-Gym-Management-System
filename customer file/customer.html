@@ -262,48 +262,46 @@
 
 <body class="bg-gradient-to-br from-orange-50 to-orange-100 min-h-screen flex flex-col">
     <!-- Navigation Bar -->
-    <nav class="bg-gradient-to-r from-orange-600 to-orange-800 text-white sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <header class="flex items-center justify-start space-x-4 py-2">
-                    <div class="flex items-center bg-white p-1.5 rounded-xl shadow-sm max-w-md space-x-2">
+    <nav class="bg-orange-700 border-b border-orange-600 text-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-14">
+                <header class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
                         <div class="relative">
                             <img 
                                 src="../img/Fitworx logo.jpg" 
                                 alt="Fitworx Logo" 
-                                class="h-7 w-7 object-cover rounded-full ring-1 ring-orange-100"/>
-                            <span class="absolute bottom-0 right-0 block h-2 w-2 bg-green-500 rounded-full ring-1 ring-white"></span>
+                                class="h-9 w-9 object-cover rounded-md"/>
+                            <span class="absolute bottom-0 right-0 block h-2 w-2 bg-green-500 rounded-full ring-1 ring-orange-700"></span>
                         </div>
-                        <div class="flex-1 min-w-0 flex items-center justify-between">
-                            <div>
-                                <div class="flex items-center space-x-1.5">
-                                    <h1 class="text-sm font-semibold text-slate-800 truncate">Fitworx</h1>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div 
-                                    id="welcome-message" 
-                                    class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-sm mt-0.5 inline-block"
-                                ></div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h1 class="text-lg font-semibold text-white">Fitworx</h1>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
+                            <div 
+                                id="welcome-message" 
+                                class="text-xs text-orange-100"
+                            ></div>
                         </div>
                     </div>
                 </header>
                 
                 <!-- Navigation Links (Desktop) -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <div class="px-3 py-1.5 bg-white bg-opacity-10 backdrop-blur-lg rounded-full text-xs font-medium flex items-center gap-2">
+                <div class="hidden md:flex items-center divide-x divide-orange-600">
+                    <div class="px-4 text-sm font-medium flex items-center gap-2">
                         <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                         Facility Open
                     </div>
-                    <div class="text-orange-100 flex items-center gap-1.5 text-xs">
+                    <div class="px-4 text-sm text-orange-100 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         9:00 AM - 11:59 PM
                     </div>
-                    <div id="clock" class="text-orange-100 flex items-center gap-1.5 text-xs font-bold"></div>
+                    <div id="clock" class="px-4 text-sm font-medium"></div>
                     <a href="#" class="inline-flex items-center px-4 py-1.5 bg-white text-orange-600 rounded-full hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-xs font-medium">
                         <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -314,7 +312,7 @@
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-1.5 rounded-full text-white hover:text-orange-200 transition-colors">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-1.5 rounded text-orange-100 hover:text-white hover:bg-orange-600 transition-colors">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -324,18 +322,18 @@
 
             <!-- Mobile Menu (Hidden by default) -->
             <div id="mobile-menu" class="hidden md:hidden">
-                <div class="px-2 pt-2 pb-3 space-y-1 border-t border-orange-500 mt-2">
-                    <div class="px-3 py-2 bg-white bg-opacity-10 backdrop-blur-lg rounded-lg text-sm font-medium flex items-center gap-2">
+                <div class="px-2 pt-2 pb-3 space-y-2 border-t border-orange-600 mt-1">
+                    <div class="px-3 py-2 text-sm font-medium flex items-center gap-2">
                         <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                         Facility Open
                     </div>
-                    <div class="text-orange-100 flex items-center gap-1.5 px-3 py-2">
+                    <div class="px-3 py-2 text-sm text-orange-100 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         9:00 AM - 11:59 PM
                     </div>
-                    <div id="mobile-clock" class="text-orange-100 flex items-center gap-1.5 px-3 py-2 font-bold"></div>
+                    <div id="mobile-clock" class="px-3 py-2 text-sm font-medium"></div>
                     <a href="#" class="flex items-center px-3 py-2 bg-white text-orange-600 rounded-lg hover:bg-orange-50 transition-all focus:ring-2 focus:ring-orange-100 text-sm font-medium">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -348,24 +346,45 @@
     </nav>
     
     <!-- Hero Section -->
-    <div class="w-full bg-gradient-to-r from-orange-600 to-orange-800 text-white relative overflow-hidden border-b border-orange-400">
-        <div class="absolute inset-0 border border-black/10"></div>
-        <div class="container mx-auto px-4 py-8 sm:py-12 md:py-16 relative">
-            <div class="max-w-3xl mx-auto text-center">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight border-b border-white/20 inline-block pb-2">Welcome!</h1>
-                <p class="text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 text-orange-100">Experience top-notch facilities and expert guidance. Book your session now!</p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="#booking-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 border border-white text-white rounded-none hover:bg-orange-700 transition-all focus:border-orange-100 text-sm sm:text-base font-medium">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="w-full bg-gradient-to-br from-orange-700 via-orange-800 to-orange-900 text-white relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="absolute top-0 left-0 w-32 h-32 bg-orange-500/10 rounded-br-full"></div>
+        <div class="absolute bottom-0 right-0 w-32 h-32 bg-orange-500/10 rounded-tl-full"></div>
+        
+        <div class="container mx-auto px-4 py-16 relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Elegant Title Section -->
+                <div class="mb-8 relative">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-6 tracking-tight">
+                        Welcome!
+                    </h1>
+                </div>
+
+                <!-- Sophisticated Subtitle -->
+                <p class="text-base sm:text-lg md:text-xl mb-10 text-orange-100 leading-relaxed max-w-2xl mx-auto">
+                    Experience top-notch facilities and expert guidance. Book your session now!
+                </p>
+
+                <!-- Professional Call-to-Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 max-w-3xl mx-auto">
+                    <a href="#booking-form" class="w-full sm:w-auto group inline-flex items-center justify-center px-8 py-3 bg-white text-orange-700 rounded hover:bg-orange-50 transition-all text-sm sm:text-base font-medium border border-transparent hover:border-orange-200">
+                        <svg class="w-5 h-5 mr-2 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"/>
                         </svg>
-                        Click to Start Booking
+                        <span class="relative">
+                            Click to Start Booking
+                            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-orange-700 transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
+                        </span>
                     </a>
-                    <a href="#subscription-form" id="subscription-form" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 border border-white text-white rounded-none hover:bg-orange-700 transition-all focus:border-orange-100 text-sm sm:text-base font-medium">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="#subscription-form" id="subscription-form" class="w-full sm:w-auto group inline-flex items-center justify-center px-8 py-3 bg-transparent text-white rounded hover:bg-white/5 transition-all text-sm sm:text-base font-medium border border-white/30 hover:border-white">
+                        <svg class="w-5 h-5 mr-2 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"/>
                         </svg>
-                        Click to Online Monthly Pass
+                        <span class="relative">
+                            Click to Online Monthly Pass
+                            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -379,9 +398,9 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <!-- Booking Form Section -->
                 <div class="lg:col-span-2">
-                    <div class="bg-white border-2 border-orange-200 h-full flex flex-col">
+                    <div class="bg-white border-2 border-orange-200 rounded-2xl h-full flex flex-col shadow-lg">
                         <!-- Form Header -->
-                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 border-b border-orange-400 shrink-0">
+                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 rounded-t-xl border-b border-orange-400 shrink-0">
                             <h2 class="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -400,7 +419,7 @@
                                     <select 
                                         name="service_type" 
                                         id="service-type"
-                                        class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
+                                        class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-600 bg-transparent"
                                     >
                                         <option value="court">Basketball Court</option>
                                         <option value="zumba">Zumba</option>
@@ -412,11 +431,11 @@
                                     <label class="block text-sm font-medium text-slate-700">Main Client Name</label>
                                     <input type="text" 
                                         placeholder="Enter your full name" 
-                                        class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent">
+                                        class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-600 bg-transparent">
                                 </div>
 
                                 <!-- Time Slot Notice -->
-                                <div class="border-2 border-orange-300 p-4">
+                                <div class="border-2 border-orange-300 rounded-xl p-4">
                                     <div class="flex items-start gap-3">
                                         <div class="shrink-0">
                                             <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -446,16 +465,18 @@
                                         <div class="space-y-2">
                                             <label class="block text-sm font-medium text-slate-700">Start Time</label>
                                             <input type="time" 
-                                                class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-600 bg-transparent"
                                                 min="09:00" 
                                                 max="23:59">
+                                                <p class="text-xs text-slate-500 mt-1">Gym opens at 9:00 AM</p>
                                         </div>
                                         <div class="space-y-2">
                                             <label class="block text-sm font-medium text-slate-700">End Time</label>
                                             <input type="time" 
-                                                class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-600 bg-transparent"
                                                 min="09:00" 
                                                 max="23:59">
+                                                <p class="text-xs text-slate-500 mt-1">Last session ends at 11:00 PM</p>
                                         </div>
                                     </div>
                         
@@ -463,12 +484,12 @@
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-slate-700">Select Date</label>
                                         <input type="date" 
-                                            class="w-full px-4 py-3 border-2 border-orange-200 focus:border-orange-600 bg-transparent">
+                                            class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-600 bg-transparent">
                                     </div>
                                 </div>
                         
                                 <!-- Team Members Section -->
-                                <div id="team-members-section" class="border-2 border-orange-200 p-6">
+                                <div id="team-members-section" class="border-2 border-orange-200 rounded-xl p-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <label class="block text-sm font-medium text-slate-700">Team Members</label>
                                         <span class="text-xs text-slate-500">Max 8 additional players</span>
@@ -478,22 +499,25 @@
                                     </div>
                                     <button type="button" 
                                             id="add-player-btn"
-                                            class="mt-4 inline-flex items-center px-4 py-2 text-sm text-orange-600 border-2 border-orange-200 hover:border-orange-600 transition-colors">
+                                            class="mt-4 inline-flex items-center px-4 py-2 text-sm text-orange-600 border-2 border-orange-200 rounded-full hover:border-orange-600 transition-colors">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                         </svg>
-                                        Add Player
+                                        Add Additional Participant
                                     </button>
                                 </div>
                         
                                 <!-- Form Buttons -->
                                 <button type="submit" 
-                                        class="w-full px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white border border-orange-400 hover:from-orange-700 hover:to-orange-800 transition-all flex items-center justify-center gap-2 text-lg font-semibold">
+                                        class="w-full px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl border border-orange-400 hover:from-orange-700 hover:to-orange-800 transition-all flex items-center justify-center gap-2 text-lg font-semibold shadow-lg hover:shadow-xl">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                     </svg>
                                     Book Now
                                 </button>
+                                <p class="text-xs text-center text-slate-500 mt-1">
+                                    By submitting this form, the Primary Reservation Agent acknowledges having read and agreed to all terms and conditions as outlined in the facility usage policy.
+                                </p>
                             </form>
                         </div>
                     </div>
@@ -501,8 +525,8 @@
 
                 <!-- Calendar Section -->
                 <div class="lg:col-span-3">
-                    <div class="bg-white border-2 border-orange-200 h-full flex flex-col">
-                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 border-b border-orange-400 shrink-0">
+                    <div class="bg-white border-2 border-orange-200 rounded-2xl h-full flex flex-col shadow-lg">
+                        <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-700 rounded-t-xl border-b border-orange-400 shrink-0">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h2 class="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
@@ -516,7 +540,6 @@
                             </div>
                         </div>
                         <div class="p-6 flex-grow">
-                            <!-- Calendar placeholder with improved styling -->
                             <div id="calendar" class="h-full"></div>
                         </div>
                     </div>

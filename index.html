@@ -41,6 +41,7 @@
                 <div class="flex items-center space-x-4 group">
                     <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-12 w-12 rounded-full ring-4 ring-yellow-400 ring-offset-4 ring-offset-gray-900 transition-all duration-300 group-hover:ring-offset-8">
                     <h1 class="text-4xl font-extrabold uppercase text-white bg-gradient-to-br from-yellow-400 to-orange-600 px-6 py-2 rounded-tr-2xl rounded-bl-2xl transform hover:scale-105 transition-transform">Fitworx Gym</h1>
+                    
                   </div>
                 <div class="space-x-4 flex items-center">
                     <!-- Dark Mode Toggle -->
@@ -58,85 +59,30 @@
                             </svg>
                         </span>
                     </button>
-                    <!-- Services Dropdown -->
-                    <div class="relative services-menu">
-                        <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
-                            Services
-                            <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="services-dropdown">
-                            <a href="#" class="block">Basketball Court</a>
-                            <a href="#" class="block">Zumba Classes</a>
-                            <a href="#" class="block">No membership fee</a>
-                            <a href="#" class="block">Muscle Gain Training</a>
-                        </div>
-                    </div>
-                    <!-- Location Dropdown -->
-                    <div class="relative location-menu">
-                        <button class="hover:text-orange-200 transition duration-300 px-3 py-2 rounded">
-                            Location
-                            <svg class="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="services-dropdown">
-                            <a href="https://www.google.com/maps" target="_blank" class="block flex items-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
-                                </svg>
-                                Open in Google Maps
-                            </a>
-                            <a href="https://www.waze.com" target="_blank" class="block flex items-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19l-6-3" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 6l-6-3" />
-                                </svg>
-                                Open in Waze
-                            </a>
-                        </div>
-                    </div>
                     <button id="admin-login-btn" class="bg-green-500 text-white px-6 py-2.5 rounded-lg shadow hover:bg-green-600 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200">Admin Login</button>
                     <a href="../customer file/login.html" class="bg-blue-500 text-white px-6 py-2.5 rounded-lg shadow hover:bg-blue-600 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200">Login</a>
                 </div>
             </div>
 
             <!-- Mobile Menu -->
-            <div class="flex md:hidden justify-between items-center">
-                <div class="flex items-center space-x-2 group">
-                    <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-8 w-8 rounded-full">
-                    <h1 class="text-2xl font-bold uppercase">Fitworx Gym</h1>
+            <div class="flex md:hidden justify-between items-center bg-gradient-to-r from-orange-600 to-red-600 p-4">
+                <div class="flex items-center space-x-3">
+                    <img src="../landing_images/logo.jpg" alt="Fitworx Gym Logo" class="h-10 w-10 rounded-full border-2 border-white">
+                    <div class="flex flex-col">
+                        <h1 class="text-2xl font-black text-white tracking-wider uppercase drop-shadow-md">FITWORX</h1>
+                        <span class="text-xs text-orange-200 uppercase tracking-widest">Push Your Limits</span>
+                    </div>
                 </div>
-                <button id="mobile-menu-button" class="text-white p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="mobile-menu-button" class="text-white p-2 hover:bg-white/20 rounded-lg transition-all duration-300">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
                     </svg>
                 </button>
             </div>
+            
 
             <!-- Mobile Menu Dropdown -->
             <div id="mobile-menu" class="hidden md:hidden mt-4">
-                <div class="flex flex-col space-y-2">
-                    <div class="space-y-2">
-                        <button class="w-full text-left px-3 py-2 hover:bg-orange-700 rounded">Services</button>
-                        <div class="pl-6 space-y-2">
-                            <a href="#" class="block py-1">Basketball Court</a>
-                            <a href="#" class="block py-1">Zumba Classes</a>
-                            <a href="#" class="block py-1">No membership fee</a>
-                            <a href="#" class="block py-1">Muscle Gain Training</a>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <button class="w-full text-left px-3 py-2 hover:bg-orange-700 rounded">Location</button>
-                        <div class="pl-6 space-y-2">
-                            <a href="https://www.google.com/maps" target="_blank" class="block py-1">Open in Google Maps</a>
-                            <a href="https://www.waze.com" target="_blank" class="block py-1">Open in Waze</a>
-                        </div>
-                    </div>
                     <button id="mobile-admin-login-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600">
                         Admin Login
                     </button>
@@ -195,7 +141,7 @@
     </header>
 
     <!-- What's New Section -->
-    <section class="py-16 bg-white dark:bg-dark-900">
+    <section class="py-16 bg-orange-50 dark:bg-dark-900">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 text-orange-600">What's New at Fitworx? Updates here!</h2>
             
@@ -237,7 +183,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-16 bg-white dark:bg-dark-900">
+    <section class="py-16 bg-orange-50 dark:bg-dark-900">
         <div class="container mx-auto px-4">
             <h3 class="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">Why Choose Fitworx Gym?</h3>
             <div class="grid md:grid-cols-3 gap-8">
@@ -529,7 +475,7 @@
     </section>
 
     <!-- Location Section -->
-    <section class="py-16 bg-gradient-to-b from-orange-50 to-white">
+    <section class="py-16 bg-orange-50 from-orange-50 to-white">
         <div class="container mx-auto px-4">
             <!-- Simple Elegant Header -->
             <h3 class="text-3xl font-light text-center mb-12 text-gray-900 flex items-center justify-center gap-2">
@@ -599,7 +545,7 @@
     </section>
     
     <!-- FAQ & feedback section -->
-    <section class="py-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-800 dark:to-dark-700">
+    <section class="py-16 bg-orange-50 from-gray-50 to-gray-100 dark:from-dark-800 dark:to-dark-700">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="grid md:grid-cols-2 gap-12">
                 <!-- FAQ Column -->
@@ -713,67 +659,77 @@
     <!-- Membership Section -->
     <section class="py-16 bg-gradient-to-br from-orange-500 to-red-600 dark:from-dark-700 dark:to-dark-800 text-white">
         <div class="container mx-auto px-4 text-center">
-            <h3 class="text-4xl font-extrabold mb-8 tracking-tight text-shadow">Monthly Pass Options</h3>
+            <h3 class="text-4xl font-extrabold mb-12 tracking-tight text-shadow">
+                UNLEASH YOUR POTENTIAL
+                <div class="text-lg font-normal mt-2 text-orange-100">Choose the plan that fits your goals</div>
+            </h3>
+            
             <div class="grid md:grid-cols-2 gap-8 relative">
-                <div class="bg-white text-orange-600 p-8 rounded-lg membership-card relative overflow-hidden shadow-2xl">
-                    <div class="absolute top-4 right-4 bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-semibold">
+                <!-- Regular Plan -->
+                <div class="group bg-white/95 backdrop-blur-sm text-orange-600 p-8 rounded-xl membership-card relative overflow-hidden shadow-2xl hover:scale-105 transition-all duration-300">
+                    <div class="absolute -top-12 -right-12 bg-orange-500/10 w-40 h-40 rounded-full"></div>
+                    <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Regular
                     </div>
-                    <h4 class="text-2xl font-bold mb-4 text-orange-800">Regular Monthly Pass</h4>
-                    <p class="text-4xl font-extrabold mb-4 text-orange-700">₱950<span class="text-base">/month</span></p>
-                    <ul class="mb-6 space-y-3 text-orange-600">
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <h4 class="text-3xl font-bold mb-2 text-orange-800">Regular Monthly Pass</h4>
+                    <p class="text-sm text-orange-600 mb-4">Perfect for dedicated fitness enthusiasts</p>
+                    <p class="text-5xl font-extrabold mb-6 text-orange-700">₱950<span class="text-base">/month</span></p>
+                    <ul class="mb-8 space-y-4 text-orange-600">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             Full Gym Access
                         </li>
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             All Facility Bookings
                         </li>
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             No Membership Fee
                         </li>
                     </ul>
-                    <a href="../customer file/login.html" class="block w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-700 transition duration-300 transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50">
-                        Register Now
+                    <a href="../customer file/login.html" class="block w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-4 rounded-xl font-bold hover:from-orange-600 hover:to-red-700 transition duration-300 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50">
+                        Join Now →
                     </a>
                 </div>
 
-                <div class="bg-white text-orange-600 p-8 rounded-lg membership-card relative overflow-hidden shadow-2xl">
-                    <div class="absolute top-4 right-4 bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">
+                <!-- Student Plan -->
+                <div class="group bg-white/95 backdrop-blur-sm text-orange-600 p-8 rounded-xl membership-card relative overflow-hidden shadow-2xl hover:scale-105 transition-all duration-300">
+                    <div class="absolute -top-12 -right-12 bg-orange-500/10 w-40 h-40 rounded-full"></div>
+                    <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Student
                     </div>
-                    <h4 class="text-2xl font-bold mb-4 text-orange-800">Student Monthly Pass</h4>
-                    <p class="text-4xl font-extrabold mb-4 text-orange-700">₱850<span class="text-base">/month</span></p>
-                    <ul class="mb-6 space-y-3 text-orange-600">
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <h4 class="text-3xl font-bold mb-2 text-orange-800">Student Monthly Pass</h4>
+                    <p class="text-sm text-orange-600 mb-4">Special rate for students</p>
+                    <p class="text-5xl font-extrabold mb-6 text-orange-700">₱850<span class="text-base">/month</span></p>
+                    <ul class="mb-8 space-y-4 text-orange-600">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             Full Gym Access
                         </li>
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             Student Discount
                         </li>
-                        <li class="flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <li class="flex items-center justify-center bg-orange-50 py-2 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             No Membership Fee
                         </li>
                     </ul>
-                    <a href="../customer file/login.html" class="block w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-700 transition duration-300 transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50">
-                        Register Now
+                    <a href="../customer file/login.html" class="block w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-4 rounded-xl font-bold hover:from-orange-600 hover:to-red-700 transition duration-300 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50">
+                        Join Now →
                     </a>
                 </div>
             </div>

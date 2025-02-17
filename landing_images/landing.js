@@ -127,24 +127,41 @@ async function showAdminLogin(e) {
     const validationMessage = document.getElementById('validation-message');
     const loginBtn = document.getElementById('loginBtn');
     const cancelBtn = document.getElementById('cancelBtn');
+    const usernameInput = document.getElementById('admin-username');
+    const passwordInput = document.getElementById('admin-password');
 
     // Show modal
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+
+    // Handle Enter key press
+    const handleEnterKey = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            loginBtn.click();
+        }
+    };
+
+    // Add Enter key listeners
+    usernameInput.addEventListener('keypress', handleEnterKey);
+    passwordInput.addEventListener('keypress', handleEnterKey);
 
     // Handle cancel button
     cancelBtn.onclick = () => {
         modal.classList.remove('flex');
         modal.classList.add('hidden');
         validationMessage.classList.add('hidden');
-        document.getElementById('admin-username').value = '';
-        document.getElementById('admin-password').value = '';
+        usernameInput.value = '';
+        passwordInput.value = '';
+        // Remove Enter key listeners when modal is closed
+        usernameInput.removeEventListener('keypress', handleEnterKey);
+        passwordInput.removeEventListener('keypress', handleEnterKey);
     };
 
     // Handle login button
     loginBtn.onclick = async () => {
-        const username = document.getElementById('admin-username').value;
-        const password = document.getElementById('admin-password').value;
+        const username = usernameInput.value;
+        const password = passwordInput.value;
 
         if (!username || !password) {
             validationMessage.textContent = 'All fields are required to proceed';
@@ -180,6 +197,10 @@ async function showAdminLogin(e) {
                 modal.classList.remove('flex');
                 modal.classList.add('hidden');
 
+                // Remove Enter key listeners before showing success modal
+                usernameInput.removeEventListener('keypress', handleEnterKey);
+                passwordInput.removeEventListener('keypress', handleEnterKey);
+
                 // Show success modal
                 successModal.classList.remove('hidden');
                 successModal.classList.add('flex');
@@ -200,6 +221,13 @@ async function showAdminLogin(e) {
 
         // Reset button state
         loginBtn.disabled = false;
-        loginBtn.textContent = 'Login';
+        loginBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" x2="3" y1="12" y2="12"></line>
+            </svg>
+            LET'S GO
+        `;
     };
 }
