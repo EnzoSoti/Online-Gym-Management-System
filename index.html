@@ -59,8 +59,18 @@
                             </svg>
                         </span>
                     </button>
-                    <button id="admin-login-btn" class="bg-green-500 text-white px-6 py-2.5 rounded-lg shadow hover:bg-green-600 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200">Admin Login</button>
-                    <a href="../customer file/login.html" class="bg-blue-500 text-white px-6 py-2.5 rounded-lg shadow hover:bg-blue-600 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200">Login</a>
+                    <button id="admin-login-btn" class="bg-zinc-800 text-white px-6 py-2.5 rounded font-semibold hover:bg-zinc-700 shadow-md hover:shadow-lg transform hover:translate-y-[-2px] transition-all duration-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        </svg>
+                        Administrator Login
+                    </button>
+                    <a href="../customer file/login.html" class="bg-red-600 text-white px-6 py-2.5 rounded font-semibold hover:bg-red-500 shadow-md hover:shadow-lg transform hover:translate-y-[-2px] transition-all duration-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                        Login
+                    </a>
                 </div>
             </div>
 
@@ -656,6 +666,49 @@
         </div>
     </section>
 
+    <!-- AI Powered Workout Planning Section -->
+    <section class="py-8 md:py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-12 text-orange-500">AI-Powered Workout Planning</h2>
+            
+            <!-- Chat Container - Responsive width -->
+            <div class="w-full max-w-3xl mx-auto bg-gray-800 rounded-xl md:rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
+                <!-- Chat Header - Adjusted padding -->
+                <div class="flex items-center justify-between p-4 md:p-6 bg-gradient-to-r from-gray-800 to-gray-700">
+                    <h3 class="text-lg md:text-xl font-bold text-orange-500">FitworxAI Assistant</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs md:text-sm text-gray-300">Online</span>
+                        <div class="w-2 h-2 md:w-3 md:h-3 bg-orange-500 rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+
+                <!-- Chat Messages - Adjustable height -->
+                <div id="chat-container" class="h-[300px] sm:h-[350px] md:h-[400px] overflow-y-auto p-4 md:p-6 space-y-4 bg-gray-800 text-gray-100"></div>
+
+                <!-- Chat Input - Responsive layout -->
+                <div class="border-t border-gray-700 p-4 md:p-6 bg-gray-800">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                        <input 
+                            type="text" 
+                            id="chat-input"
+                            class="w-full flex-1 p-3 bg-gray-700 border-2 border-gray-600 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-600/20 transition-all duration-300 text-sm md:text-base"
+                            placeholder="Ask about workouts, nutrition, or fitness tips..."
+                        >
+                        <button 
+                            id="send-button"
+                            class="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-orange-500 text-white px-4 md:px-6 py-3 rounded-xl hover:opacity-90 transition duration-300 font-medium flex items-center justify-center space-x-2 group text-sm md:text-base"
+                        >
+                            <span>Send</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Membership Section -->
     <section class="py-16 bg-gradient-to-br from-orange-500 to-red-600 dark:from-dark-700 dark:to-dark-800 text-white">
         <div class="container mx-auto px-4 text-center">
@@ -874,6 +927,7 @@
         </div>
     </div>
 
+    <script src="./landing_images/AI-bot-landing.js"></script>
     <script src="../landing_images/landing.js"></script>
     <script src="/javascript/admin-announcement.js"></script>
     <script src="/landing_images/bmi-calculator-landing.js"></script>
