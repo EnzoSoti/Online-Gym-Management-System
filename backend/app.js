@@ -68,6 +68,11 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        // i added a rejectUnauthorized for debug but this is not recommended for production - Enzo
+        // but this is only thesis so it's okay but not good practice
+        rejectUnauthorized: false
     }
 });
 
