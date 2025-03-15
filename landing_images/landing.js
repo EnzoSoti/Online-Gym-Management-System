@@ -32,6 +32,8 @@ document.querySelectorAll('#mobile-menu button').forEach(button => {
     });
 });
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.getElementById('carousel');
     const carouselItems = carousel.querySelectorAll('.carousel-item');

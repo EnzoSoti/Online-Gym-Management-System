@@ -1,6 +1,6 @@
 const GEMINI_CONFIG = {
     apiKey: 'AIzaSyAk-68DQ-h5W4cM_H9AN-ln2lPllXrObIs', 
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
+    endpoint: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent'
 };
 
 class FitworxChatbot {

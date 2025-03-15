@@ -93,36 +93,114 @@
                     <p class="text-base font-semibold text-orange-400" id="adminNameDisplay"></p>
                 </div>
                 <ul class="nav-menu space-y-3 p-4" id="adminNavMenu">
+                    <!-- Dasboard -->
                     <li><a href="#dashboard" class="nav-item" id="navDashboard">
                         <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
                     </a></li>
-                    <li><a href="#check-in" class="nav-item" id="navCheckin">
-                        <i class="fa-solid fa-right-to-bracket"></i><span>Regular Check-in</span>
+                    
+                    <!-- User roles -->
+                    <li><a href="#user-roles" class="nav-item" id="navUserRoles">
+                        <i class="fa-solid fa-users-gear"></i><span>User roles</span>
                     </a></li>
-                    <li><a href="#monthly-check-in" class="nav-item" id="navMonthlyCheckin">
-                        <i class="fa-solid fa-calendar-check"></i><span>Monthly Check-in</span>
+                    
+                    <!-- Announcements -->
+                    <li><a href="#announcements" class="nav-item" id="navWhatsNew">
+                        <i class="fa-solid fa-bullhorn"></i><span>Announcements</span>
                     </a></li>
-                    <li><a href="#reservation" class="nav-item" id="navReservation">
-                        <i class="fa-solid fa-calendar-days"></i><span>Reservation list</span>
-                    </a></li>
-                    <li><a href="#supplement" class="nav-item" id="navInventory">
-                        <i class="fa-solid fa-boxes-stacked"></i><span>Product Stocks</span>
-                    </a></li>
-                    <li><a href="#monthlyMembers" class="nav-item" id="navMembers">
-                        <i class="fa-solid fa-user-group"></i><span>Monthly Member</span>
-                    </a></li>
-                    <li><a href="#reports" class="nav-item" id="navReports">
-                        <i class="fa-solid fa-file-lines"></i><span>Reports</span>
-                    </a></li>
+                    
+                    <!-- Inquiry with sub-menus -->
+                    <li>
+                        <a href="#inquiry" class="nav-item flex items-center justify-between" id="navInquiry">
+                            <div><i class="fa-solid fa-question-circle"></i><span>Inquiry</span></div>
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </a>
+                        <ul class="sub-menu ml-6 mt-2 space-y-2 hidden">
+                            <li><a href="#sign-up" class="nav-item text-sm" id="navSignUp">
+                                <i class="fa-solid fa-user-plus"></i><span>Sign up</span>
+                            </a></li>
+                            <li><a href="#reservation-inquiry" class="nav-item text-sm" id="navReservationInquiry">
+                                <i class="fa-solid fa-calendar-plus"></i><span>Reservation</span>
+                            </a></li>
+                            <li><a href="#membership-inquiry" class="nav-item text-sm" id="navMembershipInquiry">
+                                <i class="fa-solid fa-id-card"></i><span>Membership</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Product Sale -->
                     <li><a href="#buy" class="nav-item" id="navSales">
                         <i class="fa-solid fa-cart-shopping"></i><span>Product Sale</span>
                     </a></li>
+                    
+                    <!-- Payment with sub-menus -->
+                    <li>
+                        <a href="#payment" class="nav-item flex items-center justify-between" id="navPayment">
+                            <div><i class="fa-solid fa-credit-card"></i><span>Payment</span></div>
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </a>
+                        <ul class="sub-menu ml-6 mt-2 space-y-2 hidden">
+                            <li><a href="#cash-payment" class="nav-item text-sm" id="navCashPayment">
+                                <i class="fa-solid fa-money-bill-wave"></i><span>Cash</span>
+                            </a></li>
+                            <li><a href="#online-payment" class="nav-item text-sm" id="navGcashPayment">
+                                <i class="fa-solid fa-globe"></i><span>Online</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Monitoring with sub-menus -->
+                    <li>
+                        <a href="#monitoring" class="nav-item flex items-center justify-between" id="navMonitoring">
+                            <div><i class="fa-solid fa-chart-line"></i><span>Monitoring</span></div>
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </a>
+                        <ul class="sub-menu ml-6 mt-2 space-y-2 hidden">
+                            <!-- Regular check-in -->
+                            <li><a href="#check-in" class="nav-item text-sm" id="navCheckin">
+                                <i class="fa-solid fa-right-to-bracket"></i><span>Regular check-in</span>
+                            </a></li>
+                            <!-- Monthly check-in -->
+                            <li><a href="#monthly-check-in" class="nav-item text-sm" id="navMonthlyCheckin">
+                                <i class="fa-solid fa-calendar-check"></i><span>Monthly check-in</span>
+                            </a></li>
+                            <!-- Reservation list -->
+                            <li><a href="#reservation" class="nav-item text-sm" id="navReservation">
+                                <i class="fa-solid fa-calendar-days"></i><span>Reservation list</span>
+                            </a></li>
+                            <!-- Monthly membership -->
+                            <li><a href="#monthlyMembers" class="nav-item text-sm" id="navMembers">
+                                <i class="fa-solid fa-user-group"></i><span>Monthly membership</span>
+                            </a></li>
+                            <!-- Product Stocks -->
+                            <li><a href="#supplement" class="nav-item text-sm" id="navInventory">
+                                <i class="fa-solid fa-boxes-stacked"></i><span>Product Stocks</span>
+                            </a></li>
+                            <!-- Reports -->
+                            <li><a href="#reports" class="nav-item text-sm" id="navReports">
+                                <i class="fa-solid fa-file-lines"></i><span>Reports</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Export -->
+                    <li>
+                        <a href="#export" class="nav-item flex items-center justify-between" id="navExport">
+                            <div><i class="fa-solid fa-file-export"></i><span>Export</span></div>
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </a>
+                        <ul class="sub-menu ml-6 mt-2 space-y-2 hidden">
+                            <li><a href="#export-reports" class="nav-item text-sm" id="navExportReports">
+                                <i class="fa-solid fa-file-csv"></i><span>Reports</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Maintenance -->
                     <li><a href="#maintenance" class="nav-item" id="navMaintenance">
                         <i class="fa-solid fa-wrench"></i><span>Maintenance</span>
                     </a></li>
-                    <li><a href="#whats-new" class="nav-item" id="navWhatsNew">
-                        <i class="fa-solid fa-bullhorn"></i><span>What's New</span>
-                    </a></li>
+                    
+                    <!-- Logout -->
                     <li class="mt-4 pt-4 border-t border-gray-700">
                         <a href="#" class="nav-item flex items-center text-red-400 hover:text-red-300 hover:bg-red-900/50 rounded-lg p-2 transition-colors duration-200" id="navLogout">
                             <i class="fa-solid fa-sign-out-alt mr-3"></i>
@@ -761,8 +839,7 @@
                     </div>
                 </div>
 
-                <!-- enlarge picture -->
-                <div id="enlargedPictureModal" class="fixed inset-0 flex items-center justify-center hidden">
+                <div id="enlargedPictureModal" class="fixed inset-0 items-center justify-center hidden">
                     <div class="absolute inset-0 bg-black opacity-50"></div>
                     <div class="relative bg-white p-4 rounded-lg shadow-lg">
                         <img id="enlargedPicture" src="" alt="Enlarged Profile Picture" class="max-w-full max-h-full">
@@ -1378,7 +1455,7 @@
         <!-- Section 10 -->
         <!-- Whats new -->
         <div class="main-content">
-            <section id="whats-new" class="h-screen bg-gradient-to-br from-orange-50 to-slate-50">
+            <section id="announcements" class="h-screen bg-gradient-to-br from-orange-50 to-slate-50">
                 <div class="h-full p-4 md:p-8">
                     <div class="h-full flex flex-col bg-white/80 backdrop-blur-sm rounded-lg shadow-2xl border border-white/50">
                         <!-- Header -->
@@ -1498,6 +1575,7 @@
     <script src="../javascript/admin-sidebar.js"></script>
     <script src="../javascript/admin-scrolling.js"></script>
     <script src="/javascript/admin-announcement.js"></script>
+    <script src="/javascript/admin-submenu.js"></script>
 
 </body>
 </html>
