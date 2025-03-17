@@ -27,6 +27,7 @@ let users = [
 ];
 
 let permissions = [
+  { id: 0, name: "permission", description: "Access Permissions Module" },
   { id: 1, name: "inquiry", description: "Access Inquiry Module" },
   { id: 2, name: "product_sale", description: "Access Product Sale Module" },
   { id: 3, name: "payment", description: "Access Payment Module" },
@@ -36,7 +37,7 @@ let permissions = [
 
 // Role permissions (which permissions are assigned to which roles)
 let rolePermissions = {
-  1: [4, 5], // Default permissions for Administrator is only Monitoring and Export
+  1: [0, 4, 5], // Default permissions for Administrator is only Monitoring and Export
   2: [1, 4, 5], // Front Desk main module is Inquiry
   3: [2, 3, 4, 5], // Cashier main modules are Product Sale and Payment
 };
@@ -170,10 +171,15 @@ function openAddRoleModal() {
 
   permissions.forEach((permission) => {
     const checkboxDiv = document.createElement("div");
+    const isLocked = permission.id === 0;
     checkboxDiv.innerHTML = `
                   <label>
-                      <input type="checkbox" name="permissions" value="${permission.id}">
-                      ${permission.description}
+                      <input type="checkbox" name="permissions" value="${
+                        permission.id
+                      }">
+                      ${permission.description} ${
+      isLocked ? "(Cannot be changed later)" : ""
+    }
                   </label>
               `;
     permissionsContainer.appendChild(checkboxDiv);
@@ -201,13 +207,16 @@ function openEditRoleModal(roleId) {
       rolePermissions[role.id].includes(permission.id);
 
     const checkboxDiv = document.createElement("div");
+    const isLocked = permission.id === 0;
     checkboxDiv.innerHTML = `
-                  <label>
-                      <input type="checkbox" name="permissions" value="${
-                        permission.id
-                      }" ${isChecked ? "checked" : ""}>
-                      ${permission.description}
-                  </label>
+                <label>
+                    <input type="checkbox" name="permissions" value="${
+                      permission.id
+                    }" ${isLocked ? "disabled" : ""} ${
+      isChecked ? "checked" : ""
+    }>
+                    ${permission.description} ${isLocked ? "(Locked)" : ""}
+                </label>
               `;
     permissionsContainer.appendChild(checkboxDiv);
   });
