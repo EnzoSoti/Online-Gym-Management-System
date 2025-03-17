@@ -216,6 +216,7 @@ async function showAdminLogin(e) {
       if (response.ok) {
         // Store the full name in sessionStorage
         sessionStorage.setItem("admin_full_name", data.admin.full_name);
+        sessionStorage.setItem("role_name", data.admin.role_name);
 
         // Hide login modal
         modal.classList.remove("flex");

@@ -1342,6 +1342,7 @@ app.post("/api/admin/login", async (req, res) => {
         id: admin.user_id,
         username: admin.username,
         full_name: admin.full_name,
+        role_name: admin.role_name,
       },
     });
   } catch (error) {
