@@ -77,7 +77,7 @@ navItems.forEach((item) => {
 // Initialize tables
 function initTables() {
   populateRolesTable();
-  populateUsersTable();
+  //populateUsersTable();
 }
 
 // Populate roles table
@@ -92,22 +92,30 @@ function populateRolesTable() {
                   <td>${role.description}</td>
                   <td>${role.users}</td>
                   <td class="action-buttons">
-                      <button class="edit-role" data-id="${role.id}">Edit</button>
-                      <button class="danger delete-role" data-id="${role.id}">Delete</button>
+                    <button class="edit-btn inline-flex items-center border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white px-2 py-2 transition-all duration-200 text-sm font-medium mr-1" data-id="${role.id}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                    <button class="delete-btn inline-flex items-center border-2 border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white px-2 py-2 transition-all duration-200 text-sm font-medium mr-1" data-id="${role.id}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
                   </td>
               `;
     rolesTableBody.appendChild(row);
   });
 
   // Add event listeners to edit and delete buttons
-  document.querySelectorAll(".edit-role").forEach((btn) => {
+  document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const roleId = parseInt(this.getAttribute("data-id"));
       openEditRoleModal(roleId);
     });
   });
 
-  document.querySelectorAll(".delete-role").forEach((btn) => {
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const roleId = parseInt(this.getAttribute("data-id"));
       deleteRole(roleId);
@@ -267,7 +275,7 @@ function deleteRole(roleId) {
 
     // Refresh tables
     populateRolesTable();
-    populateUsersTable();
+    //populateUsersTable();
   }
 }
 
@@ -327,7 +335,7 @@ function saveUserRoles(event) {
 
   // Refresh tables and close modal
   populateRolesTable();
-  populateUsersTable();
+  //populateUsersTable();
   closeAssignRoleModal();
 }
 
@@ -370,21 +378,23 @@ function setupSearch() {
     });
   });
 
-  userSearchInput.addEventListener("input", function () {
-    const searchTerm = this.value.toLowerCase();
-    const rows = document.querySelectorAll("#users-table tbody tr");
+  if (userSearchInput) {
+    userSearchInput.addEventListener("input", function () {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#users-table tbody tr");
 
-    rows.forEach((row) => {
-      const username = row.cells[0].textContent.toLowerCase();
-      const email = row.cells[1].textContent.toLowerCase();
+      rows.forEach((row) => {
+        const username = row.cells[0].textContent.toLowerCase();
+        const email = row.cells[1].textContent.toLowerCase();
 
-      if (username.includes(searchTerm) || email.includes(searchTerm)) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
+        if (username.includes(searchTerm) || email.includes(searchTerm)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
     });
-  });
+  }
 }
 
 // Event listeners

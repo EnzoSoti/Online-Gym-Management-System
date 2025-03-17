@@ -1,161 +1,185 @@
 class SupplementManager {
-    constructor() {
-        this.API_URL = 'http://localhost:3000/api/supplements';
-        this.modal = document.getElementById('supplementModal');
-        this.form = document.getElementById('supplementForm');
-        this.table = document.getElementById('supplementsTable');
-        this.modalTitle = document.getElementById('modalTitle');
-        this.currentId = null;
-        this.LOW_STOCK_THRESHOLD = 9;
-        this.CRITICAL_LOW_THRESHOLD = 10; // New threshold for critical low
-        this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
-        this.currentSupplements = []; // Store current state
-        this.isPolling = true; // Flag to control polling
-        this.lowStockNotified = new Set(); // Track which items have been notified
+  constructor() {
+    this.API_URL = "http://localhost:3000/api/supplements";
+    this.modal = document.getElementById("supplementModal");
+    this.form = document.getElementById("supplementForm");
+    this.table = document.getElementById("supplementsTable");
+    this.modalTitle = document.getElementById("modalTitle");
+    this.currentId = null;
+    this.LOW_STOCK_THRESHOLD = 9;
+    this.CRITICAL_LOW_THRESHOLD = 10; // New threshold for critical low
+    this.POLLING_INTERVAL = 5000; // 5 seconds polling interval
+    this.currentSupplements = []; // Store current state
+    this.isPolling = true; // Flag to control polling
+    this.lowStockNotified = new Set(); // Track which items have been notified
 
-        this.initializeEventListeners();
-        this.loadSupplements(true); // Initial load
+    this.initializeEventListeners();
+    this.loadSupplements(true); // Initial load
+    this.startPolling();
+  }
+
+  initializeEventListeners() {
+    // Modal controls
+    document
+      .getElementById("openModalBtn")
+      .addEventListener("click", () => this.openModal());
+    document
+      .getElementById("closeModalBtn")
+      .addEventListener("click", () => this.closeModal());
+    this.modal.addEventListener("click", (e) => {
+      if (e.target === this.modal) this.closeModal();
+    });
+
+    // Form submission
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+
+    // Table actions
+    this.table.addEventListener("click", (e) => {
+      const row = e.target.closest("tr");
+      if (!row) return;
+
+      if (e.target.classList.contains("edit-btn")) {
+        this.editSupplement(row);
+      } else if (e.target.classList.contains("delete-btn")) {
+        this.deleteSupplement(row);
+      }
+    });
+
+    // Add visibility change handler
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        this.stopPolling();
+      } else {
         this.startPolling();
-    }
+        this.loadSupplements(); // Refresh data when page becomes visible
+      }
+    });
+  }
 
-    initializeEventListeners() {
-        // Modal controls
-        document.getElementById('openModalBtn').addEventListener('click', () => this.openModal());
-        document.getElementById('closeModalBtn').addEventListener('click', () => this.closeModal());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.closeModal();
-        });
+  startPolling() {
+    this.isPolling = true;
+    this.poll();
+  }
 
-        // Form submission
-        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+  stopPolling() {
+    this.isPolling = false;
+  }
 
-        // Table actions
-        this.table.addEventListener('click', (e) => {
-            const row = e.target.closest('tr');
-            if (!row) return;
+  async poll() {
+    if (!this.isPolling) return;
 
-            if (e.target.classList.contains('edit-btn')) {
-                this.editSupplement(row);
-            } else if (e.target.classList.contains('delete-btn')) {
-                this.deleteSupplement(row);
-            }
-        });
+    await this.loadSupplements();
+    setTimeout(() => this.poll(), this.POLLING_INTERVAL);
+  }
 
-        // Add visibility change handler
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.stopPolling();
-            } else {
-                this.startPolling();
-                this.loadSupplements(); // Refresh data when page becomes visible
-            }
-        });
-    }
+  openModal(supplement = null) {
+    this.stopPolling(); // Stop polling when modal is open
+    this.currentId = supplement ? supplement.id : null;
+    this.modalTitle.textContent = supplement
+      ? "Edit Supplement"
+      : "Add Supplement";
 
-    startPolling() {
-        this.isPolling = true;
-        this.poll();
-    }
+    document.getElementById("name").value = supplement
+      ? supplement.supplement_name
+      : "";
+    document.getElementById("quantity").value = supplement
+      ? supplement.quantity
+      : "";
+    document.getElementById("price").value = supplement ? supplement.price : "";
 
-    stopPolling() {
-        this.isPolling = false;
-    }
+    this.modal.classList.remove("hidden");
+  }
 
-    async poll() {
-        if (!this.isPolling) return;
+  closeModal() {
+    this.modal.classList.add("hidden");
+    this.form.reset();
+    this.currentId = null;
+    this.startPolling(); // Resume polling when modal is closed
+  }
 
-        await this.loadSupplements();
-        setTimeout(() => this.poll(), this.POLLING_INTERVAL);
-    }
+  async loadSupplements(isInitialLoad = false) {
+    try {
+      const response = await fetch(this.API_URL);
+      const newSupplements = await response.json();
 
-    openModal(supplement = null) {
-        this.stopPolling(); // Stop polling when modal is open
-        this.currentId = supplement ? supplement.id : null;
-        this.modalTitle.textContent = supplement ? 'Edit Supplement' : 'Add Supplement';
-        
-        document.getElementById('name').value = supplement ? supplement.supplement_name : '';
-        document.getElementById('quantity').value = supplement ? supplement.quantity : '';
-        document.getElementById('price').value = supplement ? supplement.price : '';
-        
-        this.modal.classList.remove('hidden');
-    }
+      // Check if data has changed
+      const hasChanges =
+        JSON.stringify(this.currentSupplements) !==
+        JSON.stringify(newSupplements);
 
-    closeModal() {
-        this.modal.classList.add('hidden');
-        this.form.reset();
-        this.currentId = null;
-        this.startPolling(); // Resume polling when modal is closed
-    }
+      if (hasChanges || isInitialLoad) {
+        this.table.innerHTML = newSupplements
+          .map((supplement) => this.createTableRow(supplement))
+          .join("");
 
-    async loadSupplements(isInitialLoad = false) {
-        try {
-            const response = await fetch(this.API_URL);
-            const newSupplements = await response.json();
-            
-            // Check if data has changed
-            const hasChanges = JSON.stringify(this.currentSupplements) !== JSON.stringify(newSupplements);
-            
-            if (hasChanges || isInitialLoad) {
-                this.table.innerHTML = newSupplements.map(supplement => this.createTableRow(supplement)).join('');
-                
-                // Update current state before checking low stock
-                const previousSupplements = [...this.currentSupplements];
-                this.currentSupplements = newSupplements;
+        // Update current state before checking low stock
+        const previousSupplements = [...this.currentSupplements];
+        this.currentSupplements = newSupplements;
 
-                // Check for low stock items with immediate notification
-                this.checkLowStockWithUpdates(previousSupplements, newSupplements);
-                
-                // Show update notification if it's not the initial load
-                if (hasChanges && !isInitialLoad && !this.modal.classList.contains('hidden')) {
-                    this.showUpdateNotification();
-                }
-            }
-        } catch (error) {
-            console.error('Failed to load supplements:', error);
-            // Only show error if it's the initial load
-            if (isInitialLoad) {
-                this.showError('Failed to load supplements');
-            }
+        // Check for low stock items with immediate notification
+        this.checkLowStockWithUpdates(previousSupplements, newSupplements);
+
+        // Show update notification if it's not the initial load
+        if (
+          hasChanges &&
+          !isInitialLoad &&
+          !this.modal.classList.contains("hidden")
+        ) {
+          this.showUpdateNotification();
         }
+      }
+    } catch (error) {
+      console.error("Failed to load supplements:", error);
+      // Only show error if it's the initial load
+      if (isInitialLoad) {
+        this.showError("Failed to load supplements");
+      }
     }
+  }
 
-    checkLowStockWithUpdates(previousSupplements, newSupplements) {
-        // Find items that are now below threshold
-        const newLowStockItems = newSupplements.filter(supp => {
-            const prevSupp = previousSupplements.find(ps => ps.id === supp.id);
-            return supp.quantity <= this.LOW_STOCK_THRESHOLD && (
-                !prevSupp || 
-                prevSupp.quantity > this.LOW_STOCK_THRESHOLD ||
-                (supp.quantity < prevSupp.quantity && prevSupp.quantity <= this.LOW_STOCK_THRESHOLD)
-            );
-        });
+  checkLowStockWithUpdates(previousSupplements, newSupplements) {
+    // Find items that are now below threshold
+    const newLowStockItems = newSupplements.filter((supp) => {
+      const prevSupp = previousSupplements.find((ps) => ps.id === supp.id);
+      return (
+        supp.quantity <= this.LOW_STOCK_THRESHOLD &&
+        (!prevSupp ||
+          prevSupp.quantity > this.LOW_STOCK_THRESHOLD ||
+          (supp.quantity < prevSupp.quantity &&
+            prevSupp.quantity <= this.LOW_STOCK_THRESHOLD))
+      );
+    });
 
-        // No need to call showLowStockNotification since it's removed
-    }
+    // No need to call showLowStockNotification since it's removed
+  }
 
-    showUpdateNotification() {
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'info',
-            title: 'Inventory Updated',
-            text: 'The supplement list has been updated.',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    }
+  showUpdateNotification() {
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "info",
+      title: "Inventory Updated",
+      text: "The supplement list has been updated.",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  }
 
-    createTableRow(supplement) {
-        const stockClass = supplement.quantity <= this.LOW_STOCK_THRESHOLD 
-            ? 'bg-red-100 text-red-800' 
-            : 'bg-green-100 text-green-800';
-    
-        const criticalLowClass = supplement.quantity < this.CRITICAL_LOW_THRESHOLD 
-            ? 'bg-red-100 text-red-800' 
-            : 'bg-green-100 text-green-800';
-    
-        return `
-        <tr data-id="${supplement.id}" class="group transition-all duration-300 ease-in-out hover:bg-slate-50 hover:shadow-sm border-b border-slate-100 last:border-b-0"> 
+  createTableRow(supplement) {
+    const stockClass =
+      supplement.quantity <= this.LOW_STOCK_THRESHOLD
+        ? "bg-red-100 text-red-800"
+        : "bg-green-100 text-green-800";
+
+    const criticalLowClass =
+      supplement.quantity < this.CRITICAL_LOW_THRESHOLD
+        ? "bg-red-100 text-red-800"
+        : "bg-green-100 text-green-800";
+
+    return `
+        <tr data-id="${
+          supplement.id
+        }" class="group transition-all duration-300 ease-in-out hover:bg-slate-50 hover:shadow-sm border-b border-slate-100 last:border-b-0"> 
             <td class="px-6 py-4 whitespace-nowrap"> 
                 <div class="flex items-center space-x-4"> 
                     <div class="h-12 w-12 flex-shrink-0 bg-indigo-100 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-105"> 
@@ -164,8 +188,12 @@ class SupplementManager {
                         </svg> 
                     </div> 
                     <div> 
-                        <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">${supplement.supplement_name}</div> 
-                        <div class="text-xs text-slate-500 group-hover:text-slate-700 transition-colors">Supplement ID: ${supplement.id}</div> 
+                        <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">${
+                          supplement.supplement_name
+                        }</div> 
+                        <div class="text-xs text-slate-500 group-hover:text-slate-700 transition-colors">Supplement ID: ${
+                          supplement.id
+                        }</div> 
                     </div> 
                 </div> 
             </td>
@@ -176,7 +204,11 @@ class SupplementManager {
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${criticalLowClass}">
-                    ${supplement.quantity < this.CRITICAL_LOW_THRESHOLD ? 'Critical Low' : ''}
+                    ${
+                      supplement.quantity < this.CRITICAL_LOW_THRESHOLD
+                        ? "Critical Low"
+                        : ""
+                    }
                 </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -199,113 +231,117 @@ class SupplementManager {
             </td>
         </tr>
         `;
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+
+    const formData = {
+      supplement_name: document.getElementById("name").value,
+      quantity: parseInt(document.getElementById("quantity").value),
+      price: parseFloat(document.getElementById("price").value),
+    };
+
+    try {
+      const url = this.currentId
+        ? `${this.API_URL}/${this.currentId}`
+        : this.API_URL;
+      const method = this.currentId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error("Failed to save supplement");
+
+      // Store previous state before loading new data
+      const previousSupplements = [...this.currentSupplements];
+
+      // Load new data and check for low stock
+      const newSupplements = await response.json();
+      this.checkLowStockWithUpdates(previousSupplements, [newSupplements]);
+
+      await this.loadSupplements();
+      this.closeModal();
+      this.showSuccess(
+        `Supplement ${this.currentId ? "updated" : "added"} successfully`
+      );
+    } catch (error) {
+      this.showError(error.message);
     }
+  }
 
-    async handleSubmit(e) {
-        e.preventDefault();
-        
-        const formData = {
-            supplement_name: document.getElementById('name').value,
-            quantity: parseInt(document.getElementById('quantity').value),
-            price: parseFloat(document.getElementById('price').value)
-        };
-    
-        try {
-            const url = this.currentId ? `${this.API_URL}/${this.currentId}` : this.API_URL;
-            const method = this.currentId ? 'PUT' : 'POST';
-    
-            const response = await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-    
-            if (!response.ok) throw new Error('Failed to save supplement');
-    
-            // Store previous state before loading new data
-            const previousSupplements = [...this.currentSupplements];
-            
-            // Load new data and check for low stock
-            const newSupplements = await response.json();
-            this.checkLowStockWithUpdates(previousSupplements, [newSupplements]);
-            
-            await this.loadSupplements();
-            this.closeModal();
-            this.showSuccess(`Supplement ${this.currentId ? 'updated' : 'added'} successfully`);
-        } catch (error) {
-            this.showError(error.message);
-        }
-    }
+  async deleteSupplement(row) {
+    const id = row.dataset.id;
+    const name = row.querySelector(".text-slate-900").textContent;
 
-    async deleteSupplement(row) {
-        const id = row.dataset.id;
-        const name = row.querySelector('.text-slate-900').textContent;
-
-        if (await this.confirmDelete(name)) {
-            try {
-                const response = await fetch(`${this.API_URL}/${id}`, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) throw new Error('Failed to delete supplement');
-
-                await this.loadSupplements();
-                this.showSuccess('Supplement deleted successfully');
-            } catch (error) {
-                this.showError(error.message);
-            }
-        }
-    }
-
-    editSupplement(row) {
-        const id = row.dataset.id;
-        const name = row.querySelector('.text-slate-900').textContent;
-        const quantityText = row.querySelector('.rounded-full').textContent;
-        const priceText = row.querySelectorAll('.rounded-full')[1].textContent;
-        
-        const quantity = parseInt(quantityText);
-        const price = parseFloat(priceText);
-        
-        this.openModal({
-            id: id,
-            supplement_name: name,
-            quantity: quantity,
-            price: price
+    if (await this.confirmDelete(name)) {
+      try {
+        const response = await fetch(`${this.API_URL}/${id}`, {
+          method: "DELETE",
         });
-    }
 
-    async confirmDelete(name) {
-        return await Swal.fire({
-            title: 'Are you sure?',
-            text: `Delete supplement "${name}"?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#EF4444',
-            cancelButtonColor: '#6B7280',
-            confirmButtonText: 'Delete'
-        }).then(result => result.isConfirmed);
-    }
+        if (!response.ok) throw new Error("Failed to delete supplement");
 
-    showSuccess(message) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: message,
-            timer: 4000,
-            showConfirmButton: false
-        });
+        await this.loadSupplements();
+        this.showSuccess("Supplement deleted successfully");
+      } catch (error) {
+        this.showError(error.message);
+      }
     }
+  }
 
-    showError(message) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: message
-        });
-    }
+  editSupplement(row) {
+    const id = row.dataset.id;
+    const name = row.querySelector(".text-slate-900").textContent;
+    const quantityText = row.querySelector(".rounded-full").textContent;
+    const priceText = row.querySelectorAll(".rounded-full")[1].textContent;
+
+    const quantity = parseInt(quantityText);
+    const price = parseFloat(priceText);
+
+    this.openModal({
+      id: id,
+      supplement_name: name,
+      quantity: quantity,
+      price: price,
+    });
+  }
+
+  async confirmDelete(name) {
+    return await Swal.fire({
+      title: "Are you sure?",
+      text: `Delete supplement "${name}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Delete",
+    }).then((result) => result.isConfirmed);
+  }
+
+  showSuccess(message) {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: message,
+      timer: 4000,
+      showConfirmButton: false,
+    });
+  }
+
+  showError(message) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: message,
+    });
+  }
 }
 
 // Initialize the supplement manager when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new SupplementManager();
+document.addEventListener("DOMContentLoaded", () => {
+  new SupplementManager();
 });
