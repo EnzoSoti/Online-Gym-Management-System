@@ -229,15 +229,46 @@ function logout() {
         });
 
         if (response.ok) {
-          // Redirect to landing page
-          sessionStorage.clear();
-          window.location.href = "/index.html";
+          // Show success toast notification
+          Toastify({
+            text: "Logged out successfully!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            stopOnFocus: true,
+            callback: function() {
+              // Redirect to landing page
+              sessionStorage.clear();
+              window.location.href = "/index.html";
+            }
+          }).showToast();
         } else {
-          // Handle unsuccessful logout
+          // Handle unsuccessful logout with error toast
           console.error("Logout failed:", await response.text());
+          Toastify({
+            text: "Logout failed. Please try again.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            stopOnFocus: true
+          }).showToast();
         }
       } catch (error) {
+        // Handle connection error with toast
         console.error("Logout error:", error);
+        Toastify({
+          text: "Connection error. Please try again later.",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          stopOnFocus: true
+        }).showToast();
       }
     }
   });

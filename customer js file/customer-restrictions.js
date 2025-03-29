@@ -13,7 +13,7 @@ async function handleReservationSubmit(e) {
         
         // Convert current hour to 12-hour format
         const period = currentHour >= 12 ? 'PM' : 'AM';
-        const displayHour = currentHour % 12 || 12; // Convert 0 to 12 for midnight
+        const displayHour = currentHour % 12 || 12; 
         
         // Get selected date and time
         const selectedDateTime = new Date(
@@ -37,7 +37,7 @@ async function handleReservationSubmit(e) {
                 icon: 'warning',
                 confirmButtonText: 'Update Time',
                 showClass: {
-                    popup: '' // Removed animation
+                    popup: ''
                 },
                 customClass: {
                     popup: '',
@@ -45,7 +45,7 @@ async function handleReservationSubmit(e) {
                     htmlContainer: '',
                     confirmButton: ''
                 },
-                buttonsStyling: true // Reverted to default styling
+                buttonsStyling: true 
              });
             return;
         }
@@ -61,7 +61,7 @@ async function handleReservationSubmit(e) {
                 icon: 'warning',
                 confirmButtonText: 'Update Date',
                 showClass: {
-                    popup: '' // Removed animation
+                    popup: '' 
                 },
                 customClass: {
                     popup: '',
@@ -69,7 +69,7 @@ async function handleReservationSubmit(e) {
                     htmlContainer: '',
                     confirmButton: ''
                 },
-                buttonsStyling: true // Reverted to default styling
+                buttonsStyling: true 
              });
             return;
         }
@@ -91,14 +91,14 @@ async function handleReservationSubmit(e) {
                 icon: 'error',
                 confirmButtonText: 'Adjust Time',
                 showClass: {
-                    popup: '' // Removed animation
+                    popup: '' 
                 },
                 customClass: {
                     popup: '',
                     title: '',
                     confirmButton: ''
                 },
-                buttonsStyling: true // Reverted to default styling
+                buttonsStyling: true 
              });
             return;
         }
@@ -115,14 +115,14 @@ async function handleReservationSubmit(e) {
                 icon: 'error',
                 confirmButtonText: 'Adjust Duration',
                 showClass: {
-                    popup: ''  // Removed animation
+                    popup: ''  
                 },
                 customClass: {
-                    popup: '',  // Removed custom styling
-                    title: '',  // Removed custom styling
-                    confirmButton: ''  // Removed custom styling
+                    popup: '', 
+                    title: '',  
+                    confirmButton: ''  
                 },
-                buttonsStyling: true  // Reverted to default button styling
+                buttonsStyling: true  
             });
             return;
         }
@@ -138,14 +138,14 @@ async function handleReservationSubmit(e) {
                 icon: 'warning',
                 confirmButtonText: 'Select Another Time',
                 showClass: {
-                    popup: ''  // Removed animation
+                    popup: ''  
                 },
                 customClass: {
-                    popup: '',  // Removed custom styling
-                    title: '',  // Removed custom styling
-                    confirmButton: ''  // Removed custom styling
+                    popup: '',  
+                    title: '',  
+                    confirmButton: ''  
                 },
-                buttonsStyling: true  // Reverted to default button styling
+                buttonsStyling: true  
             });
             return;
         }

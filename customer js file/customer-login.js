@@ -10,12 +10,12 @@ const toggleText = document.getElementById('toggleText');
 const toggleButton = document.getElementById('toggleForm');
 const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
+const showPasswordButton = document.getElementById('showPassword');
 
 // API URL
 const API_URL = 'http://localhost:3000/api';
 
 // Sanitize input to prevent XSS
-// to prevent the malicious to inject to web app
 const sanitizeInput = (input) => {
     return input
         .replace(/&/g, '&amp;')
@@ -26,103 +26,78 @@ const sanitizeInput = (input) => {
         .replace(/\//g, '&#x2F;');
 };
 
+// Play sound function
+const playSound = (soundId) => {
+    const sound = document.getElementById(soundId);
+    sound.play();
+};
+
 // Handle form submission
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-
+    
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
-
-    // Validate and sanitize inputs
     const sanitizedUsername = sanitizeInput(username.value.trim());
-    const sanitizedPassword = password.value; // Don't sanitize password
+    const sanitizedPassword = password.value;
     const sanitizedFullName = isLoginMode ? '' : sanitizeInput(fullName.value.trim());
 
     try {
-        function playSound(soundId) {
-            const sound = document.getElementById(soundId);
-            sound.play();
-        }
+        const endpoint = isLoginMode ? '/login' : '/register';
+        const requestBody = isLoginMode
+            ? { username: sanitizedUsername, password: sanitizedPassword }
+            : { full_name: sanitizedFullName, username: sanitizedUsername, password: sanitizedPassword };
 
-        if (isLoginMode) {
-            // Handle Login
-            const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: sanitizedUsername,
-                    password: sanitizedPassword
-                })
-            });
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (response.ok) {
-                playSound('success-sound');
-                sessionStorage.setItem('full_name', data.user.full_name); // Store full name in sessionStorage
-                Swal.fire({
-                    title: '🎉 Welcome!',
-                    text: 'Login successful!',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    willClose: () => {
-                        window.location.href = '../customer file/customer.html';
-                    }
-                });
+        if (response.ok) {
+            playSound('success-sound');
+            if (isLoginMode) {
+                sessionStorage.setItem('full_name', data.user.full_name);
+                Toastify({
+                    text: "Login successful!",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    stopOnFocus: true,
+                    callback: () => window.location.href = '../customer file/customer.html'
+                }).showToast();
             } else {
-                Swal.fire({
-                    title: 'Login Failed',
-                    text: 'Please check your username and password.',
-                    icon: 'error',
-                    confirmButtonText: 'Try Again'
-                });
+                Toastify({
+                    text: "Your account has been created successfully!",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    stopOnFocus: true,
+                    callback: toggleForms
+                }).showToast();
             }
         } else {
-            // Handle Signup
-            const response = await fetch(`${API_URL}/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    full_name: sanitizedFullName,
-                    username: sanitizedUsername,
-                    password: sanitizedPassword
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                playSound('success-sound');
-                Swal.fire({
-                    title: 'Welcome to Our Gym! 🎉',
-                    text: 'Your account has been created successfully!',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    willClose: () => {
-                        toggleForms();
-                    }
-                });
-            } else {
-                playSound('success-sound');
-                Swal.fire({
-                    title: 'Registration Failed',
-                    text: data.error || 'Please try again with different information.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
+            Toastify({
+                text: data.error || (isLoginMode ? "Login Failed. Please check your credentials." : "Registration Failed. Try again."),
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                stopOnFocus: true
+            }).showToast();
         }
     } catch (error) {
         playSound('success-sound');
         console.error('API Error:', error);
         Swal.fire({
             title: 'Oops!',
-            text: 'Something went wrong. Please try again later.',  
+            text: 'Something went wrong. Please try again later.',
             icon: 'error',
             confirmButtonText: 'OK',
             confirmButtonColor: '#ef4444',
@@ -137,58 +112,39 @@ loginForm.addEventListener('submit', async function (e) {
 function toggleForms() {
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
 
-    if (isLoginMode) {
-        // Switch to signup
-        formTitle.textContent = 'Create Account';
-        formSubtitle.textContent = 'Join us and start your fitness journey';
-        toggleText.textContent = 'Already have an account?';
-        toggleButton.textContent = 'Sign in here';
-        welcomeText.innerHTML = `
-            <h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
-            <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>
-        `;
-        fullNameField.classList.remove('hidden');
-    } else {
-        // Switch to login
-        formTitle.textContent = 'Sign in to Account';
-        formSubtitle.textContent = 'Start managing your fitness journey today';
-        toggleText.textContent = "Don't have an account?";
-        toggleButton.textContent = 'Sign up for free';
-        welcomeText.innerHTML = `
-            <h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
-            <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>
-        `;
-        fullNameField.classList.add('hidden');
-    }
-
-    // Clear form fields
+    formTitle.textContent = isLoginMode ? 'Create Account' : 'Sign in to Account';
+    formSubtitle.textContent = isLoginMode ? 'Join us and start your fitness journey' : 'Start managing your fitness journey today';
+    toggleText.textContent = isLoginMode ? 'Already have an account?' : "Don't have an account?";
+    toggleButton.textContent = isLoginMode ? 'Sign in here' : 'Sign up for free';
+    welcomeText.innerHTML = isLoginMode
+        ? `<h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
+           <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>`
+        : `<h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
+           <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>`;
+    
+    fullNameField.classList.toggle('hidden', isLoginMode);
     username.value = '';
     password.value = '';
     fullName.value = '';
 }
 
-// Add click event listener to toggle button
-toggleButton.addEventListener('click', function(e) {
+// Add event listener to toggle button
+toggleButton.addEventListener('click', function (e) {
     e.preventDefault();
     toggleForms();
 });
 
 // Clear form fields on page load
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     username.value = '';
     password.value = '';
     fullName.value = '';
 });
 
-// Get the show password button
-const showPasswordButton = document.getElementById('showPassword');
-
-// Add click event listener to the show password button
-showPasswordButton.addEventListener('click', function() {
-    const passwordInput = document.getElementById('password');
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    // Toggle the eye icon
+// Show/hide password functionality
+showPasswordButton.addEventListener('click', function () {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
     this.querySelector('i').classList.toggle('fa-eye');
     this.querySelector('i').classList.toggle('fa-eye-slash');
 });
