@@ -1,3 +1,6 @@
+const TOAST_DISPLAY_DURATION = 1500; 
+const LOGOUT_DELAY = 1200; 
+
 document.getElementById("navLogout").addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -12,15 +15,19 @@ document.getElementById("navLogout").addEventListener("click", function (e) {
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
-      // Show success message before redirecting
-      Swal.fire({
-        title: "Logging out!",
+      Toastify({
         text: "You have been successfully logged out.",
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false,
-      }).then(async () => {
-        // logout admin
+        duration: TOAST_DISPLAY_DURATION,
+        gravity: "top", 
+        position: "center",
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        close: true,
+      }).showToast();
+      
+      // Add a small delay to show the toast before logout processing
+      setTimeout(async () => {
         try {
           const response = await fetch(`${API_BASE_URL}/admin/logout`, {
             method: "POST",
@@ -40,7 +47,7 @@ document.getElementById("navLogout").addEventListener("click", function (e) {
         } catch (error) {
           console.error("Logout error:", error);
         }
-      });
+      }, LOGOUT_DELAY);
     }
   });
 });
