@@ -102,24 +102,36 @@ function startPolling() {
             );
           });
 
-          // Notify of changes made by other users
+          // Notify of changes made by other users using Toastify
           if (added.length > 0) {
-            notificationSystem.notify("New Member Added", {
-              body: `${added.length} new member(s) have been added`,
-              icon: "success",
-            });
+            Toastify({
+              text: `${added.length} new member(s) have been added`,
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "#4CAF50", // Success green
+            }).showToast();
           }
           if (updated.length > 0) {
-            notificationSystem.notify("Member Updated", {
-              body: `${updated.length} member(s) have been updated`,
-              icon: "info",
-            });
+            Toastify({
+              text: `${updated.length} member(s) have been updated`,
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "#2196F3", // Info blue
+            }).showToast();
           }
           if (deleted.length > 0) {
-            notificationSystem.notify("Member Deleted", {
-              body: `${deleted.length} member(s) have been removed`,
-              icon: "warning",
-            });
+            Toastify({
+              text: `${deleted.length} member(s) have been removed`,
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "#FF9800", // Warning orange
+            }).showToast();
           }
         }
 
@@ -470,11 +482,15 @@ async function sendEmailNotification(btn) {
       );
 
       if (!response.ok) throw new Error("Failed to send email notification");
-
-      notificationSystem.notify("Email Sent", {
-        body: `Successfully sent email notification to ${memberName}`,
-        icon: "success",
-      });
+      Toastify({
+        text: `Successfully sent email notification to ${memberName}`,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4CAF50",
+      }).showToast();
+      
       playSound("success-sound");
     } catch (error) {
       console.error("Error:", error);
@@ -923,13 +939,17 @@ async function renewMembership(btn) {
     await loadMembers();
 
     playSound("success-sound");
-    await Swal.fire({
-      icon: "success",
-      title: "Membership Renewed!",
-      html: `${memberName}'s membership has been renewed successfully. Renewal Amount: ${data.renewalAmount} Pesos`,
-      timer: 800,
-      showConfirmButton: false,
-    });
+    
+    // Replace success SweetAlert with Toastify
+    Toastify({
+      text: `${memberName}'s membership has been renewed successfully. Renewal Amount: ${data.renewalAmount} Pesos`,
+      duration: 3000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      backgroundColor: "#4CAF50",
+    }).showToast();
+    
   } catch (error) {
     console.error("Error:", error);
     Swal.fire({
@@ -971,10 +991,17 @@ async function deleteMember(btn) {
 
       await loadMembers();
       playSound("success-sound");
-      notificationSystem.notify("Member Deleted", {
-        body: `Successfully deleted ${memberName}`,
-        icon: "success",
-      });
+      
+      // Replace notification with Toastify
+      Toastify({
+        text: `Successfully deleted ${memberName}`,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4CAF50",
+      }).showToast();
+      
     } catch (error) {
       console.error("Error:", error);
       notificationSystem.notify("Error", {
@@ -1012,10 +1039,15 @@ async function verifyMember(btn) {
       if (!response.ok) throw new Error("Failed to verify member");
 
       await loadMembers();
-      notificationSystem.notify("Member Verified", {
-        body: `Successfully verified ${memberName}`,
-        icon: "success",
-      });
+      Toastify({
+        text: `Successfully verified ${memberName}`,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4CAF50",
+      }).showToast();
+      
       playSound("success-sound");
     } catch (error) {
       console.error("Error:", error);

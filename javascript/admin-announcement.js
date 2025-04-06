@@ -25,6 +25,35 @@ const ICON_MAPPINGS = {
     }
 };
 
+// Show Toastify notification
+function showToast(message, type = 'success') {
+    // Define color schemes for different notification types
+    const colorSchemes = {
+        'success': { bg: '#4CAF50', text: '#fff' },
+        'error': { bg: '#F44336', text: '#fff' },
+        'info': { bg: '#2196F3', text: '#fff' },
+        'warning': { bg: '#FF9800', text: '#fff' }
+    };
+    
+    const selectedScheme = colorSchemes[type] || colorSchemes.info;
+    
+    Toastify({
+        text: message,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: selectedScheme.bg,
+        stopOnFocus: true,
+        style: {
+            color: selectedScheme.text,
+            borderRadius: '8px',
+            padding: '12px 20px',
+            fontSize: '14px'
+        }
+    }).showToast();
+}
+
 function initializeAnnouncements() {
     const storedAnnouncements = localStorage.getItem(STORAGE_KEY);
     return storedAnnouncements ? JSON.parse(storedAnnouncements) : [];
@@ -48,6 +77,9 @@ function addAnnouncement(title, description, icon) {
     saveAnnouncements(announcements);
     updateAnnouncementsDisplay();
     updateLandingPageAnnouncements();
+    
+    // Show success toast
+    showToast(`Announcement "${title}" added successfully!`, 'success');
 }
 
 // display
@@ -111,17 +143,28 @@ function updateLandingPageAnnouncements() {
 // Delete 
 function deleteAnnouncement(id) {
     const announcements = initializeAnnouncements();
+    const announcementToDelete = announcements.find(a => a.id === id);
     const updatedAnnouncements = announcements.filter(a => a.id !== id);
     saveAnnouncements(updatedAnnouncements);
     updateAnnouncementsDisplay();
     updateLandingPageAnnouncements();
+    
+    // Show delete confirmation toast
+    if (announcementToDelete) {
+        showToast(`Announcement "${announcementToDelete.title}" deleted successfully!`, 'warning');
+    } else {
+        showToast('Announcement deleted successfully!', 'warning');
+    }
 }
 
 // Edit 
 function editAnnouncement(id) {
     const announcements = initializeAnnouncements();
     const announcement = announcements.find(a => a.id === id);
-    if (!announcement) return;
+    if (!announcement) {
+        showToast('Announcement not found!', 'error');
+        return;
+    }
 
     document.getElementById('announcementId').value = announcement.id;
     document.getElementById('title').value = announcement.title;
@@ -131,6 +174,9 @@ function editAnnouncement(id) {
     document.getElementById('modalTitle').textContent = 'Edit Announcement';
     
     document.getElementById('announcementModal').classList.remove('hidden');
+    
+    // Show info toast
+    showToast(`Editing announcement: "${announcement.title}"`, 'info');
 }
 
 // Listeners
@@ -161,9 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon,
                     };
                     saveAnnouncements(announcements);
+                    
+                    // Show update success toast
+                    showToast(`Announcement "${title}" updated successfully!`, 'success');
+                } else {
+                    showToast('Failed to update announcement!', 'error');
                 }
             } else {
                 addAnnouncement(title, description, icon);
+                // Toast is shown inside addAnnouncement function
             }
 
             // Reset form and close modal
@@ -179,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addBtn) {
         addBtn.addEventListener('click', () => {
             document.getElementById('announcementModal').classList.remove('hidden');
+            showToast('Creating new announcement', 'info');
         });
     }
 
@@ -190,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('announcementId').value = '';
             document.getElementById('announcementModal').classList.add('hidden');
             document.getElementById('modalTitle').textContent = 'New Announcement';
+            showToast('Form closed', 'info');
         });
     }
 
@@ -199,6 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
             searchAnnouncements(query);
+            
+            // Only show search toast if there's actually a search query
+            if (query.length > 0) {
+                showToast(`Searching for: "${query}"`, 'info');
+            }
         });
     }
 });

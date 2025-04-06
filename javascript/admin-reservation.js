@@ -177,61 +177,69 @@ class ReservationManager {
             sound.play();
         }
 
-    async cancelReservation(id) {
-        try {
-            const result = await Swal.fire({
-                title: 'Cancel Reservation',
-                text: 'Are you sure you want to cancel this reservation? This action cannot be undone.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, cancel it!',
-                cancelButtonText: 'No, keep it'
-            });
-
-            if (result.isConfirmed) {
-                // Show loading state
-                Swal.fire({
-                    title: 'Cancelling Reservation...',
-                    didOpen: () => {
-                        Swal.showLoading();
-                    },
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false
+        async cancelReservation(id) {
+            try {
+                const result = await Swal.fire({
+                    title: 'Cancel Reservation',
+                    text: 'Are you sure you want to cancel this reservation? This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, cancel it!',
+                    cancelButtonText: 'No, keep it'
                 });
-
-                const response = await fetch(`${this.API_URL}/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    playSound('success-sound');
-                    await Swal.fire({
-                        icon: 'success',
-                        title: 'Cancelled!',
-                        text: 'The reservation has been cancelled successfully.',
-                        timer: 1500,
-                        showConfirmButton: false
+        
+                if (result.isConfirmed) {
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Cancelling Reservation...',
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false
                     });
-                    await this.loadReservations(); // Refresh the table
-                } else {
-                    throw new Error('Failed to cancel reservation');
+        
+                    const response = await fetch(`${this.API_URL}/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+        
+                    if (response.ok) {
+                        playSound('success-sound');
+                        
+                        // Close any open SweetAlert
+                        Swal.close();
+                        
+                        // Use Toastify instead of SweetAlert for success message
+                        Toastify({
+                            text: "The reservation has been cancelled successfully.",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#4CAF50",
+                            stopOnFocus: true
+                        }).showToast();
+                        
+                        await this.loadReservations(); // Refresh the table
+                    } else {
+                        throw new Error('Failed to cancel reservation');
+                    }
                 }
+            } catch (error) {
+                console.error('Error cancelling reservation:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to cancel reservation. Please try again.'
+                });
             }
-        } catch (error) {
-            console.error('Error cancelling reservation:', error);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Failed to cancel reservation. Please try again.'
-            });
         }
-    }
 
     async loadReservations(isInitialLoad = false) {
         try {
