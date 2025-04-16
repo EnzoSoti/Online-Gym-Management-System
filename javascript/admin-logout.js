@@ -1,9 +1,12 @@
+// ========== Constants ==========
 const TOAST_DISPLAY_DURATION = 1500; 
 const LOGOUT_DELAY = 1200; 
 
+// ========== Logout Handler ==========
 document.getElementById("navLogout").addEventListener("click", function (e) {
   e.preventDefault();
 
+  // ========== Confirmation Modal ==========
   Swal.fire({
     title: "Logout Confirmation",
     text: "Are you sure you want to logout?",
@@ -15,6 +18,8 @@ document.getElementById("navLogout").addEventListener("click", function (e) {
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
+
+      // ========== Toast Notification ==========
       Toastify({
         text: "You have been successfully logged out.",
         duration: TOAST_DISPLAY_DURATION,
@@ -26,7 +31,7 @@ document.getElementById("navLogout").addEventListener("click", function (e) {
         close: true,
       }).showToast();
       
-      // Add a small delay to show the toast before logout processing
+      // ========== Logout Request ==========
       setTimeout(async () => {
         try {
           const response = await fetch(`${API_BASE_URL}/admin/logout`, {
@@ -37,11 +42,10 @@ document.getElementById("navLogout").addEventListener("click", function (e) {
           });
 
           if (response.ok) {
-            // Redirect to landing page
+            // ========== Clear Session & Redirect ==========
             sessionStorage.clear();
             window.location.href = "/index.html";
           } else {
-            // Handle unsuccessful logout
             console.error("Logout failed:", await response.text());
           }
         } catch (error) {

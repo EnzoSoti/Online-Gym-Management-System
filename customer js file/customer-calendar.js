@@ -1,14 +1,14 @@
-
+// ========== Mobile Menu Handling ==========
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
+    // Toggle mobile menu visibility
     mobileMenuButton.addEventListener('click', function() {
-        // Toggle the mobile menu
         mobileMenu.classList.toggle('hidden');
     });
 
-    // Close menu when clicking outside
+    // Close menu when clicking outside the menu or button
     document.addEventListener('click', function(event) {
         if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
             mobileMenu.classList.add('hidden');
@@ -16,19 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ========== Time Formatting Functions ==========
 function formatTo12Hour(time24) {
-    // Split the time into hours and minutes
     const [hours, minutes] = time24.split(':');
     let hour = parseInt(hours);
     const ampm = hour >= 12 ? 'PM' : 'AM';
     
-    // Convert 24-hour to 12-hour format
     hour = hour % 12;
     hour = hour ? hour : 12; // Convert 0 to 12
-    
     return `${hour}:${minutes} ${ampm}`;
 }
 
+// ========== Reservation Display ==========
 function displayReservations(reservations) {
     if (reservations.length === 0) {
         Swal.fire({
@@ -52,6 +51,7 @@ function displayReservations(reservations) {
     `;
     
     reservations.forEach((reservation) => {
+        // Function to get service info based on the type
         const getServiceInfo = (serviceType) => {
             const type = serviceType.toLowerCase();
             if (type.includes('zumba')) return {
@@ -124,6 +124,7 @@ function displayReservations(reservations) {
 
     htmlContent += '</div></div></div>';
 
+    // Display the reservation content in a SweetAlert popup
     Swal.fire({
         title: 'Today\'s Reservations',
         html: htmlContent,
@@ -136,6 +137,7 @@ function displayReservations(reservations) {
     });
 }
 
+// ========== Fetch Reservations ==========
 async function fetchReservationsByDate(date) {
     try {
         const response = await fetch(`${API_BASE_URL}/reservations/${date}`);
@@ -152,4 +154,3 @@ async function fetchReservationsByDate(date) {
         throw error;
     }
 }
-

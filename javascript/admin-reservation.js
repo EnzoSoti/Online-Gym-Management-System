@@ -1,3 +1,4 @@
+// ========== Reservation Manager Class ==========
 class ReservationManager {
     constructor() {
         this.API_URL = 'http://localhost:3000/api/admin/reservations';
@@ -11,6 +12,7 @@ class ReservationManager {
         this.startPolling();
     }
 
+    // ========== Event Listeners ==========
     initializeEventListeners() {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -36,6 +38,7 @@ class ReservationManager {
         });
     }
 
+    // ========== Polling Methods ==========
     startPolling() {
         this.isPolling = true;
         this.poll();
@@ -51,203 +54,13 @@ class ReservationManager {
         setTimeout(() => this.poll(), this.POLLING_INTERVAL);
     }
 
-    viewReservation(id) {
-    const reservation = this.reservationsData.find(r => r.id.toString() === id.toString());
-    
-    if (reservation) {
-        // Add print-specific styles
-        const printStyles = `
-            @media print {
-                body * {
-                    visibility: hidden;
-                }
-                .swal2-popup * {
-                    visibility: visible;
-                }
-                .swal2-popup {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 210mm !important; /* A4 width */
-                    min-height: 148mm !important; /* A5 height */
-                    margin: 0 !important;
-                    padding: 15mm !important;
-                }
-                .no-print {
-                    display: none !important;
-                }
-                .receipt-content {
-                    font-size: 12pt;
-                }
-                @page {
-                    size: A5;
-                    margin: 0;
-                }
-            }
-        `;
-
-        // Create style element
-        const styleSheet = document.createElement('style');
-        styleSheet.innerText = printStyles;
-        document.head.appendChild(styleSheet);
-
-        Swal.fire({
-            title: '<h4 class="text-dark fw-bold mb-0">COURT RESERVATION</h4>',
-            html: `
-                <div class="text-left p-3" style="font-family: sans-serif;">
-                    <div class="text-center mb-4">
-                        <h6 class="text-secondary mb-2">COURT BOOKING DETAILS</h6>
-                        <small class="text-muted">Booking ID: #${reservation.id}</small>
-                        <hr class="my-3">
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="d-flex justify-content-start">
-                                <span class="text-secondary">Play Date: ${reservation.reservation_date}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-start">
-                                <span class="text-secondary">Court Hours: ${reservation.start_time} - ${reservation.end_time}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-start">
-                                <span class="text-secondary">Reserved By: ${reservation.customer_name}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-start">
-                                <span class="text-secondary">Court Type: ${reservation.service_type}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-start">
-                                <span class="text-secondary">Players: ${reservation.additional_members || 'Single Player'}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <hr class="my-2">
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between">
-                                <span class="text-dark fw-bold">COURT FEE:</span>
-                                <span class="text-dark fw-bold">₱${reservation.price}</span>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <hr class="my-2">
-                        </div>
-                        <div class="col-12 text-center">
-                            <p class="mb-2 fw-bold text-secondary">IMPORTANT REMINDERS:</p>
-                            <ul class="list-unstyled text-secondary" style="font-size: 0.9rem;">
-                                <li>• Wear appropriate sports attire and shoes</li>
-                                <li>• No food inside the court</li>
-                                <li>• Time extension subject to availability</li>
-                                <li>• Non-refundable and non-transferable</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="window.print()" class="btn btn-secondary w-100 mt-2 mb-2 no-print">
-                    <i class="fas fa-print me-2"></i> Print Booking Details
-                </button>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: 'Close',
-            confirmButtonColor: '#198754',
-            width: '26rem',
-            padding: '1.5em',
-            background: '#fff',
-            customClass: {
-                container: 'custom-swal-popup',
-                popup: 'custom-swal-popup'
-            }
-        }).then(() => {
-            // Clean up the style element after the modal is closed
-            styleSheet.remove();
-        });
-        } else {
-            this.showError('Reservation not found');
-        }
-}
-
-        playSound(soundId) {
-            const sound = document.getElementById(soundId);
-            sound.play();
-        }
-
-        async cancelReservation(id) {
-            try {
-                const result = await Swal.fire({
-                    title: 'Cancel Reservation',
-                    text: 'Are you sure you want to cancel this reservation? This action cannot be undone.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, cancel it!',
-                    cancelButtonText: 'No, keep it'
-                });
-        
-                if (result.isConfirmed) {
-                    // Show loading state
-                    Swal.fire({
-                        title: 'Cancelling Reservation...',
-                        didOpen: () => {
-                            Swal.showLoading();
-                        },
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false
-                    });
-        
-                    const response = await fetch(`${this.API_URL}/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-        
-                    if (response.ok) {
-                        playSound('success-sound');
-                        
-                        // Close any open SweetAlert
-                        Swal.close();
-                        
-                        // Use Toastify instead of SweetAlert for success message
-                        Toastify({
-                            text: "The reservation has been cancelled successfully.",
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#4CAF50",
-                            stopOnFocus: true
-                        }).showToast();
-                        
-                        await this.loadReservations(); // Refresh the table
-                    } else {
-                        throw new Error('Failed to cancel reservation');
-                    }
-                }
-            } catch (error) {
-                console.error('Error cancelling reservation:', error);
-                await Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to cancel reservation. Please try again.'
-                });
-            }
-        }
-
+    // ========== Reservation Management ==========
     async loadReservations(isInitialLoad = false) {
         try {
             const response = await fetch(this.API_URL);
             const reservations = await response.json();
             
             this.reservationsData = reservations;
-            
             this.table.innerHTML = reservations.map(reservation => this.createTableRow(reservation)).join('');
         } catch (error) {
             console.error('Failed to load reservations:', error);
@@ -284,6 +97,192 @@ class ReservationManager {
         `;
     }
 
+    async cancelReservation(id) {
+        try {
+            const result = await Swal.fire({
+                title: 'Cancel Reservation',
+                text: 'Are you sure you want to cancel this reservation? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it'
+            });
+
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Cancelling Reservation...',
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
+                });
+
+                const response = await fetch(`${this.API_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    this.playSound('success-sound');
+                    Swal.close();
+
+                    Toastify({
+                        text: "The reservation has been cancelled successfully.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#4CAF50",
+                        stopOnFocus: true
+                    }).showToast();
+
+                    await this.loadReservations(); // Refresh the table
+                } else {
+                    throw new Error('Failed to cancel reservation');
+                }
+            }
+        } catch (error) {
+            console.error('Error cancelling reservation:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to cancel reservation. Please try again.'
+            });
+        }
+    }
+
+    // ========== Reservation Viewing ==========
+    viewReservation(id) {
+        const reservation = this.reservationsData.find(r => r.id.toString() === id.toString());
+        
+        if (reservation) {
+            const printStyles = `
+                @media print {
+                    body * {
+                        visibility: hidden;
+                    }
+                    .swal2-popup * {
+                        visibility: visible;
+                    }
+                    .swal2-popup {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 210mm !important;
+                        min-height: 148mm !important;
+                        margin: 0 !important;
+                        padding: 15mm !important;
+                    }
+                    .no-print {
+                        display: none !important;
+                    }
+                    .receipt-content {
+                        font-size: 12pt;
+                    }
+                    @page {
+                        size: A5;
+                        margin: 0;
+                    }
+                }
+            `;
+
+            const styleSheet = document.createElement('style');
+            styleSheet.innerText = printStyles;
+            document.head.appendChild(styleSheet);
+
+            Swal.fire({
+                title: '<h4 class="text-dark fw-bold mb-0">COURT RESERVATION</h4>',
+                html: `
+                    <div class="text-left p-3" style="font-family: sans-serif;">
+                        <div class="text-center mb-4">
+                            <h6 class="text-secondary mb-2">COURT BOOKING DETAILS</h6>
+                            <small class="text-muted">Booking ID: #${reservation.id}</small>
+                            <hr class="my-3">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <span class="text-secondary">Play Date: ${reservation.reservation_date}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <span class="text-secondary">Court Hours: ${reservation.start_time} - ${reservation.end_time}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <span class="text-secondary">Reserved By: ${reservation.customer_name}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <span class="text-secondary">Court Type: ${reservation.service_type}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <span class="text-secondary">Players: ${reservation.additional_members || 'Single Player'}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <hr class="my-2">
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-dark fw-bold">COURT FEE:</span>
+                                    <span class="text-dark fw-bold">₱${reservation.price}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <hr class="my-2">
+                            </div>
+                            <div class="col-12 text-center">
+                                <p class="mb-2 fw-bold text-secondary">IMPORTANT REMINDERS:</p>
+                                <ul class="list-unstyled text-secondary" style="font-size: 0.9rem;">
+                                    <li>• Wear appropriate sports attire and shoes</li>
+                                    <li>• No food inside the court</li>
+                                    <li>• Time extension subject to availability</li>
+                                    <li>• Non-refundable and non-transferable</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="window.print()" class="btn btn-secondary w-100 mt-2 mb-2 no-print">
+                        <i class="fas fa-print me-2"></i> Print Booking Details
+                    </button>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#198754',
+                width: '26rem',
+                padding: '1.5em',
+                background: '#fff',
+                customClass: {
+                    container: 'custom-swal-popup',
+                    popup: 'custom-swal-popup'
+                }
+            }).then(() => {
+                styleSheet.remove();
+            });
+        } else {
+            this.showError('Reservation not found');
+        }
+    }
+
+    // ========== Helper Methods ==========
+    playSound(soundId) {
+        const sound = document.getElementById(soundId);
+        sound.play();
+    }
+
     showError(message) {
         Swal.fire({
             icon: 'error',
@@ -293,6 +292,7 @@ class ReservationManager {
     }
 }
 
+// ========== Initialize Reservation Manager ==========
 document.addEventListener('DOMContentLoaded', () => {
     new ReservationManager();
 });

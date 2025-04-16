@@ -33,12 +33,14 @@ async function handleMonthlyCheckin(event) {
         const memberExists = members.some(member => member.member_name.toLowerCase() === clientName.toLowerCase());
 
         if (!memberExists) {
-            Swal.fire({
-                title: 'Error!',
+            Toastify({
                 text: 'Member not found in the database.',
-                icon: 'error',
-                confirmButtonColor: '#4F46E5'
-            });
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+                stopOnFocus: true
+            }).showToast();
             return;
         }
 
@@ -47,12 +49,14 @@ async function handleMonthlyCheckin(event) {
 
         // Check if the member's status is "Active"
         if (member.status !== 'Active') {
-            Swal.fire({
-                title: 'Error!',
+            Toastify({
                 text: `Member status is ${member.status}. Cannot check in.`,
-                icon: 'error',
-                confirmButtonColor: '#4F46E5'
-            });
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+                stopOnFocus: true
+            }).showToast();
             return;
         }
 
@@ -106,22 +110,26 @@ async function handleMonthlyCheckin(event) {
         // Clear the form
         document.getElementById('monthly-checkin-form').reset();
 
-        // Show success message with auto-close and no buttons
-        Swal.fire({
+        // Show success message
+        Toastify({
             text: 'Client Checked In Successfully',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false
-        });
+            duration: 1500,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#10B981",
+            stopOnFocus: true
+        }).showToast();
 
     } catch (error) {
         console.error('Error fetching monthly members:', error);
-        Swal.fire({
-            title: 'Error!',
+        Toastify({
             text: 'Failed to fetch monthly members. Please try again.',
-            icon: 'error',
-            confirmButtonColor: '#4F46E5'
-        });
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+            stopOnFocus: true
+        }).showToast();
     }
 }
 
@@ -217,6 +225,14 @@ document.addEventListener('DOMContentLoaded', () => {
             allMembers = await response.json();
         } catch (error) {
             console.error('Error fetching monthly members for autocomplete:', error);
+            Toastify({
+                text: 'Error fetching member data for autocomplete',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+                stopOnFocus: true
+            }).showToast();
         }
     }
 
@@ -276,6 +292,14 @@ document.addEventListener('DOMContentLoaded', () => {
             allMembers = await response.json();
         } catch (error) {
             console.error('Error fetching monthly members:', error);
+            Toastify({
+                text: 'Error updating member data',
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#EF4444",
+                stopOnFocus: true
+            }).showToast();
         }
     }
 

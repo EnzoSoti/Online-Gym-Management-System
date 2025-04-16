@@ -1,10 +1,12 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ========== DOM ELEMENTS ==========
     const supplementsCardsContainer = document.getElementById('supplementsCardsContainer');
     const buyModal = document.getElementById('buyModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const buyForm = document.getElementById('buyForm');
     const searchInput = document.getElementById('searchInput');
-    
+
     const productIdInput = document.getElementById('productId');
     const productNameInput = document.getElementById('productName');
     const productPriceInput = document.getElementById('productPrice');
@@ -12,54 +14,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const productQuantityInput = document.getElementById('productQuantity');
     const totalPriceInput = document.getElementById('totalPrice');
 
-    let supplements = []; // Store all supplements data
-    let lastFetchTimestamp = 0; // Track last fetch time
-    const POLLING_INTERVAL = 1000; // Check for updates every 1 second
+    // ========== STATE ==========
+    let supplements = [];
+    const POLLING_INTERVAL = 1000;
 
-    // Fetch and display supplements with timestamp comparison
+    // ========== FETCH SUPPLEMENTS ==========
     async function fetchSupplements(isInitialLoad = false) {
         try {
             const response = await fetch('http://localhost:3000/api/supplements');
             const newSupplements = await response.json();
-            
-            // Compare data to check for changes
+
             const hasChanges = JSON.stringify(supplements) !== JSON.stringify(newSupplements);
-            
+
             if (hasChanges || isInitialLoad) {
                 supplements = newSupplements;
                 displaySupplements(supplements);
-                
-                // If there are changes and it's not the initial load, show a notification
+
                 if (!isInitialLoad && hasChanges) {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'info',
-                        title: 'Inventory updated!',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
+                    showToast('Inventory updated!', 'info');
                 }
             }
-            
-            lastFetchTimestamp = Date.now();
         } catch (error) {
             console.error('Error fetching supplements:', error);
-            Swal.fire('Error', 'Failed to fetch supplements', 'error');
+            showToast('Failed to fetch supplements', 'error');
         }
     }
 
-    // Start polling for updates
+    // ========== POLLING ==========
     function startPolling() {
         setInterval(async () => {
-            // Only fetch if the modal is not open
             if (buyModal.classList.contains('hidden')) {
                 await fetchSupplements();
             }
         }, POLLING_INTERVAL);
     }
 
-    // Display supplements in cards
+    // ========== CARD RENDERING ==========
     function displaySupplements(supplementsToDisplay) {
         supplementsCardsContainer.innerHTML = supplementsToDisplay.map(supplement => `
             <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-md transition-all duration-300 hover:shadow-xl relative overflow-hidden">
@@ -103,110 +93,99 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `).join('');
 
-        // Add event listeners to new buy buttons
         document.querySelectorAll('.buy-button').forEach(button => {
             button.addEventListener('click', openBuyModal);
         });
     }
 
+    // ========== OPEN BUY MODAL ==========
     function openBuyModal(event) {
-        const supplementId = event.target.getAttribute('data-supplement-id');
-        const supplementName = event.target.getAttribute('data-supplement-name');
-        const supplementPrice = event.target.getAttribute('data-supplement-price');
-        const supplementStock = event.target.getAttribute('data-supplement-stock');
+        const button = event.currentTarget;
+        const supplementId = button.dataset.supplementId;
+        const supplementName = button.dataset.supplementName;
+        const supplementPrice = button.dataset.supplementPrice;
+        const supplementStock = button.dataset.supplementStock;
 
-        // Your modal opening logic here
-        console.log(`Opening modal for ${supplementName} (ID: ${supplementId})`);
+        productIdInput.value = supplementId;
+        productNameInput.value = supplementName;
+        productPriceInput.value = `₱${supplementPrice}`;
+        productStockInput.value = supplementStock;
+        productQuantityInput.value = "1";
+        productQuantityInput.max = supplementStock;
+        updateTotalPrice();
+
+        buyModal.classList.remove('hidden');
     }
 
-        // Open buy modal
-        function openBuyModal(event) {
-            const button = event.currentTarget;
-            const supplementId = button.dataset.supplementId;
-            const supplementName = button.dataset.supplementName;
-            const supplementPrice = button.dataset.supplementPrice;
-            const supplementStock = button.dataset.supplementStock;
+    // ========== TOTAL PRICE UPDATER ==========
+    function updateTotalPrice() {
+        const quantity = parseInt(productQuantityInput.value);
+        const price = parseFloat(productPriceInput.value.replace('₱', ''));
+        totalPriceInput.value = `₱${(quantity * price).toFixed(2)}`;
+    }
 
-            productIdInput.value = supplementId;
-            productNameInput.value = supplementName;
-            productPriceInput.value = `₱${supplementPrice}`;
-            productStockInput.value = supplementStock;
-            productQuantityInput.value = "1";
-            productQuantityInput.max = supplementStock;
-            updateTotalPrice();
+    // ========== PURCHASE HANDLER ==========
+    async function handlePurchase(event) {
+        event.preventDefault();
 
-            buyModal.classList.remove('hidden');
+        const supplementId = productIdInput.value;
+        const quantity = parseInt(productQuantityInput.value);
+        const availableStock = parseInt(productStockInput.value);
+
+        if (quantity > availableStock) {
+            showToast('Requested quantity exceeds available stock', 'error');
+            return;
         }
 
-        // Update total price when quantity changes
-        function updateTotalPrice() {
-            const quantity = parseInt(productQuantityInput.value);
-            const price = parseFloat(productPriceInput.value.replace('₱', ''));
-            totalPriceInput.value = `₱${(quantity * price).toFixed(2)}`;
-        }
+        try {
+            const response = await fetch('http://localhost:3000/api/buy-supplement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ supplementId, quantity })
+            });
 
-        // Handle form submission
-        async function handlePurchase(event) {
-            event.preventDefault();
-            
-            const supplementId = productIdInput.value;
-            const quantity = parseInt(productQuantityInput.value);
-            const availableStock = parseInt(productStockInput.value);
+            if (!response.ok) throw new Error('Purchase failed');
 
-            if (quantity > availableStock) {
-                Swal.fire('Error', 'Requested quantity exceeds available stock', 'error');
-                return;
-            }
+            showToast('Purchase successful!', 'success');
 
-            try {
-                const response = await fetch('http://localhost:3000/api/buy-supplement', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        supplementId: supplementId,
-                        quantity: quantity
-                    })
-                });
-            
-                if (!response.ok) {
-                    throw new Error('Purchase failed');
-                }
-            
-                await Swal.fire({
-                    title: 'Purchase Successful!',
-                    text: 'Your supplement has been purchased.',
-                    icon: 'success'
-                });
-                
-                buyModal.classList.add('hidden');
-                await fetchSupplements(); // Immediate refresh after purchase
-            } catch (error) {
-                console.error('Error processing purchase:', error);
-                Swal.fire('Error', 'Failed to process purchase', 'error');
-            }
-        }
-
-        // Handle search functionality with real-time filtering
-        function handleSearch(event) {
-            const searchTerm = event.target.value.toLowerCase();
-            const filteredSupplements = supplements.filter(supplement =>
-                supplement.supplement_name.toLowerCase().includes(searchTerm)
-            );
-            displaySupplements(filteredSupplements);
-        }
-
-        // Event listeners
-        closeModalBtn.addEventListener('click', function() {
             buyModal.classList.add('hidden');
-        });
+            await fetchSupplements();
+        } catch (error) {
+            console.error('Error processing purchase:', error);
+            showToast('Failed to process purchase', 'error');
+        }
+    }
 
-        buyForm.addEventListener('submit', handlePurchase);
-        productQuantityInput.addEventListener('input', updateTotalPrice);
-        searchInput.addEventListener('input', handleSearch);
+    // ========== SEARCH HANDLER ==========
+    function handleSearch(event) {
+        const searchTerm = event.target.value.toLowerCase();
+        const filtered = supplements.filter(supplement =>
+            supplement.supplement_name.toLowerCase().includes(searchTerm)
+        );
+        displaySupplements(filtered);
+    }
 
-        // Initial load and start polling
-        fetchSupplements(true); // true indicates initial load
-        startPolling();
-    });
+    // ========== TOAST HELPER ==========
+    function showToast(message, type = 'info') {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: type === 'success' ? "#10B981"
+                            : type === 'error' ? "#EF4444"
+                            : "#3B82F6",
+            stopOnFocus: true
+        }).showToast();
+    }
+
+    // ========== EVENT LISTENERS ==========
+    closeModalBtn.addEventListener('click', () => buyModal.classList.add('hidden'));
+    buyForm.addEventListener('submit', handlePurchase);
+    productQuantityInput.addEventListener('input', updateTotalPrice);
+    searchInput.addEventListener('input', handleSearch);
+
+    // ========== INIT ==========
+    fetchSupplements(true);
+    startPolling();
+});

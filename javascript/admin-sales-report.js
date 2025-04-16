@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   let notificationPermission = false;
 
-  // Request notification permission on load
+  // ========== Notification Functions ==========
   async function requestNotificationPermission() {
     try {
       if ("Notification" in window) {
@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Notification function
   function sendNotification(tabId, changes) {
     const tabNames = {
       monthly: "Monthly Members",
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to detect specific changes in data
+  // ========== Data Comparison Functions ==========
   function detectChanges(newData, oldData) {
     if (!oldData) return { added: newData.length };
 
@@ -91,17 +90,19 @@ document.addEventListener("DOMContentLoaded", function () {
     return changes;
   }
 
-  // Function to generate unique IDs
+  function hasDataChanged(newData, lastData) {
+    return JSON.stringify(newData) !== JSON.stringify(lastData);
+  }
+
+  // ========== Utility Functions ==========
   function generateUniqueId(prefix) {
     return `${prefix}${Date.now()}${Math.floor(Math.random() * 1000)}`;
   }
 
-  // Function to format date to YYYY-MM-DD
   function formatDate(date) {
     return new Date(date).toISOString().split("T")[0];
   }
 
-  // Function to format datetime
   function formatDateTime(datetime) {
     return new Date(datetime).toLocaleString("en-US", {
       year: "numeric",
@@ -112,12 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Function to compare data for changes
-  function hasDataChanged(newData, lastData) {
-    return JSON.stringify(newData) !== JSON.stringify(lastData);
-  }
-
-  // Polling function for active tab
+  // ========== Polling Functions ==========
   function startPolling() {
     setInterval(async () => {
       await Promise.all([
@@ -130,39 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, POLLING_INTERVAL);
   }
 
-  // Tab functionality
-  const tabButtons = document.querySelectorAll('[role="tab"]');
-  const tabPanels = document.querySelectorAll('[role="tabpanel"]');
-
-  tabButtons.forEach((button) => {
-    const targetId = button.getAttribute("data-tabs-target").substring(1);
-    button.setAttribute("aria-controls", targetId);
-
-    button.addEventListener("click", () => {
-      activeTabId = targetId;
-
-      tabButtons.forEach((btn) => {
-        btn.classList.remove("bg-white", "shadow-sm", "text-orange-600");
-        btn.classList.add("text-slate-600", "hover:bg-white/50");
-        btn.setAttribute("aria-selected", "false");
-      });
-
-      tabPanels.forEach((panel) => {
-        panel.classList.add("hidden");
-      });
-
-      button.classList.remove("text-slate-600", "hover:bg-white/50");
-      button.classList.add("bg-white", "shadow-sm", "text-orange-600");
-      button.setAttribute("aria-selected", "true");
-
-      const targetPanel = document.getElementById(targetId);
-      targetPanel.classList.remove("hidden");
-
-      fetchDataForTab(targetId, false);
-    });
-  });
-
-  // Function to fetch data for a specific tab
   async function fetchDataForTab(tabId, isPolling = false) {
     let endpoint;
     switch (tabId) {
@@ -219,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to populate table with fetched data
+  // ========== Table Row Rendering ==========
   function populateTable(tabId, data) {
     const tableBody = document.querySelector(`#${tabId} tbody`);
     if (!tableBody) {
@@ -243,107 +206,55 @@ document.addEventListener("DOMContentLoaded", function () {
       switch (tabId) {
         case "monthly":
           newRow.innerHTML = `
-                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">MMR#${
-                      item.id
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${
-                      item.member_name
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.type
-                    }</td>
-                    <td class="px-4 py-3 border-b border-gray-200">
-                        <span class="px-2 py-1 text-xs rounded-full ${
-                          item.status === "Active"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }">
-                            ${item.status}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(
-                      item.start_date
-                    )}</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(
-                      item.end_date
-                    )}</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${
-                      item.amount || 0
-                    }</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${
-                      item.renewal_amount || 0
-                    }</td>
-                `;
+            <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">MMR#${item.id}</td>
+            <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.member_name}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.type}</td>
+            <td class="px-4 py-3 border-b border-gray-200">
+                <span class="px-2 py-1 text-xs rounded-full ${
+                  item.status === "Active"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }">
+                    ${item.status}
+                </span>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.start_date)}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.end_date)}</td>
+            <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.amount || 0}</td>
+            <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.renewal_amount || 0}</td>
+          `;
           break;
         case "supplements":
           newRow.innerHTML = `
-                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">PRDT#${
-                      item.id || ""
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${
-                      item.supplement_name || ""
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.quantity || 0
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">₱${
-                      item.price || 0
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.quantity_sold || 0
-                    }</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">${
-                      item.total_sales || 0
-                    }</td>
-                `;
+            <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">PRDT#${item.id || ""}</td>
+            <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.supplement_name || ""}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.quantity || 0}</td>
+            <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">₱${item.price || 0}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.quantity_sold || 0}</td>
+            <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">${item.total_sales || 0}</td>
+          `;
           break;
         case "regular":
         case "student":
           newRow.innerHTML = `
-                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">CHK#${
-                      item.id
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.client_type
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${
-                      item.client_name
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDateTime(
-                      item.time_in
-                    )}</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${
-                      item.amount
-                    }</td>
-                `;
+            <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">CHK#${item.id}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.client_type}</td>
+            <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.client_name}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDateTime(item.time_in)}</td>
+            <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.amount}</td>
+          `;
           break;
         case "reservations":
           newRow.innerHTML = `
-                    <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">RES#${
-                      item.id
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.service_type
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${
-                      item.customer_name
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.start_time
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.end_time
-                    }</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(
-                      item.reservation_date
-                    )}</td>
-                    <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${
-                      item.additional_members
-                    }</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${
-                      item.price
-                    }</td>
-                `;
+            <td class="px-4 py-3 text-sm font-medium text-gray-700 border-b border-gray-200">RES#${item.id}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.service_type}</td>
+            <td class="px-4 py-3 text-sm text-gray-800 border-b border-gray-200">${item.customer_name}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.start_time}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.end_time}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${formatDate(item.reservation_date)}</td>
+            <td class="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">${item.additional_members}</td>
+            <td class="px-4 py-3 text-sm font-semibold text-gray-800 border-b border-gray-200">₱${item.price}</td>
+          `;
           break;
       }
       tableBody.appendChild(newRow);
@@ -352,159 +263,41 @@ document.addEventListener("DOMContentLoaded", function () {
     tableBody.parentElement.scrollTop = scrollPos;
   }
 
-  // Handle export/print functionality
-  document.querySelectorAll("button").forEach((button) => {
-    if (button.textContent.toLowerCase().includes("export")) {
+  // ========== Tab Management ==========
+  function setupTabs() {
+    const tabButtons = document.querySelectorAll('[role="tab"]');
+    const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+
+    tabButtons.forEach((button) => {
+      const targetId = button.getAttribute("data-tabs-target").substring(1);
+      button.setAttribute("aria-controls", targetId);
+
       button.addEventListener("click", () => {
-        const tabPanel = button.closest('[role="tabpanel"]');
-        const tabId = tabPanel.id;
-        const filterElement =
-          document.getElementById(`${tabId}-month-filter`) ||
-          document.getElementById(`${tabId}-date-filter`);
-        const filterValue = filterElement?.value;
+        activeTabId = targetId;
 
-        const tableContent = tabPanel.querySelector("table").cloneNode(true);
-
-        let totalAmount = 0;
-        tableContent.querySelectorAll("tbody tr").forEach((row) => {
-          const amountCell = row.querySelector("td:last-child");
-          if (amountCell) {
-            const amount = parseFloat(
-              amountCell.textContent.replace("₱", "").replace(",", "")
-            );
-            if (!isNaN(amount)) {
-              totalAmount += amount;
-            }
-          }
+        tabButtons.forEach((btn) => {
+          btn.classList.remove("bg-white", "shadow-sm", "text-orange-600");
+          btn.classList.add("text-slate-600", "hover:bg-white/50");
+          btn.setAttribute("aria-selected", "false");
         });
 
-        const currentDate = new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+        tabPanels.forEach((panel) => {
+          panel.classList.add("hidden");
         });
 
-        const adminFullName =
-          sessionStorage.getItem("admin_full_name") || "Unknown Admin";
+        button.classList.remove("text-slate-600", "hover:bg-white/50");
+        button.classList.add("bg-white", "shadow-sm", "text-orange-600");
+        button.setAttribute("aria-selected", "true");
 
-        const totalRow = document.createElement("tr");
-        totalRow.className = "total-row";
-        const colSpan = tableContent.querySelectorAll("thead th").length - 1;
-        totalRow.innerHTML = `
-                    <td colspan="${colSpan}" style="text-align: right; font-weight: bold;">Total Amount:</td>
-                    <td style="text-align: left; font-weight: bold;">₱${totalAmount.toLocaleString(
-                      "en-US",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                    )}</td>
-                `;
-        tableContent.querySelector("tbody").appendChild(totalRow);
+        const targetPanel = document.getElementById(targetId);
+        targetPanel.classList.remove("hidden");
 
-        const printWindow = window.open("", "_blank");
-        printWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>Fitworx GYM - Sales Report</title>
-                            <style>
-                                @media print {
-                                    body { 
-                                        padding: 20px;
-                                        font-family: Arial, sans-serif;
-                                    }
-                                    .header {
-                                        text-align: center;
-                                        margin-bottom: 30px;
-                                    }
-                                    .header h1 {
-                                        font-size: 24px;
-                                        margin: 0;
-                                    }
-                                    .header p {
-                                        margin: 5px 0;
-                                    }
-                                    table { 
-                                        border-collapse: collapse; 
-                                        width: 100%;
-                                        margin: 20px 0;
-                                    }
-                                    th, td { 
-                                        border: 1px solid #000; 
-                                        padding: 8px; 
-                                    }
-                                    .total-row {
-                                        font-weight: bold;
-                                        background-color: #f0f0f0;
-                                    }
-                                    .footer {
-                                        margin-top: 50px;
-                                        display: flex;
-                                        justify-content: space-between;
-                                        align-items: flex-end;
-                                    }
-                                    .prepared-by {
-                                        text-align: center;
-                                    }
-                                    .signature-line {
-                                        border-top: 1px solid #000;
-                                        width: 200px;
-                                        margin-bottom: 5px;
-                                    }
-                                    .page-number {
-                                        position: fixed;
-                                        bottom: 20px;
-                                        right: 20px;
-                                    }
-                                }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="max-w-4xl mx-auto">
-                                <div class="header">
-                                    <h1>Fitworx GYM</h1>
-                                    <p>Q28V+QMG, Capt. F. S. Samano, Caloocan, Metro Manila</p>
-                                    <p>0933 874 5377</p>
-                                    <h2>Daily Sales Report</h2>
-                                    <p>As of ${currentDate}</p>
-                                    ${
-                                      filterValue
-                                        ? `<p>Filtered by: ${filterValue}</p>`
-                                        : "<p>All Records</p>"
-                                    }
-                                </div>
-                                
-                                <div class="content">
-                                    ${tableContent.outerHTML}
-                                </div>
-    
-                                <div class="footer">
-                                    <div class="prepared-by">
-                                        <p>Prepared By: ${adminFullName}</p>
-                                    </div>
-                                    <p>Printed Date: ${currentDate}</p>
-                                </div>
-    
-                                <div class="page-number"></div>
-                            </div>
-    
-                            <script>
-                                const pages = document.querySelectorAll('.page-number');
-                                pages.forEach((page, index) => {
-                                    page.textContent = 'Page ' + (index + 1);
-                                });
-                            </script>
-                        </body>
-                    </html>
-                `);
-        printWindow.document.close();
-
-        setTimeout(() => {
-          printWindow.print();
-          printWindow.close();
-        }, 250);
+        fetchDataForTab(targetId, false);
       });
-    }
-  });
+    });
+  }
 
-  // Add filter-related functions
+  // ========== Filter Functions ==========
   function filterData(data, filterValue, tabId) {
     if (!filterValue) return data;
 
@@ -521,8 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
           );
 
         case "supplements":
-          // For supplements, we might need to add a date field in the database
-          // For now, we'll return all data
           return true;
 
         case "regular":
@@ -566,20 +357,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (tabId === "monthly" || tabId === "supplements") {
         filterContainer.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Filter by Month:</label>
-                        <input type="month" id="${tabId}-month-filter" 
-                               class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
-                    </div>
-                `;
+          <div class="flex items-center gap-2">
+              <label class="text-sm font-medium text-gray-700">Filter by Month:</label>
+              <input type="month" id="${tabId}-month-filter" 
+                     class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+          </div>
+        `;
       } else {
         filterContainer.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Filter by Date:</label>
-                        <input type="date" id="${tabId}-date-filter" 
-                               class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
-                    </div>
-                `;
+          <div class="flex items-center gap-2">
+              <label class="text-sm font-medium text-gray-700">Filter by Date:</label>
+              <input type="date" id="${tabId}-date-filter" 
+                     class="rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+          </div>
+        `;
       }
 
       const clearButton = document.createElement("button");
@@ -593,7 +384,6 @@ document.addEventListener("DOMContentLoaded", function () {
       table.parentNode.insertBefore(filterContainer, table);
     });
 
-    // Add event listeners for filter changes
     tabs.forEach((tabId) => {
       const monthFilter = document.getElementById(`${tabId}-month-filter`);
       const dateFilter = document.getElementById(`${tabId}-date-filter`);
@@ -611,9 +401,169 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Initialize
-  addFilterControls();
-  requestNotificationPermission();
-  document.getElementById("monthly-tab").click();
-  startPolling();
+  // ========== Export/Print Functions ==========
+  function setupExportButtons() {
+    document.querySelectorAll("button").forEach((button) => {
+      if (button.textContent.toLowerCase().includes("export")) {
+        button.addEventListener("click", () => {
+          const tabPanel = button.closest('[role="tabpanel"]');
+          const tabId = tabPanel.id;
+          const filterElement =
+            document.getElementById(`${tabId}-month-filter`) ||
+            document.getElementById(`${tabId}-date-filter`);
+          const filterValue = filterElement?.value;
+
+          const tableContent = tabPanel.querySelector("table").cloneNode(true);
+
+          let totalAmount = 0;
+          tableContent.querySelectorAll("tbody tr").forEach((row) => {
+            const amountCell = row.querySelector("td:last-child");
+            if (amountCell) {
+              const amount = parseFloat(
+                amountCell.textContent.replace("₱", "").replace(",", "")
+              );
+              if (!isNaN(amount)) {
+                totalAmount += amount;
+              }
+            }
+          });
+
+          const currentDate = new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          const adminFullName =
+            sessionStorage.getItem("admin_full_name") || "Unknown Admin";
+
+          const totalRow = document.createElement("tr");
+          totalRow.className = "total-row";
+          const colSpan = tableContent.querySelectorAll("thead th").length - 1;
+          totalRow.innerHTML = `
+            <td colspan="${colSpan}" style="text-align: right; font-weight: bold;">Total Amount:</td>
+            <td style="text-align: left; font-weight: bold;">₱${totalAmount.toLocaleString(
+              "en-US",
+              { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+            )}</td>
+          `;
+          tableContent.querySelector("tbody").appendChild(totalRow);
+
+          const printWindow = window.open("", "_blank");
+          printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Fitworx GYM - Sales Report</title>
+                    <style>
+                        @media print {
+                            body { 
+                                padding: 20px;
+                                font-family: Arial, sans-serif;
+                            }
+                            .header {
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+                            .header h1 {
+                                font-size: 24px;
+                                margin: 0;
+                            }
+                            .header p {
+                                margin: 5px 0;
+                            }
+                            table { 
+                                border-collapse: collapse; 
+                                width: 100%;
+                                margin: 20px 0;
+                            }
+                            th, td { 
+                                border: 1px solid #000; 
+                                padding: 8px; 
+                            }
+                            .total-row {
+                                font-weight: bold;
+                                background-color: #f0f0f0;
+                            }
+                            .footer {
+                                margin-top: 50px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-end;
+                            }
+                            .prepared-by {
+                                text-align: center;
+                            }
+                            .signature-line {
+                                border-top: 1px solid #000;
+                                width: 200px;
+                                margin-bottom: 5px;
+                            }
+                            .page-number {
+                                position: fixed;
+                                bottom: 20px;
+                                right: 20px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="header">
+                            <h1>Fitworx GYM</h1>
+                            <p>Q28V+QMG, Capt. F. S. Samano, Caloocan, Metro Manila</p>
+                            <p>0933 874 5377</p>
+                            <h2>Daily Sales Report</h2>
+                            <p>As of ${currentDate}</p>
+                            ${
+                              filterValue
+                                ? `<p>Filtered by: ${filterValue}</p>`
+                                : "<p>All Records</p>"
+                            }
+                        </div>
+                        
+                        <div class="content">
+                            ${tableContent.outerHTML}
+                        </div>
+
+                        <div class="footer">
+                            <div class="prepared-by">
+                                <p>Prepared By: ${adminFullName}</p>
+                            </div>
+                            <p>Printed Date: ${currentDate}</p>
+                        </div>
+
+                        <div class="page-number"></div>
+                    </div>
+
+                    <script>
+                        const pages = document.querySelectorAll('.page-number');
+                        pages.forEach((page, index) => {
+                            page.textContent = 'Page ' + (index + 1);
+                        });
+                    </script>
+                </body>
+            </html>
+          `);
+          printWindow.document.close();
+
+          setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+          }, 250);
+        });
+      }
+    });
+  }
+
+  // ========== Initialization ==========
+  function initialize() {
+    addFilterControls();
+    setupTabs();
+    setupExportButtons();
+    requestNotificationPermission();
+    document.getElementById("monthly-tab").click();
+    startPolling();
+  }
+
+  initialize();
 });
