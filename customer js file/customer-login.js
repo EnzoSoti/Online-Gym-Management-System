@@ -1,4 +1,4 @@
-// Get DOM elements
+// ========== DOM Elements ==========
 const loginForm = document.getElementById('loginForm');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
@@ -12,10 +12,12 @@ const welcomeText = document.getElementById('welcomeText');
 const formSection = document.getElementById('formSection');
 const showPasswordButton = document.getElementById('showPassword');
 
-// API URL
+// ========== Configuration ==========
 const API_URL = 'http://localhost:3000/api';
 
-// Sanitize input to prevent XSS
+// ========== Utility Functions ==========
+
+// Sanitize input to prevent XSS attacks
 const sanitizeInput = (input) => {
     return input
         .replace(/&/g, '&amp;')
@@ -26,16 +28,16 @@ const sanitizeInput = (input) => {
         .replace(/\//g, '&#x2F;');
 };
 
-// Play sound function
+// Play sound from DOM audio element
 const playSound = (soundId) => {
     const sound = document.getElementById(soundId);
     sound.play();
 };
 
-// Handle form submission
+// ========== Form Submission Handler ==========
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    
+
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
     const sanitizedUsername = sanitizeInput(username.value.trim());
     const sanitizedPassword = password.value;
@@ -57,8 +59,10 @@ loginForm.addEventListener('submit', async function (e) {
 
         if (response.ok) {
             playSound('success-sound');
+
             if (isLoginMode) {
                 sessionStorage.setItem('full_name', data.user.full_name);
+
                 Toastify({
                     text: "Login successful!",
                     duration: 3000,
@@ -92,9 +96,11 @@ loginForm.addEventListener('submit', async function (e) {
                 stopOnFocus: true
             }).showToast();
         }
+
     } catch (error) {
-        playSound('success-sound');
+        playSound('success-sound'); // Optional: swap to an error sound for better UX
         console.error('API Error:', error);
+
         Swal.fire({
             title: 'Oops!',
             text: 'Something went wrong. Please try again later.',
@@ -108,43 +114,53 @@ loginForm.addEventListener('submit', async function (e) {
     }
 });
 
-// Toggle between login and signup forms
+// ========== Toggle Form View ==========
 function toggleForms() {
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
 
     formTitle.textContent = isLoginMode ? 'Create Account' : 'Sign in to Account';
-    formSubtitle.textContent = isLoginMode ? 'Join us and start your fitness journey' : 'Start managing your fitness journey today';
+    formSubtitle.textContent = isLoginMode
+        ? 'Join us and start your fitness journey'
+        : 'Start managing your fitness journey today';
+
     toggleText.textContent = isLoginMode ? 'Already have an account?' : "Don't have an account?";
     toggleButton.textContent = isLoginMode ? 'Sign in here' : 'Sign up for free';
+
     welcomeText.innerHTML = isLoginMode
         ? `<h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
            <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>`
         : `<h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
            <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>`;
-    
+
     fullNameField.classList.toggle('hidden', isLoginMode);
+
+    // Clear all input fields on toggle
     username.value = '';
     password.value = '';
     fullName.value = '';
 }
 
-// Add event listener to toggle button
+// ========== Password Visibility Toggle ==========
+showPasswordButton.addEventListener('click', function () {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    // Toggle eye icon (FontAwesome assumed)
+    this.querySelector('i').classList.toggle('fa-eye');
+    this.querySelector('i').classList.toggle('fa-eye-slash');
+});
+
+// ========== Event Listeners ==========
+
+// Switch between login/signup on toggle button click
 toggleButton.addEventListener('click', function (e) {
     e.preventDefault();
     toggleForms();
 });
 
-// Clear form fields on page load
+// Clear all input fields on initial load
 window.addEventListener('load', function () {
     username.value = '';
     password.value = '';
     fullName.value = '';
-});
-
-// Show/hide password functionality
-showPasswordButton.addEventListener('click', function () {
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    this.querySelector('i').classList.toggle('fa-eye');
-    this.querySelector('i').classList.toggle('fa-eye-slash');
 });

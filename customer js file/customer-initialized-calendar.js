@@ -1,26 +1,30 @@
+// ========== Calendar Initialization & Rendering ==========
+
 async function initializeCalendar() {
     try {
         const calendarEl = document.getElementById('calendar');
         if (!calendarEl) return;
 
+        // ========== Load Custom CSS ==========
+        // Dynamically fetch and apply calendar-specific responsive styles
         const cssResponse = await fetch('/css/calendarResponsive.css');
         const cssText = await cssResponse.text();
-
-        // Add CSS for hover and click effects
         const style = document.createElement('style');
         style.textContent = cssText;
         document.head.appendChild(style);
 
-        // Calculate calendar height based on container
+        // ========== Dynamic Height Calculation ==========
+        // Sets minimum calendar height or adapts to container height
         const calculateHeight = () => {
             const container = calendarEl.closest('.container') || calendarEl.parentElement;
             if (container) {
                 const containerHeight = container.offsetHeight;
-                return Math.max(800, containerHeight); // Minimum 800px or container height
+                return Math.max(800, containerHeight); // Ensures a minimum height of 800px
             }
             return 'auto';
         };
 
+        // ========== FullCalendar Instance Setup ==========
         window.calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
@@ -39,19 +43,26 @@ async function initializeCalendar() {
                 startTime: '09:00',
                 endTime: '24:00',
             },
+
+            // ========== Responsive Resize Handling ==========
             windowResize: function(view) {
                 this.setOption('height', calculateHeight());
             },
+
+            // ========== Button Text Customization ==========
             buttonText: {
                 today: 'Today'
             },
+
+            // ========== Tooltip & Event Styling ==========
             eventDidMount: function(info) {
                 info.el.style.fontSize = '0.875rem';
                 info.el.style.padding = '6px 8px';
                 info.el.style.whiteSpace = 'pre-line';
                 info.el.style.borderRadius = '6px';
                 info.el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-                
+
+                // Tooltip using Tippy.js
                 tippy(info.el, {
                     content: `
                         <div class="text-sm">
@@ -67,42 +78,46 @@ async function initializeCalendar() {
                     animation: 'shift-away',
                 });
             },
+
+            // ========== Day Cell Click Handler ==========
             dateClick: async function(info) {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 const clickedDate = new Date(info.dateStr);
 
+                // Remove previously selected day highlight
                 document.querySelectorAll('.fc-day').forEach(cell => {
                     cell.classList.remove('clicked');
                 });
 
+                // Highlight clicked day
                 info.dayEl.classList.add('clicked');
 
+                // Prevent past date selection
                 if (clickedDate < today) {
                     Swal.fire({
                         title: '⚠️ Reservation Date Restricted',
                         text: 'You cannot select a date in the past.',
                         icon: 'warning',
                         confirmButtonText: 'Update Date',
-                        showClass: {
-                            popup: '' // Removed animation
-                        },
+                        showClass: { popup: '' },
                         customClass: {
                             popup: '',
                             title: '',
                             htmlContainer: '',
                             confirmButton: ''
                         },
-                        buttonsStyling: true // Reverted to default styling
+                        buttonsStyling: true
                     });
                     return;
                 }
 
                 try {
+                    // Fetch and display reservations for clicked date
                     const reservations = await fetchReservationsByDate(info.dateStr);
                     displayReservations(reservations);
 
-                    // Check if the clicked date has reservations and update the class
+                    // Update day cell class based on reservation status
                     if (reservations.length > 0) {
                         info.dayEl.classList.add('has-reservation');
                         info.dayEl.setAttribute('data-reservation-count', reservations.length);
@@ -112,6 +127,7 @@ async function initializeCalendar() {
                         info.dayEl.removeAttribute('data-reservation-count');
                         info.dayEl.classList.remove('fc-day-reservation-count');
                     }
+
                 } catch (error) {
                     console.error('Error fetching reservations by date:', error);
                     showErrorMessage('Failed to fetch reservations for the selected date.');
@@ -119,10 +135,11 @@ async function initializeCalendar() {
             }
         });
 
-        // Initial load of events from API
+        // ========== Initial Event Fetch & Rendering ==========
         try {
             const today = new Date().toISOString().split('T')[0];
             const initialReservations = await fetchReservationsByDate(today);
+
             const calendarEvents = initialReservations.map(reservation => ({
                 title: `${reservation.service_type} - ${reservation.customer_name}`,
                 start: `${reservation.reservation_date}T${reservation.start_time}`,
@@ -137,10 +154,10 @@ async function initializeCalendar() {
                     timeOut: reservation.end_time
                 }
             }));
-            
+
             calendar.addEventSource(calendarEvents);
 
-            // Add the 'has-reservation' class to the appropriate days
+            // Highlight today if it has reservations
             const todayCell = document.querySelector('.fc-day-today');
             if (todayCell && initialReservations.length > 0) {
                 todayCell.classList.add('has-reservation');
@@ -148,6 +165,7 @@ async function initializeCalendar() {
                 todayCell.classList.add('fc-day-reservation-count');
             }
 
+            // Highlight cells for each reservation date
             initialReservations.forEach(reservation => {
                 const date = new Date(reservation.reservation_date);
                 const dateStr = date.toISOString().split('T')[0];
@@ -163,14 +181,16 @@ async function initializeCalendar() {
             console.error('Error loading initial reservations:', error);
         }
 
+        // ========== Final Calendar Render ==========
         calendar.render();
+
     } catch (error) {
         console.error('Error in initializeCalendar:', error);
         throw error;
     }
 }
 
-// Call initializeCalendar after the DOM is fully loaded
+// ========== DOM Ready Hook ==========
 document.addEventListener('DOMContentLoaded', () => {
-    initializeCalendar();
+    initializeCalendar(); // Initialize calendar after DOM is ready
 });
