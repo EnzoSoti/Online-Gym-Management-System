@@ -116,25 +116,33 @@ loginForm.addEventListener('submit', async function (e) {
 
 // ========== Toggle Form View ==========
 function toggleForms() {
+    // Check current form mode based on the header text
     const isLoginMode = formTitle.textContent === 'Sign in to Account';
 
+    // Toggle the form title and subtitle based on current mode
     formTitle.textContent = isLoginMode ? 'Create Account' : 'Sign in to Account';
     formSubtitle.textContent = isLoginMode
-        ? 'Join us and start your fitness journey'
-        : 'Start managing your fitness journey today';
+        ? 'Join us and start your fitness journey'  // Text for signup mode
+        : 'Start managing your fitness journey today';  // Text for login mode
 
+    // Update the toggle link text based on current mode
     toggleText.textContent = isLoginMode ? 'Already have an account?' : "Don't have an account?";
     toggleButton.textContent = isLoginMode ? 'Sign in here' : 'Sign up for free';
 
+    // Update the welcome panel text based on current mode
     welcomeText.innerHTML = isLoginMode
         ? `<h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
            <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>`
         : `<h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
            <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>`;
 
-    fullNameField.classList.toggle('hidden', isLoginMode);
+    // FIXED: Show fullName field in signup mode, hide in login mode
+    // The issue was here - we needed to invert the logic
+    // When isLoginMode is true, we want fullNameField to be hidden
+    // When isLoginMode is false (signup mode), we want fullNameField to be visible
+    fullNameField.classList.toggle('hidden', !isLoginMode);
 
-    // Clear all input fields on toggle
+    // Reset all form fields when toggling between forms
     username.value = '';
     password.value = '';
     fullName.value = '';
