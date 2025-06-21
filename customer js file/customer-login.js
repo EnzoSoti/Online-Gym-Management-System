@@ -122,24 +122,81 @@ function toggleForms() {
     // Toggle the form title and subtitle based on current mode
     formTitle.textContent = isLoginMode ? 'Create Account' : 'Sign in to Account';
     formSubtitle.textContent = isLoginMode
-        ? 'Join us and start your fitness journey'  // Text for signup mode
-        : 'Start managing your fitness journey today';  // Text for login mode
+        ? 'Join us and start your fitness journey'
+        : 'Start your fitness journey today';
 
     // Update the toggle link text based on current mode
     toggleText.textContent = isLoginMode ? 'Already have an account?' : "Don't have an account?";
     toggleButton.textContent = isLoginMode ? 'Sign in here' : 'Sign up for free';
 
-    // Update the welcome panel text based on current mode
+    // Update the welcome panel text
     welcomeText.innerHTML = isLoginMode
-        ? `<h1 class="text-4xl font-bold text-white mb-6">Hello, Friend!</h1>
-           <p class="text-white/80 text-lg">Fill in your details and start your journey with us</p>`
-        : `<h1 class="text-4xl font-bold text-white mb-6">Welcome</h1>
-           <p class="text-white/80 text-lg">Enter your personal details and start your journey with us</p>`;
+        ? `<div class="space-y-4">
+                <div class="inline-block px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm font-medium backdrop-blur-sm">
+                    Join Our Community
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight">
+                    Hello,<br>
+                    <span class="text-yellow-200">FRIEND!</span>
+                </h1>
+                <p class="text-white text-xl sm:text-2xl opacity-90 font-light max-w-lg">
+                    Fill in your details and start your journey with us today.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                <div class="flex items-center space-x-3 text-white">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <i class="fas fa-user-plus text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Quick Registration</p>
+                        <p class="text-sm opacity-75">Join in seconds</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 text-white">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <i class="fas fa-gift text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Book now</p>
+                        <p class="text-sm opacity-75">Start your journey</p>
+                    </div>
+                </div>
+            </div>`
+        : `<div class="space-y-4">
+                <div class="inline-block px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm font-medium backdrop-blur-sm">
+                    Premium Fitness Experience
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight">
+                    WELCOME TO<br>
+                    <span class="text-yellow-200">FITWORX</span>
+                </h1>
+                <p class="text-white text-xl sm:text-2xl opacity-90 font-light max-w-lg">
+                    Transform your body, transform your life with our premium fitness experience.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                <div class="flex items-center space-x-3 text-white">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <i class="fas fa-dumbbell text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold">State-of-art Equipment</p>
+                        <p class="text-sm opacity-75">Latest fitness technology</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 text-white">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <i class="fas fa-users text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Expert Trainers</p>
+                        <p class="text-sm opacity-75">Professional guidance</p>
+                    </div>
+                </div>
+            </div>`;
 
-    // FIXED: Show fullName field in signup mode, hide in login mode
-    // The issue was here - we needed to invert the logic
-    // When isLoginMode is true, we want fullNameField to be hidden
-    // When isLoginMode is false (signup mode), we want fullNameField to be visible
+    // Show fullName field in signup mode, hide in login mode
     fullNameField.classList.toggle('hidden', !isLoginMode);
 
     // Reset all form fields when toggling between forms
@@ -153,7 +210,7 @@ showPasswordButton.addEventListener('click', function () {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
 
-    // Toggle eye icon (FontAwesome assumed)
+    // Toggle eye icon
     this.querySelector('i').classList.toggle('fa-eye');
     this.querySelector('i').classList.toggle('fa-eye-slash');
 });

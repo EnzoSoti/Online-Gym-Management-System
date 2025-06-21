@@ -1,0 +1,29 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Custom video controls styling */
+  #demoVideo::-webkit-media-controls-panel {
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+  }
+  
+  #demoVideo::-webkit-media-controls-play-button {
+    background-color: #ea580c;
+    border-radius: 50%;
+  }
+  
+  /* Hover effect for video */
+  #demoVideo:hover {
+    transform: scale(1.01);
+    transition: transform 0.3s ease;
+  }
