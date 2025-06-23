@@ -1,6 +1,6 @@
 // Add reservation tab to the polling and tab functionality
 document.addEventListener("DOMContentLoaded", function () {
-  const POLLING_INTERVAL = 1000; // 5 seconds
+  const POLLING_INTERVAL = 10000; // 5 seconds
   let activeTabId = "monthly";
   let lastPolledData = {
     monthly: null,

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ========== STATE ==========
     let supplements = [];
-    const POLLING_INTERVAL = 1000;
+    const POLLING_INTERVAL = 10000;
 
     // ========== FETCH SUPPLEMENTS ==========
     async function fetchSupplements(isInitialLoad = false) {

@@ -7,7 +7,7 @@ const searchInput = document.getElementById("memberSearch");
 let selectedRow = null;
 let allMembers = [];
 let lastPolledData = null;
-const POLLING_INTERVAL = 5000; // Poll every 5 seconds
+const POLLING_INTERVAL = 10000; // Poll every 10 seconds
 
 // Notification System
 class NotificationSystem {

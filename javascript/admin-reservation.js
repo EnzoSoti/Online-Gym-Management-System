@@ -3,7 +3,7 @@ class ReservationManager {
     constructor() {
         this.API_URL = 'http://localhost:3000/api/admin/reservations';
         this.table = document.getElementById('reservations-body');
-        this.POLLING_INTERVAL = 5000;
+        this.POLLING_INTERVAL = 10000;
         this.isPolling = true;
         this.reservationsData = [];
 

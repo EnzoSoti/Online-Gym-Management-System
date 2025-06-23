@@ -4,7 +4,7 @@ class SupplementManager {
     this.API_URL = "http://localhost:3000/api/supplements";
     this.LOW_STOCK_THRESHOLD = 9;
     this.CRITICAL_LOW_THRESHOLD = 10;
-    this.POLLING_INTERVAL = 5000;
+    this.POLLING_INTERVAL = 10000;
 
     // State
     this.currentId = null;
