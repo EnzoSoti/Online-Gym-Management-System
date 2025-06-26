@@ -13,7 +13,7 @@ const formSection = document.getElementById('formSection');
 const showPasswordButton = document.getElementById('showPassword');
 
 // ========== Configuration ==========
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://fitworx-backend.onrender.com'; // Updated to Render URL
 
 // ========== Utility Functions ==========
 
@@ -51,59 +51,68 @@ loginForm.addEventListener('submit', async function (e) {
 
         const response = await fetch(`${API_URL}${endpoint}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(requestBody)
         });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || (isLoginMode ? "Login Failed" : "Registration Failed"));
+        }
+
         const data = await response.json();
+        playSound('success-sound');
 
-        if (response.ok) {
-            playSound('success-sound');
+        if (isLoginMode) {
+            sessionStorage.setItem('full_name', data.user.full_name);
 
-            if (isLoginMode) {
-                sessionStorage.setItem('full_name', data.user.full_name);
-
-                Toastify({
-                    text: "Login successful!",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "center",
-                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                    stopOnFocus: true,
-                    callback: () => window.location.href = '../customer file/customer.html'
-                }).showToast();
-            } else {
-                Toastify({
-                    text: "Your account has been created successfully!",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "center",
-                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                    stopOnFocus: true,
-                    callback: toggleForms
-                }).showToast();
-            }
-        } else {
             Toastify({
-                text: data.error || (isLoginMode ? "Login Failed. Please check your credentials." : "Registration Failed. Try again."),
+                text: "Login successful!",
                 duration: 3000,
                 close: true,
                 gravity: "top",
                 position: "center",
-                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-                stopOnFocus: true
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                stopOnFocus: true,
+                callback: () => window.location.href = '../customer file/customer.html'
+            }).showToast();
+        } else {
+            Toastify({
+                text: "Your account has been created successfully!",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                stopOnFocus: true,
+                callback: toggleForms
             }).showToast();
         }
 
     } catch (error) {
-        playSound('success-sound'); // Optional: swap to an error sound for better UX
         console.error('API Error:', error);
+        
+        let errorMessage = error.message;
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage = "Couldn't connect to the server. Please check your internet connection.";
+        }
+
+        Toastify({
+            text: errorMessage,
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "center",
+            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+            stopOnFocus: true
+        }).showToast();
 
         Swal.fire({
             title: 'Oops!',
-            text: 'Something went wrong. Please try again later.',
+            text: errorMessage,
             icon: 'error',
             confirmButtonText: 'OK',
             confirmButtonColor: '#ef4444',
