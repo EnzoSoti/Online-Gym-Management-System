@@ -13,7 +13,7 @@ const formSection = document.getElementById('formSection');
 const showPasswordButton = document.getElementById('showPassword');
 
 // ========== Configuration ==========
-const API_URL = process.env.REACT_APP_API_URL || 'https://fitworx-backend.onrender.com/api';
+const API_URL = 'https://fitworx-backend.onrender.com/api';
 
 // ========== Utility Functions ==========
 
