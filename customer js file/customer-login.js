@@ -13,7 +13,7 @@ const formSection = document.getElementById('formSection');
 const showPasswordButton = document.getElementById('showPassword');
 
 // ========== Configuration ==========
-const API_URL = 'https://fitworx-backend.onrender.com/api';
+const API_URL = 'http://localhost:3000/api';
 
 // ========== Utility Functions ==========
 
