@@ -1423,7 +1423,7 @@ app.post('/api/feedback', async (req, res) => {
     `
   };
 
-  try {
+  try { 
     await transporter.sendMail(mailOptions);
     res.json({ message: 'Feedback received and email sent.' });
   } catch (error) {
